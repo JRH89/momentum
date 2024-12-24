@@ -7,16 +7,14 @@ const DashboardPage = ({ currentUser }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (currentUser) {
-      router.push(`/Dashboard/${currentUser.uid}`);
+    if (!currentUser) {
+      router.push("/"); // Redirect to the login page if the user is not authenticated
+    } else {
+      router.push(`/Dashboard/${currentUser.uid}`); // Redirect to the user's dashboard
     }
   }, [currentUser, router]);
 
-  if (!currentUser) {
-    router.push("/"); // Optionally render a loader or redirect to login
-  }
-
-  return null; // You might not need any UI since you are redirecting
+  return null; // No UI is needed as this is a redirect-only component
 };
 
 export default DashboardPage;
