@@ -7,6 +7,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { StripeCustomer } from '../../../../components/types/stripeCustomer';
 import Link from 'next/link';
 import { getAuth } from 'firebase/auth';
+import NavBar from '../../../../components/navbar';
+import Footer from '../../../../components/footer';
 
 const CustomerDetailsPage = () => {
   const router = useRouter();
@@ -67,13 +69,19 @@ const CustomerDetailsPage = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div className="p-6 bg-white min-h-screen h-full pt-24 w-full mx-auto justify-center">
-      <div className="max-w-6xl w-full mx-auto justify-center">
+    <>
+    <NavBar />
+    
+    <div className="p-6 bg-primary min-h-screen h-full pt-12 w-full mx-auto justify-center">
+      <div className="max-w-6xl bg-white p-6 rounded-2xl shadow w-full mx-auto justify-center">
         {customerData && !loading && !error && (
-          <div className="w-full flex flex-col mx-auto">
-            <h2 className="text-3xl font-semibold text-gray-900">Customer Details</h2>
+            <div className="w-full flex flex-col mx-auto">
+              <div>
+                <h2 className="text-2xl font-semibold text-gray-900 border-b">Customer Details</h2>
+                <button type="button" className="text-gray-800 hover:text-gray-400">Create Invoice</button>
+                </div>
             <div className="w-full mx-auto">
-              <div className="mt-4 w-full flex">
+              <div className="mt-4 w-full flex ml-4">
                 <div className="grid grid-cols-2 gap-4 justify-between w-full">
                   <div className=''>
                     <strong className="text-gray-600">Name:</strong>
@@ -93,18 +101,13 @@ const CustomerDetailsPage = () => {
                   </div>
                 </div>
               </div>
-
-              <Link
-                href={`/Dashboard/${uid}`}
-                className="mt-6 inline-block px-4 py-2 text-white bg-blue-500 rounded"
-              >
-                Back to Dashboard
-              </Link>
             </div>
           </div>
         )}
       </div>
-    </div>
+      </div>
+    <Footer />
+    </>
   );
 };
 

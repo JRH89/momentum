@@ -1,11 +1,10 @@
 'use client';
 
 import { signInWithPopup } from 'firebase/auth';
-import { auth, provider, db } from '../../firebase';
+import { auth, provider, db } from '../../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ArrowRight, File, Goal, Projector, User } from 'lucide-react';
 
 const SignIn = () => {
   const [user, setUser] = useState<any>(null);
@@ -62,11 +61,10 @@ const SignIn = () => {
     <div>
       <button
         type="button"
-        className="shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 bg-confirm text-black px-6 py-6 rounded-lg text-3xl font-semibold items-center flex flex-row "
+        className="shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 bg-orange-500 text-white px-6 py-4 rounded text-4xl lg:text-5xl sm:text-3xl"
         onClick={handleSignIn}
       >
-        Get Started Now
-        <ArrowRight className="w-8 h-8 ml-2" />
+        Sign In
       </button>
     </div>
   );

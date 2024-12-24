@@ -1,22 +1,22 @@
-import siteMetadata from "../../../siteMetadata";
-import NavBar from "../../components/navbar";
-import Dashboard from "../../components/user/Dashboard";
-import Footer from "../../components/footer";
+"use client";
 
-export function generateMetadata() {
-    return {
-        title: `Dashboard | ${siteMetadata.title}`,
-        description: `Dashboard for ${siteMetadata.title} .`,
-        url: `${siteMetadata.siteUrl}/Dashboard`,
-    };
-}
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function Page() {
-    return (
-        <>
-            <NavBar />
-            <Dashboard />
-            <Footer />
-        </>
-    )
-}
+const DashboardPage = ({ currentUser }) => {
+  const router = useRouter();
+
+  useEffect(() => {
+    if (currentUser) {
+      router.push(`/Dashboard/${currentUser.uid}`);
+    }
+  }, [currentUser, router]);
+
+  if (!currentUser) {
+    router.push("/"); // Optionally render a loader or redirect to login
+  }
+
+  return null; // You might not need any UI since you are redirecting
+};
+
+export default DashboardPage;

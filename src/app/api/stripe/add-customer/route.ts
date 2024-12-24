@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 
 // Initialize Stripe with the secret key
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET!, {
-  apiVersion: '2024-12-18.acacia',
+  apiVersion: '2024-06-20',
 });
 
 export async function POST(req: NextRequest) {

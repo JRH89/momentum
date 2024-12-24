@@ -13,6 +13,9 @@ const dmSans = DM_Sans({ subsets: ["latin"] });
 export const metadata = {
   title: `${siteMetadata.title} | ${siteMetadata.headerTitle}`,
   description: `${siteMetadata.description}`,
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: `${siteMetadata.title}`,
     description: `${siteMetadata.description}`,
@@ -81,7 +84,6 @@ export default function RootLayout({ children }) {
         <meta name="twitter:title" content={metadata.twitter.title} />
         <meta name="twitter:description" content={metadata.twitter.description} />
         <meta name="twitter:image" content={metadata.twitter.image} />
-        <link rel="icon" href="/favicon.ico" />
         <title>{metadata.title}</title>
       </head>
       <body className={twMerge(dmSans.className, "antialiased bg-[#EAEEFE]")}>

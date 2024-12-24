@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 
 // Initialize Stripe with your secret key
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET as string, {
-  apiVersion: '2024-12-18.acacia', // Use the appropriate API version
+  apiVersion: '2024-06-20', // Use the appropriate API version
 });
 
 // Define the request handler

@@ -32,7 +32,7 @@ export const getCheckoutUrl = async (
 	const docRef = await addDoc(checkoutSessionRef, {
 		price: priceId,
 		allow_promotion_codes: true,
-		success_url: `${siteMetadata?.siteUrl}/Dashboard` || `http://localhost:3000/Dashboard/subscribe`,
+		success_url: `${siteMetadata?.siteUrl}/Dashboard/${auth.currentUser?.uid}` || `http://localhost:3000/Dashboard/subscribe`,
 		cancel_url: `${window.location.origin}/Dashboard/subscribe`,
 	});
 
