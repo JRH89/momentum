@@ -2,10 +2,12 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthProvider";
 
-const DashboardPage = ({ currentUser }) => {
+const DashboardPage = () => {
   const router = useRouter();
 
+  const { currentUser } = useAuth();
   useEffect(() => {
     if (!currentUser) {
       router.push("/"); // Redirect to the login page if the user is not authenticated

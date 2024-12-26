@@ -14,7 +14,7 @@ export const Footer = () => {
               src={logo}
               alt="logo"
               height={50}
-              className="relative z-10 rounded-lg border-4 border-black"
+              className="relative z-10 rounded-lg border-2 border-black"
             />
           </div>
         </div>

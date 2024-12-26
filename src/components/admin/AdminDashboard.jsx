@@ -81,7 +81,7 @@ const AdminDashboard = () => {
       {isAdmin ? (
         <div className="px-5 max-w-6xl min-h-screen h-full justify-start mx-auto pt-6 flex flex-col w-full">
           <h1 className="section-title">Admin Dashboard</h1>
-          <div className="flex gap-4 my-4 mx-auto w-full justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 my-4 mx-auto w-full justify-center">
             <button
               onClick={() => {
                 setShowUserList(true);
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
                 setShowAdminTickets(false);
                 setShowCreateNewsletter(false);
               }}
-              className={`btn text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
+              className={`btn flex text-center justify-center text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
                 showUserList ? "bg-destructive" : "bg-confirm"
               }`}
             >
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
                 setShowAdminTickets(false);
                 setShowCreateNewsletter(false);
               }}
-              className={`btn text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
+              className={`btn flex text-center justify-center text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
                 showAnnouncements ? "bg-destructive" : "bg-confirm"
               }`}
             >
@@ -115,7 +115,7 @@ const AdminDashboard = () => {
                 setShowAdminTickets(true);
                 setShowCreateNewsletter(false);
               }}
-              className={`btn text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
+              className={`btn flex text-center justify-center text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
                 showAdminTickets ? "bg-destructive" : "bg-confirm"
               }`}
             >
@@ -128,7 +128,7 @@ const AdminDashboard = () => {
                 setShowAdminTickets(false);
                 setShowCreateNewsletter(true);
               }}
-              className={`btn text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
+              className={`btn flex text-center justify-center text-black font-semibold shadow-md shadow-black hover:shadow-black hover:shadow-lg duration-300 ${
                 showCreateNewsletter ? "bg-destructive" : "bg-confirm"
               }`}
             >

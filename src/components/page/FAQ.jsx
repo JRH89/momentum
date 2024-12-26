@@ -7,29 +7,29 @@ import { twMerge } from "tailwind-merge";
 const pageData = {
   faqItems: [
     {
-      question: "What is Momentum HQ?",
+      question: "What is Momentum?",
       answer:
-        "Momentum HQ is a streamlined project management platform designed to empower freelancers and small businesses. It centralizes project tracking, milestone management, and resource organization while offering tools to enhance team collaboration and efficiency.",
+        "Momentum is a streamlined project management platform designed to empower freelancers and small businesses. It centralizes project tracking, milestone management, and resource organization while offering tools to enhance team collaboration and efficiency.",
     },
     {
-      question: "What are the main features of Momentum HQ?",
+      question: "What are the main features of Momentum?",
       answer:
-        "Momentum HQ provides powerful tools, including project creation and tracking, milestone management, real-time progress monitoring, a customizable project dashboard, integrated budget tracking, and intuitive task assignment features to keep your projects on track.",
+        "Momentum provides powerful tools, including project creation and tracking, milestone management, real-time progress monitoring, a customizable project dashboard, integrated budget tracking, and intuitive task assignment features to keep your projects on track.",
     },
     {
-      question: "How do I get started with Momentum HQ?",
+      question: "How do I get started with Momentum?",
       answer:
-        "Getting started with Momentum HQ is simple. Sign up on our website, explore the setup guide in the documentation, and start creating your first project. With an intuitive interface, you'll be up and running in no time.",
+        "Getting started with Momentum is simple. Sign up on our website, explore the setup guide in the documentation, and start creating your first project. With an intuitive interface, you'll be up and running in no time.",
     },
     {
-      question: "Can I customize the dashboards in Momentum HQ?",
+      question: "Can I customize the dashboards in Momentum?",
       answer:
-        "Yes! Momentum HQ’s dashboards are fully customizable, allowing you to adjust layouts and widgets to match your workflow. Tailor the platform to track the metrics and tasks that matter most to you.",
+        "Yes! Momentum’s dashboards are fully customizable, allowing you to adjust layouts and widgets to match your workflow. Tailor the platform to track the metrics and tasks that matter most to you.",
     },
     {
-      question: "How does Momentum HQ help with team collaboration?",
+      question: "How does Momentum help with team collaboration?",
       answer:
-        "Momentum HQ enhances collaboration by providing a centralized platform for task assignments, real-time progress updates, and resource sharing. Keep everyone on the same page with clear communication and milestone tracking.",
+        "Momentum enhances collaboration by providing a centralized platform for task assignments, real-time progress updates, and resource sharing. Keep everyone on the same page with clear communication and milestone tracking.",
     },
   ],
 };

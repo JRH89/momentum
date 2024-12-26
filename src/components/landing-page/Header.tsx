@@ -11,7 +11,7 @@ import siteMetadata from '../../../siteMetadata';
 
 // Page Data
 const pageData = {
-  bannerText: 'Streamline your workflow and boost productivity',
+  bannerText: 'Momentum: Where Every Project Gains Traction',
   bannerLinkText: 'Boost Your Momentum',
   bannerLinkHref: '/Signup',
   logoHref: '/',
@@ -53,7 +53,7 @@ export const Header = () => {
           <ArrowRight className="h-5 w-5 inline-flex justify-center items-center" />
         </Link>
       </div>
-      <div className='py-5'>
+      <div className='py-3'>
         <div className='px-5 md:px-10'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center gap-3'>

@@ -30,7 +30,7 @@ const SignIn = () => {
             email: user.email,
             photoURL: user.photoURL,
             isPremium: false,
-            isSubscribed: false,
+            isSubscribed: true,
             isAdmin: false,
             customers: [],
             stripeAccountId: '',
@@ -62,11 +62,11 @@ const SignIn = () => {
     <div>
       <button
         type="button"
-        className="shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 bg-confirm text-black px-6 py-6 rounded-lg text-3xl font-semibold items-center flex flex-row "
+        className="shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 bg-destructive text-black py-2 px-4 lg:py-4 lg:px-6 rounded-lg text-xl font-semibold items-center flex flex-row "
         onClick={handleSignIn}
       >
         Get Started Now
-        <ArrowRight className="w-8 h-8 ml-2" />
+        <ArrowRight className="w-6 h-6 ml-2" />
       </button>
     </div>
   );

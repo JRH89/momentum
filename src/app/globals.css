@@ -3,76 +3,79 @@
 @tailwind utilities;
 
 .shimmer-container {
-    position: relative;
-    display: inline-block;
-    overflow: hidden;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
 }
 
 .shimmer-image {
-    display: block;
-    width: 100%;
-    transition: transform 0.3s ease;
+  display: block;
+  width: 100%;
+  transition: transform 0.3s ease;
 }
 
 .shimmer-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
-    transition: transform 0.7s ease;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  transition: transform 0.7s ease;
 }
 
 .shimmer-container:hover .shimmer-image {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 .shimmer-container:hover::before {
-    transform: translateX(200%);
+  transform: translateX(200%);
 }
 
 html {
-    scroll-behavior: smooth
+  scroll-behavior: smooth;
 }
 
-
 @layer components {
-    .btn {
-        @apply bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex tracking-tight items-center
-    }
+  .btn {
+    @apply bg-black text-white px-4 py-2 rounded-lg font-medium inline-flex tracking-tight items-center;
+  }
 
-    .btn-primary {
-        @apply bg-black text-white
-    }
+  .btn-primary {
+    @apply bg-black text-white;
+  }
 
-    .btn-text {
-        @apply text-black bg-transparent
-    }
+  .btn-text {
+    @apply text-black bg-transparent;
+  }
 
-    .logo-ticker-image {
-        @apply h-8 w-auto text-pink-500
-    }
+  .logo-ticker-image {
+    @apply h-8 w-auto text-pink-500;
+  }
 
-    .tag {
-        @apply text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight mx-auto
-    }
+  .tag {
+    @apply text-sm inline-flex border border-[#222]/10 px-3 py-1 rounded-lg tracking-tight mx-auto;
+  }
 
-    .section-title {
-        @apply text-center text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter text-black
-    }
+  .section-title {
+    @apply text-center text-3xl md:text-[54px] md:leading-[60px] font-bold tracking-tighter text-black;
+  }
 
-    .section-description {
-        @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010d3e]
-    }
+  .section-description {
+    @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010d3e];
+  }
 
-    .section-heading {
-        @apply max-w-[540px] mx-auto
-    }
+  .section-heading {
+    @apply max-w-[540px] mx-auto;
+  }
 
-    .card {
-        @apply p-10 rounded-3xl shadow-[0_7px_14px_#eaeaea] max-w-xs w-full border border-[#f1f1f1]
-    }
-
+  .card {
+    @apply p-10 rounded-3xl shadow-[0_7px_14px_#eaeaea] max-w-xs w-full border border-[#f1f1f1];
+  }
 }

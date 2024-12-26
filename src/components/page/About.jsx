@@ -1,17 +1,17 @@
 import Link from "next/link";
 
 const pageData = {
-  title: "Simplify Project Management with Momentum HQ",
+  title: "Simplify Project Management with Momentum",
   intro:
-    "Streamline your workflow with Momentum HQ. Sign up today to unlock powerful tools that help you manage projects, track progress, and handle invoicing with ease—all in one place.",
+    "Streamline your workflow with Momentum. Sign up today to unlock powerful tools that help you manage projects, track progress, and handle invoicing with ease—all in one place.",
   buyNowLink: {
     text: "Get Started Now",
     href: "/Signup",
   },
   whatIs: {
-    title: "What is Momentum HQ?",
+    title: "What is Momentum?",
     content:
-      "Momentum HQ is a comprehensive project management platform designed to help businesses and teams stay organized and productive. With integrated tools for creating and tracking projects, setting milestones, managing customers, and sending invoices through Stripe, Momentum HQ ensures everything you need is in one place.",
+      "Momentum is a comprehensive project management platform designed to help businesses and teams stay organized and productive. With integrated tools for creating and tracking projects, setting milestones, managing customers, and sending invoices through Stripe, Momentum ensures everything you need is in one place.",
   },
   keyFeatures: {
     title: "Key Features",
@@ -32,9 +32,9 @@ const pageData = {
     ],
   },
   technology: {
-    title: "Technology Behind Momentum HQ",
+    title: "Technology Behind Momentum",
     content:
-      "Momentum HQ is built using cutting-edge technologies to deliver a reliable, secure, and scalable solution for project management.",
+      "Momentum is built using cutting-edge technologies to deliver a reliable, secure, and scalable solution for project management.",
     technologies: [
       "JavaScript, TypeScript, and React: Responsive and dynamic user interfaces.",
       "Next.js: Server-side rendering and static site generation for optimized performance.",
@@ -46,7 +46,7 @@ const pageData = {
     ],
   },
   howToUse: {
-    title: "How to Use Momentum HQ",
+    title: "How to Use Momentum",
     steps: [
       "Step 1: Sign Up - Create an account and log in to your personalized dashboard.",
       "Step 2: Connect your Stripe Account - Connect your Stripe account to start managing customers and sending invoices.",
@@ -56,7 +56,7 @@ const pageData = {
     ],
   },
   benefits: {
-    title: "Why Choose Momentum HQ?",
+    title: "Why Choose Momentum?",
     points: [
       "Streamlined Workflow: Manage projects, customers, and invoices in one place.",
       "Real-Time Insights: Keep track of progress and budgets with detailed analytics.",
@@ -69,7 +69,7 @@ const pageData = {
     title: "Frequently Asked Questions (FAQ)",
     questions: [
       {
-        question: "How do I integrate Stripe with Momentum HQ?",
+        question: "How do I integrate Stripe with Momentum?",
         answer:
           "Simply connect your Stripe account through the settings panel to start managing customers and sending invoices.",
       },
@@ -81,7 +81,7 @@ const pageData = {
       {
         question: "Is my data secure?",
         answer:
-          "Absolutely. Momentum HQ uses industry-standard security measures to protect your data.",
+          "Absolutely. Momentum uses industry-standard security measures to protect your data.",
       },
       {
         question: "Can I customize project workflows?",

@@ -1,7 +1,7 @@
 // siteMetaData.js used for SEO, Meta tags, and other things
 
 const siteMetadata = {
-    title: 'Momentum HQ',
+    title: 'Momentum',
     author: 'Hooker Hill Studios',
     headerTitle: 'Project management made simple',
     description: 'Project management for freelancers, entrepreneurs, and small businesses. Project management made simple',
