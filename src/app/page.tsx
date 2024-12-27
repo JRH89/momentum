@@ -37,19 +37,20 @@ export default function Home() {
               <SignIn />
               <Link href="/About" className="hover:text-confirm transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
             </div>
-    
-  </div>
-</section>
+          </div>
+        </section>
 
  {/* Features Section */}
         <section className="min-h-screen h-full my-auto flex items-center justify-center bg-white py-16">
-          
           <div className="max-w-7xl mx-auto px-6">
-              <div className="section-heading">
-    <h2 className="section-title">
-      Key Features
+          <div className="section-heading">
+            <h2 className="section-title">
+                Key Features
             </h2>
-            <p className="section-description mt-5">We provide a comprehensive suite of features to help you streamline your project management workflow.</p></div>
+              <p className="section-description mt-5">
+                We provide a comprehensive suite of features to help you streamline your project management workflow.
+              </p>
+            </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-12">
       {/* Create Projects */}
       <div className="relative bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black">
