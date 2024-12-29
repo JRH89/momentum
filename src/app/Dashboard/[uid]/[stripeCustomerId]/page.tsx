@@ -1,69 +1,75 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { db } from '../../../../../firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { StripeCustomer } from '../../../../components/types/stripeCustomer';
-import NavBar from '../../../../components/navbar';
-import Footer from '../../../../components/footer';
+import React, { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { db } from "../../../../../firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { StripeCustomer } from "../../../../components/types/stripeCustomer";
+import NavBar from "../../../../components/navbar";
+import Footer from "../../../../components/footer";
+import Projects from "../../../../components/client/Projects";
 
 const CustomerDetailsPage: React.FC = () => {
   const { uid, stripeCustomerId } = useParams() as { uid: string; stripeCustomerId: string };
   const [stripeAccountId, setStripeAccountId] = useState<string | null>(null);
   const [customerData, setCustomerData] = useState<StripeCustomer | null>(null);
-  const [invoices, setInvoices] = useState<any[]>([]); 
+  const [invoices, setInvoices] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  
+
   // State for creating invoices
-  const [invoiceAmount, setInvoiceAmount] = useState<string>('');
-  const [invoiceCurrency, setInvoiceCurrency] = useState<string>('usd');
-  const [invoiceDescription, setInvoiceDescription] = useState<string>('');
+  const [invoiceAmount, setInvoiceAmount] = useState<string>("");
+  const [invoiceCurrency, setInvoiceCurrency] = useState<string>("usd");
+  const [invoiceDescription, setInvoiceDescription] = useState<string>("");
+
+  const [showInvoiceForm, setShowInvoiceForm] = useState(false);
+  const [showProjectForm, setShowProjectForm] = useState(false);
 
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId: string) => {
       try {
-        const userRef = doc(db, 'users', userId);
+        const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const userData = userSnap.data();
           setStripeAccountId(userData.stripeAccountId || null);
         } else {
-          setError('User document not found');
+          setError("User document not found");
         }
       } catch (err) {
-        console.error('Error fetching user data:', err);
-        setError('Failed to fetch user data.');
+        console.error("Error fetching user data:", err);
+        setError("Failed to fetch user data.");
       }
     };
 
     if (uid) fetchUserStripeAccountId(uid);
   }, [uid]);
 
-  useEffect(() => {
-    const fetchCustomerData = async () => {
-      try {
-        const userRef = doc(db, 'users', uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const userData = userSnap.data();
-          const customer = userData.customers?.find(
-            (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
-          );
-          if (customer) setCustomerData(customer);
-          else setError('Customer not found in user document.');
-        } else {
-          setError('User document not found.');
-        }
-      } catch (err) {
-        console.error('Error fetching customer data:', err);
-        setError('Failed to load customer data.');
+useEffect(() => {
+  const fetchCustomerData = async () => {
+    try {
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const customers = Array.isArray(userData.customers) ? userData.customers : [];
+        const customer = customers.find(
+          (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
+        );
+        if (customer) setCustomerData(customer);
+        else setError("Customer not found in user document.");
+      } else {
+        setError("User document not found.");
       }
-    };
+    } catch (err) {
+      console.error("Error fetching customer data:", err);
+      setError("Failed to load customer data.");
+    }
+  };
 
-    if (stripeAccountId) fetchCustomerData();
-  }, [stripeAccountId, stripeCustomerId, uid]);
+  if (stripeAccountId) fetchCustomerData();
+}, [stripeAccountId, stripeCustomerId, uid]);
+
 
   useEffect(() => {
     const fetchInvoices = async () => {
@@ -76,11 +82,11 @@ const CustomerDetailsPage: React.FC = () => {
         if (response.ok && data.invoices) {
           setInvoices(data.invoices || []);
         } else {
-          setError(data.error || 'Failed to fetch invoices');
+          setError(data.error || "Failed to fetch invoices");
         }
       } catch (err) {
-        console.error('Error fetching invoices:', err);
-        setError('Failed to fetch invoices.');
+        console.error("Error fetching invoices:", err);
+        setError("Failed to fetch invoices.");
       }
     };
 
@@ -98,15 +104,15 @@ const CustomerDetailsPage: React.FC = () => {
     e.preventDefault();
 
     if (!invoiceAmount || !invoiceCurrency || !invoiceDescription) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
 
     try {
-      const response = await fetch('/api/stripe/invoices/create', {
-        method: 'POST',
+      const response = await fetch(`/api/stripe/invoices/create?stripeAccountId=${stripeAccountId}`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           stripeCustomerId,
@@ -123,15 +129,15 @@ const CustomerDetailsPage: React.FC = () => {
 
       if (response.ok) {
         setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
-        setInvoiceAmount('');
-        setInvoiceCurrency('usd');
-        setInvoiceDescription('');
+        setInvoiceAmount("");
+        setInvoiceCurrency("usd");
+        setInvoiceDescription("");
       } else {
-        setError(data.error || 'Failed to create invoice');
+        setError(data.error || "Failed to create invoice");
       }
     } catch (err) {
-      console.error('Error creating invoice:', err);
-      setError('Failed to create invoice');
+      console.error("Error creating invoice:", err);
+      setError("Failed to create invoice");
     }
   };
 
@@ -144,18 +150,30 @@ const CustomerDetailsPage: React.FC = () => {
       <div className="p-6 bg-primary min-h-screen">
         <div className="max-w-6xl bg-white p-6 rounded-2xl shadow mx-auto">
           {customerData && (
-            <>
-              <h2 className="text-2xl font-semibold text-gray-900">Customer Details</h2>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-2xl font-semibold text-black">Customer Details</h2>
               <p>Name: {customerData.name}</p>
-              <p>Email: {customerData.email}</p>
-            </>
+              <p>Email: <a className="text-confirm bg-gray-500 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
+            </div>
           )}
 
           {/* Invoice Creation Form */}
           <div className="mt-6">
-            <h3 className="text-xl font-semibold">Create Invoice</h3>
-            <form onSubmit={handleCreateInvoice}>
-              <div className="mt-2">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-semibold">Invoices</h3>
+              <button
+                type="button"
+                onClick={() => setShowInvoiceForm(!showInvoiceForm)}
+                className="bg-confirm hover:bg-opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 px-4 py-2 rounded-lg"
+              >
+                Create Invoice
+              </button>
+            </div>
+            { showInvoiceForm && (
+              <form className="mt-4 inset-0 bg-black/80 absolute flex items-center justify-center min-h-screen h-full w-full flex-col px-4" onSubmit={handleCreateInvoice}>
+                <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
+                  <h2 className="text-2xl text-center font-semibold mb-4">Create Invoice</h2>
+              <div className="mt-2 ">
                 <label htmlFor="amount" className="block text-gray-700">Amount</label>
                 <input
                   id="amount"
@@ -187,14 +205,27 @@ const CustomerDetailsPage: React.FC = () => {
                   required
                   className="w-full p-2 border border-gray-300 rounded-md"
                 />
-              </div>
-              <button
+                  </div>
+                  <div className="flex flex-col justify-end">
+                    
+                    <button
                 type="submit"
-                className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md"
+                className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
               >
                 Create Invoice
-              </button>
-            </form>
+                    </button>
+                    <button
+                type="button"
+                onClick={() => setShowInvoiceForm(false)}
+                className="mt-4 bg-destructive hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md "
+              >
+                Cancel
+              </button>    
+                  </div>
+             
+                </div>
+              </form>
+            )}
           </div>
 
           <div className='mt-6'>
@@ -214,7 +245,7 @@ const CustomerDetailsPage: React.FC = () => {
                   {invoices.map((invoice) => (
                     <tr key={invoice.id} className="border-b">
                       <td className="px-4 py-2">{invoice.number}</td>
-                      <td className="px-4 py-2">${invoice.amount_due} {invoice.currency.toUpperCase()}</td>
+                      <td className="px-4 py-2 flex flex-row justify-between">${invoice.amount_due} <span>{invoice.currency.toUpperCase()}</span></td>
                       <td className={`px-4 py-2 capitalize ${invoice.status === 'paid' ? 'text-green-600' : 'text-red-600'}`}>{invoice.status}</td>
                       <td className="px-4 py-2">{invoice.due_date}</td>
                       <td className="px-4 py-2">
@@ -235,7 +266,9 @@ const CustomerDetailsPage: React.FC = () => {
           ) : (
             <p>No invoices found.</p>
           )}
-        </div>
+          </div>
+             {/* Projects Component */}
+          <Projects uid={uid} stripeCustomerId={stripeCustomerId} />
         </div>
       </div>
       <Footer />
