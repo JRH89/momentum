@@ -6,6 +6,7 @@ import { doc, getDoc, updateDoc } from "firebase/firestore";
 import NavBar from "../../../../../components/navbar";
 import Footer from "../../../../../components/footer";
 import { useParams } from "next/navigation";
+import { Plus } from "lucide-react";
 
 interface Milestone {
   id: string;
@@ -179,65 +180,64 @@ const ProjectPage = () => {
   return (
     <>
       <NavBar />
-      <div className="project-page p-4 pt-12 min-h-screen h-full max-w-6xl mx-auto">
+      <div className=" pt-6 min-h-screen h-full w-full max-w-6xl mx-auto">
         <h1 className="text-4xl font-semibold">{project.name}</h1>
         <p className="mt-2 text-lg">{project.description}</p>
-        <div className="mt-4">
+        <div className="">
           <a href={project.link} className="text-blue-500 hover:underline">
-            View Project Link
+            View Project
           </a>
         </div>
 
         {/* Milestones Section */}
         <div className="mt-8">
-          <div className="flex justify-between items-center">
+          <div className="flex justify-start items-center">
             <h2 className="text-2xl font-semibold">
               Milestones
             </h2>
             <button
               type="button"
               onClick={() => setShowForm(!showForm)}
-              className="bg-confirm hover:bg-opacity-60 duration-300 text-white py-2 px-4 rounded-md"
+              className=" hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
             >
-              Add Milestone
+              [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
             </button>
           </div>
           {milestones.length > 0 ? (
-  <ul className="mt-4 bg-white rounded-lg p-6">
-    {milestones.map((milestone) => (
-      <li key={milestone.id} className="border-b p-4">
-        <div className="flex justify-between items-center">
-          <div>
-            <h3 className="text-lg font-semibold">{milestone.title}</h3>
-            <p className="text-gray-600">{milestone.description}</p>
-            <p className="text-sm text-gray-500 mt-1">
-              Status: <span className="font-medium">{milestone.status}</span>
-            </p>
-          </div>
-          <div className="flex space-x-2">
-            <button
-              type="button"
-              onClick={() => handleChangeStatus(milestone.id, "in-progress")}
-              className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded-md"
-            >
-              In Progress
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChangeStatus(milestone.id, "completed")}
-              className="bg-green-500 hover:bg-green-600 text-white py-1 px-4 rounded-md"
-            >
-              Completed
-            </button>
-          </div>
-        </div>
-      </li>
-    ))}
-  </ul>
-) : (
-  <p className="text-gray-500">No milestones yet.</p>
-)}
-
+            <ul className="mt-4 bg-white rounded-lg p-6">
+              {milestones.map((milestone) => (
+                <li key={milestone.id} className="border-b p-4">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="text-lg font-semibold">{milestone.title}</h3>
+                      <p className="text-gray-600">{milestone.description}</p>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Status: <span className="font-medium">{milestone.status}</span>
+                      </p>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => handleChangeStatus(milestone.id, "in-progress")}
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded-md"
+                      >
+                        In Progress
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleChangeStatus(milestone.id, "completed")}
+                        className="bg-green-500 hover:bg-green-600 text-white py-1 px-4 rounded-md"
+                      >
+                        Completed
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-gray-500">No milestones yet.</p>
+          )}
         </div>
         {showForm && (
           <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-50 my-auto min-h-screen h-full items-center justify-center flex flex-col">

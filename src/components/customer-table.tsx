@@ -23,27 +23,27 @@ export function CustomerTable({ customers, userId }: CustomerTableProps) {
   const currentCustomers = customers.slice(offset, offset + customersPerPage)
 
   if (!customers.length) {
-    return <p className="text-gray-600">No customers found</p>
+    return <p className="text-black">No customers found</p>
   }
 
     return (
       <>
     <div className="overflow-x-auto py-5 pt-0 h-full flex flex-col">
-      <table className="min-w-full h-full bg-white border border-gray-300 rounded-md">
+      <table className="min-w-full h-full bg-white border border-black rounded-md">
         <thead>
-          <tr className="bg-gray-100">
-            <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Email</th>
-            <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Name</th>
-            <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Description</th>
-            <th className="py-3 px-6 flex justify-end text-left text-sm font-medium text-gray-600 border-b">Actions</th>
+          <tr className="bg-gray-100 font-semibold border-b border-black">
+            <th className="py-3 px-6 text-left text-sm  text-black">Email</th>
+            <th className="py-3 px-6 text-left text-sm  text-black">Name</th>
+            <th className="py-3 px-6 text-left text-sm  text-black">Description</th>
+            <th className="py-3 px-6 flex justify-end text-left text-sm  text-black">Actions</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 space-y-2">
+        <tbody className="divide-y divide-black space-y-2">
           {currentCustomers.map((customer, index) => (
             <tr key={index} className="py-2">
-              <td className="py-3 px-6 text-sm text-gray-600">{customer.email}</td>
-              <td className="py-3 px-6 text-sm text-gray-600">{customer.name}</td>
-              <td className="py-3 px-6 text-sm text-gray-600">{customer.description}</td>
+              <td className="py-3 font-medium px-6 text-sm text-black">{customer.email}</td>
+              <td className="py-3 px-6 text-sm text-black">{customer.name}</td>
+              <td className="py-3 px-6 text-sm text-black">{customer.description}</td>
               <td className="py-3 px-6 text-sm justify-end flex">
                 <Link
                   className="px-4 py-2 text-white text-center rounded items-center bg-confirm hover:bg-destructive duration-300"
@@ -66,7 +66,7 @@ export function CustomerTable({ customers, userId }: CustomerTableProps) {
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageChange}
-        containerClassName={'flex justify-between items-center space-x-2 mt-4'}
+        containerClassName={'flex px-4 justify-between items-center space-x-2'}
         pageClassName={'page-item'}
         pageLinkClassName={'px-4 py-2 text-sm rounded-md text-gray-700 bg-white border border-gray-300 hover:bg-gray-200 transition-colors duration-300'}
         previousClassName={'previous-item'}

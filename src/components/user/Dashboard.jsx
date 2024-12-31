@@ -79,7 +79,7 @@ export default function Dashboard() {
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-3 sm:px-5 text-black flex flex-col pb-24">
       <Announcements />
       <div className="flex flex-col pt-6">
-        <div className="flex flex-col sm:flex-row sm:items-center border-b justify-between pb-0 mb-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-0 mb-0">
           <h1 className="text-2xl lg:text-3xl font-semibold text-black">
             Dashboard
           </h1>
@@ -119,7 +119,7 @@ export default function Dashboard() {
                           Customers{" "}
                           <button
                             onClick={() => setIsAddingCustomer(true)}
-                            className="text-black text-lg flex flex-row items-baseline gap-1 hover:underline"
+                            className="text-black text-lg flex flex-row items-baseline  hover:underline"
                           >
                             [
                             <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300 my-auto items-center" />

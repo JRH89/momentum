@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from "../../../firebase";
 import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore';
+import { Plus } from 'lucide-react';
 
 interface Project {
   id: string;
@@ -109,13 +110,13 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
 
   return (
     <div className="mt-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-row items-center justify-start">
         <h3 className="text-xl font-semibold">Projects</h3>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 duration-300 bg-confirm text-black font-semibold rounded-md hover:bg-opacity-60"
+          className="px-4 py-2 flex flex-row items-center justify-center  duration-300 text-black font-semibold rounded-md hover:bg-opacity-60"
         >
-         Create Project
+         [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
         </button>
       </div>
 

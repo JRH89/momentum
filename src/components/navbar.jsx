@@ -133,7 +133,7 @@ const NavBar = () => {
                 )}
               </Link>
               <button
-                className="hover:text-confirm duration-300 justify-start rounded  text-black flex w-auto cursor-pointer"
+                className="hover:text-destructive duration-300 justify-start rounded  text-black flex w-auto cursor-pointer"
                 onClick={() => {
                   setShowMenu(false);
                   handleLogout();
@@ -172,10 +172,10 @@ const NavBar = () => {
       </div>
       {/* Mobile menu */}
       {showMenu && (
-        <div className="w-full fixed h-auto flex justify-center items-center mx-auto bg-white z-50 flex-row gap-5 mt-0 pt-0 p-2 pb-3 text-lg sm:text-2xl">
-          <ul className="text-center items-center text-lg sm:text-2xl flex flex-row mx-auto justify-center gap-1 w-full">
+        <div className="w-full pb-4 fixed h-auto flex justify-center items-center mx-auto bg-white z-50 flex-row gap-5 mt-16 pt-0 p-2 border-b text-left text-lg sm:text-2xl">
+          <ul className="text-left items-center text-lg sm:text-2xl flex flex-row mx-auto justify-center gap-1 w-full">
             {user ? (
-              <div className="text-center mx-auto text-lg sm:text-2xl flex flex-col justify-center items-center font-semibold gap-2">
+              <div className="text-left mx-auto text-lg sm:text-2xl flex flex-col justify-center items-center font-semibold gap-2">
                 {isAdmin && (
                   <Link
                     onClick={() => setShowMenu(false)}
@@ -186,7 +186,7 @@ const NavBar = () => {
                   </Link>
                 )}
                 <Link
-                  className="hover:text-confirm duration-300 justify-start rounded  text-black flex w-full"
+                  className="hover:text-confirm duration-300 justify-start rounded text-left text-black flex w-full"
                   href={`/Dashboard`}
                 >
                   Dashboard
@@ -199,7 +199,7 @@ const NavBar = () => {
                   Account
                 </Link>
                 <div
-                  className="hover:text-confirm duration-300 justify-center rounded  text-black flex text-center mx-auto w-full cursor-pointer"
+                  className="hover:text-destructive duration-300 justify-center rounded  text-black flex text-center mx-auto w-full cursor-pointer"
                   onClick={() => {
                     setShowMenu(false);
                     handleLogout();

@@ -8,6 +8,7 @@ import { StripeCustomer } from "../../../../components/types/stripeCustomer";
 import NavBar from "../../../../components/navbar";
 import Footer from "../../../../components/footer";
 import Projects from "../../../../components/client/Projects";
+import { Plus } from "lucide-react";
 
 const CustomerDetailsPage: React.FC = () => {
   const { uid, stripeCustomerId } = useParams() as { uid: string; stripeCustomerId: string };
@@ -151,104 +152,102 @@ useEffect(() => {
         <div className="max-w-6xl bg-white p-6 rounded-2xl shadow mx-auto">
           {customerData && (
             <div className="flex flex-col gap-2">
-              <h2 className="text-2xl font-semibold text-black">Customer Details</h2>
+              <h2 className="text-2xl font-semibold text-black">
+                Customer Details
+              </h2>
               <p>Name: {customerData.name}</p>
-              <p>Email: <a className="text-confirm bg-gray-500 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
+              <p>Email: <a className="text-confirm bg-gray-100 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
             </div>
           )}
-
-          {/* Invoice Creation Form */}
           <div className="mt-6">
-            <div className="flex justify-between items-center">
+            <div className="flex justify-start items-center">
               <h3 className="text-xl font-semibold">Invoices</h3>
               <button
                 type="button"
                 onClick={() => setShowInvoiceForm(!showInvoiceForm)}
-                className="bg-confirm hover:bg-opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 px-4 py-2 rounded-lg"
+                className=" hover:bg-opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row px-4 py-2 rounded-lg"
               >
-                Create Invoice
+                 [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
               </button>
             </div>
             { showInvoiceForm && (
               <form className="mt-4 inset-0 bg-black/80 absolute flex items-center justify-center min-h-screen h-full w-full flex-col px-4" onSubmit={handleCreateInvoice}>
                 <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
                   <h2 className="text-2xl text-center font-semibold mb-4">Create Invoice</h2>
-              <div className="mt-2 ">
-                <label htmlFor="amount" className="block text-gray-700">Amount</label>
-                <input
-                  id="amount"
-                  type="number"
-                  value={invoiceAmount}
-                  onChange={(e) => setInvoiceAmount(e.target.value)}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="mt-2">
-                <label htmlFor="currency" className="block text-gray-700">Currency</label>
-                <input
-                  id="currency"
-                  type="text"
-                  value={invoiceCurrency}
-                  onChange={(e) => setInvoiceCurrency(e.target.value)}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-              </div>
-              <div className="mt-2">
-                <label htmlFor='description' className="block text-gray-700">Description</label>
-                <input
-                  id='description'
-                  type="text"
-                  value={invoiceDescription}
-                  onChange={(e) => setInvoiceDescription(e.target.value)}
-                  required
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                />
-                  </div>
-                  <div className="flex flex-col justify-end">
-                    
-                    <button
-                type="submit"
-                className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
-              >
-                Create Invoice
-                    </button>
-                    <button
-                type="button"
-                onClick={() => setShowInvoiceForm(false)}
-                className="mt-4 bg-destructive hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md "
-              >
-                Cancel
-              </button>    
-                  </div>
-             
+                <div className="mt-2 ">
+                  <label htmlFor="amount" className="block text-gray-700">Amount</label>
+                  <input
+                    id="amount"
+                    type="number"
+                    value={invoiceAmount}
+                    onChange={(e) => setInvoiceAmount(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
-              </form>
-            )}
-          </div>
-
-          <div className='mt-6'>
+                <div className="mt-2">
+                  <label htmlFor="currency" className="block text-gray-700">Currency</label>
+                  <input
+                    id="currency"
+                    type="text"
+                    value={invoiceCurrency}
+                    onChange={(e) => setInvoiceCurrency(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <div className="mt-2">
+                  <label htmlFor='description' className="block text-gray-700">Description</label>
+                  <input
+                    id='description'
+                    type="text"
+                    value={invoiceDescription}
+                    onChange={(e) => setInvoiceDescription(e.target.value)}
+                    required
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                    </div>
+                    <div className="flex flex-col justify-end">
+                      
+                      <button
+                  type="submit"
+                  className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
+                >
+                  Create Invoice
+                      </button>
+                      <button
+                  type="button"
+                  onClick={() => setShowInvoiceForm(false)}
+                  className="mt-4 bg-destructive hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md "
+                >
+                  Cancel
+                </button>    
+                  </div>
+                  </div>
+                </form>
+              )}
+            </div>
+          <div className='mt-2'>
             {invoices.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="min-w-full table-auto">
+              <table className="min-w-full table-auto border border-black">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="bg-gray-100 border-b border-black">
                     <th className="px-4 py-2 text-left">Invoice ID</th>
                     <th className="px-4 py-2 text-left">Amount</th>
                     <th className="px-4 py-2 text-left">Status</th>
                     <th className="px-4 py-2 text-left">Due Date</th>
-                    <th className="px-4 py-2 text-left">Action</th>
+                    <th className="px-4 py-2 text-left flex justify-end">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {invoices.map((invoice) => (
-                    <tr key={invoice.id} className="border-b">
+                    <tr key={invoice.id} className="border-b border-black">
                       <td className="px-4 py-2">{invoice.number}</td>
-                      <td className="px-4 py-2 flex flex-row justify-between">${invoice.amount_due} <span>{invoice.currency.toUpperCase()}</span></td>
+                      <td className="px-4 py-2 flex flex-row  max-w-xs mx-auto w-full">${invoice.amount_due}</td>
                       <td className={`px-4 py-2 capitalize ${invoice.status === 'paid' ? 'text-green-600' : 'text-red-600'}`}>{invoice.status}</td>
                       <td className="px-4 py-2">{invoice.due_date}</td>
-                      <td className="px-4 py-2">
+                      <td className="px-4 py-2 flex justify-end">
                         <a 
                           className="text-destructive hover:underline font-semibold rounded-lg"
                           href={invoice.hosted_invoice_url} 
@@ -267,7 +266,6 @@ useEffect(() => {
             <p>No invoices found.</p>
           )}
           </div>
-             {/* Projects Component */}
           <Projects uid={uid} stripeCustomerId={stripeCustomerId} />
         </div>
       </div>

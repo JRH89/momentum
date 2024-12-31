@@ -75,7 +75,7 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
   }
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-90">
       <div className="bg-white p-6 mt-8 shadow-md rounded-lg w-full max-w-xl">
         <h3 className="text-2xl font-semibold text-gray-800 mb-4">Add Customer</h3>
         <form onSubmit={handleSubmit}>
@@ -115,21 +115,22 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
                 required
               />
             </div>
-            <div className="flex justify-start gap-6">
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="mt-4 px-6 py-2 bg-confirm text-white rounded-md hover:bg-destructive duration-300 disabled:opacity-50"
-              >
-                {isLoading ? "Adding..." : "Add Customer"}
-              </button>
+            <div className="flex justify-end gap-6">
               <button
                 type="button"
                 onClick={onClose}
-                className="mt-4 text-destructive hover:text-confirm duration-300 rounded-md"
+                className="text-destructive hover:opacity-60 duration-300 rounded-md"
               >
                 Cancel
               </button>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="px-6 py-2 bg-confirm text-white rounded-md hover:bg-opacity-60 duration-300 disabled:opacity-50"
+              >
+                {isLoading ? "Adding..." : "Add Customer"}
+              </button>
+              
             </div>
           </div>
         </form>
