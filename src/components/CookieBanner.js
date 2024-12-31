@@ -1,9 +1,17 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CookieBanner = () => {
     const [isVisible, setIsVisible] = useState(true);
+
+    // Ensure this effect runs only on the client side
+    useEffect(() => {
+        // Check if the cookie is already set
+        if (document.cookie.includes("cookies_accepted=true")) {
+            setIsVisible(false); // Hide banner if cookie exists
+        }
+    }, []);
 
     const handleAccept = () => {
         // Set a cookie to remember the user's choice
@@ -11,7 +19,7 @@ const CookieBanner = () => {
         setIsVisible(false);
     };
 
-    if (!isVisible || document.cookie.includes("cookies_accepted=true")) return null;
+    if (!isVisible) return null; // Return null if the banner is not visible
 
     return (
         <div className="sticky flex flex-col sm:flex-row justify-center items-center bottom-0 left-0 w-full bg-black text-white p-4 shadow-lg z-50">
