@@ -190,82 +190,119 @@ const ProjectPage = () => {
 
         {/* Milestones Section */}
         <div className="mt-8">
-          <h2 className="text-2xl font-semibold">Milestones</h2>
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-semibold">
+              Milestones
+            </h2>
+            <button
+              type="button"
+              onClick={() => setShowForm(!showForm)}
+              className="bg-confirm hover:bg-opacity-60 duration-300 text-white py-2 px-4 rounded-md"
+            >
+              Add Milestone
+            </button>
+          </div>
           {milestones.length > 0 ? (
-            <ul className="mt-4">
-              {milestones.map((milestone) => (
-                <li key={milestone.id} className="border-b py-2">
-                  <h3 className="text-lg font-semibold">{milestone.title}</h3>
-                  <p className="text-gray-600">{milestone.description}</p>
-                  <p>Status: {milestone.status}</p>
-                  <div className="mt-2">
-                    <button
-                      onClick={() => handleChangeStatus(milestone.id, "in-progress")}
-                      className="bg-yellow-500 text-white py-1 px-4 rounded-md mr-2"
-                    >
-                      In Progress
-                    </button>
-                    <button
-                      onClick={() => handleChangeStatus(milestone.id, "completed")}
-                      className="bg-green-500 text-white py-1 px-4 rounded-md"
-                    >
-                      Completed
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No milestones yet.</p>
-          )}
+  <ul className="mt-4 bg-white rounded-lg p-6">
+    {milestones.map((milestone) => (
+      <li key={milestone.id} className="border-b p-4">
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="text-lg font-semibold">{milestone.title}</h3>
+            <p className="text-gray-600">{milestone.description}</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Status: <span className="font-medium">{milestone.status}</span>
+            </p>
+          </div>
+          <div className="flex space-x-2">
+            <button
+              type="button"
+              onClick={() => handleChangeStatus(milestone.id, "in-progress")}
+              className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded-md"
+            >
+              In Progress
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChangeStatus(milestone.id, "completed")}
+              className="bg-green-500 hover:bg-green-600 text-white py-1 px-4 rounded-md"
+            >
+              Completed
+            </button>
+          </div>
         </div>
-        <div>
-          <button
-            onClick={() => setShowForm(!showForm)}
-            className="bg-blue-500 text-white py-2 px-4 rounded-md"
-          >
-            Add Milestone
-          </button>
+      </li>
+    ))}
+  </ul>
+) : (
+  <p className="text-gray-500">No milestones yet.</p>
+)}
+
         </div>
         {showForm && (
-          <div className="top-32 w-full  px-4 mx-auto inset-0 bg-black/90 absolute z-50 my-auto min-h-screen h-full items-center justify-center flex flex-col">
+          <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-50 my-auto min-h-screen h-full items-center justify-center flex flex-col">
             <div className="bg-white rounded-md p-4 w-full max-w-xl">
-              <h1 className="text-2xl font-semibold mb-4 text-center">Add a New Milestone</h1>
+              <h1 className="text-2xl font-semibold mb-4 text-center">
+                Create New Milestone
+              </h1>
+              <label htmlFor="title" className="block text-gray-700 font-semibold mb-2">
+                Title
+              </label>
               <input
+                id="title"
                 type="text"
                 placeholder="Milestone Title"
                 value={newMilestone.title}
                 onChange={(e) => setNewMilestone({ ...newMilestone, title: e.target.value })}
                 className="flex w-full p-2 mb-2 border rounded-md"
               />
+              <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
+                Description
+              </label>
               <textarea
+                id="description"
                 placeholder="Milestone Description"
                 value={newMilestone.description}
                 onChange={(e) => setNewMilestone({ ...newMilestone, description: e.target.value })}
                 className="block w-full p-2 mb-2 border rounded-md"
               />
+              <label htmlFor="deadline" className="block text-gray-700 font-semibold mb-2">
+                Deadline
+              </label>
               <input
+                id="deadline"
                 type="date"
                 placeholder="Deadline"
                 value={newMilestone.deadline}
                 onChange={(e) => setNewMilestone({ ...newMilestone, deadline: e.target.value })}
                 className="flex w-full p-2 mb-2 border rounded-md"
               />
+              <label htmlFor="priority" className="block text-gray-700 font-semibold mb-2">
+                Priority
+              </label>
               <select
+                id="priority"
                 value={newMilestone.priority}
                 onChange={(e) => setNewMilestone({ ...newMilestone, priority: e.target.value })}
                 className="flex w-full p-2 mb-2 border rounded-md"
               >
-                <option value="">Priority</option>
                 <option value="high">High</option>
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>
               </select>
               {milestoneError && <p className="text-red-500">{milestoneError}</p>}
               <div className="flex justify-end mt-4">
+                <button 
+                  type="button"
+                  onClick={() => setShowForm(false)}
+                  className="text-destructive hover:text-destructive/60 duration-300 py-2 px-4 rounded-md mr-2"
+                >
+                  Cancel
+                </button>
                 <button
+                  type="button"
                   onClick={handleAddMilestone}
-                  className="bg-blue-500 text-white py-2 px-4 rounded-md"
+                  className="bg-confirm hover:bg-opacity-60 duration-300 text-white py-2 px-4 rounded-md"
                 >
                   Add Milestone
                 </button>

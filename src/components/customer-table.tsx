@@ -35,7 +35,7 @@ export function CustomerTable({ customers, userId }: CustomerTableProps) {
             <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Email</th>
             <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Name</th>
             <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Description</th>
-            <th className="py-3 px-6 text-left text-sm font-medium text-gray-600 border-b">Actions</th>
+            <th className="py-3 px-6 flex justify-end text-left text-sm font-medium text-gray-600 border-b">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 space-y-2">
@@ -44,7 +44,7 @@ export function CustomerTable({ customers, userId }: CustomerTableProps) {
               <td className="py-3 px-6 text-sm text-gray-600">{customer.email}</td>
               <td className="py-3 px-6 text-sm text-gray-600">{customer.name}</td>
               <td className="py-3 px-6 text-sm text-gray-600">{customer.description}</td>
-              <td className="py-3 px-6 text-sm">
+              <td className="py-3 px-6 text-sm justify-end flex">
                 <Link
                   className="px-4 py-2 text-white text-center rounded items-center bg-confirm hover:bg-destructive duration-300"
                   href={`/Dashboard/${userId}/${customer?.stripeCustomerId}`}

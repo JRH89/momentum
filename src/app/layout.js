@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import siteMetadata from "../../siteMetadata";
 import { twMerge } from "tailwind-merge";
+import CookieBanner from "../components/CookieBanner";
 
 const dmSans = DM_Sans({ subsets: ["latin"] });
 
@@ -86,9 +87,10 @@ export default function RootLayout({ children }) {
         <meta name="twitter:image" content={metadata.twitter.image} />
         <title>{metadata.title}</title>
       </head>
-      <body className={twMerge(dmSans.className, "antialiased bg-[#EAEEFE]")}>
+      <body className={twMerge(dmSans.className, "antialiased flex flex-col bg-[#EAEEFE]")}>
         <AuthProvider>
           {children}
+          <CookieBanner />
           <ToastContainer
             position="bottom-center"
             autoClose={3000}

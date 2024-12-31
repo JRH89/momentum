@@ -41,7 +41,7 @@ const StripeCallback = () => {
         });
 
         if (response.ok) {
-          router.push(`/dashboard/${user.uid}`);
+          router.push(`/Dashboard/${user.uid}`);
         } else {
           const errorData = await response.json();
           console.error('Failed to process Stripe OAuth:', errorData.error);

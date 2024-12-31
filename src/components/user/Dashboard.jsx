@@ -69,43 +69,25 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, []);
 
-  const handleLogout = async () => {
-    try {
-      await auth.signOut();
-      router.push("/"); // Use router.push inside useEffect to avoid the direct redirect during render
-    } catch (error) {
-      console.error("Error signing out:", error);
-    }
-  };
-
   useEffect(() => {
     if (!user) {
       router.push("/"); // Redirect to home if user is not logged in
     }
   }, [user, router]);
 
-  console.log(customers);
-
   return (
-    <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-3 sm:px-5 text-black flex flex-col">
+    <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-3 sm:px-5 text-black flex flex-col pb-24">
       <Announcements />
-      <div className="px-5 pt-6">
-        <div className="flex flex-row items-center border-b justify-between">
-          <h1 className="text-2xl lg:text-3xl font-semibold text-gray-800">
+      <div className="flex flex-col pt-6">
+        <div className="flex flex-col sm:flex-row sm:items-center border-b justify-between pb-0 mb-0">
+          <h1 className="text-2xl lg:text-3xl font-semibold text-black">
             Dashboard
           </h1>
-          <h2 className="flex items-baseline gap-1 text-sm sm:text-md md:text-lg lg:text-xl text-gray-800">
-            Welcome back, {user?.name || user?.email} [
-            <button
-              onClick={handleLogout}
-              className="text-xs text-red-500 hover:underline rounded"
-            >
-              Sign Out
-            </button>
-            ]
+          <h2 className="flex items-baseline gap-1 text-sm sm:text-lg md:text-xl justify-between lg:text-xl text-black">
+            Welcome back, {userData?.name}
           </h2>
         </div>
-        <div className="p-5 px-0 pb-0">
+        <div className="p-5 pt-2 px-0 pb-0">
           <div className="flex flex-col gap-5">
             {!isPremium ? (
               <div className="bg-white p-4 rounded-lg shadow-md h-full flex flex-col shadow-black mx-auto w-full">
@@ -130,21 +112,21 @@ export default function Dashboard() {
             ) : (
               <div className="bg-white p-4 rounded-lg shadow-md h-full flex flex-col shadow-black mx-auto w-full">
                 {user && userData?.stripeConnected && (
-                  <div className="bg-white shadow-md rounded-lg p-6">
+                  <div className="">
                     <div className="flex flex-col gap-4">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-2xl font-semibold text-gray-800 flex flex-row gap-2">
+                      <div className="flex flex-col sm:flex-row justify-between sm:items-center text-left">
+                        <h3 className="text-2xl font-semibold text-black flex flex-row gap-2 my-auto items-center">
                           Customers{" "}
                           <button
                             onClick={() => setIsAddingCustomer(true)}
-                            className="text-gray-800 text-lg flex flex-row items-baseline gap-1 hover:underline"
+                            className="text-black text-lg flex flex-row items-baseline gap-1 hover:underline"
                           >
                             [
                             <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300 my-auto items-center" />
                             ]
                           </button>
                         </h3>
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center sm:pt-0 pt-2 space-x-4">
                           {userData.stripeConnected && (
                             <button
                               onClick={handleDisconnectStripe}
