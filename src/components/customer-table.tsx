@@ -32,10 +32,10 @@ export function CustomerTable({ customers, userId }: CustomerTableProps) {
       <table className="min-w-full h-full bg-white border border-black rounded-md">
         <thead>
           <tr className="bg-gray-100 font-semibold border-b border-black">
-            <th className="py-3 px-6 text-left text-sm  text-black">Email</th>
-            <th className="py-3 px-6 text-left text-sm  text-black">Name</th>
-            <th className="py-3 px-6 text-left text-sm  text-black">Description</th>
-            <th className="py-3 px-6 flex justify-end text-left text-sm  text-black">Actions</th>
+            <th className="py-3 px-6 text-left text-sm text-black">Email</th>
+            <th className="py-3 px-6 text-left text-sm text-black">Name</th>
+            <th className="py-3 px-6 text-left text-sm text-black">Description</th>
+            <th className="py-3 px-6 flex justify-end text-left text-sm text-black">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-black space-y-2">

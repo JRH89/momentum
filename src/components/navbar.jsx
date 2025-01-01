@@ -172,7 +172,7 @@ const NavBar = () => {
       </div>
       {/* Mobile menu */}
       {showMenu && (
-        <div className="w-full pb-4 fixed h-auto flex justify-center items-center mx-auto bg-white z-50 flex-row gap-5 mt-16 pt-0 p-2 border-b text-left text-lg sm:text-2xl">
+        <div className="w-full pb-2 fixed h-auto flex justify-center items-center mx-auto bg-white z-50 flex-row gap-5 pt-0 p-2 border-b text-left text-lg sm:text-2xl">
           <ul className="text-left items-center text-lg sm:text-2xl flex flex-row mx-auto justify-center gap-1 w-full">
             {user ? (
               <div className="text-left mx-auto text-lg sm:text-2xl flex flex-col justify-center items-center font-semibold gap-2">

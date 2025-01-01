@@ -14,8 +14,8 @@ export default function Page() {
     <>
       <NavBar />
       <div className="flex bg-white justify-center items-center min-h-screen h-full -mt-24 flex-col text-center gap-5 w-full mx-auto">
-        <h1 className="text-3xl max-w-4xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-gray-800">
-          Already Have an Account with {siteMetadata.title}?
+        <h1 className="text-3xl max-w-2xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-gray-800">
+          Keep that {siteMetadata.title} going!
         </h1>
         <SignIn />
       </div>

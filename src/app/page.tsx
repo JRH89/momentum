@@ -1,14 +1,25 @@
 import Image from "next/image";
 import SignIn from "../components/SignIn";
-import { FolderPlus, Info, LayoutDashboard, Smile, TrendingUp } from "lucide-react";
+import { CircleCheckIcon, FolderPlus, Info, LayoutDashboard, Smile, TrendingUp } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
 import Link from "next/link";
+import Script from "next/script";
 
 export default function Home() {
   return (
     <>
+       <div
+    dangerouslySetInnerHTML={{
+      __html: `<review-vault-widget 
+        projectid="Momentum" 
+        userid="Hj3U9zIg3pQd2DGsA4Uvs95uUje2" 
+        position="bottom-right">
+      </review-vault-widget>`,
+    }}
+  ></div>
+  <Script src="https://review-vault-widget.vercel.app/widget.umd.js"></Script>
     <Header />
     <main className="bg-gray-900 text-white">
   {/* Hero Section */}
@@ -53,62 +64,62 @@ export default function Home() {
             </div>
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-12">
       {/* Create Projects */}
-      <div className="relative bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black">
+      <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black">
         <div className="absolute -top-6 flex items-center justify-center">
-          <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
+          <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
             <FolderPlus className="text-destructive w-8 h-8" />
           </div>
         </div>
         <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
           Create Projects
         </h3>
-        <p className="text-lg text-black mb-4 text-left">
+        <p className="text-lg font-medium text-black mb-4 text-left">
           Set up new projects and manage everything in one place.
         </p>
         <ul className="text-black items-start w-full text-left text-md font-medium space-y-2">
-          <li>- Add project details and goals</li>
-          <li>- Manage associated files</li>
-          <li>- Organize resources effectively</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Add project details and goals</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Manage associated files</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Organize resources effectively</li>
         </ul>
       </div>
 
       {/* Milestone Tracking */}
-      <div className="relative bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center">
+      <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center">
         <div className="absolute -top-6 flex items-center justify-center">
-        <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
+        <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
             <TrendingUp className="text-destructive w-8 h-8" />
           </div>
         </div>
         <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
           Milestone Tracking
         </h3>
-        <p className="text-lg text-left text-black mb-4">
+        <p className="text-lg font-medium text-left text-black mb-4">
           Stay on top of key milestones and budgets.
         </p>
         <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
-          <li>- Monitor milestone progress</li>
-          <li>- Log and manage expenses</li>
-          <li>- Track budgets and costs</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Monitor milestone progress</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Log and manage expenses</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Track budgets and costs</li>
         </ul>
       </div>
 
       {/* Project Dashboard */}
-      <div className="relative bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center w-full flex flex-col items-center">
+      <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center w-full flex flex-col items-center">
         <div className="absolute -top-6 flex items-center justify-center">
-        <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
+        <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16 border-2 border-black flex items-center justify-center">
             <LayoutDashboard className="text-destructive w-8 h-8" />
           </div>
         </div>
         <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
           Project Dashboard
         </h3>
-        <p className="text-lg text-left text-black mb-4">
+        <p className="text-lg font-medium text-left text-black mb-4">
           Get insights into your projects and progress.
         </p>
         <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
-          <li>- View project status at a glance</li>
-          <li>- Track deadlines and deliverables</li>
-          <li>- Access customer and project data</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> View project status at a glance</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Track deadlines and deliverables</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Access customer and project data</li>
         </ul>
       </div>
     </div>

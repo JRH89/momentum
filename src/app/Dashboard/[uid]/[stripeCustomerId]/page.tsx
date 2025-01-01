@@ -171,7 +171,7 @@ useEffect(() => {
               </button>
             </div>
             { showInvoiceForm && (
-              <form className="mt-4 inset-0 bg-black/80 absolute flex items-center justify-center min-h-screen h-full w-full flex-col px-4" onSubmit={handleCreateInvoice}>
+              <form className="mt-4 inset-0 bg-black/90 absolute flex items-center justify-center min-h-screen h-full w-full flex-col px-4" onSubmit={handleCreateInvoice}>
                 <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
                   <h2 className="text-2xl text-center font-semibold mb-4">Create Invoice</h2>
                 <div className="mt-2 ">
@@ -206,24 +206,23 @@ useEffect(() => {
                     required
                     className="w-full p-2 border border-gray-300 rounded-md"
                   />
-                    </div>
-                    <div className="flex flex-col justify-end">
-                      
-                      <button
+                  </div>
+                  <div className="flex flex-row justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowInvoiceForm(false)}
+                  className="mt-4 text-destructive hover:opacity-60 duration-300 ease-in-out  py-2 px-4 rounded-md "
+                >
+                  Cancel
+                    </button>
+                 <button
                   type="submit"
                   className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
                 >
                   Create Invoice
-                      </button>
-                      <button
-                  type="button"
-                  onClick={() => setShowInvoiceForm(false)}
-                  className="mt-4 bg-destructive hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md "
-                >
-                  Cancel
                 </button>    
-                  </div>
-                  </div>
+                </div>
+                </div>
                 </form>
               )}
             </div>

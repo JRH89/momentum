@@ -113,6 +113,7 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
       <div className="flex flex-row items-center justify-start">
         <h3 className="text-xl font-semibold">Projects</h3>
         <button
+          type="button"
           onClick={() => setShowForm(!showForm)}
           className="px-4 py-2 flex flex-row items-center justify-center  duration-300 text-black font-semibold rounded-md hover:bg-opacity-60"
         >
@@ -146,7 +147,7 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
 
       {/* New Project Form */}
       {showForm && (
-        <div className="inset-0 absolute bg-black bg-opacity-80 flex items-center justify-center mx-auto px-4">
+        <div className="inset-0 absolute bg-black bg-opacity-90 flex items-center justify-center mx-auto px-4">
           <div className="bg-white p-6 w-full rounded-md shadow-lg max-w-xl">
               <h3 className="text-xl text-center font-semibold">Create Project</h3>
             <form onSubmit={handleCreateProject}>
@@ -172,20 +173,23 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
                   className="w-full p-2 border border-gray-300 rounded-md"
                 />
               </div>
-              <button
-                type="submit"
-                className="mt-4 w-full hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
-                disabled={loading} // Disable button when loading
-              >
-                {loading ? 'Creating...' : 'Create Project'}
-              </button>
             </form>
-            <button
+            <div className='flex flex-row items-center justify-end'>
+              <button
+              type="button"
               onClick={() => setShowForm(false)}
-              className="mt-4 px-4 py-2 bg-destructive  rounded-lg w-full font-semibold hover:bg-destructive/60 duration-300"
+              className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
             >
               Cancel
             </button>
+              <button
+                type="submit"
+                className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
+                disabled={loading} // Disable button when loading
+              >
+                {loading ? 'Creating...' : 'Create'}
+              </button>
+            </div>
           </div>
         </div>
       )}
