@@ -15,6 +15,7 @@ import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
 import UserTickets from "./UserTickets";
+import Image from "next/image";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useAuth();
@@ -28,6 +29,7 @@ export default function Dashboard() {
   const app = initFirebase();
   const auth = getAuth(app);
   const isPremium = usePremiumStatus(app, user);
+  const [photo, setPhoto] = useState(null);
 
   const {
     customers,
@@ -61,6 +63,7 @@ export default function Dashboard() {
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           setUserData({ ...authUser, ...userSnap.data() });
+          setPhoto(authUser.photoURL);
         }
       } else {
         setUserData(null);
@@ -83,9 +86,20 @@ export default function Dashboard() {
           <h1 className="text-2xl lg:text-3xl font-semibold text-black">
             Dashboard
           </h1>
-          <h2 className="flex items-baseline gap-1 text-sm sm:text-lg md:text-xl justify-between lg:text-xl text-black">
-            Welcome back, {userData?.name}
-          </h2>
+          <div className="flex flex-row items-center gap-2">
+            <h2 className="flex items-baseline gap-1 text-sm sm:text-lg md:text-xl justify-between lg:text-xl text-black">
+              Welcome back, {userData?.name}
+            </h2>
+            {userData?.photoURL && (
+              <img
+                className="rounded-full"
+                src={userData?.photoURL || ""}
+                alt="Profile"
+                width={25}
+                height={25}
+              />
+            )}
+          </div>
         </div>
         <div className="p-5 pt-2 px-0 pb-0">
           <div className="flex flex-col gap-5">
