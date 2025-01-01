@@ -1,6 +1,6 @@
 import Image from "next/image";
 import SignIn from "../components/SignIn";
-import { CircleCheckIcon, FolderPlus, Info, LayoutDashboard, Smile, TrendingUp } from "lucide-react";
+import { ArrowRight, CircleCheckIcon, FolderPlus, Info, LayoutDashboard, Smile, TrendingUp } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
@@ -45,7 +45,7 @@ export default function Home() {
       Manage projects, organize customers, and send invoices.
             </p>
             <div className="flex flex-row gap-5 items-center">
-              <SignIn />
+              <Link href={"/Signup"} className="bg-destructive hover:bg-opacity-60 transition duration-300 ease-in-out text-white font-semibold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
               <Link href="/About" className="hover:text-confirm transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
             </div>
           </div>
@@ -123,54 +123,56 @@ export default function Home() {
         </ul>
       </div>
     </div>
-  </div>
-        </section>
-        <section className=" bg-[#EAEEFE]">
-      <PriceCard />
-        </section>
-      {/* About Section */}
-      <section className="min-h-screen h-full my-auto flex flex-col items-center bg-white lg:py-24 py-24 md:py-0">
-        <div className="max-w-7xl mx-auto px-6 text-center pb-6">
-          <div className="section-heading">
-            <h2 className="section-title">
-            Why Choose Us?
-              </h2>
-              <p className="section-description mt-5">We provide the tools you need to succeed.</p>
-            </div>
-         
-           <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">
-          <p className="section-description h-full text-white text-justify my-auto text-lg max-w-xs sm:max-w-xl bg-destructive p-8 py-10 sm:py-20 flex md:ml-10 rounded-lg">
-            We understand the unique needs of freelancers and small businesses. Our platform is designed to streamline your project management, making it easier to stay organized and meet deadlines, so you can focus on what matters most — growing your business.
-          </p>
-          <div className="md:mr-10 flex">
-            <Image
-              src="/image-4.png"
-              alt="Project Management"
-              width={600}
-              height={400}
-              className="rounded-lg shadow-lg w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto flex object-cover"
-            />
-          </div>
-        </div>
       </div>
-      </section>
-      {/* Call to Action Section */}
-        <section className="relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
-        style={{
-          backgroundImage: 'url("/image-3.png")',
-          backgroundPosition: 'center 25%',
-        }}>
-        <div className="absolute inset-0 bg-white bg-opacity-95"></div>
-        <div className="relative z-10 text-left max-w-7xl p-8 ">
-       <h2 className="text-4xl lg:text-7xl font-bold mb-6 text-black">
-  Ready to Build Momentum?
-</h2>
+            </section>
+            <section className=" bg-[#EAEEFE]">
+          <PriceCard />
+            </section>
+          {/* About Section */}
+          <section className="min-h-screen h-full my-auto flex flex-col items-center bg-white lg:py-24 py-24 md:py-0">
+            <div className="max-w-7xl mx-auto px-6 text-center pb-6">
+              <div className="section-heading">
+                <h2 className="section-title">
+                Why Choose Us?
+                  </h2>
+                  <p className="section-description mt-5">We provide the tools you need to succeed.</p>
+                </div>
+            
+              <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">
+              <p className="section-description h-full text-white text-justify my-auto text-lg max-w-xs sm:max-w-xl bg-destructive p-8 py-10 sm:py-20 flex md:ml-10 rounded-lg">
+                We understand the unique needs of freelancers and small businesses. Our platform is designed to streamline your project management, making it easier to stay organized and meet deadlines, so you can focus on what matters most — growing your business.
+              </p>
+              <div className="md:mr-10 flex">
+                <Image
+                  src="/image-4.png"
+                  alt="Project Management"
+                  width={600}
+                  height={400}
+                  className="rounded-lg shadow-lg w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto flex object-cover"
+                />
+              </div>
+            </div>
+          </div>
+          </section>
+          {/* Call to Action Section */}
+            <section className="relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: 'url("/image-3.png")',
+              backgroundPosition: 'center 25%',
+            }}>
+            <div className="absolute inset-0 bg-white bg-opacity-95"></div>
+            <div className="relative z-10 text-left max-w-7xl p-8 ">
+          <h2 className="text-4xl lg:text-7xl font-bold mb-6 text-black">
+      Ready to Build Momentum?
+    </h2>
 
-        <p className="text-2xl lg:text-3xl max-w-3xl mb-8 text-black font-medium">
-  Sign up now to organize your projects, stay on schedule, and keep your business moving forward.
-</p>
-
-        <SignIn />
+            <p className="text-2xl lg:text-3xl max-w-3xl mb-8 text-black font-medium">
+      Sign up now to organize your projects, stay on schedule, and keep your business moving forward.
+    </p>
+         <div className="flex flex-row gap-5 items-center">
+              <Link href={"/Signup"} className="bg-destructive hover:bg-opacity-60 transition duration-300 ease-in-out text-white font-semibold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
+              <Link href="/About" className="hover:text-confirm transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
+            </div>
       </div></section>
       </main>
     <Footer />

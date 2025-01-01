@@ -180,7 +180,7 @@ const ProjectPage = () => {
   return (
     <>
       <NavBar />
-      <div className=" pt-6 min-h-screen h-full w-full max-w-6xl mx-auto">
+      <div className="px-4 pt-6 min-h-screen h-full w-full max-w-6xl mx-auto">
         <h1 className="text-4xl font-semibold">{project.name}</h1>
         <p className="mt-2 text-lg">{project.description}</p>
         <div className="">
