@@ -41,16 +41,13 @@
     "stripe": "^16.7.0",
     "tailwindcss-animate": "^1.0.7",
     "tls": "^0.0.1",
-    "uuid": "^10.0.0",
-     "@types/node": "^22.10.2",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^18.3.5"
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.2",
-    "@types/react-dom": "^18.3.5",
+    "@types/react-dom": "^19.0.2",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
