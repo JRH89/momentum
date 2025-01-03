@@ -56,7 +56,6 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId, customerEmai
   }, [uid, stripeCustomerId]);
 
   // Handle creating a new project
-// Handle creating a new project
 const handleCreateProject = async (e: React.FormEvent) => {
   e.preventDefault();
 
@@ -66,51 +65,88 @@ const handleCreateProject = async (e: React.FormEvent) => {
   }
 
   setLoading(true);
+  const auth = getAuth();
+  let newCustomerUid: string | null = null; // To store the newly created customer's UID
 
   try {
-    // Fetch the user document
+    // Fetch user document
     const userRef = doc(db, 'users', uid);
     const userSnap = await getDoc(userRef);
 
     if (userSnap.exists()) {
       const userData = userSnap.data();
       const customers = Array.isArray(userData.customers) ? userData.customers : [];
-      const customerIndex = customers.findIndex(
+      const customer = customers.find(
         (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
       );
 
-      if (customerIndex !== -1) {
+      if (customer) {
+        try {
+          // Create a Firebase Auth user for the customer
+          const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            customerEmail,
+            'DefaultSecurePassword123!'
+          );
+          newCustomerUid = userCredential.user.uid; // Store the new customer's UID
+        } catch (authError: any) {
+          if (authError.code !== 'auth/email-already-in-use') {
+            throw authError;
+          } else {
+            // If the user already exists, retrieve their UID
+            const existingUserRef = await getDoc(doc(db, 'users', customerEmail));
+            if (existingUserRef.exists()) {
+              newCustomerUid = existingUserRef.id; // Retrieve existing UID
+            }
+          }
+        }
+
+        // Add new project
         const newProject = {
-          id: '', // Placeholder; will be updated after Firestore document creation
           name: newProjectName,
           description: newProjectDescription,
-          link: '', // Placeholder; will be updated after Firestore document creation
+          link: newProjectName
+            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}`
+            : '', // Optional link
         };
 
-        // Add new project to Firestore and get the generated ID
+        // Add new project to Firestore
         const projectRef = await addDoc(collection(db, 'users', uid, 'projects'), newProject);
-        newProject.id = projectRef.id;
-        newProject.link = `/Dashboard/${uid}/${stripeCustomerId}/${projectRef.id}`;
 
-        // Update the customer's projects array
-        customers[customerIndex] = {
-          ...customers[customerIndex],
-          projects: [...(customers[customerIndex].projects || []), newProject],
-        };
+        // Update project link with auto-generated ID
+        if (newProject.link) {
+          newProject.link = `/Dashboard/${uid}/${stripeCustomerId}/${projectRef.id}`;
+        }
 
-        // Update the user document with the modified customers array
-        await updateDoc(userRef, { customers });
+        // Update projects in Firestore
+        const updatedProjects = [...(customer.projects || []), { id: projectRef.id, ...newProject }];
+        await updateDoc(userRef, {
+          customers: customers.map((cust: { stripeCustomerId: string }) =>
+            cust.stripeCustomerId === stripeCustomerId ? { ...cust, projects: updatedProjects } : cust
+          ),
+        });
 
+// If a new customer UID was created, update the customer with the matching stripeCustomerId
+if (newCustomerUid) {
+  const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
+    if (cust.stripeCustomerId === stripeCustomerId) {
+      // Update the customer with the new UID and their updated projects array
+      return { ...cust, uid: newCustomerUid, projects: updatedProjects }; // Add updated projects
+    }
+    return cust; // Keep other customers unchanged
+  });
+
+  // Update Firestore with the modified customers array
+  await updateDoc(userRef, {
+    customers: updatedCustomers,
+  });
+}
         // Update local state
-        setProjects(customers[customerIndex].projects);
+        setProjects(updatedProjects);
         setNewProjectName('');
         setNewProjectDescription('');
         setShowForm(false);
-      } else {
-        setError("Customer not found.");
       }
-    } else {
-      setError("User document not found.");
     }
   } catch (err) {
     console.error("Error creating project:", err);
@@ -119,6 +155,7 @@ const handleCreateProject = async (e: React.FormEvent) => {
     setLoading(false);
   }
 };
+
 
   return (
     <div className="mt-6">
