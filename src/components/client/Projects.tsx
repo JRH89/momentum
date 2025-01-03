@@ -3,6 +3,8 @@ import { db } from "../../../firebase";
 import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore';
 import { Plus } from 'lucide-react';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
+import { initializeApp, getApp, deleteApp } from "firebase/app";
 
 interface Project {
   id: string;
@@ -65,7 +67,6 @@ const handleCreateProject = async (e: React.FormEvent) => {
   }
 
   setLoading(true);
-  const auth = getAuth();
   let newCustomerUid: string | null = null; // To store the newly created customer's UID
 
   try {
@@ -82,13 +83,32 @@ const handleCreateProject = async (e: React.FormEvent) => {
 
       if (customer) {
         try {
+          // Initialize a temporary Firebase app instance
+          const tempApp = initializeApp({
+            apiKey: process.env.NEXT_PUBLIC_APIKEY,
+            authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+            projectId: process.env.NEXT_PUBLIC_PROJECTID,
+            storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+            messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+            appId: process.env.NEXT_PUBLIC_APPID,
+          }, "new-app");
+
+          const tempAuth = getAuth(tempApp);
+
           // Create a Firebase Auth user for the customer
           const userCredential = await createUserWithEmailAndPassword(
-            auth,
+            tempAuth,
             customerEmail,
             'DefaultSecurePassword123!' // You can change this to something more secure
           );
+
+          // Immediately sign out to prevent auto sign-in
+          await signOut(tempAuth);
+
           newCustomerUid = userCredential.user.uid; // Store the new customer's UID
+
+          // Clean up by deleting the temporary app instance
+          await deleteApp(tempApp);
         } catch (authError: any) {
           if (authError.code !== 'auth/email-already-in-use') {
             throw authError;
