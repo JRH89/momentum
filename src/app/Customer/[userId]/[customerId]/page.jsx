@@ -5,8 +5,8 @@ import { doc, getDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage imports
 import { db, storage } from "../../../../../firebase"; // Ensure this is your Firebase config
 import { useParams, useRouter } from "next/navigation";
-import Footer from "../../../../components/footer";
-import NavBar from "../../../../components/navbar";
+import { Footer } from "../../../../components/landing-page/Footer";
+import Navbar from "../../../../components/customer/Navbar";
 import { useAuth } from "../../../../context/AuthProvider";
 import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase authentication
 import { auth } from "../../../../../firebase"; // Ensure your firebase config is properly set
@@ -93,8 +93,8 @@ const CustomerDashboard = () => {
   if (!user || user.uid !== customerId) {
     return (
       <>
-        <NavBar />
-        <div className="flex -mt-16 flex-col p-4 max-w-6xl mx-auto w-full min-h-screen h-full my-auto items-center justify-center">
+        <Navbar />
+        <div className="flex -mt-16 flex-col p-4 max-w-6xl mx-auto w-full min-h-screen h-full my-auto items-center justify-center pb-24">
           <h1 className="text-lg text-center font-semibold mb-4">
             You must be logged in to access this page
           </h1>
@@ -149,19 +149,16 @@ const CustomerDashboard = () => {
 
   return (
     <>
-      <NavBar />
-      <div className="flex flex-col p-6 max-w-6xl mx-auto w-full min-h-screen h-ful">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
+      <Navbar />
+      <div className="flex flex-col p-6 max-w-6xl mx-auto w-full min-h-screen h-full pb-24">
+        <h1 className="text-2xl font-bold text-black mb-6">
           Customer Dashboard
         </h1>
         {customerData ? (
           <div className="bg-white shadow-md rounded-lg p-6">
-            <p className="text-lg font-semibold mb-2">
-              Name: {customerData.name}
-            </p>
-            <p className="text-lg font-semibold mb-4">
-              Email: {customerData.email}
-            </p>
+            <p className="text-lg medium ">Name: {customerData.name}</p>
+            <p className="text-lg medium ">Email: {customerData.email}</p>
+            <p className="text-lg medium mb-4">ID: {customerData.uid}</p>
             {customerData.projects && (
               <>
                 <h2 className="text-xl font-bold text-gray-700 mb-4">
@@ -195,25 +192,6 @@ const CustomerDashboard = () => {
         ) : (
           <p className="text-gray-500 text-center">No customer data found.</p>
         )}
-        {/* Upload Section */}
-        <div className="mt-8 bg-gray-50 p-4 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Upload a File</h2>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="mb-4 border p-2 rounded-md w-full"
-          />
-          <button
-            onClick={handleFileUpload}
-            className="p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          >
-            Upload File
-          </button>
-          {uploadError && <p className="text-red-500 mt-2">{uploadError}</p>}
-          {uploadSuccess && (
-            <p className="text-green-500 mt-2">{uploadSuccess}</p>
-          )}
-        </div>
       </div>
       <Footer />
     </>

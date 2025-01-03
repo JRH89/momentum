@@ -13,7 +13,16 @@ const ProtectedRoute = ({ children }) => {
       if (!user) {
         router.push('/'); // Redirect if user is not authenticated
       } else {
-        setLoading(false); // Auth check complete and user is authenticated
+        // Check if user is authenticated via Google
+        const isGoogleUser = user.providerData.some(
+          (provider) => provider.providerId === 'google.com'
+        );
+
+        if (!isGoogleUser) {
+          router.push('/'); // Redirect if user is not authenticated via Google
+        } else {
+          setLoading(false); // Auth check complete and user is authenticated via Google
+        }
       }
     });
     return () => unsubscribe();

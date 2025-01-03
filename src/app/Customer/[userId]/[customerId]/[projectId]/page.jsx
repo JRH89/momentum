@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// Import db and auth from your Firebase setup
 import { db, auth } from "../../../../../../firebase"; // Adjust the path as per your Firebase setup
-import NavBar from "../../../../../components/navbar";
-import Footer from "../../../../../components/footer";
+import Navbar from "../../../../../components/customer/Navbar";
+import { Footer } from "../../../../../components/landing-page/Footer";
 import Image from "next/image";
+import { useAuth } from "../../../../../context/AuthProvider";
+import Link from "next/link";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -22,9 +23,11 @@ const CustomerProjectPage = () => {
 
   const storage = getStorage();
 
-  // Fetch project data
+  const { user } = useAuth();
+
+  // Fetch project data only if user is authenticated
   useEffect(() => {
-    if (userId && customerId && projectId) {
+    if (user && userId && customerId && projectId) {
       const fetchData = async () => {
         const userDocRef = doc(db, "users", userId);
         const userDocSnap = await getDoc(userDocRef);
@@ -44,12 +47,14 @@ const CustomerProjectPage = () => {
               setMilestones(project.milestones || []);
             }
           }
+        } else {
+          router.push("/Customer/login");
         }
       };
 
       fetchData();
     }
-  }, [userId, customerId, projectId]);
+  }, [user, userId, customerId, projectId]); // Only fetch data after user is available
 
   // Handle file upload
   const handleUpload = async () => {
@@ -99,14 +104,15 @@ const CustomerProjectPage = () => {
 
   return (
     <>
-      <NavBar />
+      <Navbar />
       <div className="p-6 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full">
         <h1 className="text-2xl font-bold">Project Details</h1>
 
         {projectData ? (
           <div>
-            <h2 className="text-xl">{projectData.name}</h2>
-            <p>{projectData.description}</p>
+            <h2 className="text-xl">Title: {projectData.name}</h2>
+            <p>Desc: {projectData.description}</p>
+            <p>ID: {projectData.id}</p>
 
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Milestones</h3>
@@ -207,7 +213,14 @@ const CustomerProjectPage = () => {
             </div>
           </div>
         ) : (
-          <p>Loading project data...</p>
+          <>
+            <p>
+              Please{" "}
+              <Link className="underline text-green-500" href="/Customer/login">
+                Login
+              </Link>
+            </p>
+          </>
         )}
       </div>
       <Footer />
