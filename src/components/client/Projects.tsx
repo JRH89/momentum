@@ -86,7 +86,7 @@ const handleCreateProject = async (e: React.FormEvent) => {
           const userCredential = await createUserWithEmailAndPassword(
             auth,
             customerEmail,
-            'DefaultSecurePassword123!'
+            'DefaultSecurePassword123!' // You can change this to something more secure
           );
           newCustomerUid = userCredential.user.uid; // Store the new customer's UID
         } catch (authError: any) {
@@ -106,8 +106,8 @@ const handleCreateProject = async (e: React.FormEvent) => {
           name: newProjectName,
           description: newProjectDescription,
           link: newProjectName
-            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}`
-            : '', // Optional link
+            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}` // Optional link
+            : '',
         };
 
         // Add new project to Firestore
@@ -126,21 +126,21 @@ const handleCreateProject = async (e: React.FormEvent) => {
           ),
         });
 
-// If a new customer UID was created, update the customer with the matching stripeCustomerId
-if (newCustomerUid) {
-  const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
-    if (cust.stripeCustomerId === stripeCustomerId) {
-      // Update the customer with the new UID and their updated projects array
-      return { ...cust, uid: newCustomerUid, projects: updatedProjects }; // Add updated projects
-    }
-    return cust; // Keep other customers unchanged
-  });
+        // If a new customer UID was created, update the customer with the matching stripeCustomerId
+        if (newCustomerUid) {
+          const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
+            if (cust.stripeCustomerId === stripeCustomerId) {
+              return { ...cust, uid: newCustomerUid, projects: updatedProjects }; // Add updated projects
+            }
+            return cust; // Keep other customers unchanged
+          });
 
-  // Update Firestore with the modified customers array
-  await updateDoc(userRef, {
-    customers: updatedCustomers,
-  });
-}
+          // Update Firestore with the modified customers array
+          await updateDoc(userRef, {
+            customers: updatedCustomers,
+          });
+        }
+
         // Update local state
         setProjects(updatedProjects);
         setNewProjectName('');
@@ -155,6 +155,7 @@ if (newCustomerUid) {
     setLoading(false);
   }
 };
+
 
 
   return (
