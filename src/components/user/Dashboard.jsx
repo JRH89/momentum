@@ -15,7 +15,6 @@ import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
 import UserTickets from "./UserTickets";
-import Image from "next/image";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useAuth();

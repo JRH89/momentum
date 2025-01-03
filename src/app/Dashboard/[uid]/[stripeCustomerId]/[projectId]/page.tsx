@@ -7,6 +7,7 @@ import NavBar from "../../../../../components/navbar";
 import Footer from "../../../../../components/footer";
 import { useParams } from "next/navigation";
 import { Plus } from "lucide-react";
+import Image from "next/image";
 
 interface Milestone {
   id: string;
@@ -44,6 +45,7 @@ const ProjectPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [project, setProject] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [uploads, setUploads] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -64,6 +66,7 @@ const ProjectPage = () => {
             if (foundProject) {
               setProject(foundProject);
               setMilestones(foundProject.milestones || []);
+              setUploads(foundProject.uploads || []);
             }
           }
         }
@@ -239,6 +242,62 @@ const ProjectPage = () => {
             <p className="text-gray-500">No milestones yet.</p>
           )}
         </div>
+
+
+
+        {/* Uploads section */}
+         <div className="mt-8">
+          <div className="flex justify-start items-center">
+            <h2 className="text-2xl font-semibold">
+              Uploads
+            </h2>
+            {/* <button
+              type="button"
+              onClick={() => setShowForm(!showForm)}
+              className=" hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
+            >
+              [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
+            </button> */}
+          </div>
+          {uploads.length > 0 ? (
+                         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                          {uploads.map((upload, index) => (
+  <li key={index} className="border p-2 rounded shadow-md">
+    <Image
+      width={200}
+      height={200}
+      src={upload}
+      alt={`Upload ${index + 1}`}
+      className="object-fit w-full h-full rounded"
+      onError={(e) => {
+        const target = e.target as HTMLImageElement; // Assert the target as an HTMLImageElement
+        target.style.display = "none"; // Hide broken image
+        const nextElement = target.nextElementSibling as HTMLElement | null; // Get the next sibling element
+        if (nextElement) {
+          nextElement.style.display = "block"; // Show the link
+        }
+      }}
+    />
+    <a
+      href={upload}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-500 break-words underline hidden"
+    >
+      {upload.split("/").pop()}
+    </a>
+  </li>
+))}
+
+                         </ul>
+                       ) : (
+                         <p>No uploads yet.</p>
+                       )}
+        </div>
+
+
+
+
         {showForm && (
           <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-50 my-auto min-h-screen h-full items-center justify-center flex flex-col">
             <div className="bg-white rounded-md p-4 w-full max-w-xl">

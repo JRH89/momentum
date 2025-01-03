@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from "../../../firebase";
 import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore';
 import { Plus } from 'lucide-react';
+import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 
 interface Project {
   id: string;
@@ -13,9 +14,10 @@ interface Project {
 interface ProjectsProps {
   uid: string;
   stripeCustomerId: string;
+  customerEmail: string;
 }
 
-const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
+const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId, customerEmail }) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [newProjectName, setNewProjectName] = useState<string>('');
   const [newProjectDescription, setNewProjectDescription] = useState<string>('');
@@ -23,6 +25,8 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [showForm, setShowForm] = useState(false);
+
+  // Todo: Add uid to users/uid/customers
 
   // Fetch the customer's projects
   useEffect(() => {
@@ -52,61 +56,71 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
   }, [uid, stripeCustomerId]);
 
   // Handle creating a new project
-  const handleCreateProject = async (e: React.FormEvent) => {
-    e.preventDefault();
+// Handle creating a new project
+const handleCreateProject = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!newProjectName || !newProjectDescription) {
-      setError("Please fill in all fields");
-      return;
-    }
+  if (!newProjectName || !newProjectDescription) {
+    setError("Please fill in all fields");
+    return;
+  }
 
-    setLoading(true);
-    try {
-      const userRef = doc(db, 'users', uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        const customers = Array.isArray(userData.customers) ? userData.customers : [];
-        const customer = customers.find(
-          (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
-        );
+  setLoading(true);
 
-        if (customer) {
-          // Add new project with Firestore's auto-generated ID
-          const newProject = {
-            name: newProjectName,
-            description: newProjectDescription,
-            link: `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}`, // Will be updated with project ID
-          };
+  try {
+    // Fetch the user document
+    const userRef = doc(db, 'users', uid);
+    const userSnap = await getDoc(userRef);
 
-          // Add new project to Firestore
-          const projectRef = await addDoc(collection(db, 'users', uid, 'projects'), newProject);
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      const customers = Array.isArray(userData.customers) ? userData.customers : [];
+      const customerIndex = customers.findIndex(
+        (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
+      );
 
-          // Update the link with the Firestore-generated ID
-          newProject.link = `/Dashboard/${uid}/${stripeCustomerId}/${projectRef.id}`;
+      if (customerIndex !== -1) {
+        const newProject = {
+          id: '', // Placeholder; will be updated after Firestore document creation
+          name: newProjectName,
+          description: newProjectDescription,
+          link: '', // Placeholder; will be updated after Firestore document creation
+        };
 
-          // Update local state with new project
-          const updatedProjects = [...(customer.projects || []), { id: projectRef.id, ...newProject }];
-          await updateDoc(userRef, {
-            'customers': customers.map((cust: { stripeCustomerId: string }) =>
-              cust.stripeCustomerId === stripeCustomerId ? { ...cust, projects: updatedProjects } : cust
-            ),
-          });
+        // Add new project to Firestore and get the generated ID
+        const projectRef = await addDoc(collection(db, 'users', uid, 'projects'), newProject);
+        newProject.id = projectRef.id;
+        newProject.link = `/Dashboard/${uid}/${stripeCustomerId}/${projectRef.id}`;
 
-          // Update local state
-          setProjects(updatedProjects);
-          setNewProjectName('');
-          setNewProjectDescription('');
-          setShowForm(false); // Close form after success
-        }
+        // Update the customer's projects array
+        customers[customerIndex] = {
+          ...customers[customerIndex],
+          projects: [...(customers[customerIndex].projects || []), newProject],
+        };
+
+        // Update the user document with the modified customers array
+        await updateDoc(userRef, { customers });
+
+        // Update local state
+        setProjects(customers[customerIndex].projects);
+        setNewProjectName('');
+        setNewProjectDescription('');
+        setShowForm(false);
+      } else {
+        setError("Customer not found.");
       }
-    } catch (err) {
-      console.error("Error creating project:", err);
-      setError("Failed to create project.");
-    } finally {
-      setLoading(false);
+    } else {
+      setError("User document not found.");
     }
-  };
+  } catch (err) {
+    console.error("Error creating project:", err);
+    setError("Failed to create project.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   return (
     <div className="mt-6">
@@ -150,7 +164,7 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
         <div className="inset-0 absolute bg-black bg-opacity-90 flex items-center justify-center mx-auto px-4">
           <div className="bg-white p-6 w-full rounded-md shadow-lg max-w-xl">
               <h3 className="text-xl text-center font-semibold">Create Project</h3>
-            <form onSubmit={handleCreateProject}>
+            <form >
               <div className="mt-2">
                 <label htmlFor="name" className="block text-gray-700">Project Name</label>
                 <input
@@ -183,6 +197,7 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId }) => {
               Cancel
             </button>
               <button
+                onClick={handleCreateProject}
                 type="submit"
                 className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                 disabled={loading} // Disable button when loading

@@ -84,22 +84,56 @@ const NavBar = () => {
       <div className="bg-white py-2 sticky font-semibold top-0 w-full flex flex-row justify-between px-2 sm:px-5 my-auto items-center z-50 h-full align-middle">
         <div className="flex shimmer-container flex-row align-middle items-center gap-1 my-auto h-full">
           <Link
-            className="my-auto cursor-pointer flex items-center gap-2"
+            className="my-auto cursor-pointer flex items-center gap-0"
             href="/"
           >
-            <Image
-              alt="shimmer-image"
-              className="border-2 rounded-md cursor-pointer border-black"
-              src="/logo.png"
-              width={50}
-              height={50}
-            />
-            <h2
-              alt="shimmer-image"
-              className="text-2xl sm:text-3xl md:text-4xl cursor-pointer font-bold text-black  items-center align-middle h-full"
+            <div
+              className=" rounded-md cursor-pointer border-black"
+              style={{ width: "50px", height: "50px" }}
             >
-              {siteMetadata.title}{" "}
-            </h2>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 349.2 320"
+                width="50"
+                height="50"
+                className=""
+              >
+                <defs>
+                  <style>
+                    {`
+          .cls-1 {
+            fill: none;
+            stroke-linejoin: round;
+          }
+          .cls-1, .cls-2 {
+            stroke: #000;
+            stroke-linecap: round;
+            stroke-width: 40px;
+          }
+          .cls-2 {
+            fill: #fff;
+            stroke-miterlimit: 10;
+          }
+        `}
+                  </style>
+                </defs>
+                <g data-name="Layer_1">
+                  <line className="cls-2" x1="50" y1="270" x2="50" y2="20" />
+                  <line className="cls-2" x1="150" y1="120" x2="150" y2="270" />
+                  <line
+                    className="cls-2"
+                    x1="250"
+                    y1="20"
+                    x2="299.19"
+                    y2="265.11"
+                  />
+                  <circle cx="50" cy="270" r="50" />
+                  <circle cx="150" cy="270" r="50" />
+                  <circle cx="299.19" cy="265.11" r="50" />
+                  <polyline className="cls-1" points="50 20 150 120 250 20" />
+                </g>
+              </svg>
+            </div>
           </Link>
         </div>
         <div className="align-middle justify-end text-xl md:text-2xl hidden lg:flex lg:flex-row">
@@ -172,7 +206,7 @@ const NavBar = () => {
       </div>
       {/* Mobile menu */}
       {showMenu && (
-        <div className="w-full pb-2 fixed h-auto flex justify-center items-center mx-auto bg-white z-50 flex-row gap-5 pt-0 p-2 border-b text-left text-lg sm:text-2xl">
+        <div className="w-full pb-2 mt-16 fixed h-auto flex justify-center items-center mx-auto bg-white z-50 flex-row gap-5 pt-0 p-2 border-b text-left text-lg sm:text-2xl">
           <ul className="text-left items-center text-lg sm:text-2xl flex flex-row mx-auto justify-center gap-1 w-full">
             {user ? (
               <div className="text-left mx-auto text-lg sm:text-2xl flex flex-col justify-center items-center font-semibold gap-2">

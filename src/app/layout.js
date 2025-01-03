@@ -1,4 +1,4 @@
-import { DM_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../context/AuthProvider";
 import { Analytics } from "@vercel/analytics/react"
@@ -9,7 +9,7 @@ import siteMetadata from "../../siteMetadata";
 import { twMerge } from "tailwind-merge";
 import CookieBanner from "../components/CookieBanner";
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const notoSans = Noto_Sans({ subsets: ["latin"] });
 
 export const metadata = {
   title: `${siteMetadata.title} | ${siteMetadata.headerTitle}`,
@@ -87,7 +87,7 @@ export default function RootLayout({ children }) {
         <meta name="twitter:image" content={metadata.twitter.image} />
         <title>{metadata.title}</title>
       </head>
-      <body className={twMerge(dmSans.className, "antialiased flex flex-col bg-[#EAEEFE]")}>
+      <body className={twMerge(notoSans.className, "antialiased flex flex-col bg-[#EAEEFE]")}>
         <AuthProvider>
           {children}
           <CookieBanner />

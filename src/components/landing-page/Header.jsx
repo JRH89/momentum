@@ -2,12 +2,10 @@
 
 import React, { useState } from "react";
 import ArrowRight from "../../assets/arrow-right.svg";
-import Logo from "../../../public/logo.png";
-import Image from "next/image";
 import MenuIcon from "../../assets/menu.svg";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import siteMetadata from "../../../siteMetadata";
+import LogoImage from "../Logo";
 
 // Page Data
 const pageData = {
@@ -57,19 +55,14 @@ export const Header = () => {
       <div className="py-3">
         <div className="px-5 md:px-10">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Link className="shimmer-container" href={pageData.logoHref}>
-                <Image
-                  className="border-2 border-black rounded-lg"
-                  height={40}
-                  width={40}
-                  src={Logo}
-                  alt="shimmer-image"
-                />
+            <div className="flex flex-row items-center gap-0 shimmer-container">
+              <Link
+                className="flex flex-row items-center"
+                href={pageData.logoHref}
+              >
+                <LogoImage width={40} height={40} />
+                <p className="text-2xl flex md:text-3xl font-bold ">omentum</p>
               </Link>
-              <p className="text-2xl md:text-3xl font-bold ">
-                {siteMetadata.title}
-              </p>
             </div>
 
             <div

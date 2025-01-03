@@ -265,7 +265,16 @@ useEffect(() => {
             <p>No invoices found.</p>
           )}
           </div>
-          <Projects uid={uid} stripeCustomerId={stripeCustomerId} />
+         {customerData && customerData.email ? (
+  <Projects
+    uid={uid}
+    stripeCustomerId={stripeCustomerId}
+    customerEmail={customerData.email}
+  />
+) : (
+  <p>Loading or invalid customer data...</p>
+)}
+
         </div>
       </div>
       <Footer />
