@@ -136,10 +136,10 @@ export default function Dashboard() {
                             Customers{" "}
                             <button
                               onClick={() => setIsAddingCustomer(true)}
-                              className="text-black text-lg flex flex-row items-baseline  hover:underline"
+                              className="text-black items-center text-lg flex flex-row align-middle my-auto hover:underline"
                             >
                               [
-                              <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300 my-auto items-center" />
+                              <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />
                               ]
                             </button>
                           </h3>

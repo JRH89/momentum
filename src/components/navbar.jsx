@@ -134,6 +134,9 @@ const NavBar = () => {
                 </g>
               </svg>
             </div>
+            <p className="font-bold text-2xl md:text-3xl lg:text-4xl">
+              omentum
+            </p>
           </Link>
         </div>
         <div className="align-middle justify-end text-xl md:text-2xl hidden lg:flex lg:flex-row">
