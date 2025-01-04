@@ -46,104 +46,105 @@ const CustomerDetailsPage: React.FC = () => {
     if (uid) fetchUserStripeAccountId(uid);
   }, [uid]);
 
-useEffect(() => {
-  const fetchCustomerData = async () => {
-    try {
-      const userRef = doc(db, "users", uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        const customers = Array.isArray(userData.customers) ? userData.customers : [];
-        const customer = customers.find(
-          (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
-        );
-        if (customer) setCustomerData(customer);
-        else setError("Customer not found in user document.");
-      } else {
-        setError("User document not found.");
+    useEffect(() => {
+      const fetchCustomerData = async () => {
+        try {
+          const userRef = doc(db, "users", uid);
+          const userSnap = await getDoc(userRef);
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            const customers = Array.isArray(userData.customers) ? userData.customers : [];
+            const customer = customers.find(
+              (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
+            );
+            if (customer) setCustomerData(customer);
+            else setError("Customer not found in user document.");
+          } else {
+            setError("User document not found.");
+          }
+        } catch (err) {
+          console.error("Error fetching customer data:", err);
+          setError("Failed to load customer data.");
+        }
+      };
+
+      if (stripeAccountId) fetchCustomerData();
+    }, [stripeAccountId, stripeCustomerId, uid]);
+
+
+    useEffect(() => {
+      const fetchInvoices = async () => {
+        if (!stripeAccountId || !stripeCustomerId) return;
+
+        try {
+          const response = await fetch(`/api/stripe/invoices?stripeAccountId=${stripeAccountId}&stripeCustomerId=${stripeCustomerId}`);
+          const data = await response.json();
+
+          if (response.ok && data.invoices) {
+            setInvoices(data.invoices || []);
+          } else {
+            setError(data.error || "Failed to fetch invoices");
+          }
+        } catch (err) {
+          console.error("Error fetching invoices:", err);
+          setError("Failed to fetch invoices.");
+        }
+      };
+
+      if (stripeAccountId && stripeCustomerId) fetchInvoices();
+    }, [stripeAccountId, stripeCustomerId]);
+
+    useEffect(() => {
+      if (stripeAccountId || error || invoices.length > 0) {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Error fetching customer data:", err);
-      setError("Failed to load customer data.");
-    }
-  };
+    }, [stripeAccountId, error, invoices]);
 
-  if (stripeAccountId) fetchCustomerData();
-}, [stripeAccountId, stripeCustomerId, uid]);
+    // Handle creating a new invoice
+    const handleCreateInvoice = async (e: React.FormEvent) => {
+      e.preventDefault();
 
-
-  useEffect(() => {
-    const fetchInvoices = async () => {
-      if (!stripeAccountId || !stripeCustomerId) return;
+      if (!invoiceAmount || !invoiceCurrency || !invoiceDescription) {
+        setError("Please fill in all fields");
+        return;
+      }
 
       try {
-        const response = await fetch(`/api/stripe/invoices?stripeAccountId=${stripeAccountId}&stripeCustomerId=${stripeCustomerId}`);
+        const response = await fetch(`/api/stripe/invoices/create?stripeAccountId=${stripeAccountId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            stripeCustomerId,
+            items: [
+              {
+                amount: parseInt(invoiceAmount, 10) * 100, // Convert to cents
+                currency: invoiceCurrency,
+                description: invoiceDescription,
+              },
+            ],
+          }),
+        });
+
         const data = await response.json();
 
-        if (response.ok && data.invoices) {
-          setInvoices(data.invoices || []);
+        if (response.ok) {
+          setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
+          setInvoiceAmount("");
+          setInvoiceCurrency("usd");
+          setInvoiceDescription("");
         } else {
-          setError(data.error || "Failed to fetch invoices");
+          setError(data.error || "Failed to create invoice");
         }
-      } catch (err) {
-        console.error("Error fetching invoices:", err);
-        setError("Failed to fetch invoices.");
-      }
+        } catch (err) {
+          console.error("Error creating invoice:", err);
+          setError("Failed to create invoice");
+        }
     };
 
-    if (stripeAccountId && stripeCustomerId) fetchInvoices();
-  }, [stripeAccountId, stripeCustomerId]);
-
-  useEffect(() => {
-    if (stripeAccountId || error || invoices.length > 0) {
-      setLoading(false);
-    }
-  }, [stripeAccountId, error, invoices]);
-
-  // Handle creating a new invoice
-  const handleCreateInvoice = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!invoiceAmount || !invoiceCurrency || !invoiceDescription) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    try {
-      const response = await fetch(`/api/stripe/invoices/create?stripeAccountId=${stripeAccountId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          stripeCustomerId,
-          items: [
-            {
-              amount: parseInt(invoiceAmount, 10) * 100, // Convert to cents
-              currency: invoiceCurrency,
-              description: invoiceDescription,
-            },
-          ],
-        }),
-      });
-      const data = await response.json();
-
-      if (response.ok) {
-        setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
-        setInvoiceAmount("");
-        setInvoiceCurrency("usd");
-        setInvoiceDescription("");
-      } else {
-        setError(data.error || "Failed to create invoice");
-      }
-    } catch (err) {
-      console.error("Error creating invoice:", err);
-      setError("Failed to create invoice");
-    }
-  };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -265,18 +266,17 @@ useEffect(() => {
             <p>No invoices found.</p>
           )}
           </div>
-         {customerData && customerData.email ? (
-  <Projects
-    uid={uid}
-    stripeCustomerId={stripeCustomerId}
-    customerEmail={customerData.email}
-  />
-) : (
-  <p>Loading or invalid customer data...</p>
-)}
-
+          {customerData && customerData.email ? (
+            <Projects
+              uid={uid}
+              stripeCustomerId={stripeCustomerId}
+              customerEmail={customerData.email}
+            />
+          ) : (
+            <p>Loading or invalid customer data...</p>
+          )}
+          </div>
         </div>
-      </div>
       <Footer />
     </>
   );

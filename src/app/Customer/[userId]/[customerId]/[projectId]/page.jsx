@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db, auth } from "../../../../../../firebase"; // Adjust the path as per your Firebase setup
+import { db } from "../../../../../../firebase"; // Adjust the path as per your Firebase setup
 import Navbar from "../../../../../components/customer/Navbar";
 import { Footer } from "../../../../../components/landing-page/Footer";
 import Image from "next/image";
@@ -107,69 +107,98 @@ const CustomerProjectPage = () => {
       <Navbar />
       <div className="p-6 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full">
         <h1 className="text-2xl font-bold">Project Details</h1>
-
         {projectData ? (
           <div>
             <h2 className="text-xl">Title: {projectData.name}</h2>
             <p>Desc: {projectData.description}</p>
             <p>ID: {projectData.id}</p>
-
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Milestones</h3>
               {milestones.length > 0 ? (
-                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {milestones.map((milestone, index) => (
-                    <li key={index} className="border p-2 rounded shadow-md">
-                      <h4 className="font-bold">{milestone.title}</h4>
-                      <p className="text-sm text-gray-600">
-                        {milestone.description}
-                      </p>
-                      <p>
-                        Status:{" "}
-                        <span
-                          className={`font-medium ${
-                            milestone.status === "completed"
-                              ? "text-green-500"
-                              : "text-red-500"
-                          } `}
-                        >
-                          {milestone.status}
-                        </span>
-                      </p>
-                      <p>
-                        Priority:{" "}
-                        <span
-                          className={`${
-                            milestone.priority === "high" && "text-red-500"
-                          } ${
-                            milestone.priority === "medium" && "text-yellow-500"
-                          } ${
-                            milestone.priority === "low" && "text-green-500"
-                          } font-medium capitalize`}
-                        >
-                          {milestone.priority}
-                        </span>
-                      </p>
-                      <p>
-                        Deadline:{" "}
-                        <span className="font-medium">
-                          {milestone.deadline}
-                        </span>
-                      </p>
-                    </li>
-                  ))}
-                </ul>
+                <div className="max-h-[calc(5*4rem)] overflow-y-auto">
+                  <table className="min-w-full bg-white shadow-md">
+                    <thead className="border border-black">
+                      <tr>
+                        <th className="px-4 py-2 text-left font-bold">Title</th>
+                        <th className="px-4 py-2 text-left font-bold">
+                          Description
+                        </th>
+                        <th className="px-4 py-2 text-left font-bold">
+                          Status
+                        </th>
+                        <th className="px-4 py-2 text-left font-bold">
+                          Priority
+                        </th>
+                        <th className="px-4 py-2 text-left font-bold">
+                          Deadline
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {milestones.map((milestone, index) => (
+                        <tr key={index} className="border border-black">
+                          <td className="font-medium px-4 py-2">
+                            {milestone.title}
+                          </td>
+                          <td className="px-4 py-2 text-gray-600">
+                            {milestone.description}
+                          </td>
+                          <td
+                            className={`px-4 py-2 font-medium ${
+                              milestone.status === "completed"
+                                ? "text-green-500"
+                                : "text-red-500"
+                            }`}
+                          >
+                            {milestone.status}
+                          </td>
+                          <td
+                            className={`px-4 py-2 font-medium capitalize ${
+                              milestone.priority === "high" && "text-red-500"
+                            } ${
+                              milestone.priority === "medium" &&
+                              "text-yellow-500"
+                            } ${
+                              milestone.priority === "low" && "text-green-500"
+                            }`}
+                          >
+                            {milestone.priority}
+                          </td>
+                          <td className="px-4 py-2 font-medium">
+                            {milestone.deadline}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               ) : (
                 <p>No milestones yet.</p>
               )}
             </div>
-
             <div className="mt-4">
               <h3 className="text-lg font-semibold">Uploads</h3>
+              <div className="mb-4 gap-2 flex flex-row">
+                <input
+                  type="file"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  className="border rounded p-2 bg-white"
+                />
+                <button
+                  onClick={handleUpload}
+                  disabled={!file || isLoading}
+                  className="bg-confirm text-white px-4 py-2 rounded hover:bg-opacity-60 duration-300 cursor-pointer"
+                >
+                  {isLoading ? "Uploading..." : "Upload File"}
+                </button>
+              </div>
               {uploads.length > 0 ? (
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {uploads.map((upload, index) => (
-                    <li key={index} className="border p-2 rounded shadow-md">
+                    <li
+                      key={index}
+                      className="border bg-white p-2 rounded shadow-md"
+                    >
                       <Image
                         width={200}
                         height={200}
@@ -195,21 +224,6 @@ const CustomerProjectPage = () => {
               ) : (
                 <p>No uploads yet.</p>
               )}
-            </div>
-
-            <div className="mt-4">
-              <input
-                type="file"
-                onChange={(e) => setFile(e.target.files[0])}
-                className="border rounded p-2"
-              />
-              <button
-                onClick={handleUpload}
-                disabled={!file || isLoading}
-                className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-              >
-                {isLoading ? "Uploading..." : "Upload File"}
-              </button>
             </div>
           </div>
         ) : (

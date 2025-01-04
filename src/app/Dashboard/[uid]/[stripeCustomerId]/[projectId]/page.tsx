@@ -345,6 +345,7 @@ const ProjectPage = () => {
                 onChange={(e) => setNewMilestone({ ...newMilestone, priority: e.target.value })}
                 className="flex w-full p-2 mb-2 border rounded-md"
               >
+                <option value="select-priority">Select Priority</option>
                 <option value="high">High</option>
                 <option value="medium">Medium</option>
                 <option value="low">Low</option>

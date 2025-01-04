@@ -30,6 +30,9 @@ export const Footer = () => {
           <Link href="/About" className="hover:text-white transition duration-300 ease-in-out">
             Learn More
           </Link>
+           <Link href="/Customer/login" className="hover:text-white transition duration-300 ease-in-out">
+            Customer Portal
+          </Link>
         </nav>
 
         {/* Social Media Icons */}
