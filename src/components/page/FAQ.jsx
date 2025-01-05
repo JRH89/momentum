@@ -7,29 +7,29 @@ import { twMerge } from "tailwind-merge";
 const pageData = {
   faqItems: [
     {
-      question: "What is Momentum?",
+      question: "Is Stripe required to use Momentum?",
       answer:
-        "Momentum is a streamlined project management platform designed to empower freelancers and small businesses. It centralizes project tracking, milestone management, and resource organization while offering tools to enhance team collaboration and efficiency.",
+        "Yes, Stripe is required for payment processing. However, if you don't have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process.",
     },
     {
-      question: "What are the main features of Momentum?",
+      question: "What is the pricing for Momentum?",
       answer:
-        "Momentum provides powerful tools, including project creation and tracking, milestone management, real-time progress monitoring, a customizable project dashboard, integrated budget tracking, and intuitive task assignment features to keep your projects on track.",
+        "Momentum is priced at $8.99 per month or $75 per year. This includes unlimited projects, invoices, and more. You can send invoices, track payments, and create as many projects as needed, all while keeping everything organized in one place.",
     },
     {
-      question: "How do I get started with Momentum?",
+      question: "What features are included with my Momentum subscription?",
       answer:
-        "Getting started with Momentum is simple. Sign up on our website, explore the setup guide in the documentation, and start creating your first project. With an intuitive interface, you'll be up and running in no time.",
+        "With your Momentum subscription, you'll have access to unlimited project creation, customizable project dashboards, invoice management, and real-time progress tracking. You can also send invoices, track payments, and easily collaborate with clients by sharing project details and updates.",
     },
     {
-      question: "Can I customize the dashboards in Momentum?",
+      question: "Can I manage client projects and invoices?",
       answer:
-        "Yes! Momentum’s dashboards are fully customizable, allowing you to adjust layouts and widgets to match your workflow. Tailor the platform to track the metrics and tasks that matter most to you.",
+        "Absolutely! Momentum allows you to manage all your client projects in one place, including creating, tracking, and organizing milestones. You can send invoices directly to your clients, track payments, and ensure that everything stays up to date.",
     },
     {
-      question: "How does Momentum help with team collaboration?",
+      question: "How can my clients interact with the project?",
       answer:
-        "Momentum enhances collaboration by providing a centralized platform for task assignments, real-time progress updates, and resource sharing. Keep everyone on the same page with clear communication and milestone tracking.",
+        "Your clients can view a personalized dashboard where they can track project progress, see completed milestones, and stay up to date on what's next. They can also upload files related to the project, making collaboration simple and efficient.",
     },
   ],
 };
@@ -69,10 +69,14 @@ export default function FAQ() {
       id="faq"
       className="mx-auto min-h-screen h-full w-full flex flex-col text-black pt-32"
     >
-      <h2 className="section-title mb-5">Frequently Asked Questions</h2>
-      {faqItems.map((item, index) => (
-        <FAQItem key={index} question={item.question} answer={item.answer} />
-      ))}
+      <h2 className="text-2xl text-center sm:text-3xl md:text-4xl font-bold">
+        Frequently Asked Questions
+      </h2>
+      <div className="mt-10">
+        {faqItems.map((item, index) => (
+          <FAQItem key={index} question={item.question} answer={item.answer} />
+        ))}
+      </div>
     </div>
   );
 }

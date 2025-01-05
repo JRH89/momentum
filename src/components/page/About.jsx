@@ -20,21 +20,14 @@ const pageData = {
       "Customer Management: Sync customers in real-time and create new ones directly in the platform.",
       "Project Creation: Build and manage projects with custom milestones and deadlines.",
       "Progress Tracking: Visualize project progress with detailed dashboards and reports.",
-      "Task Management: Break down milestones into tasks and assign them to team members.",
-      "Team Collaboration: Share updates, assign roles, and work together seamlessly.",
-      "Real-Time Notifications: Stay informed with updates on tasks, milestones, and payments.",
-      "Performance Analytics: Get insights into project timelines, budgets, and team efficiency.",
-      "Custom Workflows: Tailor project stages and workflows to suit your team’s needs.",
       "Document Sharing: Upload and share files directly within projects.",
-      "Invoice Automation: Generate and send invoices automatically based on project milestones.",
-      "Role-Based Permissions: Control access to projects and tasks with customizable user roles.",
       "Cloud Sync: Ensure your data is secure and accessible from anywhere.",
     ],
   },
   technology: {
     title: "Technology Behind Momentum",
     content:
-      "Momentum is built using cutting-edge technologies to deliver a reliable, secure, and scalable solution for project management.",
+      "Momentum is built using secure and modern technologies to deliver a reliable, secure, and scalable solution for project management.",
     technologies: [
       "JavaScript, TypeScript, and React: Responsive and dynamic user interfaces.",
       "Next.js: Server-side rendering and static site generation for optimized performance.",
@@ -50,19 +43,16 @@ const pageData = {
     steps: [
       "Step 1: Sign Up - Create an account and log in to your personalized dashboard.",
       "Step 2: Connect your Stripe Account - Connect your Stripe account to start managing customers and sending invoices.",
-      "Step 3: Create a Project - Define project details, set milestones, and assign team members.",
+      "Step 3: Create a Project - Define project details, set milestones, and more.",
       "Step 4: Track Progress - Monitor milestones and tasks with real-time updates.",
-      "Step 5: Send Invoices - Automatically generate and send invoices via Stripe as milestones are completed.",
     ],
   },
   benefits: {
     title: "Why Choose Momentum?",
     points: [
       "Streamlined Workflow: Manage projects, customers, and invoices in one place.",
-      "Real-Time Insights: Keep track of progress and budgets with detailed analytics.",
-      "Integrated Payments: Save time with automated Stripe invoicing and payment tracking.",
-      "Team Collaboration: Enhance productivity with tools for assigning tasks and sharing updates.",
-      "Customizable Workflows: Adapt the platform to match your team’s unique processes.",
+      "Integrated Payments: Save time with integrated Stripe invoicing and payment tracking.",
+      "Customer Dashboard: Let your customers to stay updated on projects and pay invoices directly from your platform.",
     ],
   },
   faq: {
@@ -102,9 +92,10 @@ const pageData = {
 export default function About() {
   return (
     <>
-      <div className="min-h-screen h-full flex flex-col items-center justify-center py-8 pt-36 sm:pb-24 px-4 sm:px-6 lg:px-8 text-black max-w-6xl mx-auto w-full">
+      <div className="min-h-screen h-full flex flex-col items-center justify-start py-8 pt-36 sm:pb-24 px-4 sm:px-6 lg:px-8 text-black max-w-6xl mx-auto w-full">
         <div className="w-full space-y-8">
-          <div className="text-left">
+          {/* Header Section */}
+          <div className="w-full text-left">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">
               {pageData.title}
             </h1>
@@ -118,36 +109,50 @@ export default function About() {
               {pageData.buyNowLink.text}
             </Link>
           </div>
-          <div className="rounded-lg">
+
+          {/* What is Momentum Section */}
+          <section className="rounded-lg space-y-6">
             <h2 className="text-2xl font-semibold mb-4">
               {pageData.whatIs.title}
             </h2>
-            <p className="text-lg leading-6 mb-6">{pageData.whatIs.content}</p>
+            <p className="text-lg leading-6">{pageData.whatIs.content}</p>
+          </section>
+
+          {/* Key Features Section */}
+          <section className="rounded-lg space-y-6">
             <h2 className="text-2xl font-semibold mb-4">
               {pageData.keyFeatures.title}
             </h2>
-            <ul className="list-disc ml-6 text-lg leading-6 mb-6">
+            <ul className="list-disc ml-6 text-lg leading-6">
               {pageData.keyFeatures.features.map((feature, index) => (
                 <li key={index}>{feature}</li>
               ))}
             </ul>
+          </section>
+
+          {/* Technology Section */}
+          {/* <section className="rounded-lg space-y-6">
             <h2 className="text-2xl font-semibold mb-4">
               {pageData.technology.title}
             </h2>
-            <p className="text-lg leading-6 mb-4">
-              {pageData.technology.content}
-            </p>
-            <ul className="list-disc ml-6 text-lg leading-6 mb-6">
+            <p className="text-lg leading-6">{pageData.technology.content}</p>
+            <ul className="list-disc ml-6 text-lg leading-6">
               {pageData.technology.technologies.map((tech, index) => (
                 <li key={index}>{tech}</li>
               ))}
             </ul>
-            <Link
-              className="py-2 text-black font-semibold cursor-pointer hover:shadow-lg hover:shadow-black shadow-md shadow-black duration-300 mb-8 bg-confirm px-4 rounded inline-block"
-              href={pageData.buyNowLink.href}
-            >
-              {pageData.buyNowLink.text}
-            </Link>
+          </section> */}
+
+          {/* Call-to-Action Section */}
+          <Link
+            className="py-2 text-black font-semibold cursor-pointer hover:shadow-lg hover:shadow-black shadow-md shadow-black duration-300 mb-8 bg-confirm px-4 rounded inline-block"
+            href={pageData.buyNowLink.href}
+          >
+            {pageData.buyNowLink.text}
+          </Link>
+
+          {/* How to Use Section */}
+          <section className="rounded-lg space-y-6">
             <h2 className="text-2xl font-semibold mb-4">
               {pageData.howToUse.title}
             </h2>
@@ -156,34 +161,53 @@ export default function About() {
                 {step}
               </p>
             ))}
+          </section>
+
+          {/* Benefits Section */}
+          <section className="rounded-lg space-y-6">
             <h2 className="text-2xl font-semibold mb-4">
               {pageData.benefits.title}
             </h2>
-            <ul className="list-disc ml-6 text-lg leading-6 mb-6">
+            <ul className="list-disc ml-6 text-lg leading-6">
               {pageData.benefits.points.map((point, index) => (
                 <li key={index}>{point}</li>
               ))}
             </ul>
+          </section>
+
+          <section className="rounded-lg space-y-6">
             <h2 className="text-2xl font-semibold mb-4">
               {pageData.faq.title}
             </h2>
             {pageData.faq.questions.map((q, index) => (
               <div key={index} className="mb-6">
-                <h3 className="text-xl font-semibold mb-2">{q.question}</h3>
-                <p className="text-lg leading-6 mb-6">
-                  {q.answer}
-                  {q.linkText && (
-                    <Link
-                      className="text-destructive font-bold cursor-pointer hover:opacity-80 duration-300"
-                      href={q.linkHref}
-                    >
-                      {q.linkText}
-                    </Link>
-                  )}
-                </p>
+                {/* Native HTML <details> and <summary> for dropdown functionality */}
+                <details className="group">
+                  <summary className="cursor-pointer text-xl font-semibold mb-2 flex justify-between items-center">
+                    {q.question}
+                    <span className="text-xl group-open:hidden">+</span>
+                    <span className="text-xl group-open:block hidden">
+                      -
+                    </span>{" "}
+                    {/* Show "-" when open */}
+                  </summary>
+                  <div className="text-lg leading-6 mb-6">
+                    {q.answer}
+                    {q.linkText && (
+                      <Link
+                        className="text-destructive font-bold cursor-pointer hover:opacity-80 duration-300"
+                        href={q.linkHref}
+                      >
+                        {q.linkText}
+                      </Link>
+                    )}
+                  </div>
+                </details>
               </div>
             ))}
-          </div>
+          </section>
+
+          {/* Final Call-to-Action */}
           <Link
             className="py-2 text-black font-semibold cursor-pointer hover:shadow-lg hover:shadow-black shadow-md shadow-black duration-300 mt-8 bg-confirm px-4 rounded inline-block"
             href={pageData.buyNowLink.href}
