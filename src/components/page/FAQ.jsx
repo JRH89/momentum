@@ -9,7 +9,7 @@ const pageData = {
     {
       question: "Is Stripe required to use Momentum?",
       answer:
-        "Yes, Stripe is required for payment processing. However, if you don't have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process.",
+        "Yes, Stripe is required for payment processing. However, if you don't have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process. Stripe accounts are free to create and you only pay for the services you use (i.e. processing paid invoices @ 0.4%).",
     },
     {
       question: "What is the pricing for Momentum?",

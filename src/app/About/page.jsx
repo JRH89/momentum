@@ -13,7 +13,7 @@ export function generateMetadata() {
 
 export default function AboutPage() {
   return (
-    <div className="bg-gradient-to-t from-white to-[#D2DCFF]">
+    <div className="bg-white">
       <Header />
       <About />
       <Footer />

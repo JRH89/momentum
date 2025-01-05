@@ -1,20 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../context/AuthProvider";
+import { auth } from "../../../firebase";
 
 const DashboardPage = () => {
   const router = useRouter();
 
-  const { currentUser } = useAuth();
   useEffect(() => {
-    if (!currentUser) {
-      router.push("/"); // Redirect to the login page if the user is not authenticated
-    } else {
-      router.push(`/Dashboard/${currentUser.uid}`); // Redirect to the user's dashboard
-    }
-  }, [currentUser, router]);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        router.push("/"); // Redirect if user is not authenticated
+      } else {
+        router.push(`/Dashboard/${user.uid}`);
+      }
+    });
+    return () => unsubscribe();
+  }, [router]);
 
   return null; // No UI is needed as this is a redirect-only component
 };
