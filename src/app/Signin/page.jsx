@@ -20,7 +20,7 @@ export default function Page() {
         <SignIn />
         <div>
           <p className="text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a className="hover:underline text-confirm" href="/Signup">
               Sign up
             </a>
