@@ -2,14 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"; // Firebase Storage imports
-import { db, storage } from "../../../../../firebase"; // Ensure this is your Firebase config
+import { db } from "../../../../../firebase"; // Ensure this is your Firebase config
 import { useParams, useRouter } from "next/navigation";
 import { Footer } from "../../../../components/landing-page/Footer";
 import Navbar from "../../../../components/customer/Navbar";
 import { useAuth } from "../../../../context/AuthProvider";
 import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase authentication
 import { auth } from "../../../../../firebase"; // Ensure your firebase config is properly set
+import InvoicesTable from "../../../../components/customer/InvoiceTable";
 
 const CustomerDashboard = () => {
   const { userId, customerId } = useParams();
@@ -19,12 +19,13 @@ const CustomerDashboard = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const [file, setFile] = useState(null); // State for file upload
-  const [uploadError, setUploadError] = useState(null);
-  const [uploadSuccess, setUploadSuccess] = useState(null);
-
   const { user } = useAuth();
   const router = useRouter();
+
+  const [invoices, setInvoices] = useState([]);
+
+  const [stripeAccountId, setStripeAccountId] = useState(null);
+  const [stripeCustomerId, setStripeCustomerId] = useState(null);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -42,6 +43,8 @@ const CustomerDashboard = () => {
 
             if (customer) {
               setCustomerData(customer);
+              setStripeCustomerId(customer.stripeCustomerId);
+              setStripeAccountId(userData.stripeAccountId);
             } else {
               console.log("Customer not found in the customers array.");
             }
@@ -61,30 +64,29 @@ const CustomerDashboard = () => {
     fetchCustomerData();
   }, [userId, customerId, user]);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      if (!stripeAccountId || !stripeCustomerId) return;
 
-  const handleFileUpload = async () => {
-    if (!file || !user) {
-      setUploadError("Please select a file and ensure you are logged in.");
-      return;
-    }
+      try {
+        const response = await fetch(
+          `/api/stripe/invoices?stripeAccountId=${stripeAccountId}&stripeCustomerId=${stripeCustomerId}`
+        );
+        const data = await response.json();
 
-    try {
-      setUploadError(null);
-      setUploadSuccess(null);
+        if (response.ok && data.invoices) {
+          setInvoices(data.invoices || []);
+        } else {
+          setError(data.error || "Failed to fetch invoices");
+        }
+      } catch (err) {
+        console.error("Error fetching invoices:", err);
+        setError("Failed to fetch invoices.");
+      }
+    };
 
-      const fileRef = ref(storage, `uploads/${user.uid}/${file.name}`);
-      await uploadBytes(fileRef, file);
-      const downloadURL = await getDownloadURL(fileRef);
-
-      setUploadSuccess(`File uploaded successfully: ${downloadURL}`);
-    } catch (error) {
-      console.error("Upload error:", error);
-      setUploadError("Failed to upload the file. Please try again.");
-    }
-  };
+    if (stripeAccountId && stripeCustomerId) fetchInvoices();
+  }, [stripeAccountId, stripeCustomerId]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -156,30 +158,37 @@ const CustomerDashboard = () => {
         </h1>
         {customerData ? (
           <div className="bg-white shadow-md rounded-lg p-6">
-            <p className="text-lg medium ">Name: {customerData.name}</p>
-            <p className="text-lg medium ">Email: {customerData.email}</p>
-            <p className="text-lg medium mb-4">ID: {customerData.uid}</p>
+            <div className="p-4 bg-gray-100 border border-black rounded-lg mb-4">
+              <p className="text-lg medium ">Name: {customerData.name}</p>
+              <p className="text-lg medium ">Email: {customerData.email}</p>
+              <p className="text-lg medium">
+                Stripe ID: {customerData.stripeCustomerId}
+              </p>
+            </div>
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold my-2">Invoices</h3>
+              <InvoicesTable invoices={invoices} />
+            </div>
+
             {customerData.projects && (
               <>
-                <h2 className="text-xl font-bold text-gray-700 mb-4">
-                  Projects
-                </h2>
+                <h2 className="text-xl font-bold text-black mb-2">Projects</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {customerData.projects.map((project, index) => (
                     <div
                       key={index}
-                      className="bg-gray-50 border border-gray-200 rounded-lg shadow-md p-4 hover:shadow-lg transition duration-300"
+                      className="bg-gray-50 border border-black rounded-lg shadow-md p-4"
                     >
-                      <h3 className="text-lg font-bold text-gray-800 mb-2">
+                      <h3 className="text-lg font-bold text-black mb-2">
                         {project.name}
                       </h3>
                       <p className="text-gray-600 text-sm">ID: {project.id}</p>
-                      <p className="text-gray-600 text-sm mb-4">
+                      <p className="text-gray-600 text-sm mb-2">
                         Descripion: {project.description}
                       </p>
                       <a
                         href={`/Customer/${userId}/${customerId}/${project.id}`}
-                        className="text-blue-500 text-sm hover:text-blue-700"
+                        className="text-confirm text-sm hover:opacity-60 duration-300 font-semibold "
                       >
                         View Details
                       </a>

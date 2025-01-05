@@ -26,7 +26,7 @@ export async function GET(req: Request) {
     const invoices = await stripe.invoices.list(
       {
         customer: stripeCustomerId,
-        limit: 10, // You can adjust this number if needed
+        limit: 1000, // You can adjust this number if needed
       },
       {
         stripeAccount: stripeAccountId, // Specify the connected account ID
@@ -43,17 +43,6 @@ export async function GET(req: Request) {
       number: invoice.number,
       hosted_invoice_url: invoice.hosted_invoice_url,
     }));
-
-    // Log concise information for each invoice (without full invoice data)
-    formattedInvoices.forEach((invoice) => {
-      console.log(`Invoice ID: ${invoice.id}`);
-      console.log(`Status: ${invoice.status}`);
-      console.log(`Amount Due: $${invoice.amount_due}`);
-      console.log(`Due Date: ${invoice.due_date}`);
-      console.log(`Invoice Number: ${invoice.number}`);
-      console.log(`Hosted Invoice URL: ${invoice.hosted_invoice_url}`);
-      console.log('---'); // Just a separator for better readability
-    });
 
     return NextResponse.json(
       {

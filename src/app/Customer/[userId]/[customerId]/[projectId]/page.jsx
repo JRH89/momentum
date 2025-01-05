@@ -10,6 +10,7 @@ import { Footer } from "../../../../../components/landing-page/Footer";
 import Image from "next/image";
 import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -105,7 +106,13 @@ const CustomerProjectPage = () => {
   return (
     <>
       <Navbar />
-      <div className="p-6 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full">
+      <Link
+        className="flex gap-1 items-center px-6 pt-1 hover:underline"
+        href={`/Customer/${userId}/${customerId}`}
+      >
+        <ArrowLeft className="w-5 h-5" /> Back to Dashboard
+      </Link>
+      <div className="p-6 pt-4 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full">
         <h1 className="text-2xl font-bold">Project Details</h1>
         {projectData ? (
           <div>
@@ -144,22 +151,25 @@ const CustomerProjectPage = () => {
                             {milestone.description}
                           </td>
                           <td
-                            className={`px-4 py-2 font-medium ${
+                            className={`px-4 py-2 capitalize font-medium ${
                               milestone.status === "completed"
+                                ? "text-confirm"
+                                : milestone.status === "in-progress"
                                 ? "text-green-500"
-                                : "text-red-500"
+                                : "text-destructive"
                             }`}
                           >
                             {milestone.status}
                           </td>
                           <td
                             className={`px-4 py-2 font-medium capitalize ${
-                              milestone.priority === "high" && "text-red-500"
+                              milestone.priority === "high" &&
+                              "text-destructive"
                             } ${
                               milestone.priority === "medium" &&
-                              "text-yellow-500"
+                              "text-yellow-400"
                             } ${
-                              milestone.priority === "low" && "text-green-500"
+                              milestone.priority === "low" && "text-confirm"
                             }`}
                           >
                             {milestone.priority}

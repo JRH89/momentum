@@ -176,8 +176,6 @@ const handleCreateProject = async (e: React.FormEvent) => {
   }
 };
 
-
-
   return (
     <div className="mt-6">
       <div className="flex flex-row items-center justify-start">
@@ -185,9 +183,9 @@ const handleCreateProject = async (e: React.FormEvent) => {
         <button
           type="button"
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 flex flex-row items-center justify-center  duration-300 text-black font-semibold rounded-md hover:bg-opacity-60"
+          className="px-4 py-2 flex flex-row items-center justify-center text-lg duration-300 text-black font-semibold rounded-md hover:bg-opacity-60"
         >
-         [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
+         [<Plus className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />]
         </button>
       </div>
 
@@ -198,18 +196,30 @@ const handleCreateProject = async (e: React.FormEvent) => {
       {loading && <p className="text-blue-500">Loading...</p>}
 
       {/* Existing Projects List */}
-      <div className="mt-4">
+      <div className="mb-4">
         {projects.length > 0 ? (
-          <ul>
-            {projects.map((project) => (
-              <li key={project.id} className="border-b py-2">
-                <a href={project.link} className="text-blue-500 hover:underline">
-                  {project.name}
-                </a>
-                <p className="text-gray-500">{project.description}</p>
-              </li>
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {projects.map((project, index) => (
+             <div
+                      key={index}
+                      className="bg-gray-50 border border-black rounded-lg shadow-md p-4"
+                    >
+                      <h3 className="text-lg font-bold text-black mb-2">
+                        {project.name}
+                      </h3>
+                      <p className="text-gray-600 text-sm">ID: {project.id}</p>
+                      <p className="text-gray-600 text-sm mb-2">
+                        Descripion: {project.description}
+                      </p>
+                      <a
+                        href={project.link}
+                        className="text-confirm text-sm hover:opacity-60 duration-300 font-semibold "
+                      >
+                        View Details
+                      </a>
+                    </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No projects found.</p>
         )}

@@ -9,6 +9,7 @@ import NavBar from "../../../../components/navbar";
 import Footer from "../../../../components/footer";
 import Projects from "../../../../components/client/Projects";
 import { Plus } from "lucide-react";
+import InvoicesTable from "../../../../components/customer/InvoiceTable";
 
 const CustomerDetailsPage: React.FC = () => {
   const { uid, stripeCustomerId } = useParams() as { uid: string; stripeCustomerId: string };
@@ -18,13 +19,13 @@ const CustomerDetailsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // State for creating invoices
   const [invoiceAmount, setInvoiceAmount] = useState<string>("");
   const [invoiceCurrency, setInvoiceCurrency] = useState<string>("usd");
   const [invoiceDescription, setInvoiceDescription] = useState<string>("");
 
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
-  const [showProjectForm, setShowProjectForm] = useState(false);
+
+  const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
 
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId: string) => {
@@ -100,51 +101,55 @@ const CustomerDetailsPage: React.FC = () => {
       }
     }, [stripeAccountId, error, invoices]);
 
-    // Handle creating a new invoice
-    const handleCreateInvoice = async (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleCreateInvoice = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-      if (!invoiceAmount || !invoiceCurrency || !invoiceDescription) {
-        setError("Please fill in all fields");
-        return;
+    if (!invoiceAmount || !invoiceCurrency || !invoiceDescription || !invoiceDueDate) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/stripe/invoices/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          stripeAccountId,
+          stripeCustomerId,
+          items: [
+            {
+              amount: parseInt(invoiceAmount, 10) * 100, // Convert to cents
+              currency: invoiceCurrency,
+              description: invoiceDescription,
+              quantity: 1, // Default to 1 or adjust as needed
+            },
+          ],
+          dueDate: new Date(invoiceDueDate).getTime() / 1000, // Convert due date to Unix timestamp
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setInvoices((prevInvoices) => [...prevInvoices, data]); // Add the new invoice to the state
+        setInvoiceAmount(""); // Reset input fields
+        setInvoiceCurrency("usd");
+        setInvoiceDescription("");
+        setInvoiceDueDate(""); // Reset due date field
+        setShowInvoiceForm(false);
+      } else {
+        setError(data.error || "Failed to create invoice");
       }
+    } catch (err) {
+      console.error("Error creating invoice:", err);
+      setError("Failed to create invoice");
+    }
+  };
 
-      try {
-        const response = await fetch(`/api/stripe/invoices/create?stripeAccountId=${stripeAccountId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            stripeCustomerId,
-            items: [
-              {
-                amount: parseInt(invoiceAmount, 10) * 100, // Convert to cents
-                currency: invoiceCurrency,
-                description: invoiceDescription,
-              },
-            ],
-          }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
-          setInvoiceAmount("");
-          setInvoiceCurrency("usd");
-          setInvoiceDescription("");
-        } else {
-          setError(data.error || "Failed to create invoice");
-        }
-        } catch (err) {
-          console.error("Error creating invoice:", err);
-          setError("Failed to create invoice");
-        }
-    };
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>{error}</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <>
@@ -158,6 +163,7 @@ const CustomerDetailsPage: React.FC = () => {
               </h2>
               <p>Name: {customerData.name}</p>
               <p>Email: <a className="text-confirm bg-gray-100 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
+              <p>Stripe Customer ID: {customerData.stripeCustomerId}</p>
             </div>
           )}
           <div className="mt-6">
@@ -166,105 +172,91 @@ const CustomerDetailsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowInvoiceForm(!showInvoiceForm)}
-                className=" hover:bg-opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row px-4 py-2 rounded-lg"
+                className=" hover:bg-opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row px-4 py-2 text-lg rounded-lg"
               >
-                 [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
+                 [<Plus className="w-6 h-6 flex text-green-500 hover:rotate-90 duration-300" />]
               </button>
             </div>
             { showInvoiceForm && (
-              <form className="mt-4 inset-0 bg-black/90 absolute flex items-center justify-center min-h-screen h-full w-full flex-col px-4" onSubmit={handleCreateInvoice}>
-                <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
-                  <h2 className="text-2xl text-center font-semibold mb-4">Create Invoice</h2>
-                <div className="mt-2 ">
-                  <label htmlFor="amount" className="block text-gray-700">Amount</label>
-                  <input
-                    id="amount"
-                    type="number"
-                    value={invoiceAmount}
-                    onChange={(e) => setInvoiceAmount(e.target.value)}
-                    required
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mt-2">
-                  <label htmlFor="currency" className="block text-gray-700">Currency</label>
-                  <input
-                    id="currency"
-                    type="text"
-                    value={invoiceCurrency}
-                    onChange={(e) => setInvoiceCurrency(e.target.value)}
-                    required
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                </div>
-                <div className="mt-2">
-                  <label htmlFor='description' className="block text-gray-700">Description</label>
-                  <input
-                    id='description'
-                    type="text"
-                    value={invoiceDescription}
-                    onChange={(e) => setInvoiceDescription(e.target.value)}
-                    required
-                    className="w-full p-2 border border-gray-300 rounded-md"
-                  />
-                  </div>
-                  <div className="flex flex-row justify-end">
+            <form
+            className="mt-4 fixed inset-0 bg-black/90 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
+            onSubmit={handleCreateInvoice}
+          >
+            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
+              <h2 className="text-2xl text-center font-semibold mb-4">Create Invoice</h2>
+              <div className="mt-2">
+                <label htmlFor="amount" className="block text-gray-700">
+                  Amount
+                </label>
+                <input
+                  id="amount"
+                  type="number"
+                  value={invoiceAmount}
+                  onChange={(e) => setInvoiceAmount(e.target.value)}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mt-2">
+                <label htmlFor="currency" className="block text-gray-700">
+                  Currency
+                </label>
+                <input
+                  id="currency"
+                  type="text"
+                  value={invoiceCurrency}
+                  onChange={(e) => setInvoiceCurrency(e.target.value)}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mt-2">
+                <label htmlFor="description" className="block text-gray-700">
+                  Description
+                </label>
+                <input
+                  id="description"
+                  type="text"
+                  value={invoiceDescription}
+                  onChange={(e) => setInvoiceDescription(e.target.value)}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="mt-2">
+                <label htmlFor="dueDate" className="block text-gray-700">
+                  Due Date
+                </label>
+                <input
+                  id="dueDate"
+                  type="date"
+                  value={invoiceDueDate}
+                  onChange={(e) => setInvoiceDueDate(e.target.value)}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+              <div className="flex flex-row justify-end">
                 <button
                   type="button"
                   onClick={() => setShowInvoiceForm(false)}
-                  className="mt-4 text-destructive hover:opacity-60 duration-300 ease-in-out  py-2 px-4 rounded-md "
+                  className="mt-4 text-destructive hover:opacity-60 duration-300 ease-in-out py-2 px-4 rounded-md"
                 >
                   Cancel
-                    </button>
-                 <button
+                </button>
+                <button
                   type="submit"
                   className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
                 >
                   Create Invoice
-                </button>    
-                </div>
-                </div>
-                </form>
+                </button>
+              </div>
+            </div>
+          </form>
               )}
             </div>
-          <div className='mt-2'>
-            {invoices.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="min-w-full table-auto border border-black">
-                <thead>
-                  <tr className="bg-gray-100 border-b border-black">
-                    <th className="px-4 py-2 text-left">Invoice ID</th>
-                    <th className="px-4 py-2 text-left">Amount</th>
-                    <th className="px-4 py-2 text-left">Status</th>
-                    <th className="px-4 py-2 text-left">Due Date</th>
-                    <th className="px-4 py-2 text-left flex justify-end">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoices.map((invoice) => (
-                    <tr key={invoice.id} className="border-b border-black">
-                      <td className="px-4 py-2">{invoice.number}</td>
-                      <td className="px-4 py-2 flex flex-row  max-w-xs mx-auto w-full">${invoice.amount_due}</td>
-                      <td className={`px-4 py-2 capitalize ${invoice.status === 'paid' ? 'text-green-600' : 'text-red-600'}`}>{invoice.status}</td>
-                      <td className="px-4 py-2">{invoice.due_date}</td>
-                      <td className="px-4 py-2 flex justify-end">
-                        <a 
-                          className="text-destructive hover:underline font-semibold rounded-lg"
-                          href={invoice.hosted_invoice_url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                        >
-                          View Invoice
-                        </a>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p>No invoices found.</p>
-          )}
+          <div className='mt-0'>
+            <InvoicesTable invoices={invoices} />
           </div>
           {customerData && customerData.email ? (
             <Projects
