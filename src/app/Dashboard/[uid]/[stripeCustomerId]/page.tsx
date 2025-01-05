@@ -101,52 +101,68 @@ const CustomerDetailsPage: React.FC = () => {
       }
     }, [stripeAccountId, error, invoices]);
 
-  const handleCreateInvoice = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleCreateInvoice = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    if (!invoiceAmount || !invoiceCurrency || !invoiceDescription || !invoiceDueDate) {
-      setError("Please fill in all fields");
-      return;
+  if (!invoiceAmount || !invoiceCurrency || !invoiceDescription || !invoiceDueDate) {
+    setError("Please fill in all fields");
+    return;
+  }
+
+  // Log the values being sent
+  console.log('Sending invoice data:', {
+    amount: invoiceAmount,
+    currency: invoiceCurrency,
+    description: invoiceDescription,
+    dueDate: invoiceDueDate
+  });
+
+  try {
+    const response = await fetch(`/api/stripe/invoices/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        stripeAccountId,
+        stripeCustomerId,
+        items: [
+          {
+            amount: Math.round(parseFloat(invoiceAmount) * 100), // Convert to cents and ensure it's a number
+            currency: invoiceCurrency.toLowerCase(),
+            description: invoiceDescription,
+            quantity: 1,
+          },
+        ],
+        dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to create invoice');
     }
 
-    try {
-      const response = await fetch(`/api/stripe/invoices/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          stripeAccountId,
-          stripeCustomerId,
-          items: [
-            {
-              amount: parseInt(invoiceAmount, 10) * 100, // Convert to cents
-              currency: invoiceCurrency,
-              description: invoiceDescription,
-              quantity: 1, // Default to 1 or adjust as needed
-            },
-          ],
-          dueDate: new Date(invoiceDueDate).getTime() / 1000, // Convert due date to Unix timestamp
-        }),
-      });
+    // Log the response
+    console.log('Invoice created:', data);
 
-      const data = await response.json();
+    setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
+    setShowInvoiceForm(false);
+    
+    // Reset form
+    setInvoiceAmount("");
+    setInvoiceCurrency("usd");
+    setInvoiceDescription("");
+    setInvoiceDueDate("");
+    
+  } catch (err) {
+    console.error("Error creating invoice:", err);
+    setError(err instanceof Error ? err.message : "Failed to create invoice");
+  }
+};
 
-      if (response.ok) {
-        setInvoices((prevInvoices) => [...prevInvoices, data]); // Add the new invoice to the state
-        setInvoiceAmount(""); // Reset input fields
-        setInvoiceCurrency("usd");
-        setInvoiceDescription("");
-        setInvoiceDueDate(""); // Reset due date field
-        setShowInvoiceForm(false);
-      } else {
-        setError(data.error || "Failed to create invoice");
-      }
-    } catch (err) {
-      console.error("Error creating invoice:", err);
-      setError("Failed to create invoice");
-    }
-  };
+
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
