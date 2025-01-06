@@ -10,7 +10,8 @@ import { Footer } from "../../../../../components/landing-page/Footer";
 import Image from "next/image";
 import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PlusIcon } from "lucide-react";
+import ReactPaginate from "react-paginate";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -22,13 +23,28 @@ const CustomerProjectPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [milestones, setMilestones] = useState([]);
 
+  const [showUploadMenu, setShowUploadMenu] = useState(false);
+
   const storage = getStorage();
 
   const { user } = useAuth();
 
+  const itemsPerPage = 6;
+  const [currentPage, setCurrentPage] = useState(0);
+
+  // Calculate the current uploads to display
+  const offset = currentPage * itemsPerPage;
+  const currentUploads = uploads.slice(offset, offset + itemsPerPage);
+  const pageCount = Math.ceil(uploads.length / itemsPerPage);
+
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+
   // Fetch project data only if user is authenticated
   useEffect(() => {
     if (user && userId && customerId && projectId) {
+      setIsLoading(true);
       const fetchData = async () => {
         const userDocRef = doc(db, "users", userId);
         const userDocSnap = await getDoc(userDocRef);
@@ -46,6 +62,7 @@ const CustomerProjectPage = () => {
               setProjectData(project);
               setUploads(project.uploads || []);
               setMilestones(project.milestones || []);
+              setIsLoading(false);
             }
           }
         } else {
@@ -82,17 +99,29 @@ const CustomerProjectPage = () => {
           customerIndex
         ].projects.findIndex((proj) => proj.id === projectId);
 
-        // Update project uploads
-        userData.customers[customerIndex].projects[projectIndex].uploads = [
+        // Ensure customer and project exist
+        if (customerIndex === -1 || projectIndex === -1) {
+          throw new Error("Customer or project not found");
+        }
+
+        // Update project uploads as an array of objects
+        const updatedUploads = [
           ...(userData.customers[customerIndex].projects[projectIndex]
             .uploads || []),
-          fileUrl,
+          { url: fileUrl, name: file.name }, // Object format
         ];
 
-        await updateDoc(userDocRef, userData);
-        setUploads(
-          userData.customers[customerIndex].projects[projectIndex].uploads
-        );
+        // Update the Firestore document
+        const updatedData = { ...userData };
+        updatedData.customers[customerIndex].projects[projectIndex].uploads =
+          updatedUploads;
+
+        await updateDoc(userDocRef, updatedData);
+
+        // Update local state
+        setUploads(updatedUploads);
+      } else {
+        throw new Error("User document does not exist");
       }
 
       setFile(null);
@@ -112,19 +141,23 @@ const CustomerProjectPage = () => {
       >
         <ArrowLeft className="w-5 h-5" /> Back to Dashboard
       </Link>
-      <div className="p-6 pt-4 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full">
-        <h1 className="text-2xl font-bold">Project Details</h1>
+      <div className="p-6 pt-4 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
+        <h1 className="text-2xl font-bold">
+          Project:
+          <span className="font-normal text-gray-600 ml-2">
+            {projectData?.id}
+          </span>
+        </h1>
         {projectData ? (
           <div>
-            <h2 className="text-xl">Title: {projectData.name}</h2>
-            <p>Desc: {projectData.description}</p>
-            <p>ID: {projectData.id}</p>
+            <h2 className="text-xl">{projectData.name}</h2>
+            <p>{projectData.description}</p>
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">Milestones</h3>
+              <h3 className="text-lg font-semibold mb-2">Milestones</h3>
               {milestones.length > 0 ? (
-                <div className="max-h-[calc(5*4rem)] overflow-y-auto">
+                <div className="max-h-[calc(3*4rem)] overflow-y-auto">
                   <table className="min-w-full bg-white shadow-md">
-                    <thead className="border border-black">
+                    <thead className="border bg-gray-200 border-black">
                       <tr>
                         <th className="px-4 py-2 text-left font-bold">Title</th>
                         <th className="px-4 py-2 text-left font-bold">
@@ -187,50 +220,81 @@ const CustomerProjectPage = () => {
               )}
             </div>
             <div className="mt-4">
-              <h3 className="text-lg font-semibold">Uploads</h3>
-              <div className="mb-4 gap-2 flex flex-row">
-                <input
-                  type="file"
-                  onChange={(e) => setFile(e.target.files[0])}
-                  className="border rounded p-2 bg-white"
-                />
+              <div className="flex flex-row gap-2 mb-2">
+                <h3 className="text-lg font-semibold">Uploads</h3>
                 <button
-                  onClick={handleUpload}
-                  disabled={!file || isLoading}
-                  className="bg-confirm text-white px-4 py-2 rounded hover:bg-opacity-60 duration-300 cursor-pointer"
+                  className="flex flex-row items-center font-medium text-lg my-auto justify-center"
+                  onClick={() => setShowUploadMenu(!showUploadMenu)}
                 >
-                  {isLoading ? "Uploading..." : "Upload File"}
+                  [
+                  <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />
+                  ]
                 </button>
               </div>
+              {showUploadMenu && (
+                <div className="mb-4 gap-2 flex flex-row">
+                  <input
+                    type="file"
+                    onChange={(e) => setFile(e.target.files[0])}
+                    className="border rounded p-2 bg-white"
+                  />
+                  <button
+                    onClick={handleUpload}
+                    disabled={!file || isLoading}
+                    className="bg-confirm text-white px-4 py-2 rounded hover:bg-opacity-60 duration-300 cursor-pointer"
+                  >
+                    {isLoading ? "Uploading..." : "Upload File"}
+                  </button>
+                </div>
+              )}
+
               {uploads.length > 0 ? (
-                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {uploads.map((upload, index) => (
-                    <li
-                      key={index}
-                      className="border bg-white p-2 rounded shadow-md"
-                    >
-                      <Image
-                        width={200}
-                        height={200}
-                        src={upload}
-                        alt={`Upload ${index + 1}`}
-                        className="object-fit w-full h-full rounded"
-                        onError={(e) => {
-                          e.target.style.display = "none"; // Hide broken image
-                          e.target.nextElementSibling.style.display = "block"; // Show link instead
-                        }}
-                      />
-                      <a
-                        href={upload}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-500 break-words underline hidden"
+                <div>
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {currentUploads.map((upload, index) => (
+                      <li
+                        key={index}
+                        className="border bg-white p-2 rounded shadow-md"
                       >
-                        {upload.split("/").pop()}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                        <Image
+                          loading="lazy"
+                          width={200}
+                          height={200}
+                          src={upload.url || upload}
+                          alt={`Upload ${index + 1}`}
+                          className="object-fit w-full h-full rounded"
+                          onError={(e) => {
+                            e.target.style.display = "none"; // Hide broken image
+                            e.target.nextElementSibling.style.display = "block"; // Show link instead
+                          }}
+                        />
+                        <a
+                          href={upload.url || upload}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 break-words underline hidden"
+                        >
+                          {upload.name || upload}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    pageCount={pageCount}
+                    onPageChange={handlePageChange}
+                    containerClassName={
+                      "flex flex-row justify-between px-4 items-center  w-full mx-auto mt-4"
+                    }
+                    previousLinkClassName={"  rounded"}
+                    nextLinkClassName={"  rounded"}
+                    disabledClassName={"opacity-50 cursor-not-allowed"}
+                    activeClassName={"text-confirm font-extrabold text-white"}
+                    pageClassName={"  rounded cursor-pointer"}
+                    activeLinkClassName={"font-bold text-confirm"}
+                  />
+                </div>
               ) : (
                 <p>No uploads yet.</p>
               )}
