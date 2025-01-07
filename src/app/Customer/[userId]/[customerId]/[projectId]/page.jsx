@@ -12,6 +12,7 @@ import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
 import { ArrowLeft, PlusIcon } from "lucide-react";
 import ReactPaginate from "react-paginate";
+import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -136,13 +137,13 @@ const CustomerProjectPage = () => {
     <>
       <Navbar />
       <Link
-        className="flex gap-1 items-center px-6 pt-1 hover:underline"
+        className="flex gap-1 text-sm sm:text-lg items-center px-6 pt-1 hover:underline"
         href={`/Customer/${userId}/${customerId}`}
       >
         <ArrowLeft className="w-5 h-5" /> Back to Dashboard
       </Link>
       <div className="p-6 pt-4 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-lg sm:text-2xl font-bold">
           Project:
           <span className="font-normal text-gray-600 ml-2">
             {projectData?.id}
@@ -250,35 +251,38 @@ const CustomerProjectPage = () => {
 
               {uploads.length > 0 ? (
                 <div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
                     {currentUploads.map((upload, index) => (
                       <li
                         key={index}
-                        className="border bg-white p-2 rounded shadow-md"
+                        className="border bg-white p-2 rounded shadow-md flex items-center gap-2"
                       >
-                        <Image
-                          loading="lazy"
-                          width={200}
-                          height={200}
-                          src={upload.url || upload}
-                          alt={`Upload ${index + 1}`}
-                          className="object-fit w-full h-full rounded"
-                          onError={(e) => {
-                            e.target.style.display = "none"; // Hide broken image
-                            e.target.nextElementSibling.style.display = "block"; // Show link instead
-                          }}
-                        />
+                        {/* Image preview (if it's an image) */}
+                        {upload.url &&
+                          (upload.name.match(
+                            /\.(jpeg|jpg|gif|png|webp|svg)$/i
+                          ) ? (
+                            <img
+                              src={upload.url}
+                              alt={upload.name || `Upload ${index + 1}`}
+                              className="w-10 h-10 object-cover rounded"
+                              loading="lazy"
+                            />
+                          ) : null)}
+
+                        {/* File link */}
                         <a
-                          href={upload.url || upload}
+                          href={upload.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-500 break-words underline hidden"
+                          className="text-blue-500 hover:underline truncate"
                         >
-                          {upload.name || upload}
+                          {upload.name || `File ${index + 1}`}
                         </a>
                       </li>
                     ))}
                   </ul>
+
                   <ReactPaginate
                     previousLabel={"Previous"}
                     nextLabel={"Next"}
@@ -299,6 +303,11 @@ const CustomerProjectPage = () => {
                 <p>No uploads yet.</p>
               )}
             </div>
+            <ColorPaletteGenerator
+              userId={userId}
+              customerId={customerId}
+              projectId={projectId}
+            />
           </div>
         ) : (
           <>

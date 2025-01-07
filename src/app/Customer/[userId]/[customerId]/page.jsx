@@ -157,8 +157,9 @@ const CustomerDashboard = () => {
           Customer Dashboard
         </h1>
         {customerData ? (
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <div className="p-4 bg-gray-100 border border-black rounded-lg mb-4">
+          <div className="bg-white shadow-md rounded-lg p-6 pt-2">
+            <h3 className="text-xl font-semibold my-2">Customer Details</h3>
+            <div className="p-4 bg-gray-100 border shadow-md border-black rounded-lg mb-4">
               <p className="text-lg medium ">Name: {customerData.name}</p>
               <p className="text-lg medium ">Email: {customerData.email}</p>
               <p className="text-lg medium">

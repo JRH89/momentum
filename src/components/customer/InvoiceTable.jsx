@@ -19,7 +19,7 @@ const InvoicesTable = ({ invoices }) => {
   return (
     <div>
       {invoices.length > 0 ? (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto shadow-md">
           <table className="min-w-full table-auto border border-black">
             <thead>
               <tr className="bg-gray-100 border-b border-black">
