@@ -137,27 +137,24 @@ const CustomerProjectPage = () => {
     <>
       <Navbar />
       <Link
-        className="flex gap-1 text-sm sm:text-lg items-center px-6 pt-1 hover:underline"
+        className="flex gap-1 px-2 sm:px-5 text-sm text-green-500 sm:text-lg items-center pt-1 hover:underline"
         href={`/Customer/${userId}/${customerId}`}
       >
         <ArrowLeft className="w-5 h-5" /> Back to Dashboard
       </Link>
       <div className="p-6 pt-4 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
-        <h1 className="text-lg sm:text-2xl font-bold">
-          Project:
-          <span className="font-normal text-gray-600 ml-2">
-            {projectData?.id}
-          </span>
-        </h1>
+        <h2 className="text-2xl capitalize font-bold">{projectData?.name}</h2>
+        <p className="">ID: {projectData?.id}</p>
+        <p className="border-b border-black">
+          Summary: {projectData?.description}
+        </p>
         {projectData ? (
           <div>
-            <h2 className="text-xl">{projectData.name}</h2>
-            <p>{projectData.description}</p>
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold mb-2">Milestones</h3>
+            <div className="mt-4 bg-white p-4 rounded-lg shadow-md shadow-black">
+              <h3 className="text-2xl font-bold mb-2">Milestones</h3>
               {milestones.length > 0 ? (
                 <div className="max-h-[calc(3*4rem)] overflow-y-auto">
-                  <table className="min-w-full bg-white shadow-md">
+                  <table className="min-w-full bg-white shadow-md text-xs sm:text-base">
                     <thead className="border bg-gray-200 border-black">
                       <tr>
                         <th className="px-4 py-2 text-left font-bold">Title</th>
@@ -220,9 +217,9 @@ const CustomerProjectPage = () => {
                 <p>No milestones yet.</p>
               )}
             </div>
-            <div className="mt-4">
+            <div className="mt-4 bg-white p-4 rounded-lg shadow-md shadow-black">
               <div className="flex flex-row gap-2 mb-2">
-                <h3 className="text-lg font-semibold">Uploads</h3>
+                <h3 className="text-2xl font-bold">Uploads</h3>
                 <button
                   className="flex flex-row items-center font-medium text-lg my-auto justify-center"
                   onClick={() => setShowUploadMenu(!showUploadMenu)}
@@ -233,7 +230,7 @@ const CustomerProjectPage = () => {
                 </button>
               </div>
               {showUploadMenu && (
-                <div className="mb-4 gap-2 flex flex-row">
+                <div className="mb-4 gap-2 flex flex-col">
                   <input
                     type="file"
                     onChange={(e) => setFile(e.target.files[0])}
@@ -242,7 +239,7 @@ const CustomerProjectPage = () => {
                   <button
                     onClick={handleUpload}
                     disabled={!file || isLoading}
-                    className="bg-confirm text-white px-4 py-2 rounded hover:bg-opacity-60 duration-300 cursor-pointer"
+                    className="bg-confirm text-black font-semibold px-4 py-2 rounded hover:bg-opacity-60 duration-300 cursor-pointer"
                   >
                     {isLoading ? "Uploading..." : "Upload File"}
                   </button>
@@ -255,7 +252,7 @@ const CustomerProjectPage = () => {
                     {currentUploads.map((upload, index) => (
                       <li
                         key={index}
-                        className="border bg-white p-2 rounded shadow-md flex items-center gap-2"
+                        className="border border-black bg-[#EAEEFE] p-2 rounded shadow-md flex items-center gap-2"
                       >
                         {/* Image preview (if it's an image) */}
                         {upload.url &&
@@ -275,7 +272,7 @@ const CustomerProjectPage = () => {
                           href={upload.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-500 hover:underline truncate"
+                          className="text-destructive hover:underline truncate"
                         >
                           {upload.name || `File ${index + 1}`}
                         </a>

@@ -2,6 +2,7 @@ import NavBar from "../../components/navbar";
 import { Footer } from "../../components/landing-page/Footer";
 import siteMetadata from "../../../siteMetadata";
 import SignIn from "../../components/user/SignIn";
+import NewNavBar from "../../components/SignUpNavbar";
 
 export const metadata = {
   title: `Sign In | ${siteMetadata.title}`,
@@ -12,19 +13,25 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <NavBar />
-      <div className="flex bg-white justify-center items-center min-h-screen h-full -mt-24 flex-col text-center gap-5 w-full mx-auto">
-        <h1 className="text-3xl max-w-xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black">
-          Keep that {siteMetadata.title} going!
-        </h1>
-        <SignIn />
-        <div>
-          <p className="text-sm">
-            Don&apos;t have an account?{" "}
-            <a className="hover:underline text-confirm" href="/Signup">
-              Sign up
-            </a>
-          </p>
+      <NewNavBar />
+      <div className="absolute h-full min-h-screen inset-0 top-[66px] bg-white/60"></div>
+      <div
+        style={{ backgroundImage: `url("/lightspeed.png")` }}
+        className="flex bg-white justify-center items-center bg-cover bg-center min-h-screen h-full  flex-col text-center gap-5 w-full mx-auto"
+      >
+        <div className="relative z-10 h-full mx-auto justify-center items-center flex flex-col gap-4">
+          <h1 className="text-3xl max-w-2xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black">
+            Keep up that {siteMetadata.title}!
+          </h1>
+          <SignIn />
+          <div>
+            <p className="text-base font-semibold">
+              Don&apos;t have an account?{" "}
+              <a className="hover:underline text-destructive" href="/Signup">
+                Sign up
+              </a>
+            </p>
+          </div>
         </div>
       </div>
       <Footer />

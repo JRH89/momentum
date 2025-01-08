@@ -13,15 +13,15 @@ const ProtectedRoute = ({ children }) => {
       if (!user) {
         router.push('/'); // Redirect if user is not authenticated
       } else {
-        // Check if user is authenticated via Google
-        const isGoogleUser = user.providerData.some(
-          (provider) => provider.providerId === 'google.com'
+        // Check if user is authenticated via Google or GitHub
+        const isAuthorizedUser = user.providerData.some((provider) =>
+          ['google.com', 'github.com'].includes(provider.providerId)
         );
 
-        if (!isGoogleUser) {
-          router.push('/'); // Redirect if user is not authenticated via Google
+        if (!isAuthorizedUser) {
+          router.push('/'); // Redirect if user is not authenticated via Google or GitHub
         } else {
-          setLoading(false); // Auth check complete and user is authenticated via Google
+          setLoading(false); // Auth check complete and user is authenticated
         }
       }
     });

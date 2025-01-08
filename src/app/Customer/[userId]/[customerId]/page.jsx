@@ -4,12 +4,13 @@ import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../../firebase"; // Ensure this is your Firebase config
 import { useParams, useRouter } from "next/navigation";
-import { Footer } from "../../../../components/landing-page/Footer";
+import Footer from "../../../../components/footer";
 import Navbar from "../../../../components/customer/Navbar";
 import { useAuth } from "../../../../context/AuthProvider";
 import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase authentication
 import { auth } from "../../../../../firebase"; // Ensure your firebase config is properly set
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
+import UserTickets from "../../../../components/user/UserTickets";
 
 const CustomerDashboard = () => {
   const { userId, customerId } = useParams();
@@ -153,52 +154,72 @@ const CustomerDashboard = () => {
     <>
       <Navbar />
       <div className="flex flex-col p-6 max-w-6xl mx-auto w-full min-h-screen h-full pb-24">
-        <h1 className="text-2xl font-bold text-black mb-6">
-          Customer Dashboard
-        </h1>
-        {customerData ? (
-          <div className="bg-white shadow-md rounded-lg p-6 pt-2">
-            <h3 className="text-xl font-semibold my-2">Customer Details</h3>
-            <div className="p-4 bg-gray-100 border shadow-md border-black rounded-lg mb-4">
-              <p className="text-lg medium ">Name: {customerData.name}</p>
-              <p className="text-lg medium ">Email: {customerData.email}</p>
-              <p className="text-lg medium">
-                Stripe ID: {customerData.stripeCustomerId}
-              </p>
-            </div>
-            <div className="mb-6">
-              <h3 className="text-xl font-semibold my-2">Invoices</h3>
-              <InvoicesTable invoices={invoices} />
-            </div>
-
-            {customerData.projects && (
-              <>
-                <h2 className="text-xl font-bold text-black mb-2">Projects</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {customerData.projects.map((project, index) => (
-                    <div
-                      key={index}
-                      className="bg-gray-50 border border-black rounded-lg shadow-md p-4"
-                    >
-                      <h3 className="text-lg font-bold text-black mb-2">
-                        {project.name}
-                      </h3>
-                      <p className="text-gray-600 text-sm">ID: {project.id}</p>
-                      <p className="text-gray-600 text-sm mb-2">
-                        Descripion: {project.description}
-                      </p>
-                      <a
-                        href={`/Customer/${userId}/${customerId}/${project.id}`}
-                        className="text-confirm text-sm hover:opacity-60 duration-300 font-semibold "
-                      >
-                        View Details
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
+        <div className="border-b border-black justify-between flex flex-row items-baseline">
+          <h1 className="text-2xl lg:text-3xl font-bold text-black ">
+            Customer Dashboard
+          </h1>
+          <div className="text-lg lg:text-xl">
+            Welcome back, {customerData?.name || customerData?.email}
           </div>
+        </div>
+        {customerData ? (
+          <>
+            <div className="bg-white mt-6 shadow-md shadow-black rounded-lg p-6">
+              <div className="mb-6">
+                <h3 className="text-2xl font-bold mb-4">Invoices</h3>
+                <InvoicesTable invoices={invoices} />
+              </div>
+
+              {customerData.projects && (
+                <>
+                  <h2 className="text-2xl font-bold mb-4">Projects</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {customerData.projects.map((project, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#EAEEFE] border border-black rounded-lg shadow-md p-4"
+                      >
+                        <h3 className="text-lg font-bold text-black mb-2">
+                          {project.name}
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          ID: {project.id}
+                        </p>
+                        <p className="text-gray-600 text-sm mb-2">
+                          Descripion: {project.description}
+                        </p>
+                        <a
+                          href={`/Customer/${userId}/${customerId}/${project.id}`}
+                          className="text-confirm text-sm hover:underline duration-300 font-semibold "
+                        >
+                          View Details
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2  mt-4 gap-4">
+              <div className="border flex flex-col h-full my-auto w-full bg-white border-gray-300 shadow-md shadow-black p-4 rounded-lg">
+                <h2 className="text-2xl font-bold mb-4">Customer Details</h2>
+                <div className="p-4 flex flex-col h-full my-auto justify-center border border-black bg-[#EAEEFE] rounded-lg shadow-sm">
+                  <p className="text-lg font-medium ">
+                    Name: {customerData.name}
+                  </p>
+                  <p className="text-lg font-medium ">
+                    Email: {customerData.email}
+                  </p>
+                  <p className="text-lg font-medium">
+                    Stripe ID: {customerData.stripeCustomerId}
+                  </p>
+                </div>
+              </div>
+              <div className="flex h-full">
+                <UserTickets userId={userId} customerId={customerId} />
+              </div>
+            </div>
+          </>
         ) : (
           <p className="text-gray-500 text-center">No customer data found.</p>
         )}

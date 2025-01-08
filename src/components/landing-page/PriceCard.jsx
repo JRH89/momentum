@@ -57,7 +57,7 @@ export const PriceCard = () => {
       id="price"
       className="relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
       style={{
-        backgroundImage: 'url("/image-5.png")',
+        backgroundImage: 'url("/image-2.png")',
         backgroundPosition: "center 25%",
       }}
     >

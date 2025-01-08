@@ -45,7 +45,7 @@ const ProjectPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [project, setProject] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
-  const [uploads, setUploads] = useState<string[]>([]);
+  const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -183,7 +183,7 @@ const ProjectPage = () => {
   return (
     <>
       <NavBar />
-      <div className="px-4 pt-6 min-h-screen h-full w-full max-w-6xl mx-auto">
+      <div className="px-4 pt-6 min-h-screen h-full w-full max-w-6xl mx-auto pb-24">
         <h1 className="text-4xl font-semibold">{project.name}</h1>
         <p className="mt-2 text-lg">{project.description}</p>
         <div className="">
@@ -260,43 +260,41 @@ const ProjectPage = () => {
             </button> */}
           </div>
           {uploads.length > 0 ? (
-                         <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                          {uploads.map((upload, index) => (
-  <li key={index} className="border p-2 rounded shadow-md">
-    <Image
-      width={200}
-      height={200}
-      src={upload}
-      alt={`Upload ${index + 1}`}
-      className="object-fit w-full h-full rounded"
-      onError={(e) => {
-        const target = e.target as HTMLImageElement; // Assert the target as an HTMLImageElement
-        target.style.display = "none"; // Hide broken image
-        const nextElement = target.nextElementSibling as HTMLElement | null; // Get the next sibling element
-        if (nextElement) {
-          nextElement.style.display = "block"; // Show the link
-        }
-      }}
-    />
-    <a
-      href={upload}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-blue-500 break-words underline hidden"
-    >
-      {upload.split("/").pop()}
-    </a>
-  </li>
-))}
+            <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
+                    {uploads.map((upload, index) => (
+                      <li
+                        key={index}
+                        className="border bg-white p-2 rounded shadow-md flex items-center gap-2"
+                      >
+                        {/* Image preview (if it's an image) */}
+                        {upload.url &&
+                          (upload.name.match(
+                            /\.(jpeg|jpg|gif|png|webp|svg)$/i
+                          ) ? (
+                            <img
+                              src={upload.url}
+                              alt={upload.name || `Upload ${index + 1}`}
+                              className="w-10 h-10 object-cover rounded"
+                              loading="lazy"
+                            />
+                          ) : null)}
 
-                         </ul>
-                       ) : (
-                         <p>No uploads yet.</p>
-                       )}
+                        {/* File link */}
+                        <a
+                          href={upload.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:underline truncate"
+                        >
+                          {upload.name || `File ${index + 1}`}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+          ) : (
+            <p>No uploads yet.</p>
+          )}
         </div>
-
-
-
 
         {showForm && (
           <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-50 my-auto min-h-screen h-full items-center justify-center flex flex-col">
