@@ -42,7 +42,7 @@ export const Header = () => {
                 repeat: Infinity,
                 ease: "linear",
                 repeatType: "loop",
-                duration: 3,
+                duration: 2,
               }}
               className="bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF)] [background-size:200%] text-transparent bg-clip-text font-semibold"
             >
@@ -72,14 +72,14 @@ export const Header = () => {
               <MenuIcon className="h-10 w-10 " />
             </div>
             {/* Desktop Menu */}
-            <nav className="hidden font-bold md:flex gap-6 text-black/80 items-center">
+            <nav className="hidden font-bold md:flex gap-6 text-black items-center">
               {pageData.menuItems.map((item, index) => (
                 <Link
                   key={index}
                   href={item.href}
                   className={
                     item.isPrimary
-                      ? "bg-destructive shadow-md font-bold shadow-black hover:shadow-lg hover:shadow-black duration-300 text-black px-4 py-2 rounded-lg inline-flex tracking-tight"
+                      ? "bg-destructive border-2 border-black shadow-md font-bold shadow-black hover:shadow-lg hover:shadow-black duration-300 text-black px-4 py-2 rounded-lg inline-flex tracking-tight"
                       : "hover:pb-2 duration-300"
                   }
                 >
@@ -107,7 +107,7 @@ export const Header = () => {
                 href={item.href}
                 className={
                   item.isPrimary
-                    ? "bg-destructive text-black px-4 py-2 rounded-lg font-bold inline-flex tracking-tight shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
+                    ? "bg-destructive border-2 border-black text-black px-4 py-2 rounded-lg font-bold inline-flex tracking-tight shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
                     : "hover:pr-2 duration-300"
                 }
                 onClick={toggleMenu}

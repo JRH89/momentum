@@ -1,6 +1,6 @@
 import Image from "next/image";
 import SignIn from "../components/SignIn";
-import { ArrowRight, CircleCheckIcon, FolderPlus, Info, LayoutDashboard, Smile, TrendingUp } from "lucide-react";
+import { ArrowRight, CircleCheckIcon, FolderPlus, Info, LayoutDashboard, LayoutTemplate, LucideLayoutDashboard, Receipt, Smile, TrendingUp } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
@@ -40,17 +40,15 @@ export default function Home() {
 >
   Project Management for Freelancers & Small Businesses
 </h1>
-
      <p className="text-2xl max-w-3xl lg:text-3xl mb-8 text-black font-bold">
       Manage projects, organize customers, and send invoices.
             </p>
             <div className="flex flex-row gap-5 items-center">
-              <Link href={"/Signup"} className="bg-destructive hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black text-xl font-extrabold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
+              <Link href={"/Signup"} className="bg-destructive hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xl font-extrabold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
               <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-bold flex flex-row gap-2 text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
             </div>
           </div>
         </section>
-
  {/* Features Section */}
         <section className="min-h-screen h-full my-auto flex items-center justify-center bg-white py-16">
           <div className="max-w-7xl mx-auto px-6">
@@ -62,7 +60,7 @@ export default function Home() {
                 We provide a comprehensive suite of features to help you streamline your project management workflow.
               </p>
             </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mt-12">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-12 mt-12">
       {/* Create Projects */}
       <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black">
         <div className="absolute -top-6 flex items-center justify-center">
@@ -73,13 +71,13 @@ export default function Home() {
         <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
           Create Projects
         </h3>
-        <p className="text-lg font-medium text-black mb-4 text-left">
-          Set up new projects and manage everything in one place.
+        <p className="text-lg w-full font-medium text-black mb-4 text-left">
+          Create projects and manage everything in one place.
         </p>
         <ul className="text-black items-start w-full text-left text-md font-medium space-y-2">
           <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Add project details and goals</li>
           <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Manage associated files</li>
-          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Organize resources effectively</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Share progress with clients</li>
         </ul>
       </div>
 
@@ -87,18 +85,18 @@ export default function Home() {
       <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center">
         <div className="absolute -top-6 flex items-center justify-center">
         <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
-            <TrendingUp className="text-destructive w-8 h-8" />
+            <Receipt className="text-destructive w-8 h-8" />
           </div>
         </div>
         <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
-          Milestone Tracking
+          Send Invoices
         </h3>
-        <p className="text-lg font-medium text-left text-black mb-4">
-          Stay on top of key milestones and budgets.
+        <p className="text-lg w-full font-medium text-left text-black mb-4">
+          Create and send invoices to clients with Stripe.
         </p>
         <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
-          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Monitor milestone progress</li>
-          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Log and manage expenses</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Create and send invoices</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Manage and track payments</li>
           <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Track budgets and costs</li>
         </ul>
       </div>
@@ -111,15 +109,35 @@ export default function Home() {
           </div>
         </div>
         <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
-          Project Dashboard
+          User Dashboard
+        </h3>
+        <p className="text-lg h-full font-medium text-left text-black mb-4">
+          Manage all your customers and projects in one place.
+        </p>
+        <ul className="text-black items-start w-full flex flex-col h-full text-left text-md font-medium space-y-2">
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Create projects and send invoices</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Track deadlines and deliverables</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Access customer and project data</li>
+        </ul>
+              </div>
+              
+               {/* Project Dashboard */}
+      <div className="relative lg:flex border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center w-full flex flex-col items-center">
+        <div className="absolute -top-6 flex items-center justify-center">
+        <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16 border-2 border-black flex items-center justify-center">
+            <LayoutTemplate className="text-destructive w-8 h-8" />
+          </div>
+        </div>
+        <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
+          Client Dashboard
         </h3>
         <p className="text-lg font-medium text-left text-black mb-4">
-          Get insights into your projects and progress.
+          Your clients can view projects, pay invoices, and more.
         </p>
         <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
           <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> View project status at a glance</li>
-          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Track deadlines and deliverables</li>
-          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Access customer and project data</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Upload files and track progress</li>
+          <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Pay invoices and track payments</li>
         </ul>
       </div>
     </div>
@@ -170,7 +188,7 @@ export default function Home() {
       Sign up now to organize your projects, stay on schedule, and keep your business moving forward.
     </p>
          <div className="flex flex-row gap-5 items-center">
-              <Link href={"/Signup"} className="bg-destructive hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black font-bold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
+              <Link href={"/Signup"} className="bg-destructive hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black font-bold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md border-2 border-black shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
               <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
             </div>
       </div></section>
