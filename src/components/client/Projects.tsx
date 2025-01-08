@@ -227,7 +227,7 @@ const handleCreateProject = async (e: React.FormEvent) => {
 
       {/* New Project Form */}
       {showForm && (
-        <div className="inset-0 absolute bg-black bg-opacity-90 flex items-center justify-center mx-auto px-4">
+        <div className="inset-0 fixed bg-black bg-opacity-90 flex items-center justify-center mx-auto px-4">
           <div className="bg-white p-6 w-full rounded-md shadow-lg max-w-xl">
               <h3 className="text-xl text-center font-semibold">Create Project</h3>
             <form >

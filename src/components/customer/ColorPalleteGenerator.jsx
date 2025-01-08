@@ -60,7 +60,7 @@ export default function ColorPaletteGenerator({
 
           // Iterate over customers and their projects to get the color layouts
           customers.forEach((customer) => {
-            customer.projects.forEach((project) => {
+            customer.projects?.forEach((project) => {
               if (project.colorLayout && project.colorLayout.length > 0) {
                 // Add all colors in the colorLayout of the project
                 colors.push(...project.colorLayout);
@@ -148,7 +148,14 @@ export default function ColorPaletteGenerator({
 
           // Add the new palette to the colorLayout array in the correct project
           const project = customer.projects[projectIndex];
-          project.colorLayout = [...project.colorLayout, ...palette]; // Append new palette
+
+          // Ensure colorLayout is initialized as an empty array if it doesn't exist
+          if (!Array.isArray(project.colorLayout)) {
+            project.colorLayout = [];
+          }
+
+          // Append new palette
+          project.colorLayout = [...project.colorLayout, ...palette];
 
           // Save the updated data back to Firestore
           transaction.update(userRef, {
