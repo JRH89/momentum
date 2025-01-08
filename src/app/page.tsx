@@ -44,7 +44,7 @@ export default function Home() {
       Manage projects, organize customers, and send invoices.
             </p>
             <div className="flex flex-row gap-5 items-center">
-              <Link href={"/Signup"} className="bg-destructive hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xl font-extrabold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
+              <Link href={"/Signup"} className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xl font-extrabold flex flex-row gap-2 px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-5 h-5" /></Link>
               <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-bold flex flex-row gap-2 text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
             </div>
           </div>
