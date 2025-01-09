@@ -67,13 +67,13 @@ export const PriceCard = () => {
           <h2 className="section-title">{pageData.title}</h2>
           <p className="section-description mt-5">{pageData.description}</p>
         </div>
-        <div className="flex flex-col gap-6 items-center mt-5 lg:flex-row lg:items-end lg:justify-center px-5">
+        <div className="flex flex-col gap-6 items-center mt-5 lg:flex-row lg:items-end lg:justify-center ">
           {pricingTiers.map((tier, index) => (
             <div
               key={index}
               className={twMerge(
                 tier.inverse &&
-                  "p-6 pb-8 rounded-xl border-black bg-black text-white shadow-md shadow-black"
+                  "p-6 pb-8 rounded-xl border-black bg-black text-white shadow-md w-full shadow-black"
               )}
             >
               <div className="flex justify-between">

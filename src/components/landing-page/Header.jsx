@@ -79,7 +79,7 @@ export const Header = () => {
                   href={item.href}
                   className={
                     item.isPrimary
-                      ? "bg-destructive border-2 border-black shadow-md font-bold shadow-black hover:shadow-lg hover:shadow-black duration-300 text-black px-4 py-2 rounded-lg inline-flex tracking-tight"
+                      ? "bg-confirm border-2 border-black shadow-md font-bold shadow-black hover:shadow-lg hover:shadow-black duration-300 text-black px-4 py-2 rounded-lg inline-flex tracking-tight"
                       : "hover:pb-2 duration-300"
                   }
                 >
@@ -107,7 +107,7 @@ export const Header = () => {
                 href={item.href}
                 className={
                   item.isPrimary
-                    ? "bg-destructive border-2 border-black text-black px-4 py-2 rounded-lg font-bold inline-flex tracking-tight shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
+                    ? "bg-confirm border-2 border-black text-black px-4 py-2 rounded-lg font-bold inline-flex tracking-tight shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
                     : "hover:pr-2 duration-300"
                 }
                 onClick={toggleMenu}

@@ -20,7 +20,7 @@ export const Footer = () => {
         </div>
 
         {/* Navigation Section */}
-        <nav className="flex flex-wrap justify-center gap-8 mt-8 text-center">
+        <nav className="flex flex-wrap justify-center gap-8 mt-8 text-center px-10 sm:px-0">
           <Link href="/#price" className="hover:text-white transition duration-300 ease-in-out">
             Pricing
           </Link>
@@ -30,14 +30,19 @@ export const Footer = () => {
           <Link href="/About" className="hover:text-white transition duration-300 ease-in-out">
             Learn More
           </Link>
+           <Link href="/Signin" className="hover:text-white transition duration-300 ease-in-out">
+            User Portal
+          </Link>
            <Link href="/Customer/login" className="hover:text-white transition duration-300 ease-in-out">
-            Customer Portal
+            Client Portal
           </Link>
         </nav>
 
+        
+
         {/* Social Media Icons */}
-        <div className="flex justify-center gap-6 mt-8">
-          <Link href="https://twitter.com" className="hover:scale-110 transition-transform duration-300 ease-in-out">
+        <div className="flex justify-center gap-6 mt-8 items-center my-auto">
+          <Link href="https://twitter.com/gamedevjared89" className="hover:scale-110 transition-transform duration-300 ease-in-out">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-8 h-8"
@@ -47,7 +52,7 @@ export const Footer = () => {
               <path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.28 4.28 0 0 0 1.88-2.36 8.57 8.57 0 0 1-2.72 1.03 4.25 4.25 0 0 0-7.23 3.88 12.04 12.04 0 0 1-8.75-4.43 4.24 4.24 0 0 0 1.31 5.67 4.16 4.16 0 0 1-1.92-.53v.05a4.24 4.24 0 0 0 3.41 4.15 4.25 4.25 0 0 1-1.92.07 4.24 4.24 0 0 0 3.96 2.94A8.53 8.53 0 0 1 2 19.09 12 12 0 0 0 8.29 21c7.41 0 11.46-6.14 11.46-11.46 0-.18-.01-.35-.02-.53a8.18 8.18 0 0 0 2.03-2.09z" />
             </svg>
           </Link>
-          <Link href="https://facebook.com" className="hover:scale-110 transition-transform duration-300 ease-in-out">
+          <Link href="https://facebook.com/hookerhillstudios" className="hover:scale-110 transition-transform duration-300 ease-in-out">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-8 h-8"
@@ -57,7 +62,7 @@ export const Footer = () => {
               <path d="M22 12.073c0-5.523-4.477-10-10-10s-10 4.477-10 10c0 5.023 3.678 9.163 8.437 9.878v-6.978h-2.54v-2.9h2.54v-2.216c0-2.507 1.492-3.891 3.777-3.891 1.094 0 2.238.196 2.238.196v2.46h-1.26c-1.243 0-1.629.771-1.629 1.563v1.888h2.773l-.443 2.9h-2.33v6.978c4.759-.715 8.437-4.855 8.437-9.878z" />
             </svg>
           </Link>
-          <Link href="https://linkedin.com" className="hover:scale-110 transition-transform duration-300 ease-in-out">
+          <Link href="https://linkedin.com/in/jaredhooker" className="hover:scale-110 transition-transform duration-300 ease-in-out">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-8 h-8"
