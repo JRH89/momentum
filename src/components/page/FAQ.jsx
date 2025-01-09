@@ -1,6 +1,7 @@
 "use client";
 
 import { Minus, Plus } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -65,13 +66,25 @@ export default function FAQ() {
   const { faqItems } = pageData;
 
   return (
-    <div
-      id="faq"
-      className="mx-auto min-h-screen h-full w-full flex flex-col text-black pt-32"
-    >
-      <h2 className="text-2xl text-center sm:text-3xl md:text-4xl font-bold">
-        Frequently Asked Questions
-      </h2>
+    <div className="mx-auto min-h-screen h-full w-full flex flex-col text-black py-24">
+      <div className="section-heading w-full mx-auto flex flex-col ">
+        <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
+          FAQ
+        </div>
+        <h2 className="section-title mt-5">Frequently Asked Questions</h2>
+        <p className="section-description mt-5">
+          Get answers to common questions about the service Momentum provides.
+          Need more information?{" "}
+          <Link
+            className="text-green-500 font-medium hover:underline"
+            href="/About"
+          >
+            Learn more here
+          </Link>
+          .
+        </p>
+      </div>
+
       <div className="mt-10">
         {faqItems.map((item, index) => (
           <FAQItem key={index} question={item.question} answer={item.answer} />

@@ -29,7 +29,7 @@ const CookieBanner = () => {
                 </p>
                 <button
                     onClick={handleAccept}
-                    className="bg-confirm hover:bg-opacity-60 duration-300 text-white px-4 py-2 rounded-lg text-sm w-full sm:w-auto"
+                    className="bg-confirm hover:bg-opacity-60 duration-300 text-black font-semibold px-4 py-2 rounded-lg text-sm w-full sm:w-auto"
                 >
                     Accept
                 </button>

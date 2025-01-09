@@ -14,8 +14,10 @@ const pageData = {
   bannerLinkHref: "/Signup",
   logoHref: "/",
   menuItems: [
+    { text: "Features", href: "/#features" },
     { text: "Pricing", href: "/#price" },
-    { text: "FAQ", href: "/FAQ" },
+    { text: "About", href: "/#about" },
+    { text: "FAQ", href: "/#faq" },
     { text: "Learn More", href: "/About" },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],

@@ -7,8 +7,8 @@ import Link from "next/link";
 
 // Page Data
 const pageData = {
-  tag: "A plan for every budget",
-  title: "Pricing",
+  tag: "Pricing",
+  title: "A plan for every budget",
   description:
     "We offer generous pricing plans to fit any budget. Choose the one that works best for you.",
 };
@@ -63,8 +63,11 @@ export const PriceCard = () => {
     >
       <div className="absolute inset-0 bg-white bg-opacity-95"></div>
       <div className="relative flex flex-col py-24 z-10 text-left max-w-7xl p-8 ">
-        <div className="section-heading">
-          <h2 className="section-title">{pageData.title}</h2>
+        <div className="section-heading w-full mx-auto flex flex-col">
+          <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
+            {pageData.tag}
+          </div>
+          <h2 className="section-title mt-5">{pageData.title}</h2>
           <p className="section-description mt-5">{pageData.description}</p>
         </div>
         <div className="flex flex-col gap-6 items-center mt-5 lg:flex-row lg:items-end lg:justify-center ">

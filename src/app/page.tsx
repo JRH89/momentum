@@ -5,6 +5,7 @@ import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
 import Link from "next/link";
 import Script from "next/script";
+import FAQ from "../components/page/FAQ";
 
 export default function Home() {
   return (
@@ -47,14 +48,16 @@ export default function Home() {
             </div>
             </section>
             {/* Features Section */}
-            <section className="min-h-screen border-t-2 border-black h-full my-auto flex items-center justify-center bg-white py-16 pb-24">
+            <section id="features" className="min-h-screen border-t-2 border-black h-full my-auto flex items-center justify-center bg-white py-16 pb-24">
               <div className="max-w-7xl mx-auto px-6">
-                <div className="section-heading">
-                  <h2 className="section-title">
-                    Key Features
-                  </h2>
+            <div className="section-heading w-full mx-auto flex flex-col">
+                <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">Features</div>
+                  <h2 className="section-title mt-5">
+                    Project Management Suite
+              </h2>
+              
                   <p className="section-description mt-5">
-                    We provide a comprehensive suite of features to help you streamline your project management workflow.
+                    We provide a comprehensive suite of features to help you keep organized, stay on schedule, and get paid.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 mt-12">
@@ -141,13 +144,14 @@ export default function Home() {
             <PriceCard />
             </section>
             {/* About Section */}
-            <section className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
+            <section id="about" className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
               <div className="max-w-7xl mx-auto px-6 text-center pb-6">
-                <div className="section-heading">
-                  <h2 className="section-title">
+            <div className="section-heading w-full mx-auto flex flex-col">
+                <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">About</div>
+                  <h2 className="section-title mt-5">
                     Why Choose Us?
                   </h2>
-                  <p className="section-description mt-5">We provide the tools you need to succeed.</p>
+                  <p className="section-description mt-5">We provide the tools you need to succeed. Want to know more about Momentum? <Link className="text-medoum text-green-500 hover:underline" href="/About">Visit the About page</Link>.</p>
                 </div>
                 <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">
                 <p className="section-description font-medium h-full text-black text-justify my-auto text-lg w-full  sm:max-w-xl bg-destructive p-8 py-10 sm:py-20 lg:py-24 flex md:ml-10 rounded-lg">
@@ -164,7 +168,11 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </section>
+        </section>
+        <section id="faq" className="border-t-2 border-black bg-white">
+          
+          <FAQ />
+        </section>
           {/* Call to Action Section */}
           <section className="border-t-2 border-black relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
             style={{
