@@ -68,7 +68,7 @@ html {
   }
 
   .section-description {
-    @apply text-center text-[22px] leading-[30px] tracking-tight text-[#010d3e];
+    @apply text-center text-[22px] leading-[30px] tracking-tight text-gray-800;
   }
 
   .section-heading {

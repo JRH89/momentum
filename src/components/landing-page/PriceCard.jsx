@@ -55,14 +55,14 @@ export const PriceCard = () => {
   return (
     <section
       id="price"
-      className="relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
+      className="relative pb-6 min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
       style={{
         backgroundImage: 'url("/image-2.png")',
         backgroundPosition: "center 25%",
       }}
     >
       <div className="absolute inset-0 bg-white bg-opacity-95"></div>
-      <div className="relative z-10 text-left max-w-7xl p-8 ">
+      <div className="relative flex flex-col py-24 z-10 text-left max-w-7xl p-8 ">
         <div className="section-heading">
           <h2 className="section-title">{pageData.title}</h2>
           <p className="section-description mt-5">{pageData.description}</p>

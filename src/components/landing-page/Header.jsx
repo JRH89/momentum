@@ -29,7 +29,7 @@ export const Header = () => {
   };
 
   return (
-    <header className="fixed flex flex-col w-full left-0 right-0 top-0 backdrop-blur-sm z-20">
+    <header className="fixed flex flex-col w-full left-0 right-0 top-0 backdrop-blur-sm z-50">
       <div className="flex justify-center items-center py-2 bg-black text-white text-sm gap-3">
         <Link
           href={pageData.bannerLinkHref}
@@ -55,9 +55,9 @@ export const Header = () => {
       <div className="py-3">
         <div className="px-5 md:px-10">
           <div className="flex items-center justify-between">
-            <div className="flex flex-row items-center gap-0 shimmer-container">
+            <div className="flex flex-row items-center gap-0 hover:tracking-widest duration-200">
               <Link
-                className="flex flex-row items-center"
+                className="flex  flex-row items-center"
                 href={pageData.logoHref}
               >
                 <LogoImage width={40} height={40} />

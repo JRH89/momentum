@@ -3,6 +3,7 @@ import { Footer } from "../../components/landing-page/Footer";
 import siteMetadata from "../../../siteMetadata";
 import SignIn from "../../components/user/SignIn";
 import NewNavBar from "../../components/SignUpNavbar";
+import { Header } from "../../components/landing-page/Header";
 
 export const metadata = {
   title: `Sign In | ${siteMetadata.title}`,
@@ -13,14 +14,14 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <NewNavBar />
-      <div className="absolute h-full min-h-screen inset-0 top-[66px] bg-white/60"></div>
+      <Header />
+      <div className="absolute h-full min-h-screen inset-0 bg-white/60"></div>
       <div
         style={{ backgroundImage: `url("/lightspeed.png")` }}
         className="flex bg-white justify-center items-center bg-cover bg-center min-h-screen h-full  flex-col text-center gap-5 w-full mx-auto"
       >
         <div className="relative z-10 h-full mx-auto justify-center items-center flex flex-col gap-4">
-          <h1 className="text-3xl max-w-2xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black">
+          <h1 className="text-3xl max-w-lg mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black">
             Keep up that {siteMetadata.title}!
           </h1>
           <SignIn />

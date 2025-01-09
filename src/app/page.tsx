@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, CircleCheckIcon, FolderPlus, Info, LayoutDashboard, LayoutTemplate, LucideLayoutDashboard, Receipt, Smile, TrendingUp } from "lucide-react";
+import { ArrowRight, CircleCheckIcon, FolderPlus, Info, LayoutDashboard, LayoutTemplate, Receipt } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
@@ -37,7 +37,7 @@ export default function Home() {
               >
                 Project Management for Freelancers & Small Businesses
               </h1>
-              <p className="text-2xl max-w-3xl lg:text-3xl mb-8 text-black font-bold">
+              <p className="text-2xl max-w-3xl lg:text-3xl mb-8 text-gray-800 font-medium">
                 Manage projects, organize customers, and send invoices.
               </p>
               <div className="flex flex-row gap-5 items-center">
@@ -47,7 +47,7 @@ export default function Home() {
             </div>
             </section>
             {/* Features Section */}
-            <section className="min-h-screen h-full my-auto flex items-center justify-center bg-white py-16">
+            <section className="min-h-screen border-t-2 border-black h-full my-auto flex items-center justify-center bg-white py-16 pb-24">
               <div className="max-w-7xl mx-auto px-6">
                 <div className="section-heading">
                   <h2 className="section-title">
@@ -57,7 +57,7 @@ export default function Home() {
                     We provide a comprehensive suite of features to help you streamline your project management workflow.
                   </p>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-12 mt-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 mt-12">
                   {/* Create Projects */}
                   <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black">
                     <div className="absolute -top-6 flex items-center justify-center">
@@ -110,9 +110,9 @@ export default function Home() {
                     Manage all your customers and projects in one place.
                   </p>
                   <ul className="text-black items-start w-full flex flex-col h-full text-left text-md font-medium space-y-2">
-                    <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Create projects and send invoices</li>
-                    <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Track deadlines and deliverables</li>
-                    <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Access customer and project data</li>
+                    <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Create projects</li>
+                    <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Send invoices</li>
+                    <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Manage customers</li>
                   </ul>
                 </div>
                   {/* Project Dashboard */}
@@ -129,19 +129,19 @@ export default function Home() {
                       Your clients can view projects, pay invoices, and more.
                     </p>
                     <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
-                      <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> View project status at a glance</li>
+                      <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> View project status</li>
                       <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Upload files and track progress</li>
-                      <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Pay invoices and track payments</li>
+                      <li className="flex gap-2"><CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" /> Pay invoices</li>
                     </ul>
                   </div>
                 </div>
               </div>
             </section>
-            <section className=" bg-[#EAEEFE]">
+            <section className="border-t-2 border-black bg-[#EAEEFE]">
             <PriceCard />
             </section>
             {/* About Section */}
-            <section className="min-h-screen h-full my-auto flex flex-col items-center bg-white lg:py-24 py-24 md:py-0">
+            <section className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
               <div className="max-w-7xl mx-auto px-6 text-center pb-6">
                 <div className="section-heading">
                   <h2 className="section-title">
@@ -150,23 +150,23 @@ export default function Home() {
                   <p className="section-description mt-5">We provide the tools you need to succeed.</p>
                 </div>
                 <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">
-                <p className="section-description font-medium h-full text-black text-justify my-auto text-lg max-w-xs sm:max-w-xl bg-destructive p-8 py-10 sm:py-20 flex md:ml-10 rounded-lg">
+                <p className="section-description font-medium h-full text-black text-justify my-auto text-lg w-full  sm:max-w-xl bg-destructive p-8 py-10 sm:py-20 lg:py-24 flex md:ml-10 rounded-lg">
                   We understand the unique needs of freelancers and small businesses. Our platform is designed to streamline your project management, making it easier to stay organized and meet deadlines, so you can focus on what matters most — growing your business.
                 </p>
-                <div className="md:mr-10 flex">
+                <div className="md:mr-10 bg-confirm rounded-lg flex">
                   <Image
                     src="/image-4.png"
                     alt="Project Management"
                     width={600}
                     height={400}
-                    className="rounded-lg shadow-lg w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto flex object-cover"
+                    className="rounded-lg mx-auto w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto object-center flex object-contain"
                   />
                 </div>
               </div>
             </div>
           </section>
           {/* Call to Action Section */}
-          <section className="relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
+          <section className="border-t-2 border-black relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
             style={{
               backgroundImage: 'url("/image-3.png")',
               backgroundPosition: 'center 25%',
@@ -176,7 +176,7 @@ export default function Home() {
               <h2 className="text-4xl lg:text-7xl font-bold mb-6 text-black">
                 Ready to Build Momentum?
               </h2>
-              <p className="text-2xl lg:text-3xl max-w-3xl mb-8 text-black font-medium">
+              <p className="text-2xl lg:text-3xl max-w-3xl mb-8 text-gray-800 font-medium">
                 Sign up now to organize your projects, stay on schedule, and keep your business moving forward.
               </p>
               <div className="flex flex-row gap-5 items-center">

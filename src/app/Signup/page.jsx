@@ -3,6 +3,7 @@ import { Footer } from "../../components/landing-page/Footer";
 import siteMetadata from "../../../siteMetadata";
 import SignIn from "../../components/SignIn";
 import NewNavBar from "../../components/SignUpNavbar";
+import { Header } from "../../components/landing-page/Header";
 
 export const metadata = {
   title: `Sign Up | ${siteMetadata.title}`,
@@ -13,8 +14,8 @@ export const metadata = {
 export default function Page() {
   return (
     <>
-      <NewNavBar />
-      <div className="absolute h-full min-h-screen inset-0 top-[66px] bg-white/60"></div>
+      <Header />
+      <div className="absolute h-full min-h-screen inset-0  bg-white/60"></div>
       <div
         style={{ backgroundImage: `url("/lightspeed.png")` }}
         className="flex bg-white justify-center items-center bg-cover bg-center min-h-screen h-full  flex-col text-center gap-5 w-full mx-auto"
