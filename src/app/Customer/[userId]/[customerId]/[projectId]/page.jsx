@@ -10,7 +10,7 @@ import { Footer } from "../../../../../components/landing-page/Footer";
 import Image from "next/image";
 import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
-import { ArrowLeft, PlusIcon } from "lucide-react";
+import { ArrowLeft, PlusIcon, Upload } from "lucide-react";
 import ReactPaginate from "react-paginate";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 
@@ -232,9 +232,16 @@ const CustomerProjectPage = () => {
                   <button
                     onClick={handleUpload}
                     disabled={!file || isLoading}
-                    className="bg-confirm text-black font-semibold px-4 py-2 rounded hover:bg-opacity-60 duration-300 cursor-pointer"
+                    className="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
                   >
-                    {isLoading ? "Uploading..." : "Upload File"}
+                    {isLoading ? (
+                      "Uploading..."
+                    ) : (
+                      <p className="flex items-center gap-2">
+                        <Upload className="w-5 h-5 text-center" />
+                        Upload file
+                      </p>
+                    )}
                   </button>
                 </div>
               )}
