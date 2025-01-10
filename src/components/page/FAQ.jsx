@@ -84,7 +84,7 @@ export default function FAQ() {
           .
         </p>
       </div>
-      <div className="mt-10">
+      <div className="mt-6 px-5">
         {faqItems.map((item, index) => (
           <FAQItem key={index} question={item.question} answer={item.answer} />
         ))}

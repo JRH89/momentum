@@ -18,6 +18,7 @@ const pageData = {
     { text: "Pricing", href: "/#price" },
     { text: "About", href: "/#about" },
     { text: "FAQ", href: "/#faq" },
+    { text: "Gallery", href: "/#gallery" },
     { text: "Learn More", href: "/About" },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],

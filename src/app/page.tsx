@@ -7,6 +7,8 @@ import Link from "next/link";
 import Script from "next/script";
 import FAQ from "../components/page/FAQ";
 import FeaturesSection from "../components/FeaturesSection";
+import ImageGallery from "../components/ImageGallery";
+
 
 export default function Home() {
   return (
@@ -58,47 +60,52 @@ export default function Home() {
                     </h2>
                     <p className="section-description mt-5">We provide the tools you need to succeed. Want to know more about Momentum? <Link className="text-medoum text-green-500 hover:underline" href="/About">Visit the About page</Link>.</p>
                   </div>
-                <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">
-                <p className="section-description font-medium h-full text-black text-justify my-auto text-lg w-full  sm:max-w-xl bg-destructive p-8 py-10 sm:py-20 lg:py-24 flex md:ml-10 rounded-lg">
-                  We understand the unique needs of freelancers and small businesses. Our platform is designed to streamline your project management, making it easier to stay organized and meet deadlines, so you can focus on what matters most — growing your business.
-                </p>
-                <div className="md:mr-10 bg-confirm rounded-lg flex">
-                  <Image
-                    src="/image-4.png"
-                    alt="Project Management"
-                    width={600}
-                    height={400}
-                    className="rounded-lg mx-auto w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto object-center flex object-contain"
-                  />
+                  <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">  
+              <p className="section-description font-medium h-full text-black text-justify my-auto text-lg w-full  sm:max-w-2xl  bg-destructive p-8 py-10 sm:py-20 lg:py-28 flex md:ml-10 rounded-lg">
+                    We understand the unique needs of freelancers and small businesses. Our platform is designed to streamline your project management, making it easier to stay organized and meet deadlines, so you can focus on what matters most — growing your business.
+                  </p>
+                  <div className="md:mr-10 bg-confirm rounded-lg flex">
+                    <Image
+                      src="/image-4.png"
+                      alt="Project Management"
+                      width={600}
+                      height={400}
+                      className="rounded-lg mx-auto w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto object-center flex object-contain"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
-        <section
-          style={{
+            </section>
+            <section
+              style={{
               backgroundImage: 'url("/image-3.png")',
               backgroundPosition: 'center 25%',
-            }}
-          id="faq" className="border-t-2 border-black relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat">
-            <div className="absolute inset-0 bg-white bg-opacity-95"></div>
-            <FAQ />
-          </section>
-          <section className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: 'url("/lightspeed.png")',
-            backgroundPosition: 'center 25%', // Adjust the vertical position of the background image
-          }}>
-          <div className="absolute inset-0 bg-white bg-opacity-60"></div>
-            <div className="relative z-10 text-left max-w-7xl p-8 ">
-              <h2 className="text-4xl lg:text-7xl font-bold mb-6 text-black">
-                Ready to Build Momentum?
-              </h2>
-              <p className="text-2xl lg:text-3xl max-w-3xl mb-8 text-gray-800 font-medium">
-                Sign up now to organize your projects, stay on schedule, and keep your business moving forward.
-              </p>
-              <div className="flex flex-row gap-5 items-center">
-                <Link href={"/Signup"} className="bg-confirm hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black font-bold flex flex-row gap-2 text-xs sm:text-xl px-4 sm:px-6 py-3 rounded-lg shadow-md border-2 border-black shadow-black items-center">Get Started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" /></Link>
-                <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-md sm:text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
+              }}
+              id="faq" className="border-t-2 border-black relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat">
+              <div className="absolute inset-0 bg-white bg-opacity-95"></div>
+              <FAQ />
+            </section>
+           <ImageGallery />
+            <section className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
+            style={{
+              backgroundImage: 'url("/lightspeed.png")',
+              backgroundPosition: 'center 25%', // Adjust the vertical position of the background image
+            }}>
+            <div className="absolute inset-0 bg-white bg-opacity-60"></div>
+              <div className="relative z-10 text-left max-w-7xl p-8 ">
+                <h2 className="text-4xl lg:text-7xl font-bold mb-6 text-black">
+                  Ready to Build Momentum?
+                </h2>
+                <p className="text-2xl lg:text-3xl max-w-3xl mb-8 text-gray-800 font-medium">
+                  Sign up now to organize your projects, stay on schedule, and keep your business moving forward.
+                </p>
+                <div className="flex flex-row gap-5 items-center">
+                <Link href={"/Signup"} className="bg-confirm hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black font-bold flex flex-row gap-2 text-xs sm:text-xl px-4 sm:px-6 py-3 rounded-lg shadow-md border-2 border-black shadow-black items-center">
+                  Get Started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </Link>
+                <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-md sm:text-xl text-black">
+                  Learn more <Info className="w-5 h-5" />
+                </Link>
               </div>
             </div>
           </section>
