@@ -66,7 +66,7 @@ export default function FAQ() {
   const { faqItems } = pageData;
 
   return (
-    <div className="mx-auto min-h-screen h-full w-full flex flex-col text-black py-24">
+    <div className="relative z-30 mx-auto min-h-screen h-full w-full flex flex-col text-black py-24">
       <div className="section-heading w-full mx-auto flex flex-col ">
         <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
           FAQ
@@ -84,7 +84,6 @@ export default function FAQ() {
           .
         </p>
       </div>
-
       <div className="mt-10">
         {faqItems.map((item, index) => (
           <FAQItem key={index} question={item.question} answer={item.answer} />

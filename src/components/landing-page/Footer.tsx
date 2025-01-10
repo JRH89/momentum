@@ -18,14 +18,13 @@ export const Footer = () => {
             />
           </div>
         </div>
-
         {/* Navigation Section */}
         <nav className="flex flex-wrap justify-center gap-8 mt-8 text-center px-10 sm:px-0">
+           <Link href="/Policies" className="hover:text-white transition duration-300 ease-in-out">
+            Policies
+          </Link>
           <Link href="/#price" className="hover:text-white transition duration-300 ease-in-out">
             Pricing
-          </Link>
-          <Link href="/FAQ" className="hover:text-white transition duration-300 ease-in-out">
-            FAQ
           </Link>
           <Link href="/About" className="hover:text-white transition duration-300 ease-in-out">
             Learn More
@@ -37,9 +36,6 @@ export const Footer = () => {
             Client Portal
           </Link>
         </nav>
-
-        
-
         {/* Social Media Icons */}
         <div className="flex justify-center gap-6 mt-8 items-center my-auto">
           <Link href="https://twitter.com/gamedevjared89" className="hover:scale-110 transition-transform duration-300 ease-in-out">
@@ -73,7 +69,6 @@ export const Footer = () => {
             </svg>
           </Link>
         </div>
-
         {/* Footer Text */}
         <p className="mt-8 text-center">
           © {new Date().getFullYear()} {siteMetadata.title}. All rights reserved.
