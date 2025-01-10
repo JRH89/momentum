@@ -4,10 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from "../../../../../../firebase"; // Adjust the path as per your Firebase setup
+import { db } from "../../../../../../firebase";
 import Navbar from "../../../../../components/customer/Navbar";
 import { Footer } from "../../../../../components/landing-page/Footer";
-import Image from "next/image";
 import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
 import { ArrowLeft, PlusIcon, Upload } from "lucide-react";
