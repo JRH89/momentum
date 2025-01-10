@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../../../../../firebase"; // Adjust the path as per your Firebase setup
 import Navbar from "../../../../../components/customer/Navbar";
@@ -45,13 +45,10 @@ const CustomerProjectPage = () => {
   // Fetch project data only if user is authenticated
   useEffect(() => {
     if (user && userId && customerId && projectId) {
-      setIsLoading(true);
-      const fetchData = async () => {
-        const userDocRef = doc(db, "users", userId);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data();
+      const userDocRef = doc(db, "users", userId);
+      const unsubscribe = onSnapshot(userDocRef, (doc) => {
+        if (doc.exists()) {
+          const userData = doc.data();
           const customer = userData.customers.find(
             (cust) => cust.uid === customerId
           );
@@ -63,17 +60,13 @@ const CustomerProjectPage = () => {
               setProjectData(project);
               setUploads(project.uploads || []);
               setMilestones(project.milestones || []);
-              setIsLoading(false);
             }
           }
-        } else {
-          router.push("/Customer/login");
         }
-      };
-
-      fetchData();
+      });
+      return () => unsubscribe(); // Cleanup the listener when the component unmounts
     }
-  }, [user, userId, customerId, projectId]); // Only fetch data after user is available
+  }, [user, userId, customerId, projectId]);
 
   // Handle file upload
   const handleUpload = async () => {

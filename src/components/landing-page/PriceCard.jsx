@@ -131,7 +131,7 @@ export const PriceCard = () => {
                 {tier.features.map((feature, featureIndex) => (
                   <li
                     key={featureIndex}
-                    className="capitalize text-sm flex items-center gap-1"
+                    className="capitalize text-md flex items-center gap-1"
                   >
                     <CheckIcon className="w-6 h-6 text-destructive" />
                     <span className="text-confirm font-medium flex-1">

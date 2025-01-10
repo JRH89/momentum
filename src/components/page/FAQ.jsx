@@ -67,7 +67,7 @@ export default function FAQ() {
 
   return (
     <div className="relative z-30 mx-auto min-h-screen h-full w-full flex flex-col text-black py-24">
-      <div className="section-heading w-full mx-auto flex flex-col ">
+      <div className="section-heading w-full mx-auto flex flex-col px-5">
         <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
           FAQ
         </div>
