@@ -6,7 +6,7 @@ import { db, auth } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Footer from "../../../../components/footer";
 
-const page = ({ params }) => {
+const Page = () => {
   const user = auth.currentUser;
   const [invoices, setInvoices] = useState([]);
   const [stripeAccountId, setStripeAccountId] = useState(null);
@@ -75,4 +75,4 @@ const page = ({ params }) => {
   );
 };
 
-export default page;
+export default Page;
