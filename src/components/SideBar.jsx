@@ -73,7 +73,7 @@ const Sidebar = ({ uid }) => {
   }, []);
 
   return (
-    <div className="flex mr-4">
+    <div className="flex lg:mr-4">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-50 w-52  border-r-2 border-black bg-[#EAEEFE] text-black transform ${
@@ -83,18 +83,51 @@ const Sidebar = ({ uid }) => {
         <div className="flex flex-col h-full">
           {/* Logo and Close Button */}
           <div className="flex gap-2 px-4 items-center justify-center w-full mx-auto border-b-2 border-black p-4 bg-[#EAEEFE]">
-            {userData?.photoURL && (
-              <img
-                className="rounded-full flex items-center justify-center"
-                src={userData?.photoURL || ""}
-                alt="Profile"
-                width={25}
-                height={25}
-              />
-            )}
-            <h2 className="flex items-baseline gap-1 text-md font-semibold  mx-auto w-full  text-black">
-              {userData?.name}
-            </h2>
+            <Link className="flex  flex-row items-center" href="/">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 349.2 320"
+                width="25"
+                height="25"
+                className=""
+              >
+                <defs>
+                  <style>
+                    {`
+          .cls-1 {
+            fill: none;
+            stroke-linejoin: round;
+          }
+          .cls-1, .cls-2 {
+            stroke: #000;
+            stroke-linecap: round;
+            stroke-width: 40px;
+          }
+          .cls-2 {
+            fill: #fff;
+            stroke-miterlimit: 10;
+          }
+        `}
+                  </style>
+                </defs>
+                <g data-name="Layer_1">
+                  <line className="cls-2" x1="50" y1="270" x2="50" y2="20" />
+                  <line className="cls-2" x1="150" y1="120" x2="150" y2="270" />
+                  <line
+                    className="cls-2"
+                    x1="250"
+                    y1="20"
+                    x2="299.19"
+                    y2="265.11"
+                  />
+                  <circle cx="50" cy="270" r="50" />
+                  <circle cx="150" cy="270" r="50" />
+                  <circle cx="299.19" cy="265.11" r="50" />
+                  <polyline className="cls-1" points="50 20 150 120 250 20" />
+                </g>
+              </svg>
+              <p className="text-xl font-bold">omentum</p>
+            </Link>
 
             <button
               className="lg:hidden focus:outline-none"
@@ -147,10 +180,46 @@ const Sidebar = ({ uid }) => {
       <button
         className={`${
           isOpen ? "hidden" : "block"
-        } fixed z-50 p-2 text-white bg-confirm rounded-md lg:hidden top-4 left-4 focus:outline-none`}
+        } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden top-4 left-4 focus:outline-none`}
         onClick={toggleSidebar}
       >
-        <MenuIcon className="w-6 h-6" />
+        {/* <MenuIcon className="w-6 h-6" /> */}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 349.2 320"
+          width="25"
+          height="25"
+          className=""
+        >
+          <defs>
+            <style>
+              {`
+          .cls-1 {
+            fill: none;
+            stroke-linejoin: round;
+          }
+          .cls-1, .cls-2 {
+            stroke: #000;
+            stroke-linecap: round;
+            stroke-width: 40px;
+          }
+          .cls-2 {
+            fill: #fff;
+            stroke-miterlimit: 10;
+          }
+        `}
+            </style>
+          </defs>
+          <g data-name="Layer_1">
+            <line className="cls-2" x1="50" y1="270" x2="50" y2="20" />
+            <line className="cls-2" x1="150" y1="120" x2="150" y2="270" />
+            <line className="cls-2" x1="250" y1="20" x2="299.19" y2="265.11" />
+            <circle cx="50" cy="270" r="50" />
+            <circle cx="150" cy="270" r="50" />
+            <circle cx="299.19" cy="265.11" r="50" />
+            <polyline className="cls-1" points="50 20 150 120 250 20" />
+          </g>
+        </svg>
       </button>
 
       {/* Main Content */}

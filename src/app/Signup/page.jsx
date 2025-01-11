@@ -1,8 +1,6 @@
-import NavBar from "../../components/navbar";
 import { Footer } from "../../components/landing-page/Footer";
 import siteMetadata from "../../../siteMetadata";
 import SignIn from "../../components/SignIn";
-import NewNavBar from "../../components/SignUpNavbar";
 import { Header } from "../../components/landing-page/Header";
 
 export const metadata = {
@@ -24,7 +22,6 @@ export default function Page() {
           <h1 className="text-3xl max-w-xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black">
             Ready to gain {siteMetadata.title}?
           </h1>
-
           <SignIn />
           <div>
             <p className="text-base font-semibold">

@@ -67,7 +67,6 @@ export const Header = () => {
                 <p className="text-2xl flex md:text-3xl font-bold ">omentum</p>
               </Link>
             </div>
-
             <div
               className="md:hidden cursor-pointer hover:text-destructive duration-300"
               onClick={toggleMenu}

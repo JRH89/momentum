@@ -1,8 +1,6 @@
-import NavBar from "../../components/navbar";
 import { Footer } from "../../components/landing-page/Footer";
 import siteMetadata from "../../../siteMetadata";
 import SignIn from "../../components/user/SignIn";
-import NewNavBar from "../../components/SignUpNavbar";
 import { Header } from "../../components/landing-page/Header";
 
 export const metadata = {

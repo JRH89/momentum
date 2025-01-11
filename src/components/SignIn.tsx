@@ -5,7 +5,6 @@ import { auth, provider as googleProvider, db } from '../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ArrowRight, File, Goal, Projector, User } from 'lucide-react';
 
 const SignIn = () => {
   const [user, setUser] = useState<any>(null);
@@ -28,11 +27,14 @@ const SignIn = () => {
             userId: user.uid,
             name: user.displayName || 'Anonymous',
             email: user.email,
+            invoicesPerPage: 10,
             photoURL: user.photoURL,
+            projectsPerPage: 5,
             isPremium: false,
             isSubscribed: true,
             isAdmin: false,
             customers: [],
+            customersPerPage: 10,
             stripeAccountId: '',
             stripeConnected: false,
             createdAt: new Date().toISOString(),

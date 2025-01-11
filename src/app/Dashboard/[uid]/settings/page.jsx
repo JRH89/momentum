@@ -11,6 +11,7 @@ const Page = () => {
   const [userData, setUserData] = useState(null);
   const [invoicesPerPage, setInvoicesPerPage] = useState("");
   const [customersPerPage, setCustomersPerPage] = useState("");
+  const [projectsPerPage, setProjectsPerPage] = useState("");
 
   useEffect(() => {
     if (user) {
@@ -21,6 +22,7 @@ const Page = () => {
             setUserData(doc.data());
             setInvoicesPerPage(doc.data().invoicesPerPage);
             setCustomersPerPage(doc.data().customersPerPage);
+            setProjectsPerPage(doc.data().projectsPerPage);
           } else {
             console.warn("User document does not exist");
           }
@@ -37,6 +39,7 @@ const Page = () => {
       updateDoc(userRef, {
         invoicesPerPage,
         customersPerPage,
+        projectsPerPage,
       })
         .then(() => {
           console.log("User data updated successfully");
@@ -45,7 +48,7 @@ const Page = () => {
           console.error("Error updating user data:", error);
         });
     }
-  }, [invoicesPerPage, customersPerPage, userData, user]);
+  }, [invoicesPerPage, customersPerPage, projectsPerPage, userData, user]);
 
   return (
     <>
@@ -95,6 +98,31 @@ const Page = () => {
             />
             <button
               onClick={() => setCustomersPerPage(customersPerPage + 1)}
+              className="p-2 bg-gray-300 rounded-md"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <h2 className="text-2xl font-bold">Projects</h2>
+          <p className="mt-2">Projects per page: {projectsPerPage}</p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setProjectsPerPage(projectsPerPage - 1)}
+              className="p-2 bg-gray-300 rounded-md"
+            >
+              -
+            </button>
+            <input
+              type="text"
+              value={projectsPerPage}
+              onChange={(e) => setProjectsPerPage(parseInt(e.target.value))}
+              className="w-full p-2 border rounded-md text-center"
+            />
+            <button
+              onClick={() => setProjectsPerPage(projectsPerPage + 1)}
               className="p-2 bg-gray-300 rounded-md"
             >
               +

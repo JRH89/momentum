@@ -182,8 +182,7 @@ const ProjectPage = () => {
 
   return (
     <>
-      <NavBar />
-      <div className="px-4 pt-4 rounded-lg min-h-screen h-full w-full max-w-6xl mx-auto pb-24 bg-white mt-6 mb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
         <h1 className="text-4xl items-baseline border-b border-black flex flex-row justify-between w-full font-semibold">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
         <p className="mt-2 text-lg">{project.description}</p>
         

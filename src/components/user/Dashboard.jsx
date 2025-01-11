@@ -123,7 +123,7 @@ export default function Dashboard() {
                               ]
                             </button>
                           </h3>
-                          <div className="flex items-center sm:pt-0 pt-2 space-x-4">
+                          {/* <div className="flex items-center sm:pt-0 pt-2 space-x-4">
                             {userData.stripeConnected && (
                               <button
                                 onClick={handleDisconnectStripe}
@@ -135,7 +135,7 @@ export default function Dashboard() {
                                   : "Disconnect Stripe Account"}
                               </button>
                             )}
-                          </div>
+                          </div> */}
                         </div>
                         {loadingCustomers ? (
                           <p className="text-gray-600">Loading customers...</p>
