@@ -110,8 +110,10 @@ const syncCustomersWithFirestore = async (stripeCustomers: any) => {
       alert('No user found')
       return
     }
-    setIsDisconnecting(true)
-    try {
+   
+    if (window.confirm('Are you sure you want to disconnect your Stripe account?')) {
+        setIsDisconnecting(true)
+      try {
       const response = await fetch('https://connect.stripe.com/oauth/deauthorize', {
         method: 'POST',
         headers: {
@@ -140,7 +142,8 @@ const syncCustomersWithFirestore = async (stripeCustomers: any) => {
       setIsDisconnecting(false)
     }
   }
-
+    }
+   
   return {
     customers,
     loadingCustomers,

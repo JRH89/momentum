@@ -62,7 +62,7 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-bold mb-4">Invoices</h1>
+        <h1 className="text-3xl font-bold mb-2">Invoices</h1>
         <div className="flex flex-col">
           <InvoicesTable
             invoices={invoices}

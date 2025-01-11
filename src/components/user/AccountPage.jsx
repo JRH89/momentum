@@ -4,12 +4,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getPremiumStatus } from "../payments/account/GetPremiumStatus";
-import {
-  getAuth,
-  sendPasswordResetEmail,
-  deleteUser,
-  signInWithEmailAndPassword,
-} from "@firebase/auth";
+import { getAuth, sendPasswordResetEmail, deleteUser } from "@firebase/auth";
 import { initFirebase } from "../../../firebase";
 import { getFirestore } from "firebase/firestore";
 import { getDoc, doc, collection } from "firebase/firestore";
@@ -18,7 +13,7 @@ import LoginForm from "./SignIn";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import Footer from "../footer";
-import UserTickets from "./UserTickets";
+import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 
 const Account = () => {
   const { user } = useAuth();
@@ -31,6 +26,8 @@ const Account = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loadingPortal, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [userStripe, setUserStripe] = useState(null);
 
   // Fetch premium status
   useEffect(() => {
@@ -47,6 +44,22 @@ const Account = () => {
 
     fetchPremiumStatus();
   });
+
+  useEffect(() => {
+    if (user) {
+      const docRef = doc(firestore, "users", auth.currentUser.uid);
+      getDoc(docRef)
+        .then((doc) => {
+          if (doc.exists()) {
+            setUserData(doc.data());
+            setUserStripe(doc.data().stripeAccountId || null);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  }, [user]);
 
   const sendResetEmail = async (email) => {
     try {
@@ -137,6 +150,12 @@ const Account = () => {
     }
   };
 
+  const { handleDisconnectStripe } = useStripeIntegration({
+    user,
+    userData,
+    userStripe,
+  });
+
   return (
     <>
       <div className="flex flex-col min-h-screen h-full my-auto w-full max-w-6xl mx-auto text-black items-center justify-start pt-24">
@@ -152,16 +171,16 @@ const Account = () => {
                   {alert}
                 </p>
               )}
-              <div className="flex flex-col gap-1 w-full justify-center mx-auto ">
+              <div className="flex flex-col  gap-1 w-full justify-center mx-auto ">
                 <button
-                  className="bg-confirm duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                  className="bg-confirm  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
                   onClick={() => sendResetEmail(user.email)}
                 >
                   Reset Password
                 </button>
                 {isPremium && (
                   <button
-                    className="bg-confirm duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-green-400 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-green-400/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
                     onClick={() => {
                       loadPortal();
                     }}
@@ -176,13 +195,23 @@ const Account = () => {
                 {!isPremium && (
                   <Link
                     href="/Dashboard/subscribe"
-                    className="bg-confirm duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-confirm duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
                   >
                     Upgrade to Premium
                   </Link>
                 )}
+                {userData?.stripeConnected && (
+                  <button
+                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    onClick={() => {
+                      handleDisconnectStripe();
+                    }}
+                  >
+                    Disconnect Stripe
+                  </button>
+                )}
                 <button
-                  className="bg-destructive duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
                   onClick={() => {
                     deleteAccount();
                   }}

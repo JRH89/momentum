@@ -81,7 +81,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
         <Announcements />
         <div className="flex flex-col">
           <div className="p-5 pt-0 px-0 pb-0">
@@ -109,44 +109,28 @@ export default function Dashboard() {
               ) : (
                 <div className=" h-full flex flex-col shadow-black mx-auto w-full">
                   {user && userData?.stripeConnected && (
-                    <div className="">
-                      <div className="flex flex-col gap-2">
-                        <div className="flex flex-col sm:flex-row justify-between sm:items-center text-left">
-                          <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto items-center">
-                            Customers{" "}
-                            <button
-                              onClick={() => setIsAddingCustomer(true)}
-                              className="text-black items-center text-xl flex flex-row align-middle my-auto hover:underline"
-                            >
-                              [
-                              <PlusIcon className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
-                              ]
-                            </button>
-                          </h3>
-                          {/* <div className="flex items-center sm:pt-0 pt-2 space-x-4">
-                            {userData.stripeConnected && (
-                              <button
-                                onClick={handleDisconnectStripe}
-                                disabled={isDisconnecting}
-                                className="px-4 py-2 bg-destructive text-white rounded hover:bg-confirm duration-300 disabled:opacity-50 text-xs sm:text-base"
-                              >
-                                {isDisconnecting
-                                  ? "Disconnecting..."
-                                  : "Disconnect Stripe Account"}
-                              </button>
-                            )}
-                          </div> */}
-                        </div>
-                        {loadingCustomers ? (
-                          <p className="text-gray-600">Loading customers...</p>
-                        ) : (
-                          <CustomerTable
-                            customers={customers}
-                            userId={user.uid}
-                            itemsPerPage={userData?.customersPerPage || 10}
-                          />
-                        )}
-                      </div>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto items-center">
+                        Customers{" "}
+                        <button
+                          onClick={() => setIsAddingCustomer(true)}
+                          className="text-black items-center text-xl flex flex-row align-middle my-auto hover:underline"
+                        >
+                          [
+                          <PlusIcon className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
+                          ]
+                        </button>
+                      </h3>
+
+                      {loadingCustomers ? (
+                        <p className="text-gray-600">Loading customers...</p>
+                      ) : (
+                        <CustomerTable
+                          customers={customers}
+                          userId={user.uid}
+                          itemsPerPage={userData?.customersPerPage || 8}
+                        />
+                      )}
                     </div>
                   )}
                   {isAddingCustomer && (

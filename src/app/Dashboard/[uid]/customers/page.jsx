@@ -55,7 +55,7 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
-        <div className="flex items-center justify-start gap-4 mb-4">
+        <div className="flex items-center justify-start gap-4 mb-2">
           <h1 className="text-3xl my-auto flex flex-row items-center font-bold ">
             Customers
           </h1>
@@ -74,13 +74,11 @@ const Page = () => {
         {loadingCustomers ? (
           <p>Loading customers...</p>
         ) : (
-          <div>
-            <CustomerTable
-              customers={customers}
-              userId={uid}
-              itemsPerPage={userData?.customersPerPage || 10}
-            />
-          </div>
+          <CustomerTable
+            customers={customers}
+            userId={uid}
+            itemsPerPage={userData?.customersPerPage || 8}
+          />
         )}
         {openModal && (
           <AddCustomerForm

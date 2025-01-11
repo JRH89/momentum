@@ -82,8 +82,11 @@ const Sidebar = ({ uid }) => {
       >
         <div className="flex flex-col h-full">
           {/* Logo and Close Button */}
-          <div className="flex gap-2 px-4 items-center justify-center w-full mx-auto border-b-2 border-black p-4 bg-[#EAEEFE]">
-            <Link className="flex  flex-row items-center" href="/">
+          <div className="flex gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm/60">
+            <Link
+              className="flex hover:scale-105 duration-300 mx-auto flex-row items-center"
+              href="/"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 349.2 320"
@@ -128,17 +131,15 @@ const Sidebar = ({ uid }) => {
               </svg>
               <p className="text-xl font-bold">omentum</p>
             </Link>
-
             <button
-              className="lg:hidden focus:outline-none"
+              className="lg:hidden justify-end bg-black rounded-md focus:outline-none"
               onClick={toggleSidebar}
             >
-              <XIcon className="w-6 h-6 text-destructive hover:rotate-90 duration-300" />
+              <XIcon className="w-6 h-6 p-1 text-destructive hover:rotate-90 duration-300" />
             </button>
           </div>
-
           {/* Navigation Links */}
-          <nav className="flex flex-col px-2 h-full my-auto  justify-evenly py-6 space-y-0">
+          <nav className="flex flex-col bg-white px-2 h-full my-auto  justify-evenly py-6 space-y-0">
             {links.map((link) => (
               <div
                 key={link.href}
@@ -147,7 +148,7 @@ const Sidebar = ({ uid }) => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center px-8 py-2  text-md font-medium justify-start text-left rounded-md hover:bg-white"
+                  className="flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300"
                 >
                   <link.icon className="w-5 h-5 mr-3" />
                   {link.label}
@@ -155,19 +156,18 @@ const Sidebar = ({ uid }) => {
               </div>
             ))}
           </nav>
-
           {/* Settings Link */}
-          <div className="p-4 px-2 border-t-2 border-black">
+          <div className="p-4 px-2 bg-white border-t-2 border-black">
             <button
               onClick={() => auth.signOut()}
-              className="flex items-center px-8 py-2 text-md font-medium rounded-md hover:bg-white w-full"
+              className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300 w-full"
             >
               <DoorOpen className="w-5 h-5 mr-3" />
               Logout
             </button>
             <Link
               href={`/Dashboard/${uid}/settings`}
-              className="flex items-center px-8 py-2 text-md font-medium rounded-md hover:bg-white"
+              className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300"
             >
               <SettingsIcon className="w-5 h-5 mr-3" />
               Settings
@@ -175,12 +175,11 @@ const Sidebar = ({ uid }) => {
           </div>
         </div>
       </div>
-
       {/* Mobile Menu Button */}
       <button
         className={`${
           isOpen ? "hidden" : "block"
-        } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden top-4 left-4 focus:outline-none`}
+        } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden border-2 border-black top-4 left-4 focus:outline-none`}
         onClick={toggleSidebar}
       >
         {/* <MenuIcon className="w-6 h-6" /> */}
@@ -221,7 +220,6 @@ const Sidebar = ({ uid }) => {
           </g>
         </svg>
       </button>
-
       {/* Main Content */}
       <div className="flex-1 z-50 top-0 left-0 ml-0 transition-all duration-300 lg:ml-48 bg-white"></div>
     </div>

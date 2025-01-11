@@ -12,7 +12,7 @@ import { set } from "date-fns";
 const Page = () => {
   const { uid } = useParams();
   const [projects, setProjects] = useState([]);
-  const [projectsPerPage, setProjectsPerPage] = useState(5); // Default projects per page
+  const [projectsPerPage, setProjectsPerPage] = useState(10); // Default projects per page
   const [currentPage, setCurrentPage] = useState(0); // Tracks the current page
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Page = () => {
           );
 
           setProjects(allProjects);
-          setProjectsPerPage(userData.projectsPerPage || 5);
+          setProjectsPerPage(userData.projectsPerPage || 10);
         } else {
           console.warn("User document does not exist!");
         }
@@ -57,18 +57,22 @@ const Page = () => {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 sm:pt-0 text-black flex flex-col pb-24">
         <h1 className="text-3xl font-semibold">Projects</h1>
         {currentProjects.length > 0 ? (
-          <div className="grid gap-4 mt-4">
+          <div className="grid grid-cols-2 gap-4 mt-2">
             {currentProjects.map((project, index) => (
               <Link
                 href={`${project.link}`}
                 key={index}
-                className="bg-white rounded-lg shadow-md p-4"
+                className="bg-white flex flex-col rounded-lg border-2 hover:bg-[#EAEEFE] duration-300 border-black shadow-black shadow-md p-4"
               >
-                <h2 className="text-lg font-semibold">{project.name}</h2>
-                <p className="text-gray-600">{project.description}</p>
+                <h2 className="text-sm sm:text-lg font-semibold h-full flex pb-2">
+                  {project.name}
+                </h2>
+                <p className="text-gray-600 flex h-full text-xs sm:text-md">
+                  {project.description}
+                </p>
               </Link>
             ))}
           </div>

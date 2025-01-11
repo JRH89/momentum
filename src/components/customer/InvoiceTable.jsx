@@ -48,51 +48,53 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
     <div>
       {invoices.length > 0 ? (
         <div className="overflow-x-auto shadow-md">
-          <table className="min-w-full table-auto border border-black">
+          <table className="min-w-full table-auto border-2 border-black">
             <thead>
-              <tr className="bg-gray-100 border-b border-black">
+              <tr className="bg-[#EAEEFE] border-b-2 border-black">
                 <th
-                  className="px-4 py-2 text-left cursor-pointer"
+                  className="px-4 py-3 text-left cursor-pointer"
                   onClick={() => handleSort("number")}
                 >
                   Invoice ID
                 </th>
                 <th
-                  className="px-4 py-2 text-left cursor-pointer"
+                  className="px-4 py-3 text-left cursor-pointer"
                   onClick={() => handleSort("amount_due")}
                 >
                   Amount
                 </th>
                 <th
-                  className="px-4 py-2 text-left cursor-pointer"
+                  className="px-4 py-3 text-left cursor-pointer"
                   onClick={() => handleSort("status")}
                 >
                   Status
                 </th>
                 <th
-                  className="px-4 py-2 text-left cursor-pointer"
+                  className="px-4 py-3 text-left cursor-pointer"
                   onClick={() => handleSort("due_date")}
                 >
                   Due Date
                 </th>
-                <th className="px-4 py-2 text-left flex justify-end">Action</th>
+                <th className="px-4 py-3 text-left">Action</th>
               </tr>
             </thead>
             <tbody>
               {displayedInvoices.map((invoice) => (
                 <tr
                   key={invoice.id}
-                  className="border-b border-black rounded-lg"
+                  className="border-b-2 hover:bg-yellow-50 border-black rounded-lg"
                 >
                   <td className="px-4 py-2 font-medium">{invoice.number}</td>
                   <td className="px-4 py-2 flex flex-row max-w-xs mx-auto w-full">
                     ${invoice.amount_due}
                   </td>
                   <td
-                    className={`px-4 py-2 capitalize ${
+                    className={`px-4 py-2 font-medium capitalize ${
                       invoice.status === "paid"
                         ? "text-confirm"
-                        : "text-destructive"
+                        : invoice.status === "uncollectible"
+                        ? "text-destructive"
+                        : "text-green-500"
                     }`}
                   >
                     {invoice.status}
@@ -100,7 +102,7 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
                   <td className="px-4 py-2">{invoice.due_date}</td>
                   <td className="px-4 py-2">
                     <a
-                      className="text-destructive hover:text-confirm duration-300 font-semibold rounded-lg flex flex-row items-center justify-end"
+                      className="text-destructive hover:text-confirm duration-300 font-semibold rounded-lg flex flex-row items-center"
                       href={invoice.hosted_invoice_url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -131,8 +133,10 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
             activeClassName={"active text-confirm font-extrabold"}
             pageClassName={"page hover:underline"}
             breakClassName={"break"}
-            previousClassName={"previous text-green-500 hover:underline"}
-            nextClassName={"next text-green-500 hover:underline"}
+            previousClassName={
+              "previous text-xl text-green-500 hover:underline"
+            }
+            nextClassName={"next text-xl text-green-500 hover:underline"}
           />
         </div>
       )}

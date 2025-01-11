@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { StripeCustomer as Customer } from './types/stripeCustomer'
 import ReactPaginate from 'react-paginate'
 import { useState } from 'react'
+import { ArrowBigRight } from 'lucide-react'
 
 interface CustomerTableProps {
   customers: Customer[]
@@ -18,7 +19,7 @@ interface StripeCustomer {
   stripeCustomerId: string
 }
 
-export function CustomerTable({ customers, userId, itemsPerPage = 5 }: CustomerTableProps) {
+export function CustomerTable({ customers, userId, itemsPerPage = 8 }: CustomerTableProps) {
   const [currentPage, setCurrentPage] = useState(0)
 
   // Add a key of type keyof StripeCustomer to fix the type error
@@ -54,34 +55,38 @@ export function CustomerTable({ customers, userId, itemsPerPage = 5 }: CustomerT
 
   return (
     <>
-      <div className="overflow-x-auto py-5 pt-0 h-full flex flex-col">
-        <table className="min-w-full h-full bg-white border border-black rounded-md">
+      <div className="overflow-x-auto py-2 pt-4 md:pt-0 h-full flex flex-col">
+        <table className="min-w-full h-full bg-white border-2 border-black rounded-md">
           <thead>
-            <tr className="bg-gray-100 font-semibold border-b border-black">
-              <th className="py-2 px-6 cursor-pointer hover:underline text-left text-sm text-black" onClick={() => handleSort('email')}>
+            <tr className="bg-[#EAEEFE] font-semibold border-b-2 border-black">
+              <th className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black" onClick={() => handleSort('email')}>
                 Email
               </th>
-              <th className="py-2 px-6 cursor-pointer hover:underline text-left text-sm text-black" onClick={() => handleSort('name')}>
+              <th className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black" onClick={() => handleSort('name')}>
                 Name
               </th>
-              <th className="py-2 px-6 cursor-pointer hover:underline text-left text-sm text-black" onClick={() => handleSort('description')}>
+              <th className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black" onClick={() => handleSort('description')}>
                 Description
               </th>
-              <th className="py-2 px-6 text-left text-sm text-black">Actions</th>
+              <th className="py-4 px-6 text-left text-md text-black">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-black space-y-2">
+          <tbody className="divide-y-2 divide-black space-y-2">
             {sortedCustomers.map((customer, index) => (
-              <tr key={index} className="py-2 hover:bg-gray-100">
-                <td className="py-2 font-medium px-6 text-sm text-black">{customer.email}</td>
-                <td className="py-2 px-6 text-sm text-black">{customer.name}</td>
-                <td className="py-2 px-6 text-sm text-black">{customer.description}</td>
-                <td className="py-2 px-6 text-sm">
+              <tr key={index} className="py-4 hover:bg-yellow-50">
+                <td className="py-4 font-bold px-6 text-sm text-black">
+                  <Link href={`mailto:${customer.email}`}>
+                    {customer.email}
+                  </Link>
+                </td>
+                <td className="py-4 px-6 text-sm font-medium text-black">{customer.name}</td>
+                <td className="py-4 px-6 text-sm font-medium text-black">{customer.description || 'N/A'}</td>
+                <td className="py-4 px-6 text-sm">
                   <Link
-                    className="text-confirm flex font-medium hover:underline"
+                    className="text-destructive flex font-semibold hover:underline"
                     href={`/Dashboard/${userId}/${customer?.stripeCustomerId}`}
                   >
-                    View
+                    View <ArrowBigRight className="w-5 h-5" />
                   </Link>
                 </td>
               </tr>
@@ -101,8 +106,8 @@ export function CustomerTable({ customers, userId, itemsPerPage = 5 }: CustomerT
         containerClassName={'flex px-4 justify-between items-center space-x-2'}
         pageClassName={'page-item'}
         pageLinkClassName={'px-4 py-2 text-sm rounded-md text-gray-700 bg-white  hover:bg-gray-200 transition-colors duration-300'}
-        previousClassName={'previous-item text-green-500'}
-        nextClassName={'next-item text-green-500'}
+        previousClassName={'previous-item text-xl text-green-500'}
+        nextClassName={'next-item text-green-500 text-xl'}
         disabledClassName={'disabled'}
         activeClassName={'text-confirm text-white border-blue-500'}
       />

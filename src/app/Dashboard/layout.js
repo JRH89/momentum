@@ -41,7 +41,7 @@ const ProtectedRoute = ({ children }) => {
 
       {/* Main Content */}
       <main className="relative flex flex-col w-full bg-white pt-16 ">
-        <div className='absolute hidden sm:flex top-2 justify-center w-full'>
+        <div className='absolute hidden sm:flex top-3 justify-center w-full'>
           <Breadcrumb
             homeElement={"Home"}
             separator={<span> / </span>}
