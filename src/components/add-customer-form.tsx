@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react'
 import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'
 import { db } from '../../firebase'  
+import { toast } from 'react-toastify'
 
 interface AddCustomerFormProps {
   onClose: () => void
@@ -60,15 +61,16 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
           name,
           description,
           stripeCustomerId: stripeCustomer.id,
+          connectedStripeAccountId: userStripe,
           createdAt: new Date(),
         }),
       })
 
-      alert("Customer added successfully!")
+      toast.success("Customer added successfully!")
       onClose()
     } catch (error) {
       console.error("Error adding customer:", error)
-      alert("Failed to add customer. Please try again.")
+      toast.error("Error adding customer. Please try again.")
     } finally {
       setIsLoading(false)
     }

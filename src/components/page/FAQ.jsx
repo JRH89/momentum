@@ -10,7 +10,7 @@ const pageData = {
     {
       question: "Is Stripe required to use Momentum?",
       answer:
-        "Yes, Stripe is required for payment processing. However, if you don't have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process. Stripe accounts are free to create and you only pay for the services you use (i.e. processing paid invoices @ 0.4%).",
+        "Yes, Stripe is required for invoicing and payment processing. However, if you don't already have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process. Stripe accounts are free to create and you only pay for the services you use (i.e. processing paid invoices @ 0.4%).",
     },
     {
       question: "What is the pricing for Momentum?",
@@ -39,7 +39,7 @@ const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border-b border-gray-300 bg-opacity-0 p-5 sm:px-10 max-w-6xl w-full mx-auto">
+    <div className="border-b border-gray-300 bg-opacity-0 p-5 sm:px-10 max-w-4xl w-full mx-auto">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left flex justify-between items-center focus:outline-none"
@@ -71,7 +71,7 @@ export default function FAQ() {
         <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
           FAQ
         </div>
-        <h2 className="section-title mt-5">Frequently Asked Questions</h2>
+        <h2 className="section-title mt-5 w-full">Got Questions?</h2>
         <p className="section-description mt-5">
           Get answers to common questions about the service Momentum provides.
           Need more information?{" "}
@@ -79,7 +79,14 @@ export default function FAQ() {
             className="text-green-500 font-medium hover:underline"
             href="/About"
           >
-            Learn more here
+            Visit the About page
+          </Link>{" "}
+          or{" "}
+          <Link
+            className="text-green-500 font-medium hover:underline"
+            href="/Contact"
+          >
+            send us a message
           </Link>
           .
         </p>

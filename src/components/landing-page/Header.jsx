@@ -16,9 +16,9 @@ const pageData = {
   menuItems: [
     { text: "Features", href: "/#features" },
     { text: "Pricing", href: "/#price" },
-    { text: "About", href: "/#about" },
-    { text: "FAQ", href: "/#faq" },
     { text: "Gallery", href: "/#gallery" },
+    { text: "FAQ", href: "/#faq" },
+    { text: "About", href: "/#about" },
     { text: "Learn More", href: "/About" },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],

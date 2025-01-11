@@ -7,6 +7,47 @@ import {
 } from "lucide-react";
 import React from "react";
 
+const featuresData = [
+  {
+    title: "Manage Projects",
+    description: "Add projects and manage everything in one place.",
+    icon: FolderPlus,
+    points: [
+      "Set milestones, deadlines, and more",
+      "Manage associated files",
+      "Share progress with customers",
+    ],
+  },
+  {
+    title: "Send Invoices",
+    description: "Create and send invoices and track payments.",
+    icon: Receipt,
+    points: [
+      "Create and send invoices",
+      "Manage and track payments",
+      "Track budgets and costs",
+    ],
+  },
+  {
+    title: "User Dashboard",
+    description:
+      "Manage all your customers, invoices, and projects in one place.",
+    icon: LayoutDashboard,
+    points: ["Create projects", "Send invoices", "Manage customers"],
+  },
+  {
+    title: "Customer Dashboard",
+    description:
+      "Your customers can view projects, upload files, pay invoices, and more.",
+    icon: LayoutTemplate,
+    points: [
+      "View project status",
+      "Upload files and track progress",
+      "Pay invoices",
+    ],
+  },
+];
+
 const FeaturesSection = () => {
   return (
     <section
@@ -25,127 +66,34 @@ const FeaturesSection = () => {
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 mt-12">
-          {/* Create Projects */}
-          <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black">
-            <div className="absolute -top-6 flex items-center justify-center">
-              <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
-                <FolderPlus className="text-destructive w-8 h-8" />
+          {featuresData.map((feature, index) => (
+            <div
+              key={index}
+              className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black"
+            >
+              <div className="absolute -top-6 flex items-center justify-center">
+                <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16 flex items-center justify-center">
+                  <feature.icon className="text-destructive w-8 h-8" />
+                </div>
+              </div>
+              <div className="max-w-md mx-auto text-center items-center justify-center flex flex-col">
+                <h3 className="text-2xl md:text-3xl font-bold mb-4 mt-8 text-black">
+                  {feature.title}
+                </h3>
+                <p className="text-md md:text-lg w-full font-medium text-black mb-6 text-left leading-relaxed">
+                  {feature.description}
+                </p>
+                <ul className="text-black items-center w-full text-left text-md md:text-lg font-medium space-y-2">
+                  {feature.points.map((point, idx) => (
+                    <li key={idx} className="flex gap-3 items-center">
+                      <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />
+                      {point}
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
-            <div className="max-w-sm mx-auto text-center items-center justify-center flex flex-col">
-              <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
-                Manage Projects
-              </h3>
-              <p className="text-lg w-full font-medium text-black mb-4 text-left">
-                Add projects and manage everything in one place.
-              </p>
-              <ul className="text-black items-center w-full text-left text-md font-medium space-y-2">
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Add project milestones, deadlines, and more
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Manage associated files
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Share progress with clients
-                </li>
-              </ul>
-            </div>
-          </div>
-          {/* Milestone Tracking */}
-          <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center">
-            <div className="absolute -top-6 flex items-center justify-center">
-              <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16  flex items-center justify-center">
-                <Receipt className="text-destructive w-8 h-8" />
-              </div>
-            </div>
-            <div className="max-w-sm mx-auto text-center items-center justify-center flex flex-col">
-              <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
-                Send Invoices
-              </h3>
-              <p className="text-lg w-full font-medium text-left text-black mb-4">
-                Create and send invoices to clients through Stripe.
-              </p>
-              <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Create and send invoices
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Manage and track payments
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Track budgets and costs
-                </li>
-              </ul>
-            </div>
-          </div>
-          {/* Project Dashboard */}
-          <div className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center w-full flex flex-col items-center">
-            <div className="absolute -top-6 flex items-center justify-center">
-              <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16 border-2 border-black flex items-center justify-center">
-                <LayoutDashboard className="text-destructive w-8 h-8" />
-              </div>
-            </div>
-            <div className="max-w-sm mx-auto text-center items-center justify-center flex flex-col">
-              <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
-                User Dashboard
-              </h3>
-              <p className="text-lg h-full font-medium text-left text-black mb-4">
-                Manage all your customers and projects in one place.
-              </p>
-              <ul className="text-black items-start w-full flex flex-col h-full text-left text-md font-medium space-y-2">
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Create projects
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Send invoices
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Manage customers
-                </li>
-              </ul>
-            </div>
-          </div>
-          {/* Project Dashboard */}
-          <div className="relative lg:flex border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center w-full flex flex-col items-center">
-            <div className="absolute -top-6 flex items-center justify-center">
-              <div className="bg-white shadow-md shadow-black rounded-full w-16 h-16 border-2 border-black flex items-center justify-center">
-                <LayoutTemplate className="text-destructive w-8 h-8" />
-              </div>
-            </div>
-            <div className="max-w-sm mx-auto text-center items-center justify-center flex flex-col">
-              <h3 className="text-2xl font-semibold mb-4 mt-8 text-black">
-                Client Dashboard
-              </h3>
-              <p className="text-lg font-medium text-left text-black mb-4">
-                Your clients can view projects, upload files, pay invoices, and
-                more.
-              </p>
-              <ul className="text-black items-start w-full  text-left text-md font-medium space-y-2">
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  View project status
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Upload files and track progress
-                </li>
-                <li className="flex gap-2">
-                  <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />{" "}
-                  Pay invoices
-                </li>
-              </ul>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

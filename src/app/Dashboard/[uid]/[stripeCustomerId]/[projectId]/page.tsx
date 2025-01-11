@@ -183,17 +183,12 @@ const ProjectPage = () => {
   return (
     <>
       <NavBar />
-      <div className="px-4 pt-6 min-h-screen h-full w-full max-w-6xl mx-auto pb-24">
-        <h1 className="text-4xl font-semibold">{project.name}</h1>
+      <div className="px-4 pt-4 rounded-lg min-h-screen h-full w-full max-w-6xl mx-auto pb-24 bg-white mt-6 mb-24">
+        <h1 className="text-4xl items-baseline border-b border-black flex flex-row justify-between w-full font-semibold">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
         <p className="mt-2 text-lg">{project.description}</p>
-        <div className="">
-          <a href={project.link} className="text-blue-500 hover:underline">
-            View Project
-          </a>
-        </div>
-
+        
         {/* Milestones Section */}
-        <div className="mt-8">
+        <div className="mt-4">
           <div className="flex justify-start items-center">
             <h2 className="text-2xl font-semibold">
               Milestones
@@ -207,48 +202,69 @@ const ProjectPage = () => {
             </button>
           </div>
           {milestones.length > 0 ? (
-            <ul className="mt-4 bg-white rounded-lg p-6">
+          <table className=" bg-white w-full table-auto">
+            <thead className="bg-gray-200">
+              <tr className="border-b border-t border-black">
+                <th className="p-1 px-4  text-left text-lg font-semibold border-l border-black">Milestone</th>
+                  <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
+                   <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
+                <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
+                <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
               {milestones.map((milestone) => (
-                <li key={milestone.id} className="border-b p-4">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="text-lg font-semibold">{milestone.title}</h3>
-                      <p className="text-gray-600">{milestone.description}</p>
-                      <p className="text-sm text-gray-500 mt-1">
-                        Status: <span className="font-medium">{milestone.status}</span>
-                      </p>
-                    </div>
-                    <div className="flex space-x-2">
-                      <button
-                        type="button"
-                        onClick={() => handleChangeStatus(milestone.id, "in-progress")}
-                        className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded-md"
+                <tr key={milestone.id} className="border-b border-black">
+                  <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
+                  <td className="p-1 px-4">{milestone.description}</td>
+                  <td className="p-1 px-4">{milestone.deadline}</td>
+                  <td className="p-1 px-4 text-sm text-gray-500">
+                  <span
+                    className={`text-sm capitalize font-medium ${
+                      milestone.status === "completed"
+                        ? "text-confirm"
+                        : milestone.status === "pending"
+                        ? "text-destructive"
+                        : "text-green-500"
+                    }`}
+                  >
+                    {milestone.status}
+                  </span>
+                </td>
+                  <td className="p-1 px-4 border-r border-black">
+                  <div className="p-1">
+                      <select
+                        name="status"
+                        id="status"
+                        aria-label="status"
+                      onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
+                      value={milestone.status}
+                      className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
                       >
+                         <option value="pending" className="text-black">
+                        Pending
+                      </option>
+                      <option value="in-progress" className="text-green-500">
                         In Progress
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleChangeStatus(milestone.id, "completed")}
-                        className="bg-green-500 hover:bg-green-600 text-white py-1 px-4 rounded-md"
-                      >
+                      </option>
+                      <option value="completed" className="text-confirm">
                         Completed
-                      </button>
-                    </div>
+                      </option>
+                    </select>
                   </div>
-                </li>
+                  </td>
+                </tr>
               ))}
-            </ul>
+            </tbody>
+          </table>
           ) : (
             <p className="text-gray-500">No milestones yet.</p>
           )}
         </div>
-
-
-
         {/* Uploads section */}
          <div className="mt-8">
           <div className="flex justify-start items-center">
-            <h2 className="text-2xl font-semibold">
+            <h2 className="text-2xl font-semibold mb-2">
               Uploads
             </h2>
             {/* <button

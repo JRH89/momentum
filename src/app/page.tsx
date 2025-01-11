@@ -51,7 +51,21 @@ export default function Home() {
             <section className="border-t-2 border-black bg-[#EAEEFE]">
             <PriceCard />
             </section>
-            <section id="about" className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
+           
+             <ImageGallery />
+
+            <section
+              style={{
+              backgroundImage: 'url("/image-3.png")',
+              backgroundPosition: 'center 25%',
+              }}
+              id="faq" className="border-t-2 border-black relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat">
+              <div className="absolute inset-0 bg-white bg-opacity-95"></div>
+              <FAQ />
+            </section>
+   
+        
+         <section id="about" className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
               <div className="max-w-7xl mx-auto px-6 text-center pb-6">
                 <div className="section-heading w-full mx-auto flex flex-col">
                   <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">About</div>
@@ -76,16 +90,6 @@ export default function Home() {
                 </div>
               </div>
             </section>
-            <section
-              style={{
-              backgroundImage: 'url("/image-3.png")',
-              backgroundPosition: 'center 25%',
-              }}
-              id="faq" className="border-t-2 border-black relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat">
-              <div className="absolute inset-0 bg-white bg-opacity-95"></div>
-              <FAQ />
-            </section>
-           <ImageGallery />
             <section className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
             style={{
               backgroundImage: 'url("/lightspeed.png")',
