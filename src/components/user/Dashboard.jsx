@@ -81,30 +81,10 @@ export default function Dashboard() {
 
   return (
     <>
-      <NavBar />
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-6 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
         <Announcements />
         <div className="flex flex-col">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-0 mb-0">
-            <h1 className="text-2xl lg:text-3xl font-semibold text-black">
-              Dashboard
-            </h1>
-            <div className="flex flex-row items-center gap-2">
-              <h2 className="flex items-baseline gap-1 text-sm sm:text-lg md:text-xl justify-between lg:text-xl text-black">
-                Welcome back, {userData?.name}
-              </h2>
-              {userData?.photoURL && (
-                <img
-                  className="rounded-full"
-                  src={userData?.photoURL || ""}
-                  alt="Profile"
-                  width={25}
-                  height={25}
-                />
-              )}
-            </div>
-          </div>
-          <div className="p-5 pt-2 px-0 pb-0">
+          <div className="p-5 pt-0 px-0 pb-0">
             <div className="flex flex-col gap-5">
               {!isPremium ? (
                 <div className="bg-white p-4 rounded-lg shadow-md h-full flex flex-col shadow-black mx-auto w-full">
@@ -127,19 +107,19 @@ export default function Dashboard() {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white p-4 rounded-lg shadow-md h-full flex flex-col shadow-black mx-auto w-full">
+                <div className=" h-full flex flex-col shadow-black mx-auto w-full">
                   {user && userData?.stripeConnected && (
                     <div className="">
-                      <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-2">
                         <div className="flex flex-col sm:flex-row justify-between sm:items-center text-left">
-                          <h3 className="text-2xl font-semibold text-black flex flex-row gap-2 my-auto items-center">
+                          <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto items-center">
                             Customers{" "}
                             <button
                               onClick={() => setIsAddingCustomer(true)}
-                              className="text-black items-center text-lg flex flex-row align-middle my-auto hover:underline"
+                              className="text-black items-center text-xl flex flex-row align-middle my-auto hover:underline"
                             >
                               [
-                              <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />
+                              <PlusIcon className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
                               ]
                             </button>
                           </h3>
@@ -148,7 +128,7 @@ export default function Dashboard() {
                               <button
                                 onClick={handleDisconnectStripe}
                                 disabled={isDisconnecting}
-                                className="px-4 py-2 bg-destructive text-white rounded hover:bg-confirm duration-300 disabled:opacity-50"
+                                className="px-4 py-2 bg-destructive text-white rounded hover:bg-confirm duration-300 disabled:opacity-50 text-xs sm:text-base"
                               >
                                 {isDisconnecting
                                   ? "Disconnecting..."
@@ -163,6 +143,7 @@ export default function Dashboard() {
                           <CustomerTable
                             customers={customers}
                             userId={user.uid}
+                            itemsPerPage={userData?.customersPerPage || 10}
                           />
                         )}
                       </div>
@@ -177,26 +158,6 @@ export default function Dashboard() {
                   )}
                 </div>
               )}
-              <div className="flex flex-row gap-5 w-full">
-                <div className="border border-gray-300 shadow-md shadow-black p-4 rounded-lg bg-white w-full">
-                  <h2 className="text-2xl font-bold mb-4">User Info</h2>
-                  <div className="p-5 bg-[#EAEEFE] flex flex-col rounded-lg border w-full border-gray-300">
-                    <p className="text-lg font-semibold">
-                      User Email: <span className="font-normal">{email}</span>
-                    </p>
-                    <p className="text-lg break-words font-semibold">
-                      User Id: <span className="font-normal">{userId}</span>
-                    </p>
-                    <p className="text-lg font-semibold">
-                      Is Premium:{" "}
-                      <span className="capitalize font-normal">
-                        {isPremium ? "Yes" : "No"}
-                      </span>
-                    </p>
-                  </div>
-                </div>
-                <UserTickets />
-              </div>
             </div>
           </div>
         </div>

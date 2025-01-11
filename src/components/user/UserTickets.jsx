@@ -3,11 +3,15 @@ import { useAuth } from "../../context/AuthProvider";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../../../firebase"; // Make sure this path is correct
 import { format } from "date-fns";
+import SupportForm from "./SupportTicketForm";
+import { Plus } from "lucide-react";
 
 export default function UserTickets() {
   const { user, loading } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [loadingTickets, setLoadingTickets] = useState(true);
+
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     let unsubscribe;
@@ -50,8 +54,18 @@ export default function UserTickets() {
   }
 
   return (
-    <div className="border w-full bg-white border-gray-300 shadow-md shadow-black p-4 rounded-lg">
-      <h2 className="text-2xl font-bold mb-4">Support Tickets</h2>
+    <div className="">
+      <div className="flex flex-row items-center justify-start gap-4 mb-4">
+        <h2 className="text-3xl font-bold">Support Tickets</h2>
+        <button
+          onClick={() => setShowForm(true)}
+          className=" text-black flex items-center flex-row font-bold text-xl rounded"
+        >
+          [
+          <Plus className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
+          ]
+        </button>
+      </div>
       <div>
         <ul className="space-y-4">
           {tickets.length === 0 && (
@@ -79,6 +93,7 @@ export default function UserTickets() {
           ))}
         </ul>
       </div>
+      {showForm && <SupportForm onClose={() => setShowForm(false)} />}
     </div>
   );
 }

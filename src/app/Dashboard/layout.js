@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { auth } from '../../../firebase';
+import Sidebar from '../../components/SideBar';
+import Breadcrumb from '../../components/BreadcrumbMenu';
 
 const ProtectedRoute = ({ children }) => {
   const router = useRouter();
@@ -32,7 +34,28 @@ const ProtectedRoute = ({ children }) => {
     return <div>Loading...</div>; // Show a loading indicator while checking auth
   }
 
-  return <>{children}</>;
+  return (
+    <div className="flex min-h-screen w-full">
+      {/* Sidebar */}
+      <Sidebar uid={auth.currentUser.uid} />
+
+      {/* Main Content */}
+      <main className="relative flex flex-col w-full bg-white pt-16 ">
+        <div className='absolute hidden sm:flex top-2 justify-center w-full'>
+          <Breadcrumb
+            homeElement={"Home"}
+            separator={<span> / </span>}
+            activeClasses="bg-gradient-to-r from-confirm to-destructive text-transparent bg-clip-text"
+            containerClasses="flex w-full flex-wrap justify-center items-center text-black mx-auto"
+            listClasses="hover:underline items-center mx-2 font-bold flex flex-row text-xs sm:text-sm"
+            capitalizeLinks
+          />
+        </div>
+
+        {children}
+      </main>
+    </div>
+  )
 };
 
 export default ProtectedRoute;

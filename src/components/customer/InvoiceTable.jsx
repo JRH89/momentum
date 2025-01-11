@@ -2,8 +2,7 @@ import { ExternalLink } from "lucide-react";
 import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 
-const InvoicesTable = ({ invoices }) => {
-  const itemsPerPage = 5;
+const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
 

@@ -27,14 +27,16 @@ const CustomerDetailsPage: React.FC = () => {
 
   const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
 
+  const [userData, setUserData] = useState<any>(null);
+
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId: string) => {
       try {
         const userRef = doc(db, "users", userId);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
-          const userData = userSnap.data();
-          setStripeAccountId(userData.stripeAccountId || null);
+          setUserData(userSnap.data());
+          setStripeAccountId(userSnap.data().stripeAccountId || null);
         } else {
           setError("User document not found");
         }
@@ -162,16 +164,13 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
   }
 };
 
-
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <>
-      <NavBar />
-      <div className="p-6 bg-primary min-h-screen">
-        <div className="max-w-6xl bg-white p-6 rounded-2xl shadow mx-auto">
+    
+        <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
           {customerData && (
             <div className="flex flex-col gap-2">
               <h2 className="text-2xl font-semibold text-black">
@@ -272,7 +271,7 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
               )}
             </div>
           <div className='mt-0'>
-            <InvoicesTable invoices={invoices} />
+            <InvoicesTable invoices={invoices} itemsPerPage={userData?.invoicesPerPage || 10} />
           </div>
           {customerData && customerData.email ? (
             <Projects
@@ -284,7 +283,6 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
             <p>Loading or invalid customer data...</p>
           )}
           </div>
-        </div>
       <Footer />
     </>
   );

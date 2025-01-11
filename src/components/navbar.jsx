@@ -270,7 +270,7 @@ const NavBar = () => {
           </ul>
         </div>
       )}
-      <div className="hidden sm:flex sm:flex-wrap text-xs md:text-sm">
+      {/* <div className="hidden sm:flex sm:flex-wrap text-xs md:text-sm">
         <Breadcrumb
           homeElement={"Home"}
           separator={<span> / </span>}
@@ -279,7 +279,7 @@ const NavBar = () => {
           listClasses="hover:underline items-center mx-2 font-bold flex flex-row text-xs sm:text-sm"
           capitalizeLinks
         />
-      </div>
+      </div> */}
     </>
   );
 };

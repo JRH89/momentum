@@ -14,7 +14,7 @@ export default function Footer() {
   return (
     <footer
       data-testid="footer"
-      className="bg-white min-h-screen text-black w-full flex flex-col items-center justify-between"
+      className="bg-white border-t-2 border-black min-h-screen text-black w-full flex flex-col items-center justify-between"
     >
       <div className="flex flex-col mx-auto text-center content-center justify-center items-center text-lg sm:text-2xl gap-5 py-4 w-auto text-gray-800 md:text-3xl my-auto self-center">
         <Link
