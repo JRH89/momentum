@@ -78,16 +78,15 @@ const CustomerLogin = () => {
 
   return (
     <>
-      <Navbar />
-      <div className="flex flex-col pb-24 min-h-screen h-full justify-center my-auto mx-auto w-full gap-5 px-10 pt-12 sm:px-5 text-center">
-        <h1 className="-mt-">Customer Login</h1>
+      <div className="flex flex-col pb-24 min-h-screen h-full justify-center my-auto mx-auto w-full gap-5 px-10 sm:px-5 text-center">
+        <h1 className="text-2xl font-semibold">Customer Login</h1>
         {error && <div className="text-red-500">{error}</div>}
         <form
-          className="flex flex-col gap-5 max-w-lg mx-auto"
+          className="flex flex-col gap-5 max-w-lg w-full mx-auto"
           onSubmit={handleLogin}
         >
           <input
-            className="border border-gray-300 rounded-md px-4 py-2"
+            className="border-2 shadow-md border-black rounded-md px-4 py-2"
             type="email"
             placeholder="Email"
             value={email}
@@ -95,7 +94,7 @@ const CustomerLogin = () => {
             required
           />
           <input
-            className="border border-gray-300 rounded-md px-4 py-2"
+            className="border-2 shadow-md border-black rounded-md px-4 py-2"
             type="password"
             placeholder="Password"
             value={password}
@@ -103,7 +102,7 @@ const CustomerLogin = () => {
             required
           />
           <button
-            className="duration-300 bg-confirm hover:bg-confirm/60 text-white font-bold py-2 px-4 rounded"
+            className="duration-300 border-2 border-black bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black  text-black font-bold py-2 px-4 rounded-lg"
             type="submit"
             disabled={loading}
           >
@@ -111,7 +110,6 @@ const CustomerLogin = () => {
           </button>
         </form>
       </div>
-      <Footer />
     </>
   );
 };

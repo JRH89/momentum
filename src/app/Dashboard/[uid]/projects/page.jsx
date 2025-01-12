@@ -4,17 +4,18 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { db } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import Footer from "../../../../components/footer";
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
-import { set } from "date-fns";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../../../context/AuthProvider";
 
 const Page = () => {
   const { uid } = useParams();
   const [projects, setProjects] = useState([]);
   const [projectsPerPage, setProjectsPerPage] = useState(10); // Default projects per page
   const [currentPage, setCurrentPage] = useState(0); // Tracks the current page
-
+  const router = useRouter();
+  const { user } = useAuth();
   useEffect(() => {
     const fetchProjects = async () => {
       if (!uid) return;
@@ -54,6 +55,12 @@ const Page = () => {
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected);
   };
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
+    }
+  }, [user, router]);
 
   return (
     <>
@@ -101,7 +108,6 @@ const Page = () => {
           />
         )}
       </div>
-      <Footer />
     </>
   );
 };

@@ -156,7 +156,16 @@ const Sidebar = ({ uid, customerId }) => {
           {/* Settings Link */}
           <div className="p-4 px-2 rounded-br-xl bg-white border-t-2 border-black">
             <button
-              onClick={() => auth.signOut()}
+              onClick={() => {
+                auth
+                  .signOut()
+                  .then(() => {
+                    navigate("/Customer/login");
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }}
               className="flex items-center px-4 py-2 text-lg lg:text-xl font-medium rounded-md hover:ml-4 duration-300 w-full"
             >
               <DoorOpen className="w-5 h-5 lg:w-6 lg:h-6 mr-3" />

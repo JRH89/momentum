@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import { db, auth } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import Footer from "../../../../components/footer";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const user = auth.currentUser;
@@ -12,6 +12,8 @@ const Page = () => {
   const [stripeAccountId, setStripeAccountId] = useState(null);
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId) => {
@@ -59,6 +61,12 @@ const Page = () => {
     if (stripeAccountId) fetchInvoices();
   }, [stripeAccountId]);
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
+    }
+  }, [user, router]);
+
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
@@ -70,7 +78,6 @@ const Page = () => {
           />
         </div>
       </div>
-      <Footer />
     </>
   );
 };

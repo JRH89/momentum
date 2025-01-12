@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../../../../context/AuthProvider";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../../../firebase";
 import { Settings } from "lucide-react";
@@ -100,6 +100,10 @@ const Page = () => {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (!user || user.uid !== customerId) {
+    redirect("/Customer/login");
   }
 
   return (

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../../../firebase"; // Ensure this is your Firebase config
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import Footer from "../../../../components/footer";
 import Navbar from "../../../../components/customer/Navbar";
 import { useAuth } from "../../../../context/AuthProvider";
@@ -95,59 +95,7 @@ const CustomerDashboard = () => {
   }
 
   if (!user || user.uid !== customerId) {
-    return (
-      <>
-        <div className="flex -mt-16 flex-col p-4 max-w-6xl mx-auto w-full min-h-screen h-full my-auto items-center justify-center pb-24">
-          <h1 className="text-lg text-center font-semibold mb-4">
-            You must be logged in to access this page
-          </h1>
-          {error && <p className="text-red-500">{error}</p>}
-          <form
-            className="space-y-4 max-w-lg w-full mx-auto"
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleLogin(e);
-            }}
-          >
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="mt-1 p-2 border rounded-md w-full"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="mt-1 p-2 border rounded-md w-full"
-              />
-            </div>
-            <button
-              type="submit"
-              className="mt-4 p-2 bg-blue-500 text-white rounded-md w-full hover:bg-blue-600"
-            >
-              Login
-            </button>
-          </form>
-        </div>
-        <Footer />
-      </>
-    );
+    redirect("/Customer/login");
   }
 
   return (

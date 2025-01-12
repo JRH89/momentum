@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { db } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
@@ -54,6 +54,10 @@ const Page = () => {
 
     fetchCustomerData();
   }, [userId, customerId, user]);
+
+  if (!user || user.uid !== customerId) {
+    redirect("/Customer/login");
+  }
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">

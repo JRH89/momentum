@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import InvoicesTable from "../../../../../components/customer/InvoiceTable";
-import { useParams } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useAuth } from "../../../../../context/AuthProvider";
 import { db } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -87,6 +87,10 @@ const Page = () => {
         Loading...
       </div>
     );
+  }
+
+  if (!user || user.uid !== customerId) {
+    redirect("/Customer/login");
   }
 
   return (

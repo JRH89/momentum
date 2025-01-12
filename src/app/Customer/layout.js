@@ -5,35 +5,36 @@ import { useParams, useRouter } from 'next/navigation';
 import { auth } from '../../../firebase';
 import Breadcrumb from '../../components/BreadcrumbMenu';
 import Sidebar from '../../components/customer/SideBar';
+import { useAuth } from '../../context/AuthProvider';
 
 const ProtectedRoute = ({ children }) => {
     const router = useRouter();
-    const [loading, setLoading] = useState(true); // Track the loading state
+    const [loading, setLoading] = useState(true);
     const { userId } = useParams();
+    const { user } = useAuth();
 
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
+        const checkAuth = async () => {
             if (!user) {
-                router.push('/Customer/login'); // Redirect if user is not authenticated
-            } else {
-                setLoading(false);
+                await router.push('/Customer/login');
             }
-        });
-        return () => unsubscribe();
-    }, [router]);
+            setLoading(false);
+        };
+
+        checkAuth();
+    }, [router, user]);
 
     if (loading) {
-        return <div>Loading...</div>; // Show a loading indicator while checking auth
+        return <div>Loading...</div>;
     }
 
     return (
         <div className="flex min-h-screen bg-white w-full">
-
-            <Sidebar uid={userId} customerId={auth.currentUser.uid} />
+            <Sidebar uid={userId} customerId={auth.currentUser?.uid} />
 
             {/* Main Content */}
-            <main className="relative flex flex-col w-full bg-white pt-16 ">
-                <div className='absolute hidden sm:flex top-3 justify-center w-full '>
+            <main className="relative flex flex-col w-full bg-white pt-16">
+                <div className="absolute hidden sm:flex top-3 justify-center w-full">
                     <Breadcrumb
                         homeElement={"Home"}
                         separator={<span> / </span>}
@@ -47,7 +48,7 @@ const ProtectedRoute = ({ children }) => {
                 {children}
             </main>
         </div>
-    )
+    );
 };
 
 export default ProtectedRoute;

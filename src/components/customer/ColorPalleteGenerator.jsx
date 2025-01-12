@@ -168,7 +168,7 @@ export default function ColorPaletteGenerator({
   };
 
   return (
-    <div className="flex flex-col mx-auto bg-white mt-4 p-4 rounded-lg shadow-md shadow-black">
+    <div className="flex flex-col mx-auto border-2 border-black bg-white mt-4 p-4 rounded-lg shadow-md shadow-black">
       <div className=" w-full mx-auto text-black flex flex-col items-center justify-start2">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex flex-row items-center justify-start my-auto gap-2 mb-2">

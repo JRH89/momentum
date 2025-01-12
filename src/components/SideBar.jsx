@@ -82,7 +82,7 @@ const Sidebar = ({ uid }) => {
       >
         <div className="flex flex-col  h-full">
           {/* Logo and Close Button */}
-          <div className="flex rounded-tr-xl gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm/60">
+          <div className="flex rounded-tr-lg gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm">
             <Link
               className="flex hover:scale-105 duration-300 mx-auto flex-row items-center"
               href="/"
@@ -159,7 +159,16 @@ const Sidebar = ({ uid }) => {
           {/* Settings Link */}
           <div className="p-4 px-2 rounded-br-xl bg-white border-t-2 border-black">
             <button
-              onClick={() => auth.signOut()}
+              onClick={() => {
+                auth
+                  .signOut()
+                  .then(() => {
+                    router.push("/Dashboard/login");
+                  })
+                  .catch((error) => {
+                    console.error("Logout error:", error.message);
+                  });
+              }}
               className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300 w-full"
             >
               <DoorOpen className="w-5 h-5 mr-3" />

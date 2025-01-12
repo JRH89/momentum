@@ -12,7 +12,6 @@ import Link from "next/link";
 import LoginForm from "./SignIn";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import Footer from "../footer";
 import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 
 const Account = () => {
@@ -156,6 +155,12 @@ const Account = () => {
     userStripe,
   });
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
+    }
+  }, [user, router]);
+
   return (
     <>
       <div className="flex flex-col min-h-screen h-full my-auto w-full max-w-6xl mx-auto text-black items-center justify-start pt-24">
@@ -225,7 +230,6 @@ const Account = () => {
           <LoginForm route="/Dashboard/account" />
         )}
       </div>
-      <Footer />
     </>
   );
 };

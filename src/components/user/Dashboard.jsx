@@ -14,9 +14,6 @@ import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
-import UserTickets from "./UserTickets";
-import NavBar from "../navbar";
-import Footer from "../footer";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useAuth();
@@ -75,7 +72,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!user) {
-      router.push("/"); // Redirect to home if user is not logged in
+      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
     }
   }, [user, router]);
 
@@ -148,7 +145,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

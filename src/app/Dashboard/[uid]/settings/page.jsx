@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../../../../firebase";
 import { useAuth } from "../../../../context/AuthProvider";
-import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
-import Footer from "../../../../components/footer";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { user } = useAuth();
@@ -12,6 +12,8 @@ const Page = () => {
   const [invoicesPerPage, setInvoicesPerPage] = useState("");
   const [customersPerPage, setCustomersPerPage] = useState("");
   const [projectsPerPage, setProjectsPerPage] = useState("");
+
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {
@@ -50,6 +52,12 @@ const Page = () => {
     }
   }, [invoicesPerPage, customersPerPage, projectsPerPage, userData, user]);
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
+    }
+  }, [user, router]);
+
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
@@ -79,7 +87,6 @@ const Page = () => {
               </button>
             </div>
           </div>
-
           <div className="mt-5">
             <h2 className="text-2xl font-bold">Customers</h2>
             <p className="my-2">Customers per page: {customersPerPage}</p>
@@ -104,7 +111,6 @@ const Page = () => {
               </button>
             </div>
           </div>
-
           <div className="mt-5">
             <h2 className="text-2xl font-bold">Projects</h2>
             <p className="my-2">Projects per page: {projectsPerPage}</p>
@@ -131,7 +137,6 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

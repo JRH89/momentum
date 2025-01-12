@@ -7,9 +7,9 @@ import { useStripeIntegration } from "../../../hooks/use-stripe-integration";
 import { useAuth } from "../../../../context/AuthProvider";
 import { db } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import Footer from "../../../../components/footer";
 import { AddCustomerForm } from "../../../../components/add-customer-form";
 import { Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { uid } = useParams(); // Get the user ID from the route params
@@ -17,6 +17,8 @@ const Page = () => {
   const [userData, setUserData] = useState(null);
   const [userStripe, setUserStripe] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -51,6 +53,12 @@ const Page = () => {
     userData,
     userStripe,
   });
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
+    }
+  }, [user, router]);
 
   return (
     <>
@@ -88,7 +96,6 @@ const Page = () => {
           />
         )}
       </div>
-      <Footer />
     </>
   );
 };
