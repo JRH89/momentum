@@ -76,7 +76,7 @@ export default function UserTickets() {
           {tickets.map((ticket) => (
             <li
               key={ticket.id}
-              className="p-4 border border-black bg-[#EAEEFE] rounded-lg shadow-sm"
+              className="p-4 shadow-md shadow-black border-2 border-black bg-[#EAEEFE] rounded-lg"
             >
               <p className="font-bold text-lg">{ticket.type}</p>
               <p className="text-gray-500">

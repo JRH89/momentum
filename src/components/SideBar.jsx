@@ -76,13 +76,13 @@ const Sidebar = ({ uid }) => {
     <div className="flex lg:mr-4">
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-52  border-r-2 border-black bg-[#EAEEFE] text-black transform ${
+        className={`fixed  inset-y-0 left-0 z-50 w-52 rounded-r-xl  border-r-2 border-black  text-black transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 lg:translate-x-0`}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col  h-full">
           {/* Logo and Close Button */}
-          <div className="flex gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm/60">
+          <div className="flex rounded-tr-xl gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm/60">
             <Link
               className="flex hover:scale-105 duration-300 mx-auto flex-row items-center"
               href="/"
@@ -139,7 +139,7 @@ const Sidebar = ({ uid }) => {
             </button>
           </div>
           {/* Navigation Links */}
-          <nav className="flex flex-col bg-white px-2 h-full my-auto  justify-evenly py-6 space-y-0">
+          <nav className="flex flex-col bg-backgroundPrimary px-2 h-full my-auto  justify-evenly py-6 space-y-0">
             {links.map((link) => (
               <div
                 key={link.href}
@@ -157,7 +157,7 @@ const Sidebar = ({ uid }) => {
             ))}
           </nav>
           {/* Settings Link */}
-          <div className="p-4 px-2 bg-white border-t-2 border-black">
+          <div className="p-4 px-2 rounded-br-xl bg-white border-t-2 border-black">
             <button
               onClick={() => auth.signOut()}
               className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300 w-full"

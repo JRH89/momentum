@@ -54,79 +54,80 @@ const Page = () => {
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
         <h1 className="text-3xl font-bold">User Settings</h1>
-
-        <div className="mt-5 justify-start flex flex-col">
-          <h2 className="text-2xl font-bold">Invoices</h2>
-          <p className="mt-2">Invoices per page: {invoicesPerPage}</p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setInvoicesPerPage(invoicesPerPage - 1)}
-              className="p-2 bg-gray-300 rounded-md"
-            >
-              -
-            </button>
-            <input
-              type="text"
-              value={invoicesPerPage}
-              onChange={(e) => setInvoicesPerPage(parseInt(e.target.value))}
-              className="w-full p-2 border rounded-md text-center"
-            />
-            <button
-              onClick={() => setInvoicesPerPage(invoicesPerPage + 1)}
-              className="p-2 bg-gray-300 rounded-md"
-            >
-              +
-            </button>
+        <div className="p-4 mt-2 gap-5 flex  flex-col border-black border-2 rounded-lg shadow-md shadow-black">
+          <div className="justify-start flex flex-col">
+            <h2 className="text-2xl font-bold">Invoices</h2>
+            <p className="my-2">Invoices per page: {invoicesPerPage}</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setInvoicesPerPage(invoicesPerPage - 1)}
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+              >
+                -
+              </button>
+              <input
+                type="text"
+                value={invoicesPerPage}
+                onChange={(e) => setInvoicesPerPage(parseInt(e.target.value))}
+                className="w-full p-2 border rounded-md text-center"
+              />
+              <button
+                onClick={() => setInvoicesPerPage(invoicesPerPage + 1)}
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+              >
+                +
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-5">
-          <h2 className="text-2xl font-bold">Customers</h2>
-          <p className="mt-2">Customers per page: {customersPerPage}</p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setCustomersPerPage(customersPerPage - 1)}
-              className="p-2 bg-gray-300 rounded-md"
-            >
-              -
-            </button>
-            <input
-              type="text"
-              value={customersPerPage}
-              onChange={(e) => setCustomersPerPage(parseInt(e.target.value))}
-              className="w-full p-2 border rounded-md text-center"
-            />
-            <button
-              onClick={() => setCustomersPerPage(customersPerPage + 1)}
-              className="p-2 bg-gray-300 rounded-md"
-            >
-              +
-            </button>
+          <div className="mt-5">
+            <h2 className="text-2xl font-bold">Customers</h2>
+            <p className="my-2">Customers per page: {customersPerPage}</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setCustomersPerPage(customersPerPage - 1)}
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+              >
+                -
+              </button>
+              <input
+                type="text"
+                value={customersPerPage}
+                onChange={(e) => setCustomersPerPage(parseInt(e.target.value))}
+                className="w-full p-2 border rounded-md text-center"
+              />
+              <button
+                onClick={() => setCustomersPerPage(customersPerPage + 1)}
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+              >
+                +
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="mt-5">
-          <h2 className="text-2xl font-bold">Projects</h2>
-          <p className="mt-2">Projects per page: {projectsPerPage}</p>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setProjectsPerPage(projectsPerPage - 1)}
-              className="p-2 bg-gray-300 rounded-md"
-            >
-              -
-            </button>
-            <input
-              type="text"
-              value={projectsPerPage}
-              onChange={(e) => setProjectsPerPage(parseInt(e.target.value))}
-              className="w-full p-2 border rounded-md text-center"
-            />
-            <button
-              onClick={() => setProjectsPerPage(projectsPerPage + 1)}
-              className="p-2 bg-gray-300 rounded-md"
-            >
-              +
-            </button>
+          <div className="mt-5">
+            <h2 className="text-2xl font-bold">Projects</h2>
+            <p className="my-2">Projects per page: {projectsPerPage}</p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setProjectsPerPage(projectsPerPage - 1)}
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+              >
+                -
+              </button>
+              <input
+                type="text"
+                value={projectsPerPage}
+                onChange={(e) => setProjectsPerPage(parseInt(e.target.value))}
+                className="w-full p-2 border rounded-md text-center"
+              />
+              <button
+                onClick={() => setProjectsPerPage(projectsPerPage + 1)}
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+              >
+                +
+              </button>
+            </div>
           </div>
         </div>
       </div>

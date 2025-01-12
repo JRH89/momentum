@@ -110,7 +110,7 @@ export default function Dashboard() {
                 <div className=" h-full flex flex-col shadow-black mx-auto w-full">
                   {user && userData?.stripeConnected && (
                     <div className="flex flex-col gap-2">
-                      <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto items-center">
+                      <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto px-4 items-center">
                         Customers{" "}
                         <button
                           onClick={() => setIsAddingCustomer(true)}
@@ -123,7 +123,9 @@ export default function Dashboard() {
                       </h3>
 
                       {loadingCustomers ? (
-                        <p className="text-gray-600">Loading customers...</p>
+                        <p className="text-gray-600 px-4">
+                          Loading customers...
+                        </p>
                       ) : (
                         <CustomerTable
                           customers={customers}

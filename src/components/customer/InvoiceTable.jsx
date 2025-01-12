@@ -47,10 +47,10 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
   return (
     <div>
       {invoices.length > 0 ? (
-        <div className="overflow-x-auto shadow-md">
-          <table className="min-w-full table-auto border-2 border-black">
+        <div className="overflow-x-auto shadow-md shadow-black rounded-lg border-2 border-black">
+          <table className="min-w-full table-auto">
             <thead>
-              <tr className="bg-[#EAEEFE] border-b-2 border-black">
+              <tr className="bg-backgroundPrimary border-b-2 border-black">
                 <th
                   className="px-4 py-3 text-left cursor-pointer"
                   onClick={() => handleSort("number")}
@@ -82,14 +82,14 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
               {displayedInvoices.map((invoice) => (
                 <tr
                   key={invoice.id}
-                  className="border-b-2 hover:bg-yellow-50 border-black rounded-lg"
+                  className="border-b-2 hover:bg-yellow-50 border-black"
                 >
-                  <td className="px-4 py-2 font-medium">{invoice.number}</td>
-                  <td className="px-4 py-2 flex flex-row max-w-xs mx-auto w-full">
+                  <td className="px-4 py-2.5 font-medium">{invoice.number}</td>
+                  <td className="px-4 py-2.5 flex flex-row max-w-xs mx-auto w-full">
                     ${invoice.amount_due}
                   </td>
                   <td
-                    className={`px-4 py-2 font-medium capitalize ${
+                    className={`px-4 py-2.5 font-medium capitalize ${
                       invoice.status === "paid"
                         ? "text-confirm"
                         : invoice.status === "uncollectible"
@@ -99,8 +99,8 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
                   >
                     {invoice.status}
                   </td>
-                  <td className="px-4 py-2">{invoice.due_date}</td>
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2.5">{invoice.due_date}</td>
+                  <td className="px-4 py-2.5">
                     <a
                       className="text-destructive hover:text-confirm duration-300 font-semibold rounded-lg flex flex-row items-center"
                       href={invoice.hosted_invoice_url}

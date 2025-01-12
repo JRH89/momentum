@@ -56,7 +56,7 @@ const Page = () => {
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
         <div className="flex items-center justify-start gap-4 mb-2">
-          <h1 className="text-3xl my-auto flex flex-row items-center font-bold ">
+          <h1 className="text-3xl px-4 my-auto flex flex-row items-center font-bold ">
             Customers
           </h1>
           <span>
@@ -72,7 +72,7 @@ const Page = () => {
         </div>
 
         {loadingCustomers ? (
-          <p>Loading customers...</p>
+          <p className="px-4 text-gray-600">Loading customers...</p>
         ) : (
           <CustomerTable
             customers={customers}

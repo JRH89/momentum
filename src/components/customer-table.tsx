@@ -55,45 +55,59 @@ export function CustomerTable({ customers, userId, itemsPerPage = 8 }: CustomerT
 
   return (
     <>
-      <div className="overflow-x-auto py-2 pt-4 md:pt-0 h-full flex flex-col">
-        <table className="min-w-full h-full bg-white border-2 border-black rounded-md">
-          <thead>
-            <tr className="bg-[#EAEEFE] font-semibold border-b-2 border-black">
-              <th className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black" onClick={() => handleSort('email')}>
-                Email
-              </th>
-              <th className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black" onClick={() => handleSort('name')}>
-                Name
-              </th>
-              <th className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black" onClick={() => handleSort('description')}>
-                Description
-              </th>
-              <th className="py-4 px-6 text-left text-md text-black">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y-2 divide-black space-y-2">
-            {sortedCustomers.map((customer, index) => (
-              <tr key={index} className="py-4 hover:bg-yellow-50">
-                <td className="py-4 font-bold px-6 text-sm text-black">
-                  <Link href={`mailto:${customer.email}`}>
-                    {customer.email}
-                  </Link>
-                </td>
-                <td className="py-4 px-6 text-sm font-medium text-black">{customer.name}</td>
-                <td className="py-4 px-6 text-sm font-medium text-black">{customer.description || 'N/A'}</td>
-                <td className="py-4 px-6 text-sm">
-                  <Link
-                    className="text-destructive flex font-semibold hover:underline"
-                    href={`/Dashboard/${userId}/${customer?.stripeCustomerId}`}
-                  >
-                    View <ArrowBigRight className="w-5 h-5" />
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+     <div className="overflow-x-auto py-2 pb-4 px-4 h-full flex flex-col">
+  <div className="bg-white border-2 border-black rounded-lg overflow-x-auto shadow-md shadow-black">
+    <table className="min-w-full h-full ">
+      <thead>
+        <tr className="bg-backgroundPrimary font-semibold border-b-2 border-black">
+          <th
+            className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black"
+            onClick={() => handleSort('email')}
+          >
+            Email
+          </th>
+          <th
+            className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black"
+            onClick={() => handleSort('name')}
+          >
+            Name
+          </th>
+          <th
+            className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black"
+            onClick={() => handleSort('description')}
+          >
+            Description
+          </th>
+          <th className="py-4 px-6 text-left text-md text-black">Actions</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y-2 divide-black space-y-2">
+        {sortedCustomers.map((customer, index) => (
+          <tr key={index} className="py-4 hover:bg-yellow-50">
+            <td className="py-4 font-bold px-6 text-sm text-black">
+              <Link href={`mailto:${customer.email}`}>{customer.email}</Link>
+            </td>
+            <td className="py-4 px-6 text-sm font-medium text-black">
+              {customer.name}
+            </td>
+            <td className="py-4 px-6 text-sm font-medium text-black">
+              {customer.description || 'N/A'}
+            </td>
+            <td className="py-4 px-6 text-sm">
+              <Link
+                className="text-destructive flex font-semibold hover:underline"
+                href={`/Dashboard/${userId}/${customer?.stripeCustomerId}`}
+              >
+                View <ArrowBigRight className="w-5 h-5" />
+              </Link>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
       <ReactPaginate
         previousLabel={'Previous'}
@@ -106,8 +120,8 @@ export function CustomerTable({ customers, userId, itemsPerPage = 8 }: CustomerT
         containerClassName={'flex px-4 justify-between items-center space-x-2'}
         pageClassName={'page-item'}
         pageLinkClassName={'px-4 py-2 text-sm rounded-md text-gray-700 bg-white  hover:bg-gray-200 transition-colors duration-300'}
-        previousClassName={'previous-item text-xl text-green-500'}
-        nextClassName={'next-item text-green-500 text-xl'}
+        previousClassName={'previous-item text-xl font-medium text-green-500'}
+        nextClassName={'next-item text-green-500 font-medium text-xl'}
         disabledClassName={'disabled'}
         activeClassName={'text-confirm text-white border-blue-500'}
       />
