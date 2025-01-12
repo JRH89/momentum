@@ -71,6 +71,8 @@ const syncCustomersWithFirestore = async (stripeCustomers: any) => {
                 email: customer.email,
                 name: customer.name || "",
                 created: customer.created,
+                invoicesPerPage: 10,
+                projectsPerPage: 10,
               }))
             ),
           });

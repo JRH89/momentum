@@ -5,6 +5,7 @@ import { db } from "../../../firebase"; // Make sure this path is correct
 import { format } from "date-fns";
 import SupportForm from "./SupportTicketForm";
 import { Plus } from "lucide-react";
+import { Bug } from "lucide-react";
 
 export default function UserTickets() {
   const { user, loading } = useAuth();
@@ -56,7 +57,9 @@ export default function UserTickets() {
   return (
     <div className="">
       <div className="flex flex-row items-center justify-start gap-4 mb-4">
-        <h2 className="text-3xl font-bold">Support Tickets</h2>
+        <h2 className="text-3xl font-bold flex flex-row gap-2 items-center">
+          <Bug className="w-8 h-8" /> Support Tickets
+        </h2>
         <button
           onClick={() => setShowForm(true)}
           className=" text-black flex items-center flex-row font-bold text-xl rounded"

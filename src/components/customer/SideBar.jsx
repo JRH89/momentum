@@ -7,18 +7,15 @@ import {
   HomeIcon,
   FileTextIcon,
   BriefcaseIcon,
-  UsersIcon,
   SettingsIcon,
-  MenuIcon,
   XIcon,
-  Blocks,
   DoorOpen,
   Bug,
 } from "lucide-react";
-import { auth, db } from "../../firebase";
+import { auth, db } from "../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
-const Sidebar = ({ uid }) => {
+const Sidebar = ({ uid, customerId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -28,29 +25,29 @@ const Sidebar = ({ uid }) => {
   const [photo, setPhoto] = useState(null);
 
   const links = [
-    { href: `/Dashboard/${uid}`, label: "Home", icon: HomeIcon },
+    { href: `/Customer/${uid}/${customerId}`, label: "Home", icon: HomeIcon },
     {
-      href: `/Dashboard/${uid}/invoices`,
+      href: `/Customer/${uid}/${customerId}/invoices`,
       label: "Invoices",
       icon: FileTextIcon,
     },
     {
-      href: `/Dashboard/${uid}/projects`,
+      href: `/Customer/${uid}/${customerId}/projects`,
       label: "Projects",
       icon: BriefcaseIcon,
     },
+    // {
+    //   href: `/Dashboard/${uid}/customers`,
+    //   label: "Customers",
+    //   icon: UsersIcon,
+    // },
+    // {
+    //   href: `/Dashboard/account`,
+    //   label: "Account",
+    //   icon: Blocks,
+    // },
     {
-      href: `/Dashboard/${uid}/customers`,
-      label: "Customers",
-      icon: UsersIcon,
-    },
-    {
-      href: `/Dashboard/account`,
-      label: "Account",
-      icon: Blocks,
-    },
-    {
-      href: `/Dashboard/${uid}/support`,
+      href: `/Customer/${uid}/${customerId}/support`,
       label: "Support",
       icon: Bug,
     },
@@ -76,11 +73,11 @@ const Sidebar = ({ uid }) => {
     <div className="flex lg:mr-4">
       {/* Sidebar */}
       <div
-        className={`fixed  inset-y-0 left-0 z-50 w-52 rounded-r-xl border-r-2 border-t-2 border-b-2 border-black text-black transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-52 rounded-r-xl border-r-2 border-t-2 border-b-2 border-black text-black transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 lg:translate-x-0`}
       >
-        <div className="flex flex-col  h-full">
+        <div className="flex flex-col h-full">
           {/* Logo and Close Button */}
           <div className="flex rounded-tr-xl gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm/60">
             <Link
@@ -148,9 +145,9 @@ const Sidebar = ({ uid }) => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300"
+                  className="flex items-center px-4 py-2 lg:text-xl text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300"
                 >
-                  <link.icon className="w-5 h-5 mr-3" />
+                  <link.icon className="w-5 h-5 lg:w-6 lg:h-6 mr-3" />
                   {link.label}
                 </Link>
               </div>
@@ -160,16 +157,16 @@ const Sidebar = ({ uid }) => {
           <div className="p-4 px-2 rounded-br-xl bg-white border-t-2 border-black">
             <button
               onClick={() => auth.signOut()}
-              className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300 w-full"
+              className="flex items-center px-4 py-2 text-lg lg:text-xl font-medium rounded-md hover:ml-4 duration-300 w-full"
             >
-              <DoorOpen className="w-5 h-5 mr-3" />
+              <DoorOpen className="w-5 h-5 lg:w-6 lg:h-6 mr-3" />
               Logout
             </button>
             <Link
-              href={`/Dashboard/${uid}/settings`}
-              className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300"
+              href={`/Customer/${uid}/${customerId}/settings`}
+              className="flex items-center px-4 py-2 text-lg lg:text-xl font-medium rounded-md hover:ml-4 duration-300"
             >
-              <SettingsIcon className="w-5 h-5 mr-3" />
+              <SettingsIcon className="w-5 h-5 lg:w-6 lg:h-6 mr-3" />
               Settings
             </Link>
           </div>

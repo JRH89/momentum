@@ -169,7 +169,6 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
 
   return (
     <>
-    
         <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
           {customerData && (
             <div className="flex flex-col gap-2">

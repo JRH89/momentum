@@ -11,6 +11,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase a
 import { auth } from "../../../../../firebase"; // Ensure your firebase config is properly set
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import UserTickets from "../../../../components/user/UserTickets";
+import { Home } from "lucide-react";
 
 const CustomerDashboard = () => {
   const { userId, customerId } = useParams();
@@ -96,7 +97,6 @@ const CustomerDashboard = () => {
   if (!user || user.uid !== customerId) {
     return (
       <>
-        <Navbar />
         <div className="flex -mt-16 flex-col p-4 max-w-6xl mx-auto w-full min-h-screen h-full my-auto items-center justify-center pb-24">
           <h1 className="text-lg text-center font-semibold mb-4">
             You must be logged in to access this page
@@ -152,19 +152,15 @@ const CustomerDashboard = () => {
 
   return (
     <>
-      <Navbar />
       <div className="flex flex-col p-6 max-w-6xl mx-auto w-full min-h-screen h-full pb-24">
-        <div className="border-b border-black justify-between flex flex-row items-baseline">
-          <h1 className="text-2xl lg:text-3xl font-bold text-black ">
-            Customer Dashboard
+        <div className="justify-between flex flex-row items-baseline">
+          <h1 className="text-3xl lg:text-3xl flex flex-row items-center gap-2 font-bold text-black ">
+            <Home className="w-8 h-8" /> Customer Dashboard
           </h1>
-          <div className="text-lg lg:text-xl">
-            Welcome back, {customerData?.name || customerData?.email}
-          </div>
         </div>
         {customerData ? (
           <>
-            <div className="bg-white mt-6 shadow-md shadow-black rounded-lg p-6">
+            <div className="mt-6">
               <div className="mb-6">
                 <h3 className="text-2xl font-bold mb-4">Invoices</h3>
                 <InvoicesTable invoices={invoices} />
@@ -177,7 +173,7 @@ const CustomerDashboard = () => {
                     {customerData.projects.map((project, index) => (
                       <div
                         key={index}
-                        className="bg-[#EAEEFE] border border-black rounded-lg shadow-md p-4"
+                        className="bg-[#EAEEFE] border-2 shadow-black border-black rounded-lg shadow-md p-4"
                       >
                         <h3 className="text-lg font-bold text-black mb-2">
                           {project.name}
@@ -200,31 +196,12 @@ const CustomerDashboard = () => {
                 </>
               )}
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2  mt-4 gap-4">
-              <div className="border flex flex-col h-full my-auto w-full bg-white border-gray-300 shadow-md shadow-black p-4 rounded-lg">
-                <h2 className="text-2xl font-bold mb-4">Customer Details</h2>
-                <div className="p-4 flex flex-col h-full my-auto justify-center border border-black bg-[#EAEEFE] rounded-lg shadow-sm">
-                  <p className="text-lg font-medium ">
-                    Name: {customerData.name}
-                  </p>
-                  <p className="text-lg font-medium ">
-                    Email: {customerData.email}
-                  </p>
-                  <p className="text-lg font-medium">
-                    Stripe ID: {customerData.stripeCustomerId}
-                  </p>
-                </div>
-              </div>
-              <div className="flex h-full">
-                <UserTickets userId={userId} customerId={customerId} />
-              </div>
-            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2  mt-4 gap-4"></div>
           </>
         ) : (
           <p className="text-gray-500 text-center">No customer data found.</p>
         )}
       </div>
-      <Footer />
     </>
   );
 
