@@ -74,9 +74,7 @@ const SubscriptionSection = () => {
       >
         {user && (
           <>
-            <h2 className="font-extrabold text-3xl md:text-4xl mb-8 ">
-              Choose the plan that works best for you
-            </h2>
+            <h2 className="text-2xl font-bold mb-4">Step 1: Choose a Plan</h2>
             <div className="grid grid-cols-1 items-center w-full mx-auto sm:grid-cols-2 lg:grid-cols-2 justify-center gap-5">
               {pricingPlans.map((plan, index) => (
                 <div

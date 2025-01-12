@@ -28,31 +28,41 @@ const Sidebar = ({ uid }) => {
   const [photo, setPhoto] = useState(null);
 
   const links = [
-    { href: `/Dashboard/${uid}`, label: "Home", icon: HomeIcon },
+    {
+      href: `/Dashboard/${uid}`,
+      label: "Home",
+      icon: HomeIcon,
+      disabled: false,
+    },
     {
       href: `/Dashboard/${uid}/invoices`,
       label: "Invoices",
       icon: FileTextIcon,
+      disabled: userData?.stripeConnected === false,
     },
     {
       href: `/Dashboard/${uid}/projects`,
       label: "Projects",
       icon: BriefcaseIcon,
+      disabled: userData?.stripeConnected === false,
     },
     {
       href: `/Dashboard/${uid}/customers`,
       label: "Customers",
       icon: UsersIcon,
+      disabled: userData?.stripeConnected === false,
     },
     {
       href: `/Dashboard/account`,
       label: "Account",
       icon: Blocks,
+      disabled: false,
     },
     {
       href: `/Dashboard/${uid}/support`,
       label: "Support",
       icon: Bug,
+      disabled: false,
     },
   ];
 
@@ -148,7 +158,11 @@ const Sidebar = ({ uid }) => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300"
+                  className={`flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300 ${
+                    link.disabled
+                      ? "opacity-50 pointer-events-none"
+                      : "cursor-pointer"
+                  }`}
                 >
                   <link.icon className="w-5 h-5 mr-3" />
                   {link.label}
@@ -191,13 +205,11 @@ const Sidebar = ({ uid }) => {
         } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden border-2 border-black top-4 left-4 focus:outline-none`}
         onClick={toggleSidebar}
       >
-        {/* <MenuIcon className="w-6 h-6" /> */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 349.2 320"
           width="25"
           height="25"
-          className=""
         >
           <defs>
             <style>

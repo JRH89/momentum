@@ -76,6 +76,10 @@ export default function Dashboard() {
     }
   }, [user, router]);
 
+  const connectStripeAccount = () => {
+    window.location.href = "/api/stripe/oauth"; // Your API endpoint that redirects to Stripe
+  };
+
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
@@ -83,64 +87,59 @@ export default function Dashboard() {
         <div className="flex flex-col">
           <div className="p-5 pt-0 px-0 pb-0">
             <div className="flex flex-col gap-5">
-              {!isPremium ? (
-                <div className="bg-white p-4 rounded-lg shadow-md h-full flex flex-col shadow-black mx-auto w-full">
-                  <div className="flex flex-row w-full">
-                    <h3 className="text-2xl font-bold mb-4 text-black flex flex-row gap-1 items-center">
-                      <Lock className="w-5 h-5 text-destructive" />
-                      Upgrade to Premium
+              <div className=" h-full flex flex-col shadow-black mx-auto w-full">
+                {user && userData?.stripeConnected && (
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto px-4 items-center">
+                      Customers{" "}
+                      <button
+                        onClick={() => setIsAddingCustomer(true)}
+                        className="text-black items-center text-xl flex flex-row align-middle my-auto hover:underline"
+                      >
+                        [
+                        <PlusIcon className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
+                        ]
+                      </button>
                     </h3>
-                  </div>
-                  <p className="text-gray-700 my-auto h-auto text-xs sm:text-base font-semibold">
-                    Unlock all features!!!
-                  </p>
-                  <div className="mt-2 flex mx-auto w-full justify-start">
-                    <Link
-                      href="/Dashboard/subscribe"
-                      className="bg-confirm font-semibold duration-300 text-black py-2 px-4 shadow-md hover:shadow-lg hover:shadow-black shadow-black text-xs sm:text-lg rounded"
-                    >
-                      Upgrade
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <div className=" h-full flex flex-col shadow-black mx-auto w-full">
-                  {user && userData?.stripeConnected && (
-                    <div className="flex flex-col gap-2">
-                      <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto px-4 items-center">
-                        Customers{" "}
-                        <button
-                          onClick={() => setIsAddingCustomer(true)}
-                          className="text-black items-center text-xl flex flex-row align-middle my-auto hover:underline"
-                        >
-                          [
-                          <PlusIcon className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
-                          ]
-                        </button>
-                      </h3>
 
-                      {loadingCustomers ? (
-                        <p className="text-gray-600 px-4">
-                          Loading customers...
-                        </p>
-                      ) : (
-                        <CustomerTable
-                          customers={customers}
-                          userId={user.uid}
-                          itemsPerPage={userData?.customersPerPage || 8}
-                        />
-                      )}
-                    </div>
-                  )}
-                  {isAddingCustomer && (
-                    <AddCustomerForm
-                      onClose={() => setIsAddingCustomer(false)}
-                      user={user}
-                      userStripe={userStripe}
-                    />
-                  )}
-                </div>
-              )}
+                    {loadingCustomers ? (
+                      <p className="text-gray-600 px-4">Loading customers...</p>
+                    ) : (
+                      <CustomerTable
+                        customers={customers}
+                        userId={user.uid}
+                        itemsPerPage={userData?.customersPerPage || 8}
+                      />
+                    )}
+                  </div>
+                )}
+                {user && !userData?.stripeConnected && (
+                  <div className="flex my-auto justify-center items-center flex-col -mt-24 h-full min-h-screen gap-2">
+                    <h2 className="text-2xl max-w-xl w-full mx-auto text-center font-bold mb-4">
+                      Step 2: Connect your Stripe Account
+                    </h2>
+
+                    <button
+                      onClick={connectStripeAccount}
+                      className="flex items-center justify-center gap-1.5  px-6 duration-300 bg-white border-2 border-black shadow-md shadow-black max-w-xs mx-auto  text-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                    >
+                      <span className="font-semibold pb-0.5">Connect to</span>
+                      <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg"
+                        alt="Stripe Logo"
+                        className="w-12 h-12 text-white"
+                      />
+                    </button>
+                  </div>
+                )}
+                {isAddingCustomer && (
+                  <AddCustomerForm
+                    onClose={() => setIsAddingCustomer(false)}
+                    user={user}
+                    userStripe={userStripe}
+                  />
+                )}
+              </div>
             </div>
           </div>
         </div>

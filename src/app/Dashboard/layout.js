@@ -39,7 +39,7 @@ const ProtectedRoute = ({ children }) => {
       }
     }
 
-    return () => unsubscribe();
+
   }, [router]);
 
   if (loading) {
@@ -65,6 +65,7 @@ const ProtectedRoute = ({ children }) => {
         </div>
         {!isPremium && user ? (
           <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col -mt-8">
+
             <div className="flex flex-col justify-center items-center max-w-4xl mx-auto h-full w-full p-6 pt-0">
               <PricingSection />
             </div>

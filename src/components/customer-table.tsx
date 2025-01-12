@@ -108,8 +108,8 @@ export function CustomerTable({ customers, userId, itemsPerPage = 8 }: CustomerT
   </div>
 </div>
 
-
-      <ReactPaginate
+{customers.length > itemsPerPage && (
+  <ReactPaginate
         previousLabel={'Previous'}
         nextLabel={'Next'}
         breakLabel={'...'}
@@ -117,14 +117,15 @@ export function CustomerTable({ customers, userId, itemsPerPage = 8 }: CustomerT
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageChange}
-        containerClassName={'flex px-4 justify-between items-center space-x-2'}
+        containerClassName={'flex px-8 justify-between items-center space-x-2'}
         pageClassName={'page-item'}
-        pageLinkClassName={'px-4 py-2 text-sm rounded-md text-gray-700 bg-white  hover:bg-gray-200 transition-colors duration-300'}
+        pageLinkClassName={'px-2 py-1 text-sm rounded-md text-gray-700 bg-white hover:border-2 hover:border-black transition-colors duration-300'}
         previousClassName={'previous-item text-xl font-medium text-green-500'}
         nextClassName={'next-item text-green-500 font-medium text-xl'}
         disabledClassName={'disabled'}
-        activeClassName={'text-confirm text-white border-blue-500'}
+        activeClassName={'text-confirm text-black border-blue-500'}
       />
+)}
     </>
   )
 }
