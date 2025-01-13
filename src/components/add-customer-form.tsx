@@ -77,7 +77,7 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
   }
 
   return (
-    <div className="fixed inset-0 p-4 md:p-0 flex items-center justify-center z-50 bg-black bg-opacity-90">
+    <div className="fixed inset-0 p-4 md:p-0 flex items-center justify-center z-40 bg-black bg-opacity-90">
       <div className="bg-white p-6 mt-8 shadow-md rounded-lg w-full max-w-xl">
         <h3 className="text-2xl text-center font-semibold text-gray-800 mb-4">Add Customer</h3>
         <form onSubmit={handleSubmit}>

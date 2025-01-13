@@ -5,8 +5,6 @@ import { useParams } from "next/navigation";
 import { db } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { StripeCustomer } from "../../../../components/types/stripeCustomer";
-import NavBar from "../../../../components/navbar";
-import Footer from "../../../../components/footer";
 import Projects from "../../../../components/client/Projects";
 import { Plus } from "lucide-react";
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
@@ -18,15 +16,11 @@ const CustomerDetailsPage: React.FC = () => {
   const [invoices, setInvoices] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
   const [invoiceAmount, setInvoiceAmount] = useState<string>("");
   const [invoiceCurrency, setInvoiceCurrency] = useState<string>("usd");
   const [invoiceDescription, setInvoiceDescription] = useState<string>("");
-
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
-
   const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
-
   const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
@@ -175,9 +169,9 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
               <h2 className="text-2xl font-semibold text-black">
                 Customer Details
               </h2>
-              <p>Name: {customerData.name}</p>
-              <p>Email: <a className="text-confirm bg-gray-100 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
-              <p>Stripe Customer ID: {customerData.stripeCustomerId}</p>
+              <p className="font-medium">Name: {customerData.name}</p>
+              <p className="font-medium">Email: <a className="text-confirm bg-gray-100 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
+              <p className="font-medium">Stripe Customer ID: {customerData.stripeCustomerId}</p>
             </div>
           )}
           <div className="mt-6">
@@ -193,7 +187,7 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
             </div>
             { showInvoiceForm && (
             <form
-            className="mt-4 fixed inset-0 bg-black/90 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
+            className="fixed inset-0 bg-black/90 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
             onSubmit={handleCreateInvoice}
           >
             <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
@@ -282,7 +276,6 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
             <p>Loading or invalid customer data...</p>
           )}
           </div>
-      <Footer />
     </>
   );
 };

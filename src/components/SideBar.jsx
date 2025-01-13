@@ -86,7 +86,7 @@ const Sidebar = ({ uid }) => {
     <div className="flex lg:mr-4">
       {/* Sidebar */}
       <div
-        className={`fixed  inset-y-0 left-0 z-50 w-52 rounded-r-xl border-r-2 border-t-2 border-b-2 border-black text-black transform ${
+        className={`fixed  inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 lg:translate-x-0`}
       >

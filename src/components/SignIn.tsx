@@ -5,10 +5,12 @@ import { auth, provider as googleProvider, db } from '../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { error } from 'console';
 
 const SignIn = () => {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   // Monitor auth state
   useEffect(() => {
@@ -56,13 +58,14 @@ const SignIn = () => {
       await signInWithPopup(auth, provider);
       router.push('/Dashboard');
     } catch (error: any) {
-      console.error('Error signing in:', error.message);
+      setError(error.message);
     }
   };
 
   return (
     <div className="flex flex-col gap-4">
       {/* Google Sign-In Button */}
+      {error && <p className="text-red-500 max-w-sm text-center p-4 bg-white rounded-lg border-2 border-black">{error}</p>}
       <button
         type="button"
         className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

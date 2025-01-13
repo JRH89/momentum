@@ -3,11 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
-import NavBar from "../../../../../components/navbar";
-import Footer from "../../../../../components/footer";
 import { useParams } from "next/navigation";
 import { Plus } from "lucide-react";
-import Image from "next/image";
 
 interface Milestone {
   id: string;
@@ -182,9 +179,9 @@ const ProjectPage = () => {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
-        <h1 className="text-4xl items-baseline border-b border-black flex flex-row justify-between w-full font-semibold">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
-        <p className="mt-2 text-lg">{project.description}</p>
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <h1 className="text-4xl items-baseline flex flex-row justify-between w-full font-semibold">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
+        <p className="text-lg">{project.description}</p>
         
         {/* Milestones Section */}
         <div className="mt-4">
@@ -201,61 +198,64 @@ const ProjectPage = () => {
             </button>
           </div>
           {milestones.length > 0 ? (
-          <table className=" bg-white w-full table-auto">
-            <thead className="bg-gray-200">
-              <tr className="border-b border-t border-black">
-                <th className="p-1 px-4  text-left text-lg font-semibold border-l border-black">Milestone</th>
-                  <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
-                   <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
-                <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
-                <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {milestones.map((milestone) => (
-                <tr key={milestone.id} className="border-b border-black">
-                  <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
-                  <td className="p-1 px-4">{milestone.description}</td>
-                  <td className="p-1 px-4">{milestone.deadline}</td>
-                  <td className="p-1 px-4 text-sm text-gray-500">
-                  <span
-                    className={`text-sm capitalize font-medium ${
-                      milestone.status === "completed"
-                        ? "text-confirm"
-                        : milestone.status === "pending"
-                        ? "text-destructive"
-                        : "text-green-500"
-                    }`}
-                  >
-                    {milestone.status}
-                  </span>
-                </td>
-                  <td className="p-1 px-4 border-r border-black">
-                  <div className="p-1">
-                      <select
-                        name="status"
-                        id="status"
-                        aria-label="status"
-                      onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
-                      value={milestone.status}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
-                      >
-                         <option value="pending" className="text-black">
-                        Pending
-                      </option>
-                      <option value="in-progress" className="text-green-500">
-                        In Progress
-                      </option>
-                      <option value="completed" className="text-confirm">
-                        Completed
-                      </option>
-                    </select>
-                  </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+         <div className="border-2 border-black rounded-lg overflow-x-auto">
+  <table className="bg-white w-full table-auto">
+    <thead className="bg-backgroundPrimary rounded-t-lg">
+      <tr className="border-b border-t border-black">
+        <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">Milestone</th>
+        <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
+        <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
+        <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
+        <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {milestones.map((milestone) => (
+        <tr key={milestone.id} className="border-b hover:bg-yellow-50 border-black">
+          <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
+          <td className="p-1 px-4">{milestone.description}</td>
+          <td className="p-1 px-4">{milestone.deadline}</td>
+          <td className="p-1 px-4 text-sm text-gray-500">
+            <span
+              className={`text-sm capitalize font-semibold ${
+                milestone.status === "completed"
+                  ? "text-confirm"
+                  : milestone.status === "pending"
+                  ? "text-destructive"
+                  : "text-green-500"
+              }`}
+            >
+              {milestone.status}
+            </span>
+          </td>
+          <td className="p-1 px-4 border-r border-black">
+            <div className="p-1">
+              <select
+                name="status"
+                id="status"
+                aria-label="status"
+                onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
+                value={milestone.status}
+                className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
+              >
+                <option value="pending" className="text-black">
+                  Pending
+                </option>
+                <option value="in-progress" className="text-green-500">
+                  In Progress
+                </option>
+                <option value="completed" className="text-confirm">
+                  Completed
+                </option>
+              </select>
+            </div>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
           ) : (
             <p className="text-gray-500">No milestones yet.</p>
           )}
@@ -279,7 +279,7 @@ const ProjectPage = () => {
                     {uploads.map((upload, index) => (
                       <li
                         key={index}
-                        className="border bg-white p-2 rounded shadow-md flex items-center gap-2"
+                        className="border-2 shadow-black border-black bg-white p-2 rounded shadow-md flex items-center gap-2"
                       >
                         {/* Image preview (if it's an image) */}
                         {upload.url &&
@@ -299,7 +299,7 @@ const ProjectPage = () => {
                           href={upload.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-500 hover:underline truncate"
+                          className="text-destructive font-medium hover:underline truncate"
                         >
                           {upload.name || `File ${index + 1}`}
                         </a>
@@ -312,7 +312,7 @@ const ProjectPage = () => {
         </div>
 
         {showForm && (
-          <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-50 my-auto min-h-screen h-full items-center justify-center flex flex-col">
+          <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-40 my-auto min-h-screen h-full items-center justify-center flex flex-col">
             <div className="bg-white rounded-md p-4 w-full max-w-xl">
               <h1 className="text-2xl font-semibold mb-4 text-center">
                 Create New Milestone
@@ -384,7 +384,6 @@ const ProjectPage = () => {
           </div>
         )}
       </div>
-      <Footer />
     </>
   );
 };

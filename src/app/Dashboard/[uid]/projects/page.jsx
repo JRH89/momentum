@@ -8,6 +8,7 @@ import Link from "next/link";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../../../context/AuthProvider";
+import { Briefcase } from "lucide-react";
 
 const Page = () => {
   const { uid } = useParams();
@@ -65,7 +66,9 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 sm:pt-0 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-semibold">Projects</h1>
+        <h1 className="text-3xl font-semibold flex flex-row gap-2 items-center">
+          <Briefcase className="w-8 h-8" /> Projects
+        </h1>
         {currentProjects.length > 0 ? (
           <div className="grid grid-cols-2 gap-4 mt-2">
             {currentProjects.map((project, index) => (

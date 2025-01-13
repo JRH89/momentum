@@ -1,6 +1,6 @@
 'use client';
 
-import { XIcon } from 'lucide-react';
+import { ArrowBigLeftIcon, ArrowBigRightIcon, ArrowLeft, ArrowLeftIcon, XIcon } from 'lucide-react';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -99,9 +99,9 @@ const ImageGallery = () => {
               alt={image.alt}
               width={600}
               height={400}
-              className="w-full shadow-lg h-auto rounded-t-lg border-t border-l border-r border-black object-cover"
+              className="w-full shadow-lg h-auto rounded-t-lg border-t-2 border-l-2 border-r-2 border-black object-cover"
             />
-            <p className="text-black h-full flex p-2 text-center border-r border-l border-b border-black rounded-b-lg text-xs sm:text-base mx-auto w-full justify-center font-medium">
+            <p className="text-black h-full flex p-2 text-center border-r-2 border-l-2 border-b-2 border-black rounded-b-lg text-xs sm:text-base mx-auto w-full justify-center font-medium">
               {image.alt}
             </p>
           </div>
@@ -112,17 +112,17 @@ const ImageGallery = () => {
           aria-label="previous"
           type="button"
           onClick={handlePrevious}
-          className="px-4 py-2 flex w-full text-center justify-center bg-green-500 text-black font-medium rounded hover:bg-opacity-60 duration-300"
+          className="px-4 py-2 border-2 border-black shadow-md shadow-black hover:shadow-lg hover:shadow-black flex w-full text-center justify-center bg-green-500 text-black font-medium rounded  duration-300"
         >
-          Previous
+          <ArrowBigLeftIcon className="w-6 h-6" />
         </button>
         <button
           aria-label="next"
           type="button"
           onClick={handleNext}
-          className="px-4 py-2 flex w-full text-center justify-center bg-green-500 text-black font-medium duration-300 rounded hover:bg-opacity-60"
+          className="px-4 py-2 flex w-full shadow-md shadow-black hover:shadow-lg hover:shadow-black text-center justify-center bg-green-500 text-black border-2 border-black font-medium duration-300 rounded "
         >
-          Next
+          <ArrowBigRightIcon className="w-6 h-6" />
         </button>
         </div>
         {selectedImage && (

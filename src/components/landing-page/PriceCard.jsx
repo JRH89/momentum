@@ -76,27 +76,27 @@ export const PriceCard = () => {
               key={index}
               className={twMerge(
                 tier.inverse &&
-                  "p-6 pb-8 rounded-xl border-black bg-black text-white shadow-md w-full shadow-black"
+                  "p-6 pb-8 rounded-xl border-black bg-white text-black border-2 border-black shadow-md w-full shadow-black"
               )}
             >
               <div className="flex justify-between">
                 <h3
                   className={twMerge(
                     "text-lg font-bold text-black/50 pt-2",
-                    tier.inverse && "text-white/60"
+                    tier.inverse && "text-black/60"
                   )}
                 >
                   {tier.title}
                 </h3>
                 {tier.popular && (
-                  <div className="inline-flex text-sm px-4 py-1.5 rounded-xl border border-white/20">
+                  <div className="inline-flex bg-black text-sm px-4 py-1.5 rounded-xl border border-black/20">
                     <motion.span
                       animate={{ backgroundPositionX: "100%" }}
                       transition={{
                         repeat: Infinity,
                         ease: "linear",
                         repeatType: "loop",
-                        duration: 1,
+                        duration: 3,
                       }}
                       className="bg-[linear-gradient(to_right,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF,#DD7DDF,#E1CD86,#BBCB92,#71C2EF,#3BFFFF)] [background-size:200%] text-transparent bg-clip-text font-semibold"
                     >
@@ -112,7 +112,7 @@ export const PriceCard = () => {
                 <span
                   className={twMerge(
                     "tracking-tight font-bold text-black/50",
-                    tier.inverse && "text-white/60"
+                    tier.inverse && "text-black/80"
                   )}
                 >
                   {tier.cycle}
@@ -121,8 +121,9 @@ export const PriceCard = () => {
               <Link
                 href={tier.url}
                 className={twMerge(
-                  "btn btn-primary w-full mt-[30px] justify-center hover:opacity-60 duration-300 font-semibold",
-                  tier.inverse && "bg-white text-black"
+                  "btn btn-primary w-full mt-[30px] justify-center hover:shadow-lg hover:shadow-black duration-300 font-semibold",
+                  tier.inverse &&
+                    "bg-confirm shadow-md shadow-black border-2 border-black text-black"
                 )}
               >
                 {tier.buttonText}
@@ -131,10 +132,10 @@ export const PriceCard = () => {
                 {tier.features.map((feature, featureIndex) => (
                   <li
                     key={featureIndex}
-                    className="capitalize text-md flex items-center gap-1"
+                    className="capitalize text-md flex items-center gap-1 py-1"
                   >
-                    <CheckIcon className="w-6 h-6 text-destructive" />
-                    <span className="text-confirm font-medium flex-1">
+                    <CheckIcon className="w-6 h-6 mr-1 shadow-md shadow-black bg-destructive rounded-full text-black" />
+                    <span className="text-black font-medium flex-1">
                       {feature}
                     </span>
                   </li>

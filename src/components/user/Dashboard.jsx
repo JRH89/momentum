@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { Lock, PlusIcon } from "lucide-react";
+import { Home, Lock, PlusIcon, User, Users } from "lucide-react";
 import { useAuth } from "../../context/AuthProvider";
 import { initFirebase } from "../../../firebase";
 import { db } from "../../../firebase";
@@ -86,11 +86,16 @@ export default function Dashboard() {
         <Announcements />
         <div className="flex flex-col">
           <div className="p-5 pt-0 px-0 pb-0">
-            <div className="flex flex-col gap-5">
+            <div className="justify-between flex flex-row items-baseline">
+              <h1 className="text-3xl lg:text-3xl flex flex-row items-center gap-2 font-bold px-4 text-black ">
+                <Home className="w-8 h-8" /> User Dashboard
+              </h1>
+            </div>
+            <div className="flex flex-col gap-5 mt-6">
               <div className=" h-full flex flex-col shadow-black mx-auto w-full">
                 {user && userData?.stripeConnected && (
                   <div className="flex flex-col gap-2">
-                    <h3 className="text-3xl font-semibold text-black flex flex-row gap-5 my-auto px-4 items-center">
+                    <h3 className="text-2xl font-semibold text-black flex flex-row gap-2 my-auto px-4 items-center">
                       Customers{" "}
                       <button
                         onClick={() => setIsAddingCustomer(true)}
@@ -118,7 +123,6 @@ export default function Dashboard() {
                     <h2 className="text-2xl max-w-xl w-full mx-auto text-center font-bold mb-4">
                       Step 2: Connect your Stripe Account
                     </h2>
-
                     <button
                       onClick={connectStripeAccount}
                       className="flex items-center justify-center gap-1.5  px-6 duration-300 bg-white border-2 border-black shadow-md shadow-black max-w-xs mx-auto  text-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"

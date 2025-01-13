@@ -202,13 +202,13 @@ const handleCreateProject = async (e: React.FormEvent) => {
             {projects.map((project, index) => (
              <div
                       key={index}
-                      className="bg-gray-50 border border-black rounded-lg shadow-md p-4"
+                      className="bg-white flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4"
                     >
-                      <h3 className="text-lg font-bold text-black mb-2">
+                      <h3 className="text-lg flex flex-col my-auto h-full font-bold text-black mb-2">
                         {project.name}
                       </h3>
-                      <p className="text-gray-600 text-sm">ID: {project.id}</p>
-                      <p className="text-gray-600 text-sm mb-2">
+                      <p className="text-gray-600 text-sm flex flex-col my-auto h-full">ID: {project.id}</p>
+                      <p className="text-gray-600 text-sm mb-2 flex flex-col my-auto h-full">
                         Descripion: {project.description}
                       </p>
                       <a

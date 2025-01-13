@@ -5,6 +5,7 @@ import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import { db, auth } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { FileText } from "lucide-react";
 
 const Page = () => {
   const user = auth.currentUser;
@@ -70,7 +71,9 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-bold mb-2">Invoices</h1>
+        <h1 className="text-3xl font-bold mb-2 flex flex-row gap-2 items-center">
+          <FileText className="w-8 h-8" /> Invoices
+        </h1>
         <div className="flex flex-col">
           <InvoicesTable
             invoices={invoices}

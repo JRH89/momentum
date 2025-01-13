@@ -5,11 +5,9 @@ import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "../../../../../../firebase";
-import Navbar from "../../../../../components/customer/Navbar";
-import { Footer } from "../../../../../components/landing-page/Footer";
 import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
-import { ArrowLeft, PlusIcon, Upload } from "lucide-react";
+import { PlusIcon, Upload } from "lucide-react";
 import ReactPaginate from "react-paginate";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 

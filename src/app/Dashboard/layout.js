@@ -2,55 +2,49 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth, initFirebase } from '../../../firebase';
+import { initFirebase } from '../../../firebase';
 import Sidebar from '../../components/SideBar';
 import Breadcrumb from '../../components/BreadcrumbMenu';
 import { usePremiumStatus } from '../hooks/use-premium-status';
 import { getAuth } from '@firebase/auth';
 import { useAuth } from '../../context/AuthProvider';
-import Link from 'next/link';
-import { Lock } from 'lucide-react';
 import PricingSection from "../../components/user/SubscriptionSection";
-
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useAuth();
   const app = initFirebase();
   const auth = getAuth(app);
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // Track the loading state
+  const [loading, setLoading] = useState(true);
   const isPremium = usePremiumStatus(app, user);
 
   useEffect(() => {
 
     if (!user) {
-      router.push('/Dashboard/login'); // Redirect if user is not authenticated
+      router.push('/Dashboard/login');
       setLoading(false);
     } else {
-      // Check if user is authenticated via Google or GitHub
       const isAuthorizedUser = user.providerData.some((provider) =>
         ['google.com', 'github.com'].includes(provider.providerId)
       );
 
       if (!isAuthorizedUser) {
-        router.push('/Dashboard/login'); // Redirect if user is not authenticated via Google or GitHub
+        router.push('/Dashboard/login');
       } else {
-        setLoading(false); // Auth check complete and user is authenticated
+        setLoading(false);
       }
     }
-
 
   }, [router]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show a loading indicator while checking auth
+    return <div>Loading...</div>;
   }
 
   return (
     <div className="flex min-h-screen bg-white w-full">
       {/* Sidebar */}
       <Sidebar uid={auth.currentUser?.uid} />
-
       {/* Main Content */}
       <main className="relative flex flex-col w-full bg-white pt-16 ">
         <div className='absolute hidden sm:flex top-3 justify-center w-full '>
@@ -65,7 +59,6 @@ const ProtectedRoute = ({ children }) => {
         </div>
         {!isPremium && user ? (
           <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col -mt-8">
-
             <div className="flex flex-col justify-center items-center max-w-4xl mx-auto h-full w-full p-6 pt-0">
               <PricingSection />
             </div>
