@@ -5,6 +5,7 @@ import { db } from "../../../../../firebase";
 import { useAuth } from "../../../../context/AuthProvider";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
+import { Settings } from "lucide-react";
 
 const Page = () => {
   const { user } = useAuth();
@@ -61,7 +62,9 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-bold">User Settings</h1>
+        <h1 className="text-3xl font-bold flex flex-row items-center gap-2">
+          <Settings className="w-8 h-8" /> User Settings
+        </h1>
         <div className="p-4 mt-2 gap-5 flex  flex-col border-black border-2 rounded-lg shadow-md shadow-black">
           <div className="justify-start flex flex-col">
             <h2 className="text-2xl font-bold">Invoices</h2>
