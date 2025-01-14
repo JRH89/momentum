@@ -5,6 +5,7 @@ import { db } from "../../../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { Plus } from "lucide-react";
+import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 
 interface Milestone {
   id: string;
@@ -309,8 +310,15 @@ const ProjectPage = () => {
           ) : (
             <p>No uploads yet.</p>
           )}
+          <div className="mt-8">
+            <h1 className="text-2xl -mb-2 font-semibold ">Project Theme</h1>
+           <ColorPaletteGenerator
+              userId={uid}
+              customerId={stripeCustomerId}
+              projectId={projectId}
+            />
+            </div> 
         </div>
-
         {showForm && (
           <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-40 my-auto min-h-screen h-full items-center justify-center flex flex-col">
             <div className="bg-white rounded-md p-4 w-full max-w-xl">

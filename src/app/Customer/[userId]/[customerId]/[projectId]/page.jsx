@@ -129,7 +129,7 @@ const CustomerProjectPage = () => {
         <h2 className="text-3xl capitalize font-bold">{projectData?.name}</h2>
         <p className="">ID: {projectData?.id}</p>
         <p className="">Summary: {projectData?.description}</p>
-        {projectData ? (
+        {projectData && (
           <div>
             <div className="mt-4 bg-white p-4 border-2 border-black rounded-lg shadow-md shadow-black">
               <h3 className="text-2xl font-bold mb-2">Milestones</h3>
@@ -220,7 +220,7 @@ const CustomerProjectPage = () => {
                   <button
                     onClick={handleUpload}
                     disabled={!file || isLoading}
-                    className="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                    className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
                   >
                     {isLoading ? (
                       "Uploading..."
@@ -294,15 +294,6 @@ const CustomerProjectPage = () => {
               projectId={projectId}
             />
           </div>
-        ) : (
-          <>
-            <p>
-              Please{" "}
-              <Link className="underline text-green-500" href="/Customer/login">
-                Login
-              </Link>
-            </p>
-          </>
         )}
       </div>
     </>

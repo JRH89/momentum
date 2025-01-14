@@ -79,12 +79,12 @@ const Page = () => {
               <p className="text-gray-600 text-sm mb-2">
                 Descripion: {project.description}
               </p>
-              <a
+              <Link
                 href={`/Customer/${userId}/${customerId}/${project.id}`}
                 className="text-confirm text-sm hover:underline duration-300 font-semibold "
               >
                 View Details
-              </a>
+              </Link>
             </div>
           ))}
         </div>

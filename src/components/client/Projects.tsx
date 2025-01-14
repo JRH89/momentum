@@ -5,6 +5,7 @@ import { Plus } from 'lucide-react';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 import { initializeApp, getApp, deleteApp } from "firebase/app";
+import Link from 'next/link';
 
 interface Project {
   id: string;
@@ -211,12 +212,12 @@ const handleCreateProject = async (e: React.FormEvent) => {
                       <p className="text-gray-600 text-sm mb-2 flex flex-col my-auto h-full">
                         Descripion: {project.description}
                       </p>
-                      <a
+                      <Link
                         href={project.link}
                         className="text-confirm text-sm hover:opacity-60 duration-300 font-semibold "
                       >
                         View Details
-                      </a>
+                      </Link>
                     </div>
             ))}
           </div>
@@ -227,7 +228,7 @@ const handleCreateProject = async (e: React.FormEvent) => {
 
       {/* New Project Form */}
       {showForm && (
-        <div className="inset-0 fixed bg-black bg-opacity-90 flex items-center justify-center mx-auto px-4">
+        <div className="inset-0 fixed border-2 border-black bg-black bg-opacity-95 flex items-center justify-center mx-auto px-4">
           <div className="bg-white p-6 w-full rounded-md shadow-lg max-w-xl">
               <h3 className="text-xl text-center font-semibold">Create Project</h3>
             <form >
@@ -239,7 +240,7 @@ const handleCreateProject = async (e: React.FormEvent) => {
                   value={newProjectName}
                   onChange={(e) => setNewProjectName(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border-2 border-black rounded-md"
                 />
               </div>
               <div className="mt-2">

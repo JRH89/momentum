@@ -12,6 +12,7 @@ import { auth } from "../../../../../firebase"; // Ensure your firebase config i
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import UserTickets from "../../../../components/user/UserTickets";
 import { Home } from "lucide-react";
+import Link from "next/link";
 
 const CustomerDashboard = () => {
   const { userId, customerId } = useParams();
@@ -132,12 +133,12 @@ const CustomerDashboard = () => {
                         <p className="text-gray-600 text-sm mb-2">
                           Descripion: {project.description}
                         </p>
-                        <a
-                          href={`/Customer/${userId}/${customerId}/${project.id}`}
+                        <Link
+                          href={`/Customer/${userId}/${customerId}/${project?.id}`}
                           className="text-confirm text-sm hover:underline duration-300 font-semibold "
                         >
                           View Details
-                        </a>
+                        </Link>
                       </div>
                     ))}
                   </div>
