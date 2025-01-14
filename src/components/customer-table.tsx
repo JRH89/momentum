@@ -56,7 +56,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 8 }: CustomerT
   return (
     <>
      <div className="overflow-x-auto py-2 pb-4 px-4 h-full flex flex-col">
-  <div className="bg-white border-2 border-black rounded-lg overflow-x-auto shadow-md shadow-black">
+  <div className=" border-2 border-black rounded-lg overflow-x-auto shadow-md shadow-black">
     <table className="min-w-full h-full ">
       <thead>
         <tr className="bg-backgroundPrimary font-semibold border-b-2 border-black">

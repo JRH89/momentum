@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { doc, getDoc, updateDoc, arrayUnion } from 'firebase/firestore'
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore'
 import { db } from '../../firebase'  
 import { toast } from 'react-toastify'
 
@@ -77,13 +77,13 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
   }
 
   return (
-    <div className="fixed inset-0 p-4 md:p-0 flex items-center justify-center z-40 bg-black bg-opacity-90">
-      <div className="bg-white p-6 mt-8 shadow-md rounded-lg w-full max-w-xl">
-        <h3 className="text-2xl text-center font-semibold text-gray-800 mb-4">Add Customer</h3>
+    <div className="fixed inset-0 p-4 md:p-0 flex items-center justify-center z-40 bg-black bg-opacity-95">
+      <div className=" p-6 mt-8 shadow-md rounded-lg w-full max-w-xl">
+        <h3 className="text-2xl text-center font-semibold text-white mb-4">Add Customer</h3>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-600">
+              <label htmlFor="name" className="block text-sm font-medium text-white">
                 Name
               </label>
               <input
@@ -95,7 +95,7 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+              <label htmlFor="email" className="block text-sm font-medium text-white">
                 Email
               </label>
               <input
@@ -107,7 +107,7 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
               />
             </div>
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-600">
+              <label htmlFor="description" className="block text-sm font-medium text-white">
                 Description
               </label>
               <textarea
@@ -128,7 +128,7 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
               <button
                 type="submit"
                 disabled={isLoading}
-                className="px-6 py-2 bg-confirm text-white rounded-md hover:bg-opacity-60 duration-300 disabled:opacity-50"
+                className="px-6 py-2 bg-confirm font-medium text-black rounded-md hover:bg-opacity-60 duration-300 disabled:opacity-50"
               >
                 {isLoading ? "Adding..." : "Add Customer"}
               </button>

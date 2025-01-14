@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { Home, Lock, PlusIcon, User, Users } from "lucide-react";
+import { ExternalLink, Home, Lock, PlusIcon, User, Users } from "lucide-react";
 import { useAuth } from "../../context/AuthProvider";
 import { initFirebase } from "../../../firebase";
 import { db } from "../../../firebase";
@@ -14,6 +14,7 @@ import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
+import InvoicesTable from "../customer/InvoiceTable";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useAuth();
@@ -22,12 +23,18 @@ export default function Dashboard() {
   const [userId, setUserId] = useState(null);
   const [userStripe, setUserStripe] = useState();
   const [isAddingCustomer, setIsAddingCustomer] = useState(false);
+  const [invoices, setInvoices] = useState([]);
 
   const router = useRouter();
   const app = initFirebase();
   const auth = getAuth(app);
   const isPremium = usePremiumStatus(app, user);
   const [photo, setPhoto] = useState(null);
+  const [error, setError] = useState(null);
+  const [stripeAccountId, setStripeAccountId] = useState(null);
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const {
     customers,
@@ -55,6 +62,52 @@ export default function Dashboard() {
   }, [user, auth.currentUser]);
 
   useEffect(() => {
+    const fetchUserStripeAccountId = async (userId) => {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          setUserData(userSnap.data());
+          setStripeAccountId(userSnap.data().stripeAccountId || null);
+        } else {
+          setError("User document not found");
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        setError("Failed to fetch user data.");
+      }
+    };
+
+    if (user) {
+      fetchUserStripeAccountId(user.uid);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      if (!stripeAccountId) return;
+
+      try {
+        const response = await fetch(
+          `/api/stripe/invoices/all?stripeAccountId=${stripeAccountId}`
+        );
+        const data = await response.json();
+
+        if (response.ok && data.invoices) {
+          setInvoices(data.invoices || []);
+        } else {
+          setError(data.error || "Failed to fetch invoices");
+        }
+      } catch (err) {
+        console.error("Error fetching invoices:", err);
+        setError("Failed to fetch invoices.");
+      }
+    };
+
+    if (stripeAccountId) fetchInvoices();
+  }, [stripeAccountId]);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
         const userRef = doc(db, "users", authUser.uid);
@@ -76,8 +129,10 @@ export default function Dashboard() {
     }
   }, [user, router]);
 
-  const connectStripeAccount = () => {
-    window.location.href = "/api/stripe/oauth"; // Your API endpoint that redirects to Stripe
+  const handleConnect = () => {
+    if (termsAccepted) {
+      window.location.href = "/api/stripe/oauth"; // Your API endpoint that redirects to Stripe
+    }
   };
 
   return (
@@ -85,13 +140,13 @@ export default function Dashboard() {
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
         <Announcements />
         <div className="flex flex-col">
-          <div className="p-5 pt-0 px-0 pb-0">
+          <div className="p-4 pt-4 px-0 pb-0">
             <div className="justify-between flex flex-row items-baseline">
               <h1 className="text-3xl lg:text-3xl flex flex-row items-center gap-2 font-bold px-4 text-black ">
                 <Home className="w-8 h-8" /> User Dashboard
               </h1>
             </div>
-            <div className="flex flex-col gap-5 mt-6">
+            <div className="flex flex-col gap-5 mt-2">
               <div className=" h-full flex flex-col shadow-black mx-auto w-full">
                 {user && userData?.stripeConnected && (
                   <div className="flex flex-col gap-2">
@@ -124,8 +179,8 @@ export default function Dashboard() {
                       Step 2: Connect your Stripe Account
                     </h2>
                     <button
-                      onClick={connectStripeAccount}
-                      className="flex items-center justify-center gap-1.5  px-6 duration-300 bg-white border-2 border-black shadow-md shadow-black max-w-xs mx-auto  text-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
+                      onClick={() => setIsPopupVisible(true)}
+                      className="flex items-center justify-center gap-1.5 px-6 duration-300 bg-white border-2 border-black shadow-md shadow-black max-w-xs mx-auto text-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"
                     >
                       <span className="font-semibold pb-0.5">Connect to</span>
                       <img
@@ -143,11 +198,99 @@ export default function Dashboard() {
                     userStripe={userStripe}
                   />
                 )}
+                <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
+                  <h2 className="text-2xl font-bold mb-4">Invoices</h2>
+                  <InvoicesTable
+                    invoices={invoices}
+                    itemsPerPage={userData?.invoicesPerPage || 8}
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Terms Pop-up */}
+      {isPopupVisible && (
+        <div className="fixed inset-0 bg-black/95 flex justify-center items-center z-50">
+          <div className="bg-white border-2 border-black p-6 rounded-lg  shadow-lg max-w-md w-full text-center">
+            <h2 className="text-xl font-semibold mb-4">Terms and Conditions</h2>
+            <div
+              className="text-gray-700 mb-4 p-4 border-2 border-black rounded max-h-60 overflow-y-auto text-left"
+              style={{ maxHeight: "15rem" }}
+            >
+              <p>
+                <strong>Introduction:</strong> By accessing or using our
+                services, you agree to comply with these terms and conditions.
+              </p>
+              <p>
+                <strong>Eligibility:</strong> You must be at least 18 years old
+                to use this platform. It is your responsibility to ensure
+                compliance with local laws.
+              </p>
+              <p>
+                <strong>Stripe Connection:</strong> By connecting your Stripe
+                account, you grant us permission to access your account data to
+                facilitate transactions.
+              </p>
+              <p>
+                <strong>Privacy:</strong> We are committed to protecting your
+                personal information in accordance with our privacy policy.
+              </p>
+              <p>
+                <strong>Termination:</strong> We reserve the right to terminate
+                your access to our services if you violate these terms.
+              </p>
+              <p>
+                <strong>Limitation of Liability:</strong> We are not liable for
+                any damages resulting from the use of our services.
+              </p>
+              <p>
+                For the full terms, please refer to our{" "}
+                <Link
+                  target="_blank"
+                  className="text-blue-600 flex flex-row gap-1 hover:underline items-center "
+                  href="/Policies"
+                >
+                  Terms of Service <ExternalLink className="w-4 h-4" />
+                </Link>
+              </p>
+            </div>
+            <div className="flex items-center justify-center mb-4">
+              <input
+                type="checkbox"
+                id="acceptTerms"
+                className="mr-2"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+              />
+              <label htmlFor="acceptTerms" className="text-gray-700">
+                I accept the terms and conditions
+              </label>
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 text-destructive hover:text-destructive/60 duration-300"
+                onClick={() => setIsPopupVisible(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg ${
+                  termsAccepted
+                    ? "bg-confirm text-black font-semibold border-2 border-black  shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }`}
+                onClick={handleConnect}
+                disabled={!termsAccepted}
+              >
+                Proceed
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
