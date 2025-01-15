@@ -2,6 +2,7 @@ import { Footer } from "../../components/landing-page/Footer";
 import siteMetadata from "../../../siteMetadata";
 import SignIn from "../../components/SignIn";
 import { Header } from "../../components/landing-page/Header";
+import Link from "next/link";
 
 export const metadata = {
   title: `Sign Up | ${siteMetadata.title}`,
@@ -26,9 +27,9 @@ export default function Page() {
           <div>
             <p className="text-base font-semibold">
               Already have an account?{" "}
-              <a className="hover:underline text-destructive" href="/Signin">
+              <Link className="hover:underline text-destructive" href="/Signin">
                 Sign in
-              </a>
+              </Link>
             </p>
           </div>
         </div>

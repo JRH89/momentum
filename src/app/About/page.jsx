@@ -5,7 +5,7 @@ import siteMetadata from "../../../siteMetadata";
 
 export function generateMetadata() {
   return {
-    title: `About | ${siteMetadata.title}`,
+    title: `Documentation | ${siteMetadata.title}`,
     description: `Learn more about ${siteMetadata.title}`,
     url: `${siteMetadata.siteUrl}/About`,
   };
