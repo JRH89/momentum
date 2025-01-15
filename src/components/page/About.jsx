@@ -47,7 +47,7 @@ const sections = {
   invoicing: {
     title: "Invoicing",
     content:
-      "Easily manage and send invoices with integrated Stripe support. Keep track of payments and streamline your billing process. From the customer list, click 'View' at the far right side of the table.",
+      "From the customer list, select 'Create Invoice' from the dropdown menu at the far right side of the table, in the 'Actions' column.",
     content2:
       "From there, click the '+' icon to show the invoice form. Fill it out with the required information and click 'Create Invoice'.",
     content3:

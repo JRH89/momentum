@@ -168,7 +168,7 @@ export default function Dashboard() {
                       <CustomerTable
                         customers={customers}
                         userId={user.uid}
-                        itemsPerPage={userData?.customersPerPage || 8}
+                        itemsPerPage={userData?.customersPerPage || 7}
                       />
                     )}
                   </div>
