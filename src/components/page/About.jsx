@@ -4,6 +4,16 @@ import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 
 const sections = {
+  welcomeToMomentum: {
+    title: "Welcome to Momentum",
+    content:
+      "Momentum is a project management and invoicing platform. It's perfect for freelancers, small businesses, and independent contractors.",
+    content2:
+      "Our simple and intuitive interface makes it easy to manage your projects and invoices. Whether you're a freelancer, small business, or independent contractor, Momentum has everything you need to get started.",
+    content3:
+      "With transparent pricing and no hidden fees, you can stay on top of budgets. We charge a flat Monthly or Yearly membership fee, and Stripe charges 0.4% of each paid invoice. All payments are processed through Stripe, ensuring secure and reliable transactions.",
+    image: ["/cover.png", "/dashboard.png", "/account-3.png"],
+  },
   accountCreation: {
     title: "Creating an Account",
     content:
@@ -57,13 +67,15 @@ export default function About() {
   const router = useRouter();
 
   // Fallback logic for invalid or missing sections
-  const section = sections[activeSection] || sections.accountCreation;
+  const section = sections[activeSection] || sections.welcomeToMomentum;
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
       {/* Main Content */}
       <main className="w-full mx-auto flex flex-col px-4 sm:p-8 pb-12 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-4">{section.title}</h1>
+        <h1 className="text-3xl lg:text-4xl text-center font-bold mb-4">
+          {section.title}
+        </h1>
         <div className="p-2 sm:p-4 sm:pt-0 pt-0 ">
           <p className="text-lg leading-7 mb-4">{section.content}</p>
 
@@ -71,7 +83,7 @@ export default function About() {
           <div className="mb-4">
             {section.image.length > 0 && (
               <Image
-                className="border-2 mx-auto border-black rounded-lg"
+                className="border-2 shadow-md shadow-black mx-auto border-black rounded-lg"
                 src={section.image[0]} // Example for first image
                 alt={`${section.title} Image 1`}
                 width={1920}
@@ -85,7 +97,7 @@ export default function About() {
           <div className="mt-4">
             {section.image.length > 1 && (
               <Image
-                className="border-2 w-full mx-auto border-black rounded-lg"
+                className="border-2 shadow-md shadow-black w-full mx-auto border-black rounded-lg"
                 src={section.image[1]} // Example for second image
                 alt={`${section.title} Image 2`}
                 width={1920}
@@ -98,7 +110,7 @@ export default function About() {
             <div className="my-4">
               {section.image.length > 2 && (
                 <Image
-                  className="border-2 w-full mx-auto border-black rounded-lg"
+                  className="border-2 shadow-md shadow-black w-full mx-auto border-black rounded-lg"
                   src={section.image[2]} // Example for third image
                   alt={`${section.title} Image 3`}
                   width={1920}

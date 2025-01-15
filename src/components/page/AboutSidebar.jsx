@@ -11,9 +11,11 @@ const AboutSidebar = () => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  const [userData, setUserData] = useState(null);
-
   const links = [
+    {
+      href: `/About/welcomeToMomentum`,
+      label: "Welcome",
+    },
     {
       href: `/About/accountCreation`,
       label: "Account Creation",

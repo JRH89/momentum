@@ -5,6 +5,16 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 const sections = {
+  welcomeToMomentum: {
+    title: "Welcome to Momentum",
+    content:
+      "Momentum is a project management and invoicing platform. It's perfect for freelancers, small businesses, and independent contractors.",
+    content2:
+      "Our simple and intuitive interface makes it easy to manage your projects and invoices. Whether you're a freelancer, small business, or independent contractor, Momentum has everything you need to get started.",
+    content3:
+      "With transparent pricing and no hidden fees, you can stay on top of budgets. We charge a flat Monthly or Yearly membership fee, and Stripe charges 0.4% of each paid invoice. All payments are processed through Stripe, ensuring secure and reliable transactions.",
+    image: ["/cover.png", "/dashboard.png", "/account-3.png"],
+  },
   accountCreation: {
     title: "Creating an Account",
     content:
@@ -60,7 +70,7 @@ export default function About() {
     <div className="min-h-screen flex flex-col sm:flex-row">
       {/* Main Content */}
       <main className="w-full flex flex-col px-4 sm:p-8 pb-12 max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">
+        <h1 className="text-3xl lg:text-4xl text-center font-bold mb-4">
           {sections[activeSection].title}
         </h1>
         <div className="p-2 sm:p-4 sm:pt-0 pt-0 ">
@@ -72,7 +82,7 @@ export default function About() {
           <div className="mb-4">
             {sections[activeSection].image.length > 0 && (
               <Image
-                className="border-2 mx-auto border-black rounded-lg"
+                className="border-2 mx-auto shadow-md shadow-black border-black rounded-lg"
                 src={sections[activeSection].image[0]} // Example for first image
                 alt={`${sections[activeSection].title} Image 1`}
                 width={1920}
@@ -88,7 +98,7 @@ export default function About() {
           <div className="mt-4">
             {sections[activeSection].image.length > 1 && (
               <Image
-                className="border-2 w-full mx-auto border-black rounded-lg"
+                className="border-2 shadow-md shadow-black w-full mx-auto border-black rounded-lg"
                 src={sections[activeSection].image[1]} // Example for second image
                 alt={`${sections[activeSection].title} Image 2`}
                 width={1920}
@@ -103,7 +113,7 @@ export default function About() {
             <div className="my-4">
               {sections[activeSection].image.length > 2 && (
                 <Image
-                  className="border-2 w-full mx-auto border-black rounded-lg"
+                  className="border-2 shadow-md shadow-black  w-full mx-auto border-black rounded-lg"
                   src={sections[activeSection].image[2]} // Example for third image
                   alt={`${sections[activeSection].title} Image 3`}
                   width={1920}
