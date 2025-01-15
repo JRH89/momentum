@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 const sections = {
   accountCreation: {
@@ -53,54 +54,58 @@ const sections = {
 };
 
 export default function About() {
-  const { activeSection } = useParams();
-  const router = useRouter();
-
-  // Fallback logic for invalid or missing sections
-  const section = sections[activeSection] || sections.accountCreation;
+  const { activeSection } = useParams("accountCreation");
 
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
       {/* Main Content */}
-      <main className="w-full mx-auto flex flex-col px-4 sm:p-8 pb-12 max-w-4xl">
-        <h1 className="text-3xl font-bold mb-4">{section.title}</h1>
+      <main className="w-full flex flex-col px-4 sm:p-8 pb-12 max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4">
+          {sections[activeSection].title}
+        </h1>
         <div className="p-2 sm:p-4 sm:pt-0 pt-0 ">
-          <p className="text-lg leading-7 mb-4">{section.content}</p>
+          <p className="text-lg leading-7 mb-4">
+            {sections[activeSection].content}
+          </p>
 
           {/* Insert images where you want */}
           <div className="mb-4">
-            {section.image.length > 0 && (
+            {sections[activeSection].image.length > 0 && (
               <Image
                 className="border-2 mx-auto border-black rounded-lg"
-                src={section.image[0]} // Example for first image
-                alt={`${section.title} Image 1`}
+                src={sections[activeSection].image[0]} // Example for first image
+                alt={`${sections[activeSection].title} Image 1`}
                 width={1920}
                 height={1080}
               />
             )}
           </div>
 
-          <p className="text-lg leading-7 mb-4">{section.content2}</p>
+          <p className="text-lg leading-7 mb-4">
+            {sections[activeSection].content2}
+          </p>
 
           <div className="mt-4">
-            {section.image.length > 1 && (
+            {sections[activeSection].image.length > 1 && (
               <Image
                 className="border-2 w-full mx-auto border-black rounded-lg"
-                src={section.image[1]} // Example for second image
-                alt={`${section.title} Image 2`}
+                src={sections[activeSection].image[1]} // Example for second image
+                alt={`${sections[activeSection].title} Image 2`}
                 width={1920}
                 height={1080}
               />
             )}
 
-            <p className="text-lg leading-7 my-4">{section.content3}</p>
+            <p className="text-lg leading-7 my-4">
+              {sections[activeSection].content3}
+            </p>
 
             <div className="my-4">
-              {section.image.length > 2 && (
+              {sections[activeSection].image.length > 2 && (
                 <Image
                   className="border-2 w-full mx-auto border-black rounded-lg"
-                  src={section.image[2]} // Example for third image
-                  alt={`${section.title} Image 3`}
+                  src={sections[activeSection].image[2]} // Example for third image
+                  alt={`${sections[activeSection].title} Image 3`}
                   width={1920}
                   height={1080}
                 />

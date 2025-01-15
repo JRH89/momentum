@@ -19,7 +19,7 @@ const pageData = {
     { text: "Gallery", href: "/#gallery" },
     { text: "FAQ", href: "/#faq" },
     { text: "About", href: "/#about" },
-    { text: "Learn More", href: "/About" },
+    { text: "The Docs", href: "/About" },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],
 };

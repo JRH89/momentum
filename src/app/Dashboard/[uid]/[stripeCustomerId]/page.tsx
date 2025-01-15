@@ -187,13 +187,13 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
             </div>
             { showInvoiceForm && (
             <form
-            className="fixed inset-0 bg-black/90 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
+            className="fixed inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
             onSubmit={handleCreateInvoice}
           >
-            <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-xl">
-              <h2 className="text-2xl text-center font-semibold mb-4">Create Invoice</h2>
+            <div className="p-6 rounded-lg shadow-md w-full max-w-xl">
+              <h2 className="text-2xl text-white text-center font-semibold mb-4">Create Invoice</h2>
               <div className="mt-2">
-                <label htmlFor="amount" className="block text-gray-700">
+                <label htmlFor="amount" className="block text-white">
                   Amount
                 </label>
                 <input
@@ -202,11 +202,11 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
                   value={invoiceAmount}
                   onChange={(e) => setInvoiceAmount(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-black rounded-md"
                 />
               </div>
               <div className="mt-2">
-                <label htmlFor="currency" className="block text-gray-700">
+                <label htmlFor="currency" className="block text-white">
                   Currency
                 </label>
                 <input
@@ -215,11 +215,11 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
                   value={invoiceCurrency}
                   onChange={(e) => setInvoiceCurrency(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-black rounded-md"
                 />
               </div>
               <div className="mt-2">
-                <label htmlFor="description" className="block text-gray-700">
+                <label htmlFor="description" className="block text-white">
                   Description
                 </label>
                 <input
@@ -228,11 +228,11 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
                   value={invoiceDescription}
                   onChange={(e) => setInvoiceDescription(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-black rounded-md"
                 />
               </div>
               <div className="mt-2">
-                <label htmlFor="dueDate" className="block text-gray-700">
+                <label htmlFor="dueDate" className="block text-white">
                   Due Date
                 </label>
                 <input
@@ -241,7 +241,7 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
                   value={invoiceDueDate}
                   onChange={(e) => setInvoiceDueDate(e.target.value)}
                   required
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full p-2 border border-black rounded-md"
                 />
               </div>
               <div className="flex flex-row justify-end">

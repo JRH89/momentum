@@ -5,7 +5,7 @@ import { Header } from "../../components/landing-page/Header";
 
 export const metadata = {
   title: `Sign Up | ${siteMetadata.title}`,
-  description: `Sign up to ${siteMetadata.title} .`,
+  description: `Sign up to get started with ${siteMetadata.title}.`,
   url: `${siteMetadata.siteUrl}/Signup`,
 };
 

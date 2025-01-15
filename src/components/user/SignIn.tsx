@@ -63,7 +63,7 @@ const SignIn = () => {
     <div className="space-y-4">
       <button
         type="button"
-        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex border-2 border-black items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 shadow-md shadow-black bg-white rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => handleSignIn(googleProvider)}
       >
         <img
@@ -76,7 +76,7 @@ const SignIn = () => {
 
       <button
         type="button"
-        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg shadow-md shadow-black font-medium text-gray-700 bg-white   border-2 border-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => handleSignIn(githubProvider)}
       >
         <img

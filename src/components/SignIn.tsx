@@ -68,7 +68,7 @@ const SignIn = () => {
       {error && <p className="text-red-500 max-w-sm text-center p-4 bg-white rounded-lg border-2 border-black">{error}</p>}
       <button
         type="button"
-        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border-2 border-black rounded-lg shadow-md shadow-black hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => handleSignIn(googleProvider)}
       >
         <img
@@ -82,7 +82,7 @@ const SignIn = () => {
       {/* GitHub Sign-In Button */}
       <button
         type="button"
-        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm hover:bg-gray-100 focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 bg-white border-2 border-black rounded-lg shadow-md shadow-black hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => handleSignIn(new GithubAuthProvider())}
       >
         <svg

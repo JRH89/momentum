@@ -14,9 +14,7 @@ export function generateMetadata() {
 export default function AboutPage() {
   return (
     <div className="bg-white">
-      <Header />
       <About />
-      <Footer />
     </div>
   );
 }

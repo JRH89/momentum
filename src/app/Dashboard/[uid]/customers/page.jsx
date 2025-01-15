@@ -62,7 +62,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         <div className="flex items-center justify-start gap-4 mb-2">
           <h1 className="text-3xl px-4 my-auto flex flex-row items-center font-bold gap-2">
             <Users className="w-8 h-8" /> Customers
