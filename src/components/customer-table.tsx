@@ -214,11 +214,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
             nextClassName={"next text-xl text-green-500 hover:underline"}
         />
       )}
-      
       </div>
-
-      
-
       {showInvoiceForm && (
         <div className="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center">
           <div className="p-6 max-w-md w-full">
