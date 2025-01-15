@@ -1,18 +1,15 @@
-import About from "../../components/page/About";
-import siteMetadata from "../../../siteMetadata";
+import siteMetadata from "../../../../siteMetadata";
+import ActiveAbout from "../../../components/page/ActiveAbout";
 
-export function generateMetadata() {
-  return {
-    title: `Documentation | ${siteMetadata.title}`,
-    description: `Learn more about ${siteMetadata.title}`,
-    url: `${siteMetadata.siteUrl}/About/${activeSection}`,
-  };
-}
+export const metadata = {
+  title: `About | ${siteMetadata.title}`,
+  description: `Learn more about ${siteMetadata.title}`,
+};
 
-export default function AboutPage() {
+export default function AboutPage({ activeSection }) {
   return (
     <div className="bg-white">
-      <About />
+      <ActiveAbout activeSection={activeSection} />
     </div>
   );
 }

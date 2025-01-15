@@ -4,6 +4,7 @@ import CheckIcon from "../../assets/check.svg";
 import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { CircleCheckIcon } from "lucide-react";
 
 // Page Data
 const pageData = {
@@ -134,7 +135,7 @@ export const PriceCard = () => {
                     key={featureIndex}
                     className="capitalize text-md flex items-center gap-1 py-1"
                   >
-                    <CheckIcon className="w-6 h-6 mr-1 shadow-md shadow-black bg-destructive rounded-full text-black" />
+                    <CircleCheckIcon className="text-white w-5 h-5 bg-destructive rounded-full shadow-md shadow-black" />
                     <span className="text-black font-medium flex-1">
                       {feature}
                     </span>

@@ -4,16 +4,12 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "../../../firebase";
 
-const DashboardPage = () => {
+const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        router.push("/Dashboard/login"); // Redirect if user is not authenticated
-      } else {
-        router.push(`/Dashboard/${user.uid}`);
-      }
+      router.push(`/Customer/login`);
     });
     return () => unsubscribe();
   }, [router]);
@@ -21,4 +17,4 @@ const DashboardPage = () => {
   return null; // No UI is needed as this is a redirect-only component
 };
 
-export default DashboardPage;
+export default Page;

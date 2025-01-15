@@ -33,7 +33,7 @@ export const Footer = () => {
             User Portal
           </Link>
            <Link href="/Customer/login" className="hover:text-white transition duration-300 ease-in-out">
-            Client Portal
+            Customer Portal
           </Link>
         </nav>
         {/* Social Media Icons */}

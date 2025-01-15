@@ -6,6 +6,11 @@ import MenuIcon from "../../assets/menu.svg";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import LogoImage from "../Logo";
+import {
+  ArrowDown,
+  ArrowDownSquare,
+  ArrowUpRightFromSquareIcon,
+} from "lucide-react";
 
 // Page Data
 const pageData = {
@@ -18,17 +23,21 @@ const pageData = {
     { text: "Pricing", href: "/#price" },
     { text: "Gallery", href: "/#gallery" },
     { text: "FAQ", href: "/#faq" },
-    { text: "About", href: "/#about" },
-    { text: "The Docs", href: "/About" },
+    { text: "Docs", href: "/About", icon: ArrowUpRightFromSquareIcon },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],
 };
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -60,7 +69,7 @@ export const Header = () => {
           <div className="flex items-center justify-between">
             <div className="flex flex-row items-center gap-0 hover:tracking-widest duration-200">
               <Link
-                className="flex  flex-row items-center"
+                className="flex flex-row items-center"
                 href={pageData.logoHref}
               >
                 <LogoImage width={40} height={40} />
@@ -75,19 +84,51 @@ export const Header = () => {
             </div>
             {/* Desktop Menu */}
             <nav className="hidden font-bold lg:flex gap-6 text-black items-center">
-              {pageData.menuItems.map((item, index) => (
+              {pageData.menuItems.slice(0, -1).map((item, index) => (
                 <Link
                   key={index}
                   href={item.href}
-                  className={
-                    item.isPrimary
-                      ? "bg-confirm border-2 border-black shadow-md font-bold shadow-black hover:shadow-lg hover:shadow-black duration-300 text-black px-4 py-2 rounded-lg inline-flex tracking-tight"
-                      : "hover:pb-2 duration-300"
-                  }
+                  className="hover:pb-2 flex flex-row items-center duration-300 gap-1"
                 >
+                  {}
                   {item.text}
+                  {item.icon && <item.icon className="h-4 w-4" />}
                 </Link>
               ))}
+              {/* Dropdown Menu */}
+              <div className="relative">
+                <button
+                  onClick={toggleDropdown}
+                  className="hover:opacity-60 flex flex-row items-center gap-1 duration-300"
+                >
+                  Login{" "}
+                  <ArrowDownSquare className="h-4 w-4 flex-row flex justify-center items-center" />
+                </button>
+                {isDropdownOpen && (
+                  <div className="absolute left-1/2 -translate-x-1/2 top-8 border-2 border-black bg-white shadow-lg shadow-black rounded-md mt-2">
+                    <Link
+                      href="/Dashboard/login"
+                      className="block rounded-lg px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      User Portal
+                    </Link>
+                    <Link
+                      href="/Customer/login"
+                      className="block rounded-lg px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setIsDropdownOpen(false)}
+                    >
+                      Customer Portal
+                    </Link>
+                  </div>
+                )}
+              </div>
+              <Link
+                href={pageData.menuItems[pageData.menuItems.length - 1].href}
+                className="bg-confirm border-2 border-black shadow-md font-bold shadow-black hover:shadow-lg hover:shadow-black duration-300 text-black px-4 py-2 rounded-lg inline-flex tracking-tight"
+              >
+                {pageData.menuItems[pageData.menuItems.length - 1].text}
+              </Link>
             </nav>
           </div>
           {/* Mobile Menu */}
@@ -96,27 +137,57 @@ export const Header = () => {
             animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : -100 }}
             transition={{
               opacity: { duration: 0.7 },
-              y: { duration: 1, ease: [0.42, 0, 0.58, 1], type: "easeInOut" }, // Smooth easing for both up and down
+              y: { duration: 1, ease: [0.42, 0, 0.58, 1], type: "easeInOut" },
             }}
-            className={`lg:hidden sticky w-full h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
+            className={`lg:hidden sticky h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
               isMenuOpen ? "sticky" : "hidden"
             }`}
             style={{ zIndex: 10 }}
           >
-            {pageData.menuItems.map((item, index) => (
+            {pageData.menuItems.slice(0, -1).map((item, index) => (
               <Link
                 key={index}
                 href={item.href}
-                className={
-                  item.isPrimary
-                    ? "bg-confirm border-2 border-black text-black px-4 py-2 rounded-lg font-bold inline-flex tracking-tight shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
-                    : "hover:pr-2 duration-300"
-                }
+                className="hover:pr-2 duration-300"
                 onClick={toggleMenu}
               >
                 {item.text}
               </Link>
             ))}
+            {/* Dropdown for Mobile */}
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="hover:pr-2 duration-300"
+              >
+                Login
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute border-2 border-black bg-white  shadow-lg  left-1/2 text-center -translate-x-1/2 shadow-black rounded-md mt-2">
+                  <Link
+                    href="/Dashboard/login"
+                    className="flex px-4 py-2 hover:bg-gray-100"
+                    onClick={toggleMenu}
+                  >
+                    User Login
+                  </Link>
+                  <Link
+                    href="/Customer/login"
+                    className="flex px-4 py-2 hover:bg-gray-100"
+                    onClick={toggleMenu}
+                  >
+                    Customer Login
+                  </Link>
+                </div>
+              )}
+            </div>
+            <Link
+              href={pageData.menuItems[pageData.menuItems.length - 1].href}
+              className="bg-confirm border-2 border-black text-black px-4 py-2 rounded-lg font-bold inline-flex tracking-tight shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
+              onClick={toggleMenu}
+            >
+              {pageData.menuItems[pageData.menuItems.length - 1].text}
+            </Link>
           </motion.nav>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, Info } from "lucide-react";
+import { ArrowRight, ArrowUpRightFromSquareIcon, Info, ArrowBigLeftIcon, ArrowBigRightIcon, } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
@@ -42,7 +42,7 @@ export default function Home() {
                 Manage projects, organize customers, and send invoices.
               </p>
               <div className="flex flex-row gap-5 items-center">
-                <Link href={"/Signup"} className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xs sm:text-xl font-extrabold flex flex-row gap-2 px-4 sm:px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" /></Link>
+                <Link href={"/Signup"} className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xs sm:text-xl font-extrabold flex flex-row gap-2 px-4 sm:px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" /></Link>
                 <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-bold flex flex-row gap-2 text-md sm:text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
               </div>
             </div>
@@ -61,7 +61,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-white bg-opacity-95"></div>
               <FAQ />
             </section>
-            <section id="about" className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
+            {/* <section id="about" className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
                   <div className="max-w-7xl mx-auto px-6 text-center pb-6">
                     <div className="section-heading w-full mx-auto flex flex-col">
                       <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">About</div>
@@ -85,7 +85,7 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                </section>
+                </section> */}
                 <section className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
                 style={{
                   backgroundImage: 'url("/lightspeed.png")',
@@ -101,7 +101,7 @@ export default function Home() {
                     </p>
                     <div className="flex flex-row gap-5 items-center">
                     <Link href={"/Signup"} className="bg-confirm hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black font-bold flex flex-row gap-2 text-xs sm:text-xl px-4 sm:px-6 py-3 rounded-lg shadow-md border-2 border-black shadow-black items-center">
-                      Get Started <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                      Get Started <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" />
                     </Link>
                     <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-md sm:text-xl text-black">
                       Learn more <Info className="w-5 h-5" />
