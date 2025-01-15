@@ -79,7 +79,7 @@ export default function FAQ() {
             className="text-green-500 font-medium hover:underline"
             href="/About"
           >
-            Visit the About page
+            Read the docs
           </Link>{" "}
           or{" "}
           <Link

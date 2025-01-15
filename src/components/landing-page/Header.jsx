@@ -68,13 +68,13 @@ export const Header = () => {
               </Link>
             </div>
             <div
-              className="md:hidden cursor-pointer hover:text-destructive duration-300"
+              className="lg:hidden cursor-pointer hover:text-destructive duration-300"
               onClick={toggleMenu}
             >
               <MenuIcon className="h-10 w-10 " />
             </div>
             {/* Desktop Menu */}
-            <nav className="hidden font-bold md:flex gap-6 text-black items-center">
+            <nav className="hidden font-bold lg:flex gap-6 text-black items-center">
               {pageData.menuItems.map((item, index) => (
                 <Link
                   key={index}
@@ -98,7 +98,7 @@ export const Header = () => {
               opacity: { duration: 0.7 },
               y: { duration: 1, ease: [0.42, 0, 0.58, 1], type: "easeInOut" }, // Smooth easing for both up and down
             }}
-            className={`md:hidden sticky w-full h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
+            className={`lg:hidden sticky w-full h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
               isMenuOpen ? "sticky" : "hidden"
             }`}
             style={{ zIndex: 10 }}

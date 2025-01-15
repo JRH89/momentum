@@ -72,8 +72,8 @@ export default function About() {
   return (
     <div className="min-h-screen flex flex-col sm:flex-row">
       {/* Main Content */}
-      <main className="w-full mx-auto flex flex-col px-4 sm:p-8 pb-12 max-w-4xl">
-        <h1 className="text-3xl lg:text-4xl text-center font-bold mb-4">
+      <main className="w-full mt-20 sm:mt-12 mx-auto flex flex-col px-4 sm:p-8 pb-12 max-w-4xl">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl text-center font-bold mb-4">
           {section.title}
         </h1>
         <div className="p-2 sm:p-4 sm:pt-0 pt-0 ">
