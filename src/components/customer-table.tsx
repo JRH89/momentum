@@ -170,6 +170,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
                   <td className="py-2 px-6 text-sm">
                     <div className="flex items-center space-x-4">
                       <select
+                        aria-label='Actions'
                         className="border border-black rounded-md px-2 py-1 text-sm text-black"
                         onChange={(e) => {
                           const action = e.target.value;
@@ -179,7 +180,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
                           } else if (action === 'view') {
                             router.push(`/Dashboard/${userId}/${customer.stripeCustomerId}`);
                           }
-                          e.target.value = ''; // Reset select after action
+                          e.target.value = 'Actions';
                         }}
                       >
                         <option value="Actions">Actions</option>
@@ -229,6 +230,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
                 <div>
                   <label className="block text-sm font-medium text-white">Amount</label>
                   <input
+                    aria-label="amount"
                     type="number"
                     value={invoiceData.amount}
                     onChange={(e) => setInvoiceData(prev => ({ ...prev, amount: e.target.value }))}
@@ -239,6 +241,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
                 <div>
                   <label className="block text-sm font-medium text-white">Description</label>
                   <input
+                    aria-label="description"
                     type="text"
                     value={invoiceData.description}
                     onChange={(e) => setInvoiceData(prev => ({ ...prev, description: e.target.value }))}
@@ -249,6 +252,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
                 <div>
                   <label className="block text-sm font-medium text-white">Due Date</label>
                   <input
+                    aria-label="dueDate"
                     type="date"
                     value={invoiceData.dueDate}
                     onChange={(e) => setInvoiceData(prev => ({ ...prev, dueDate: e.target.value }))}

@@ -10,6 +10,8 @@ import {
   ArrowDown,
   ArrowDownSquare,
   ArrowUpRightFromSquareIcon,
+  ChevronDown,
+  ExternalLinkIcon,
 } from "lucide-react";
 
 // Page Data
@@ -23,7 +25,7 @@ const pageData = {
     { text: "Pricing", href: "/#price" },
     { text: "Gallery", href: "/#gallery" },
     { text: "FAQ", href: "/#faq" },
-    { text: "Docs", href: "/About", icon: ArrowUpRightFromSquareIcon },
+    { text: "Docs", href: "/About", icon: ExternalLinkIcon },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],
 };
@@ -102,7 +104,7 @@ export const Header = () => {
                   className="hover:opacity-60 flex flex-row items-center gap-1 duration-300"
                 >
                   Login{" "}
-                  <ArrowDownSquare className="h-4 w-4 flex-row flex justify-center items-center" />
+                  <ChevronDown className="h-4 w-4 flex-row flex justify-center items-center" />
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-8 border-2 border-black bg-white shadow-lg shadow-black rounded-md mt-2">
@@ -148,19 +150,21 @@ export const Header = () => {
               <Link
                 key={index}
                 href={item.href}
-                className="hover:pr-2 duration-300"
+                className="hover:pr-2 flex flex-row gap-1 items-center duration-300"
                 onClick={toggleMenu}
               >
                 {item.text}
+                {item.icon && <item.icon className="h-4 w-4" />}
               </Link>
             ))}
             {/* Dropdown for Mobile */}
             <div className="relative">
               <button
                 onClick={toggleDropdown}
-                className="hover:pr-2 duration-300"
+                className="hover:pr-2 flex flex-row gap-1 items-center duration-300"
               >
                 Login
+                <ChevronDown className="h-4 w-4 flex-row flex justify-center items-center" />
               </button>
               {isDropdownOpen && (
                 <div className="absolute border-2 border-black bg-white  shadow-lg  left-1/2 text-center -translate-x-1/2 shadow-black rounded-md mt-2">
