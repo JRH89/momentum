@@ -2,9 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import InvoicesTable from "../../../../../components/customer/InvoiceTable";
-import { redirect, useParams } from "next/navigation";
-import { useAuth } from "../../../../../context/AuthProvider";
-import { db } from "../../../../../../firebase";
+import { useParams, useRouter } from "next/navigation";
+import { db, auth } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { FileTextIcon } from "lucide-react";
 
@@ -17,7 +16,23 @@ const Page = () => {
   const [stripeCustomerId, setStripeCustomerId] = useState(null);
   const [customerData, setCustomerData] = useState(null);
 
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/Customer/login"); // Redirect if not authenticated
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [user, router]);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -87,10 +102,6 @@ const Page = () => {
         Loading...
       </div>
     );
-  }
-
-  if (!user || user.uid !== customerId) {
-    redirect("/Customer/login");
   }
 
   return (

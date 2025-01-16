@@ -36,16 +36,6 @@ const Sidebar = ({ uid, customerId }) => {
       label: "Projects",
       icon: BriefcaseIcon,
     },
-    // {
-    //   href: `/Dashboard/${uid}/customers`,
-    //   label: "Customers",
-    //   icon: UsersIcon,
-    // },
-    // {
-    //   href: `/Dashboard/account`,
-    //   label: "Account",
-    //   icon: Blocks,
-    // },
     {
       href: `/Customer/${uid}/${customerId}/support`,
       label: "Support",
@@ -79,7 +69,7 @@ const Sidebar = ({ uid, customerId }) => {
       >
         <div className="flex flex-col h-full">
           {/* Logo and Close Button */}
-          <div className="flex rounded-tr-xl gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm/60">
+          <div className="flex rounded-tr-xl gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm">
             <Link
               className="flex hover:scale-105 duration-300 mx-auto flex-row items-center"
               href="/"

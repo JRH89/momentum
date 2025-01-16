@@ -22,8 +22,23 @@ const CustomerDashboard = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
+
   const router = useRouter();
+
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/Customer/login"); // Redirect if not authenticated
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
 
   const [invoices, setInvoices] = useState([]);
 
@@ -93,10 +108,6 @@ const CustomerDashboard = () => {
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (!user || user.uid !== customerId) {
-    redirect("/Customer/login");
   }
 
   return (

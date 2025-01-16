@@ -31,15 +31,14 @@ const ProtectedRoute = ({ children }) => {
     return (
         <div className="flex min-h-screen bg-white w-full">
             <Sidebar uid={userId} customerId={auth.currentUser?.uid} />
-
             {/* Main Content */}
             <main className="relative flex flex-col w-full bg-white pt-16">
-                <div className="absolute hidden sm:flex top-3 justify-center w-full">
+                <div className="absolute hidden sm:flex top-2 md:top-3 justify-center w-full px-24 md:px-0">
                     <Breadcrumb
                         homeElement={"Home"}
                         separator={<span> / </span>}
                         activeClasses="bg-gradient-to-r from-confirm to-destructive text-transparent bg-clip-text"
-                        containerClasses="flex w-full flex-wrap justify-center items-center shadow-md shadow-black text-black mx-auto rounded-lg border-2 p-1 border-black"
+                        containerClasses="flex w-full flex-wrap justify-center items-center shadow-md shadow-black text-black mx-auto rounded-lg border-2 p-1 border-black px-10 py-2"
                         listClasses="hover:underline items-center mx-2 font-bold flex flex-row text-xs sm:text-sm"
                         capitalizeLinks
                     />

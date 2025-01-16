@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { redirect, useParams } from "next/navigation";
-import { db } from "../../../../../../firebase";
+import { useParams, useRouter } from "next/navigation";
+import { db, auth } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
-import { useAuth } from "../../../../../context/AuthProvider";
 import { BriefcaseIcon } from "lucide-react";
 
 const Page = () => {
@@ -16,7 +15,23 @@ const Page = () => {
   const [stripeCustomerId, setStripeCustomerId] = useState(null);
   const [customerData, setCustomerData] = useState(null);
 
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/Customer/login"); // Redirect if not authenticated
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
 
   useEffect(() => {
     const fetchCustomerData = async () => {
@@ -55,8 +70,8 @@ const Page = () => {
     fetchCustomerData();
   }, [userId, customerId, user]);
 
-  if (!user || user.uid !== customerId) {
-    redirect("/Customer/login");
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state while auth is initializing
   }
 
   return (
