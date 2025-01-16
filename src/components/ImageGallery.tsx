@@ -9,6 +9,7 @@ type ImageType = {
   src: string;
   alt: string;
   desc: string;
+  bgImage?: string;
 };
 
 const ImageGallery = () => {
@@ -16,22 +17,26 @@ const ImageGallery = () => {
   {
     src: '/dashboard.png',
     alt: 'User Dashboard',
-    desc: 'The user dashboard serves as a comprehensive control center, allowing you to manage customers, track invoices, and oversee projects effortlessly. Easily add new customers, generate and send invoices, and streamline workflows to maximize productivity.',
+     desc: 'The user dashboard serves as a comprehensive control center, allowing you to manage customers, track invoices, and oversee projects effortlessly. Easily add new customers, generate and send invoices, and streamline workflows to maximize productivity.',
+    bgImage: '/image-3.png',
   },
   {
     src: '/customer-dashboard.png',
     alt: 'Customer Dashboard',
     desc: 'The customer dashboard provides an intuitive interface for your customers to stay informed about project progress, make secure invoice payments, and upload files. Delivering transparency and convenience, it enhances collaboration and customer satisfaction.',
+    bgImage: '/image-2.png',
   },
   {
     src: '/project.png',
     alt: 'Project Dashboard',
     desc: 'The project dashboard centralizes milestones, timelines, and files, ensuring every aspect of project management is organized. Track progress, manage deadlines, and maintain clarity with an easy-to-use platform designed for efficiency.',
+    bgImage: '/image-3.png',
    },
   {
     src: '/customper-page.png',
     alt: 'Customer Details Page',
     desc: 'The project settings interface allows complete customization of project details, permissions, and configurations. Tailor workflows to meet unique requirements, ensuring projects run smoothly from start to finish.',
+    bgImage: '/image-4.png',
   },
   // {
   //   src: '/invoice.png',
@@ -108,63 +113,74 @@ const ImageGallery = () => {
         ))}
       </div>
       
-        {selectedImage && (
-        <div className="fixed inset-0 w-full h-full min-h-screen bg-black bg-opacity-50 flex justify-center items-center z-50">
-        <div className="bg-white h-full flex flex-col py-12 shadow-lg  w-full p-4 mx-auto items-center relative">
-            <button
-            aria-label="close modal"
-            type="button"
-            onClick={closeModal}
-            className="absolute top-0 right-0 text-destructive  border-l-2 border-b-2 border-black text-2xl p-1 bg-black rounded-bl-lg shadow-md shadow-black"
-            >
-            <XIcon className="w-6 h-6 hover:rotate-90 duration-300" />
-            </button>
-            <div className='flex flex-col items-center lg:flex-row  h-full lg:justify-center lg:gap-10'>
-              <div className='flex flex-col items-center'>
-              <p className="text-black text-center text-2xl px-2 font-semibold mb-2">{selectedImage.alt}</p>
-                <Image
-                aria-label={selectedImage.alt}
-                src={selectedImage.src}
-                alt={selectedImage.alt}
-                width={1920}
-                height={1080}
-                className="w-full max-w-xl shadow-md shadow-black border-2 border-black h-auto rounded-lg"
-                />
-                </div>
-              <div>
-                <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium lg:text-lg">{selectedImage.desc}</p>
-              </div>
-            </div>
-                <div className="flex absolute bottom-2 justify-between gap-10 max-w-6xl mx-auto w-full px-5 lg:px-0">
-                <button
-                    aria-label="previous page"
-                    type="button"
-                    onClick={() => {
-                    const currentIndex = images.findIndex((image) => image.src === selectedImage.src);
-                    const prevIndex = (currentIndex - 1 + images.length) % images.length;
-                    setSelectedImage(images[prevIndex]);
-                    }}
-                    className="px-4 py-2 flex w-full text-center justify-center border-2 border-black bg-green-500 text-black rounded hover:bg-opacity-60"
-                >
-                     <ArrowBigLeftIcon className="w-6 h-6" />
-                </button>
-                <button
-                    aria-label="next page"
-                    type="button"
-                    onClick={() => {
-                    const currentIndex = images.findIndex((image) => image.src === selectedImage.src);
-                    const nextIndex = (currentIndex + 1) % images.length;
-                    setSelectedImage(images[nextIndex]);
-                    }}
-                    className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-green-500 text-black rounded hover:bg-opacity-60"
-                >
-                      <ArrowBigRightIcon className="w-6 h-6" />
-                </button>
-            </div>
+       {selectedImage && (
+  <div
+    className="fixed inset-0 w-full h-full min-h-screen bg-black bg-opacity-50 flex justify-center items-center z-50"
+    style={{
+      backgroundImage: `url(${selectedImage.bgImage})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }}
+  >
+    <div className="bg-white/95 h-full flex flex-col py-12 shadow-lg w-full p-4 mx-auto items-center relative">
+      <button
+        aria-label="close modal"
+        type="button"
+        onClick={closeModal}
+        className="absolute top-0 right-0 text-destructive border-l-2 border-b-2 border-black text-2xl p-1 bg-black rounded-bl-lg shadow-md shadow-black"
+      >
+        <XIcon className="w-6 h-6 hover:rotate-90 duration-300" />
+      </button>
+      <div className="flex flex-col items-center lg:flex-row h-full lg:justify-center lg:gap-10">
+        <div className="flex flex-col items-center">
+          <p className="text-black text-center text-2xl px-2 font-semibold mb-2">
+            {selectedImage.alt}
+          </p>
+          <Image
+            aria-label={selectedImage.alt}
+            src={selectedImage.src}
+            alt={selectedImage.alt}
+            width={1920}
+            height={1080}
+            className="w-full max-w-xl shadow-md shadow-black border-2 border-black h-auto rounded-lg"
+          />
         </div>
+        <div>
+          <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium lg:text-lg">
+            {selectedImage.desc}
+          </p>
+        </div>
+      </div>
+      <div className="flex absolute bottom-2 justify-between gap-10 max-w-6xl mx-auto w-full px-5 lg:px-0">
+        <button
+          aria-label="previous page"
+          type="button"
+          onClick={() => {
+            const currentIndex = images.findIndex((image) => image.src === selectedImage.src);
+            const prevIndex = (currentIndex - 1 + images.length) % images.length;
+            setSelectedImage(images[prevIndex]);
+          }}
+          className="px-4 py-2 flex w-full text-center justify-center border-2 border-black bg-confirm text-black rounded hover:bg-opacity-60"
+        >
+          <ArrowBigLeftIcon className="w-6 h-6" />
+        </button>
+        <button
+          aria-label="next page"
+          type="button"
+          onClick={() => {
+            const currentIndex = images.findIndex((image) => image.src === selectedImage.src);
+            const nextIndex = (currentIndex + 1) % images.length;
+            setSelectedImage(images[nextIndex]);
+          }}
+          className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-confirm text-black rounded hover:bg-opacity-60"
+        >
+          <ArrowBigRightIcon className="w-6 h-6" />
+        </button>
+      </div>
     </div>
- 
+  </div>
 )}
+
     </section>
   );
 };
