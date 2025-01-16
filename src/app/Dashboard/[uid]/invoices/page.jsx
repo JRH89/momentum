@@ -71,10 +71,10 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-bold mb-2 flex flex-row gap-2 items-center">
+        <h1 className="text-3xl px-4 font-bold mb-2 flex flex-row gap-2 items-center">
           <FileText className="w-8 h-8" /> Invoices
         </h1>
-        <div className="flex flex-col">
+        <div className="flex flex-col px-4">
           <InvoicesTable
             invoices={invoices}
             itemsPerPage={userData?.invoicesPerPage || 10}

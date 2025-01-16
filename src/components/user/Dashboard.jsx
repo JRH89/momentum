@@ -137,7 +137,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
         <Announcements />
         <div className="flex flex-col">
           <div className="p-4 pt-4 px-0 pb-0">

@@ -66,11 +66,11 @@ const Page = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-semibold flex flex-row gap-2 items-center">
+        <h1 className="text-3xl px-4 font-semibold flex flex-row gap-2 items-center">
           <Briefcase className="w-8 h-8" /> Projects
         </h1>
         {currentProjects.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 mt-2">
+          <div className="grid grid-cols-2 gap-4 mt-2 px-4">
             {currentProjects.map((project, index) => (
               <Link
                 href={`${project.link}`}
