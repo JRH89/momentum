@@ -170,8 +170,11 @@ const handleCreateInvoice = async (e: React.FormEvent) => {
                 Customer Details
               </h2>
               <p className="font-medium">Name: {customerData.name}</p>
-              <p className="font-medium">Email: <a className="text-confirm bg-gray-100 p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
-              <p className="font-medium">Stripe Customer ID: {customerData.stripeCustomerId}</p>
+              <p className="font-medium">Email: <a className="text-destructive bg-backgroundPrimary p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
+            <p className="font-medium">Stripe Customer ID: {customerData.stripeCustomerId}</p>
+            {customerData.uid &&
+              <p className="font-medium">User ID: {customerData.uid}</p>
+            }
             </div>
           )}
           <div className="mt-6">

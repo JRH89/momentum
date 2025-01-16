@@ -2,11 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { Plus, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { toast } from "react-toastify";
+import { set } from "date-fns";
 
 interface Milestone {
   id: string;
@@ -42,6 +44,8 @@ const ProjectPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  const [isCompleted, setIsCompleted] = useState<boolean>(false);
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -62,6 +66,7 @@ const ProjectPage = () => {
               setProject(foundProject);
               setMilestones(foundProject.milestones || []);
               setUploads(foundProject.uploads || []);
+              setIsCompleted(foundProject.isCompleted || false);
             }
           }
         }
@@ -223,7 +228,98 @@ const ProjectPage = () => {
       } finally {
         setIsLoading(false);
       }
-    };
+  };
+  
+const handleMarkProjectComplete = async () => {
+  try {
+    const userRef = doc(db, "users", uid);
+
+    await runTransaction(db, async (transaction) => {
+      const userSnap = await transaction.get(userRef);
+
+      if (!userSnap.exists()) {
+        throw new Error("User document not found.");
+      }
+
+      const userData = userSnap.data();
+      const customers = Array.isArray(userData.customers) ? userData.customers : [];
+      const customerIndex = customers.findIndex(
+        (cust) => cust.stripeCustomerId === stripeCustomerId
+      );
+
+      if (customerIndex === -1) {
+        throw new Error("Customer not found.");
+      }
+
+      const projectIndex = customers[customerIndex].projects.findIndex(
+        (p: { id: string }) => p.id === projectId
+      );
+
+      if (projectIndex === -1) {
+        throw new Error("Project not found.");
+      }
+
+      // Safely update isCompleted field
+      customers[customerIndex].projects[projectIndex].isCompleted = true;
+
+      // Update the entire customers array
+      transaction.update(userRef, { customers });
+    });
+
+    toast.success("Project marked as complete!");
+    setIsCompleted(true);
+  } catch (error) {
+    console.error("Error marking project as complete:", error);
+    toast.error("Failed to mark project as complete. Please try again.");
+  }
+};
+
+
+  
+    const handleMarkProjectIncomplete = async () => {
+    try {
+    const userRef = doc(db, "users", uid);
+
+    await runTransaction(db, async (transaction) => {
+      const userSnap = await transaction.get(userRef);
+
+      if (!userSnap.exists()) {
+        throw new Error("User document not found.");
+      }
+
+      const userData = userSnap.data();
+      const customers = Array.isArray(userData.customers) ? userData.customers : [];
+      const customerIndex = customers.findIndex(
+        (cust) => cust.stripeCustomerId === stripeCustomerId
+      );
+
+      if (customerIndex === -1) {
+        throw new Error("Customer not found.");
+      }
+
+      const projectIndex = customers[customerIndex].projects.findIndex(
+        (p: { id: string }) => p.id === projectId
+      );
+
+      if (projectIndex === -1) {
+        throw new Error("Project not found.");
+      }
+
+      // Safely update isCompleted field
+      customers[customerIndex].projects[projectIndex].isCompleted = false;
+
+      // Update the entire customers array
+      transaction.update(userRef, { customers });
+    });
+
+    toast.success("Project marked as incomplete!");
+    setIsCompleted(false);
+  } catch (error) {
+    console.error("Error marking project as incomplete:", error);
+    toast.error("Failed to mark project as incomplete. Please try again.");
+  }
+};
+
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -236,82 +332,110 @@ const ProjectPage = () => {
   return (
     <>
      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-bold mb-2 flex flex-row gap-2 items-center">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
+        <h1 className="text-3xl font-bold w-full justify-between items-center flex flex-row gap-1 ">{project.name}<span className="hidden sm:flex text-xl">ID: {project.id}</span></h1>
         <p className="text-lg">{project.description}</p>
-        {/* Milestones Section */}
-        <div className="mt-4">
-          <div className="flex justify-start items-center">
-            <h2 className="text-2xl font-semibold">Milestones</h2>
-            <button
-              type="button"
-              onClick={() => setShowForm(!showForm)}
-              className=" hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
-            >
-              [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
+      {/* Milestones Section */}
+<div className="mt-4">
+  <div className="flex justify-start items-center">
+    <h2 className="text-2xl font-semibold">Milestones</h2>
+    <button
+      type="button"
+      onClick={() => setShowForm(!showForm)}
+      className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
+    >
+      [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
             </button>
-            </div>
-            {milestones.length > 0 ? (
-            <div className="border-2 border-black rounded-lg overflow-x-auto">
-              <table className="bg-white w-full table-auto">
-                <thead className="bg-backgroundPrimary rounded-t-lg">
-                  <tr className="border-b border-t border-black">
-                    <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">Milestone</th>
-                    <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
-                    <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
-                    <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
-                    <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {milestones.map((milestone) => (
-                    <tr key={milestone.id} className="border-b hover:bg-yellow-50 border-black">
-                      <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
-                      <td className="p-1 px-4">{milestone.description}</td>
-                      <td className="p-1 px-4">{milestone.deadline}</td>
-                      <td className="p-1 px-4 text-sm text-gray-500">
-                        <span
-                          className={`text-sm capitalize font-semibold ${
-                            milestone.status === "completed"
-                              ? "text-confirm"
-                              : milestone.status === "pending"
-                              ? "text-destructive"
-                              : "text-green-500"
-                          }`}
-                        >
-                          {milestone.status}
-                        </span>
-                      </td>
-                      <td className="p-1 px-4 border-r border-black">
-                        <div className="p-1">
-                          <select
-                            name="status"
-                            id="status"
-                            aria-label="status"
-                            onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
-                            value={milestone.status}
-                            className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
-                          >
-                            <option value="pending" className="text-black">
-                              Pending
-                            </option>
-                            <option value="in-progress" className="text-green-500">
-                              In Progress
-                            </option>
-                            <option value="completed" className="text-confirm">
-                              Completed
-                            </option>
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">No milestones yet.</p>
-          )}
-        </div>
+            {/* Conditional Button for Marking Project Complete */}
+  {!isCompleted && milestones.length > 0 && milestones.every((milestone) => milestone.status === "completed") && (
+    <div className="mb-2 flex w-full justify-end text-center">
+      <button
+        type="button"
+        onClick={handleMarkProjectComplete}
+        className="bg-green-500 duration-300 hover:bg-green-600 text-white py-2 px-4 rounded-md font-semibold shadow-md"
+      >
+        Mark Project as Complete
+      </button>
+    </div>
+            )}
+            {isCompleted && milestones.length > 0 && milestones.every((milestone) => milestone.status === "completed") && (
+    <div className="mb-2 flex w-full justify-end text-center">
+      <button
+        type="button"
+        onClick={handleMarkProjectIncomplete}
+        className="bg-destructive duration-300 hover:bg-opacity-60 text-white py-2 px-4 rounded-md font-semibold shadow-md"
+      >
+        Mark Project as Incomplete
+      </button>
+    </div>
+  )}
+  </div>
+  {milestones.length > 0 ? (
+    <div className="border-2 border-black rounded-lg overflow-x-auto">
+      <table className="bg-white w-full table-auto">
+        <thead className="bg-backgroundPrimary rounded-t-lg">
+          <tr className="border-b border-t border-black">
+            <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">Milestone</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {milestones.map((milestone) => (
+            <tr key={milestone.id} className="border-b hover:bg-yellow-50 border-black">
+              <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
+              <td className="p-1 px-4">{milestone.description}</td>
+              <td className="p-1 px-4">{milestone.deadline}</td>
+              <td className="p-1 px-4 text-sm text-gray-500">
+                <span
+                  className={`text-sm capitalize font-semibold ${
+                    milestone.status === "completed"
+                      ? "text-confirm"
+                      : milestone.status === "pending"
+                      ? "text-destructive"
+                      : "text-green-500"
+                  }`}
+                >
+                  {milestone.status}
+                </span>
+              </td>
+              <td className="p-1 px-4 border-r border-black">
+                <div className="p-1">
+                  <select
+                    name="status"
+                    id="status"
+                    aria-label="status"
+                    onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
+                    value={milestone.status}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
+                  >
+                    <option value="pending" className="text-black">
+                      Pending
+                    </option>
+                    <option value="in-progress" className="text-green-500">
+                      In Progress
+                    </option>
+                    <option value="completed" className="text-confirm">
+                      Completed
+                    </option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">
+      No milestones yet.
+    </p>
+  )}
+
+  
+</div>
+
         {/* Uploads section */}
          <div className="mt-4">
           <div className="flex justify-start items-center">

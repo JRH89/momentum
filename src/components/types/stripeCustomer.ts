@@ -4,4 +4,5 @@ export interface StripeCustomer {
   description: string;
   stripeCustomerId: string;
   createdAt: Date;
+  uid?: string;
 }

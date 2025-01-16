@@ -88,29 +88,65 @@ const Page = () => {
         <h1 className="text-3xl px-4 font-semibold flex flex-row gap-2 items-center">
           <Briefcase className="w-8 h-8" /> Projects
         </h1>
-        {currentProjects.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 mt-2 px-4">
-            {currentProjects.map((project, index) => (
-              <Link
-                href={`${project.link}`}
-                key={index}
-                className="bg-backgroundPrimary flex flex-col rounded-lg border-2 hover:shadow-lg hover:shadow-black transition duration-300 border-black shadow-black shadow-md py-2 p-4"
-              >
-                <h2 className="text-sm sm:text-lg font-semibold h-full flex2">
-                  {project.name}
-                </h2>
-                <p className="text-gray-900 flex h-full text-xs sm:text-md">
-                  {project.description}
-                </p>
-                <p className="text-gray-900 flex h-full text-xs sm:text-md">
-                  {project.id}
-                </p>
-              </Link>
-            ))}
-          </div>
-        ) : (
-          <p className="mt-4 text-gray-500">No projects found.</p>
-        )}
+        <div className="flex flex-col pt-2 w-full justify-start gap-2 px-8">
+          <h2 className="text-xl font-medium">In Progress</h2>
+          {currentProjects.filter((project) => !project.isCompleted).length >
+          0 ? (
+            <div className="grid grid-cols-2 gap-4 mt-0 px-4">
+              {currentProjects
+                .filter((project) => !project.isCompleted)
+                .map((project, index) => (
+                  <Link
+                    href={`${project.link}`}
+                    key={index}
+                    className="bg-destructive/60 flex flex-col rounded-lg border-2 hover:shadow-lg hover:shadow-black transition duration-300 border-black shadow-black shadow-md py-2 p-4"
+                  >
+                    <h2 className="text-sm sm:text-lg font-semibold h-full flex2">
+                      {project.name}
+                    </h2>
+                    <p className="text-black flex h-full text-xs sm:text-md">
+                      {project.description}
+                    </p>
+                    <p className="text-black flex h-full text-xs sm:text-md">
+                      {project.id}
+                    </p>
+                  </Link>
+                ))}
+            </div>
+          ) : (
+            <p className="mt-2 px-4 text-gray-500">No projects in progress.</p>
+          )}
+
+          <h2 className="text-xl font-medium">Completed</h2>
+          {currentProjects.filter((project) => project.isCompleted).length >
+          0 ? (
+            <div className="grid grid-cols-2 gap-4 mt-0 px-4">
+              {currentProjects
+                .filter((project) => project.isCompleted)
+                .map((project, index) => (
+                  <Link
+                    href={`${project.link}`}
+                    key={index}
+                    className="bg-confirm/60 flex flex-col rounded-lg border-2 hover:shadow-lg hover:shadow-black transition duration-300 border-black shadow-black shadow-md py-2 p-4"
+                  >
+                    <h2 className="text-sm sm:text-lg font-semibold h-full flex2">
+                      {project.name}
+                    </h2>
+                    <p className="text-black flex h-full text-xs sm:text-md">
+                      {project.description}
+                    </p>
+                    <p className="text-black flex h-full text-xs sm:text-md">
+                      {project.id}
+                    </p>
+                  </Link>
+                ))}
+            </div>
+          ) : (
+            <p className="mt-2 px-4 text-gray-500">
+              No completed projects found.
+            </p>
+          )}
+        </div>
 
         {/* Pagination */}
         {projects.length > projectsPerPage && (

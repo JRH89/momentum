@@ -12,6 +12,7 @@ interface Project {
   name: string;
   description: string;
   link: string;
+  isCompleted?: boolean;
 }
 
 interface ProjectsProps {
@@ -202,19 +203,23 @@ const handleCreateProject = async (e: React.FormEvent) => {
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
              <div
-                      key={index}
-                      className="bg-white flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4"
+                key={index}
+                className={`bg-backgroundPrimary flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
                     >
                       <h3 className="text-lg flex flex-col my-auto h-full font-bold text-black mb-2">
                         {project.name}
-                      </h3>
+                </h3>
+               <p className="text-gray-600 text-sm flex flex-col my-auto h-full">Status:{" "} 
+  {project.isCompleted ? "Completed" : "In Progress"}
+</p>
+
                       <p className="text-gray-600 text-sm flex flex-col my-auto h-full">ID: {project.id}</p>
                       <p className="text-gray-600 text-sm mb-2 flex flex-col my-auto h-full">
                         Descripion: {project.description}
                       </p>
                       <Link
                         href={project.link}
-                        className="text-confirm text-sm hover:opacity-60 duration-300 font-semibold "
+                        className="text-destructive text-sm hover:opacity-60 duration-300 font-semibold "
                       >
                         View Details
                       </Link>
