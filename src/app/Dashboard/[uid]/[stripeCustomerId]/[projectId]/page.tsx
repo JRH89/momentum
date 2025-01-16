@@ -180,16 +180,13 @@ const ProjectPage = () => {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        <h1 className="text-4xl items-baseline flex flex-row justify-between w-full font-semibold">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
+     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <h1 className="text-3xl font-bold mb-2 flex flex-row gap-2 items-center">{project.name}<span className="hidden md:flex text-xl">{project.id}</span></h1>
         <p className="text-lg">{project.description}</p>
-        
         {/* Milestones Section */}
         <div className="mt-4">
           <div className="flex justify-start items-center">
-            <h2 className="text-2xl font-semibold">
-              Milestones
-            </h2>
+            <h2 className="text-2xl font-semibold">Milestones</h2>
             <button
               type="button"
               onClick={() => setShowForm(!showForm)}
@@ -197,72 +194,71 @@ const ProjectPage = () => {
             >
               [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
             </button>
-          </div>
-          {milestones.length > 0 ? (
-         <div className="border-2 border-black rounded-lg overflow-x-auto">
-  <table className="bg-white w-full table-auto">
-    <thead className="bg-backgroundPrimary rounded-t-lg">
-      <tr className="border-b border-t border-black">
-        <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">Milestone</th>
-        <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
-        <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
-        <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
-        <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      {milestones.map((milestone) => (
-        <tr key={milestone.id} className="border-b hover:bg-yellow-50 border-black">
-          <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
-          <td className="p-1 px-4">{milestone.description}</td>
-          <td className="p-1 px-4">{milestone.deadline}</td>
-          <td className="p-1 px-4 text-sm text-gray-500">
-            <span
-              className={`text-sm capitalize font-semibold ${
-                milestone.status === "completed"
-                  ? "text-confirm"
-                  : milestone.status === "pending"
-                  ? "text-destructive"
-                  : "text-green-500"
-              }`}
-            >
-              {milestone.status}
-            </span>
-          </td>
-          <td className="p-1 px-4 border-r border-black">
-            <div className="p-1">
-              <select
-                name="status"
-                id="status"
-                aria-label="status"
-                onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
-                value={milestone.status}
-                className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
-              >
-                <option value="pending" className="text-black">
-                  Pending
-                </option>
-                <option value="in-progress" className="text-green-500">
-                  In Progress
-                </option>
-                <option value="completed" className="text-confirm">
-                  Completed
-                </option>
-              </select>
             </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-</div>
-
+            {milestones.length > 0 ? (
+            <div className="border-2 border-black rounded-lg overflow-x-auto">
+              <table className="bg-white w-full table-auto">
+                <thead className="bg-backgroundPrimary rounded-t-lg">
+                  <tr className="border-b border-t border-black">
+                    <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">Milestone</th>
+                    <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
+                    <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
+                    <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
+                    <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {milestones.map((milestone) => (
+                    <tr key={milestone.id} className="border-b hover:bg-yellow-50 border-black">
+                      <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
+                      <td className="p-1 px-4">{milestone.description}</td>
+                      <td className="p-1 px-4">{milestone.deadline}</td>
+                      <td className="p-1 px-4 text-sm text-gray-500">
+                        <span
+                          className={`text-sm capitalize font-semibold ${
+                            milestone.status === "completed"
+                              ? "text-confirm"
+                              : milestone.status === "pending"
+                              ? "text-destructive"
+                              : "text-green-500"
+                          }`}
+                        >
+                          {milestone.status}
+                        </span>
+                      </td>
+                      <td className="p-1 px-4 border-r border-black">
+                        <div className="p-1">
+                          <select
+                            name="status"
+                            id="status"
+                            aria-label="status"
+                            onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
+                            value={milestone.status}
+                            className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
+                          >
+                            <option value="pending" className="text-black">
+                              Pending
+                            </option>
+                            <option value="in-progress" className="text-green-500">
+                              In Progress
+                            </option>
+                            <option value="completed" className="text-confirm">
+                              Completed
+                            </option>
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           ) : (
-            <p className="text-gray-500">No milestones yet.</p>
+            <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">No milestones yet.</p>
           )}
         </div>
         {/* Uploads section */}
-         <div className="mt-8">
+         <div className="mt-4">
           <div className="flex justify-start items-center">
             <h2 className="text-2xl font-semibold mb-2">
               Uploads
@@ -308,9 +304,9 @@ const ProjectPage = () => {
                     ))}
                   </ul>
           ) : (
-            <p>No uploads yet.</p>
+            <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet.</p>
           )}
-          <div className="mt-8">
+          <div className="mt-4">
             <h1 className="text-2xl -mb-2 font-semibold ">Project Theme</h1>
            <ColorPaletteGenerator
               userId={uid}
@@ -320,12 +316,12 @@ const ProjectPage = () => {
             </div> 
         </div>
         {showForm && (
-          <div className="fixed w-full  px-4 mx-auto inset-0 bg-black/90  z-40 my-auto min-h-screen h-full items-center justify-center flex flex-col">
-            <div className="bg-white rounded-md p-4 w-full max-w-xl">
-              <h1 className="text-2xl font-semibold mb-4 text-center">
+          <div className="fixed w-full px-4 mx-auto inset-0 bg-black/95  z-40 my-auto min-h-screen h-full items-center justify-center flex flex-col">
+            <div className=" p-4 w-full max-w-xl">
+              <h1 className="text-2xl sm:text-3xl text-white font-semibold mb-4 text-center">
                 Create New Milestone
               </h1>
-              <label htmlFor="title" className="block text-gray-700 font-semibold mb-2">
+              <label htmlFor="title" className="block text-white font-semibold mb-2">
                 Title
               </label>
               <input
@@ -336,7 +332,7 @@ const ProjectPage = () => {
                 onChange={(e) => setNewMilestone({ ...newMilestone, title: e.target.value })}
                 className="flex w-full p-2 mb-2 border rounded-md"
               />
-              <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
+              <label htmlFor="description" className="block text-white font-semibold mb-2">
                 Description
               </label>
               <textarea
@@ -346,7 +342,7 @@ const ProjectPage = () => {
                 onChange={(e) => setNewMilestone({ ...newMilestone, description: e.target.value })}
                 className="block w-full p-2 mb-2 border rounded-md"
               />
-              <label htmlFor="deadline" className="block text-gray-700 font-semibold mb-2">
+              <label htmlFor="deadline" className="block text-white font-semibold mb-2">
                 Deadline
               </label>
               <input
@@ -357,7 +353,7 @@ const ProjectPage = () => {
                 onChange={(e) => setNewMilestone({ ...newMilestone, deadline: e.target.value })}
                 className="flex w-full p-2 mb-2 border rounded-md"
               />
-              <label htmlFor="priority" className="block text-gray-700 font-semibold mb-2">
+              <label htmlFor="priority" className="block text-white font-semibold mb-2">
                 Priority
               </label>
               <select
@@ -376,14 +372,14 @@ const ProjectPage = () => {
                 <button 
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="text-destructive hover:text-destructive/60 duration-300 py-2 px-4 rounded-md mr-2"
+                  className="text-destructive hover:text-destructive/60 duration-300 font-medium py-2 px-4 rounded-md mr-2"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleAddMilestone}
-                  className="bg-confirm hover:bg-opacity-60 duration-300 text-white py-2 px-4 rounded-md"
+                  className="bg-confirm hover:bg-opacity-60 duration-300 text-black font-semibold py-2 px-4 rounded-md"
                 >
                   Add Milestone
                 </button>

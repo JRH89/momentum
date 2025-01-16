@@ -4,9 +4,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import ReactPaginate from 'react-paginate';
 import { useEffect, useState } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { toast } from 'react-toastify';
+import { deleteApp, initializeApp } from 'firebase/app';
+import { createUserWithEmailAndPassword, getAuth, signOut } from '@firebase/auth';
+
 
 interface StripeCustomer {
   email: string;
@@ -21,7 +24,20 @@ interface CustomerTableProps {
   itemsPerPage?: number;
 }
 
+interface ProjectsProps {
+  uid: string;
+  stripeCustomerId: string;
+  customerEmail: string;
+}
+
 export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerTableProps) {
+   const [projects, setProjects] = useState([]);
+    const [newProjectName, setNewProjectName] = useState<string>('');
+    const [newProjectDescription, setNewProjectDescription] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
+  
+    const [showForm, setShowForm] = useState(false);
+  
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const [stripeAccountId, setStripeAccountId] = useState<string | null>(null);
@@ -34,6 +50,8 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
     dueDate: ''
   });
   const [selectedCustomer, setSelectedCustomer] = useState<StripeCustomer | null>(null);
+  const [customerId, setCustomerId] = useState<string>("");
+  const [newProjectLink, setNewProjectLink] = useState<string>("");
 
   const [sortConfig, setSortConfig] = useState<{
     key: keyof StripeCustomer;
@@ -116,6 +134,132 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
     }
   };
 
+ // Handle creating a new project
+const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, customerEmail,  }: ProjectsProps) => {
+  e.preventDefault();
+
+  if (!newProjectName || !newProjectDescription) {
+    setError("Please fill in all fields");
+    return;
+  }
+
+  setLoading(true);
+  let newCustomerUid: string | null = null; // To store the newly created customer's UID
+
+  try {
+    // Fetch user document
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      const customers = Array.isArray(userData.customers) ? userData.customers : [];
+      const customer = customers.find(
+        (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
+      );
+
+      if (customer) {
+        try {
+          // Initialize a temporary Firebase app instance
+          const tempApp = initializeApp({
+            apiKey: process.env.NEXT_PUBLIC_APIKEY,
+            authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+            projectId: process.env.NEXT_PUBLIC_PROJECTID,
+            storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+            messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+            appId: process.env.NEXT_PUBLIC_APPID,
+          }, "new-app");
+
+          const tempAuth = getAuth(tempApp);
+
+          // Create a Firebase Auth user for the customer
+          const userCredential = await createUserWithEmailAndPassword(
+            tempAuth,
+            customerEmail,
+            'DefaultSecurePassword123!' // You can change this to something more secure
+          );
+
+          // Immediately sign out to prevent auto sign-in
+          await signOut(tempAuth);
+
+          newCustomerUid = userCredential.user.uid; // Store the new customer's UID
+
+          // Clean up by deleting the temporary app instance
+          await deleteApp(tempApp);
+        } catch (authError: any) {
+          if (authError.code !== 'auth/email-already-in-use') {
+            throw authError;
+          } else {
+            // If the user already exists, retrieve their UID
+            const existingUserRef = await getDoc(doc(db, 'users', customerEmail));
+            if (existingUserRef.exists()) {
+              newCustomerUid = existingUserRef.id; // Retrieve existing UID
+            }
+          }
+        }
+
+        // Add new project
+        const newProject = {
+          name: newProjectName,
+          description: newProjectDescription,
+          link: newProjectName
+            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}` // Optional link
+            : '',
+        };
+
+        // Add new project to Firestore
+        const projectRef = await addDoc(collection(db, 'users', userId, 'projects'), newProject);
+
+        // Update project link with auto-generated ID
+        if (newProject.link) {
+          newProject.link = `/Dashboard/${userId}/${stripeCustomerId}/${projectRef.id}`;
+        }
+        setNewProjectLink(newProject.link);
+
+        // Update projects in Firestore
+        const updatedProjects = [...(customer.projects || []), { id: projectRef.id, ...newProject }];
+        await updateDoc(userRef, {
+          customers: customers.map((cust: { stripeCustomerId: string }) =>
+            cust.stripeCustomerId === stripeCustomerId ? { ...cust, projects: updatedProjects } : cust
+          ),
+        });
+
+        // If a new customer UID was created, update the customer with the matching stripeCustomerId
+        if (newCustomerUid) {
+          const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
+            if (cust.stripeCustomerId === stripeCustomerId) {
+              return { ...cust, uid: newCustomerUid, projects: updatedProjects }; // Add updated projects
+            }
+            return cust; // Keep other customers unchanged
+          });
+
+          // Update Firestore with the modified customers array
+          await updateDoc(userRef, {
+            customers: updatedCustomers,
+          });
+        }
+
+        // Update local state
+        setNewProjectName('');
+        setNewProjectDescription('');
+        setShowForm(false);
+
+        // Show success toast
+        toast.success("Project created successfully!");
+      }
+    }
+  } catch (err) {
+    console.error("Error creating project:", err);
+    setError("Failed to create project.");
+    toast.error("Failed to create project.");
+  } finally {
+    setLoading(false);
+
+    // Redirect to the new project page
+    router.push(newProjectLink);
+  }
+};
+
   const offset = currentPage * itemsPerPage;
   const currentCustomers = customers.slice(offset, offset + itemsPerPage);
 
@@ -176,15 +320,21 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
                           const action = e.target.value;
                           if (action === 'createInvoice') {
                             setSelectedCustomer(customer);
+                            setCustomerId(customer.stripeCustomerId);
                             setShowInvoiceForm(true);
                           } else if (action === 'view') {
                             router.push(`/Dashboard/${userId}/${customer.stripeCustomerId}`);
+                          } else if (action === 'createProject') {
+                            setShowForm(true);
+                            setSelectedCustomer(customer);
                           }
                           e.target.value = 'Actions';
+
                         }}
                       >
                         <option value="Actions">Actions</option>
                         <option value="createInvoice">Create Invoice</option>
+                        <option value="createProject">Create Project</option>
                         <option value="view">View Details</option>
                       </select>
                     </div>
@@ -194,6 +344,64 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
             </tbody>
           </table>
         </div>
+         {/* New Project Form */}
+      {showForm && selectedCustomer &&  (
+        <div className="inset-0 fixed border-2 border-black bg-black bg-opacity-95 flex items-center justify-center mx-auto px-4">
+          <div className=" p-6 w-full max-w-xl">
+              <h3 className="text-xl text-white text-center font-semibold">Create Project</h3>
+            <form >
+              <div className="mt-2">
+                <label htmlFor="name" className="block text-white">Project Name</label>
+                <input
+                  id="name"
+                  type="text"
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  required
+                  className="w-full p-2 border-2 border-black rounded-md"
+                />
+              </div>
+              <div className="mt-2">
+                <label htmlFor="description" className="block text-white">Project Description</label>
+                <input
+                  id="description"
+                  type="text"
+                  value={newProjectDescription}
+                  onChange={(e) => setNewProjectDescription(e.target.value)}
+                  required
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                />
+              </div>
+            </form>
+            <div className='flex flex-row items-center justify-end'>
+              <button
+              type="button"
+              onClick={() => setShowForm(false)}
+              className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
+            >
+              Cancel
+            </button>
+              <button
+                  onClick={(e) => {
+                    if (selectedCustomer) {
+                      handleCreateProject(e, {
+                        uid: userId,
+                        stripeCustomerId: selectedCustomer.stripeCustomerId,
+                        customerEmail: selectedCustomer.email
+                      })
+                      setShowForm(false);
+                    }
+                  }}
+                type="submit"
+                className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
+                disabled={loading} // Disable button when loading
+              >
+                {loading ? 'Creating...' : 'Create'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {customers.length > itemsPerPage && (
         <ReactPaginate
           previousLabel={'Previous'}

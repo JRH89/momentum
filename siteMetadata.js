@@ -3,8 +3,8 @@
 const siteMetadata = {
     title: 'Momentum',
     author: 'Hooker Hill Studios',
-    headerTitle: 'Project management made simple',
-    description: 'Project management for freelancers, entrepreneurs, and small businesses. Project management made simple',
+    headerTitle: 'Project management and invoicing made simple',
+    description: 'Project management for freelancers, entrepreneurs, and small businesses. Send invoices through Stripe, track payments, manage projects, and more.',
     language: 'en-us',
     theme: 'system',
     siteUrl: 'http://localhost:3000',
