@@ -29,58 +29,64 @@ export default function ColorPaletteGenerator({
     const fetchProjectColors = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "users"));
-        const colors = [];
+        let projectColors = [];
 
         querySnapshot.forEach((userDoc) => {
           const customers = userDoc.data().customers || [];
 
-          // Iterate over customers and their projects to get the color layouts
           customers.forEach((customer) => {
             customer.projects?.forEach((project) => {
-              if (project.colorLayout && project.colorLayout.length > 0) {
-                // Add all colors in the colorLayout of the project
-                colors.push(...project.colorLayout);
+              if (project.id === projectId) {
+                // If the project exists but has no colorLayout, initialize it as an empty array
+                if (!project.colorLayout) {
+                  project.colorLayout = [];
+                }
+
+                // Assign the colorLayout to projectColors
+                projectColors = [...project.colorLayout];
               }
             });
           });
         });
 
-        setProjectColors(colors);
+        setProjectColors(projectColors);
       } catch (error) {
         console.error("Error fetching project colors:", error);
       }
     };
 
     fetchProjectColors();
-  }, []); // Empty dependency array to run once on component mount
+  }, [projectId]); // Add projectId as a dependency
 
   const savePaletteLayout = async () => {
     try {
       // Reference to the user document using userId
       const userRef = doc(db, "users", userId);
 
-      // Use Firestore transaction to ensure data integrity
+      // Use Firestore transaction to ensure atomic updates
       await runTransaction(db, async (transaction) => {
-        const userDoc = await getDoc(userRef);
+        const userDoc = await transaction.get(userRef);
 
         if (!userDoc.exists()) {
           throw new Error("User not found.");
         }
 
-        // Check if the customer array exists, if not create it
+        // Get the user's customers array or initialize it if it doesn't exist
         const customerArray = userDoc.data().customers || [];
 
-        // Find the customer with the matching customerId
+        // Find the index of the customer with the given customerId
         const customerIndex = customerArray.findIndex(
-          (customer) => customer.uid === customerId
+          (customer) => customer.stripeCustomerId === customerId
         );
 
         if (customerIndex === -1) {
           throw new Error("Customer not found.");
         }
 
-        // Find the project within the customer
+        // Get the customer object
         const customer = customerArray[customerIndex];
+
+        // Find the index of the project with the given projectId
         const projectIndex = customer.projects.findIndex(
           (project) => project.id === projectId
         );
@@ -89,26 +95,30 @@ export default function ColorPaletteGenerator({
           throw new Error("Project not found.");
         }
 
-        // Add the new palette to the colorLayout array in the correct project
+        // Get the project object
         const project = customer.projects[projectIndex];
 
-        // Ensure colorLayout is initialized as an empty array if it doesn't exist
+        // Ensure colorLayout exists as an array
         if (!Array.isArray(project.colorLayout)) {
           project.colorLayout = [];
         }
 
-        // Append new palette
-        project.colorLayout = [...project.colorLayout, baseColor];
+        // Add the new palette to the colorLayout array
+        project.colorLayout.push(baseColor);
 
-        // Save the updated data back to Firestore
+        // Update Firestore with the modified customers array
         transaction.update(userRef, {
           customers: customerArray,
         });
       });
 
-      toast.success("Palette saved successfully!");
+      // Update local state with the new palette
       setProjectColors((prevColors) => [...prevColors, baseColor]);
+
+      // Show success notification
+      toast.success("Palette saved successfully!");
     } catch (error) {
+      // Handle errors gracefully
       console.error("Error saving palette:", error);
       toast.error("Error saving palette: " + error.message);
     }
