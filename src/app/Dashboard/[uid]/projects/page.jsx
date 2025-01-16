@@ -65,7 +65,7 @@ const Page = () => {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 sm:pt-0 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         <h1 className="text-3xl font-semibold flex flex-row gap-2 items-center">
           <Briefcase className="w-8 h-8" /> Projects
         </h1>
@@ -75,13 +75,16 @@ const Page = () => {
               <Link
                 href={`${project.link}`}
                 key={index}
-                className="bg-white flex flex-col rounded-lg border-2 hover:bg-[#EAEEFE] duration-300 border-black shadow-black shadow-md p-4"
+                className="bg-backgroundPrimary flex flex-col rounded-lg border-2 hover:shadow-lg hover:shadow-black transition duration-300 border-black shadow-black shadow-md py-2 p-4"
               >
-                <h2 className="text-sm sm:text-lg font-semibold h-full flex pb-2">
+                <h2 className="text-sm sm:text-lg font-semibold h-full flex2">
                   {project.name}
                 </h2>
-                <p className="text-gray-600 flex h-full text-xs sm:text-md">
+                <p className="text-gray-900 flex h-full text-xs sm:text-md">
                   {project.description}
+                </p>
+                <p className="text-gray-900 flex h-full text-xs sm:text-md">
+                  {project.id}
                 </p>
               </Link>
             ))}
