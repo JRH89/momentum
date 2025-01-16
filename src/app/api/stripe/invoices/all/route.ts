@@ -39,6 +39,7 @@ export async function GET(req: Request) {
         : 'N/A', // Convert Unix timestamp to readable date
       number: invoice.number,
       hosted_invoice_url: invoice.hosted_invoice_url,
+      email: invoice.customer_email,
     }));
 
     return NextResponse.json(

@@ -3,9 +3,20 @@
 import React, { useEffect, useState } from "react";
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import { db, auth } from "../../../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore"; // Added updateDoc
+import { initializeApp, deleteApp, getApp, getApps } from "firebase/app"; // Handle multiple apps
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
+  signOut,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FileText } from "lucide-react";
+import { toast } from "react-toastify";
+
+// Utility function to generate a unique app name
+const generateAppName = () => `tempy-${Date.now()}`;
 
 const Page = () => {
   const [invoices, setInvoices] = useState([]);
@@ -18,17 +29,16 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Listener for auth state changes
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
         setUser(currentUser);
       } else {
-        router.push("/Dashboard/login"); // Redirect if not authenticated
+        router.push("/Dashboard/login");
       }
       setLoading(false);
     });
 
-    return () => unsubscribe(); // Cleanup listener on unmount
+    return () => unsubscribe();
   }, [router]);
 
   useEffect(() => {
@@ -65,6 +75,7 @@ const Page = () => {
 
         if (response.ok && data.invoices) {
           setInvoices(data.invoices || []);
+          await handleUserCreation(data.invoices || []);
         } else {
           setError(data.error || "Failed to fetch invoices");
         }
@@ -74,11 +85,120 @@ const Page = () => {
       }
     };
 
+    const handleUserCreation = async (invoices) => {
+      const openInvoices = invoices.filter(
+        (invoice) => invoice.status === "open"
+      );
+      const appName = generateAppName();
+
+      // Check if the app already exists
+      const appAlreadyExists = getApps().some((app) => app.name === appName);
+
+      if (!appAlreadyExists) {
+        // Initialize the app only if it doesn't already exist
+        const secondaryApp = initializeApp(
+          {
+            apiKey: process.env.NEXT_PUBLIC_APIKEY,
+            authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+            projectId: process.env.NEXT_PUBLIC_PROJECTID,
+            storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+            messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+            appId: process.env.NEXT_PUBLIC_APPID,
+          },
+          appName
+        );
+
+        const secondaryAuth = getAuth(secondaryApp);
+
+        // Create a Set to track processed emails within this batch
+        const processedEmails = new Set();
+
+        try {
+          // Create a list of promises to handle user creation
+          const userCreationPromises = openInvoices.map(async (invoice) => {
+            const { email } = invoice;
+
+            if (!email) {
+              console.warn("Skipping invoice with no email");
+              return;
+            }
+
+            // Skip if we've already processed this email in the current batch
+            if (processedEmails.has(email)) {
+              console.log(`Skipping duplicate email in batch: ${email}`);
+              return;
+            }
+
+            // Mark this email as processed
+            processedEmails.add(email);
+
+            try {
+              // Check if the email is already in use
+              const methods = await fetchSignInMethodsForEmail(
+                secondaryAuth,
+                email
+              );
+
+              if (methods.length > 0) {
+                // Email exists, skip user creation
+                console.log(
+                  `Skipping creation: User already exists for email: ${email}`
+                );
+
+                return;
+              }
+
+              // Email doesn't exist, proceed with user creation
+              const newUserCredential = await createUserWithEmailAndPassword(
+                secondaryAuth,
+                email,
+                "DefaultSecurePassword123!" // Replace with your desired default password
+              );
+
+              // Sign out immediately after creating the user
+              await signOut(secondaryAuth);
+
+              const newUserUid = newUserCredential.user.uid;
+
+              // Update Firestore to add the user to the `customers` array
+              const userRef = doc(db, "users", user.uid);
+              await updateDoc(userRef, {
+                customers: Array.isArray(userData?.customers)
+                  ? [...userData.customers, newUserUid]
+                  : [newUserUid],
+              });
+            } catch (err) {
+              // Handle specific Firebase errors
+              if (err.code === "auth/email-already-in-use") {
+                console.log(
+                  `Skipping creation: User already exists for email: ${email}`
+                );
+              } else {
+                console.error(`Error processing email ${email}:`, err);
+              }
+            }
+          });
+
+          // Wait for all user creation promises to finish
+          await Promise.all(userCreationPromises);
+        } catch (error) {
+          console.error("Error in batch user creation:", error);
+        } finally {
+          // Always cleanup the secondary app
+          try {
+            await deleteApp(secondaryApp);
+          } catch (error) {
+            console.error("Error deleting secondary app:", error);
+          }
+        }
+      }
+    };
+
     if (stripeAccountId) fetchInvoices();
   }, [stripeAccountId]);
 
   if (loading) {
-    return <div>Loading...</div>; // Show loading state while auth is initializing
+    return <div>Loading...</div>;
   }
 
   return (
