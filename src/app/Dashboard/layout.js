@@ -10,8 +10,8 @@ import { getAuth } from '@firebase/auth';
 import { useAuth } from '../../context/AuthProvider';
 import PricingSection from "../../components/user/SubscriptionSection";
 
-const ProtectedRoute = ({ children }) => {
-  const { user } = useAuth();
+const Layout = ({ children }) => {
+  const { user, loading: authLoading } = useAuth(); // Ensure `useAuth` provides these values
   const app = initFirebase();
   const auth = getAuth(app);
   const router = useRouter();
@@ -19,10 +19,15 @@ const ProtectedRoute = ({ children }) => {
   const isPremium = usePremiumStatus(app, user);
 
   useEffect(() => {
+    if (authLoading) {
+      return; // Wait until the auth state is done loading
+    }
 
     if (!user) {
-      router.push('/Dashboard/login');
-      setLoading(false);
+      setLoading(false); // Ensure loading ends
+      if (router.pathname !== '/Dashboard/login') {
+        router.push('/Dashboard/login'); // Redirect only if not already on the login page
+      }
     } else {
       const isAuthorizedUser = user.providerData.some((provider) =>
         ['google.com', 'github.com'].includes(provider.providerId)
@@ -34,20 +39,21 @@ const ProtectedRoute = ({ children }) => {
         setLoading(false);
       }
     }
+  }, [user, authLoading, router]);
 
-  }, [router]);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (authLoading || loading) {
+    return <div>Loading...</div>; // Show loading while fetching auth state
   }
+
+
 
   return (
     <div className="flex min-h-screen bg-white w-full">
       {/* Sidebar */}
       <Sidebar uid={auth.currentUser?.uid} />
       {/* Main Content */}
-      <main className="relative flex flex-col w-full bg-white pt-16 ">
-        <div className='absolute hidden sm:flex top-2 md:top-3 justify-center w-full px-24 md:px-0'>
+      <main className="relative flex flex-col w-full bg-white pt-16">
+        <div className="absolute hidden sm:flex top-2 md:top-3 justify-center w-full px-24 md:px-0">
           <Breadcrumb
             homeElement={"Home"}
             separator={<span> / </span>}
@@ -70,7 +76,7 @@ const ProtectedRoute = ({ children }) => {
         )}
       </main>
     </div>
-  )
+  );
 };
 
-export default ProtectedRoute;
+export default Layout;
