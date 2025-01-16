@@ -135,7 +135,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
   };
 
  // Handle creating a new project
-const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, customerEmail,  }: ProjectsProps) => {
+const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, customerEmail }: ProjectsProps) => {
   e.preventDefault();
 
   if (!newProjectName || !newProjectDescription) {
@@ -144,7 +144,8 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
   }
 
   setLoading(true);
-  let newCustomerUid: string | null = null; // To store the newly created customer's UID
+  let newCustomerUid: string | null = null;
+  let projectLink: string | null = null; // Track the link locally
 
   try {
     // Fetch user document
@@ -176,24 +177,19 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
           const userCredential = await createUserWithEmailAndPassword(
             tempAuth,
             customerEmail,
-            'DefaultSecurePassword123!' // You can change this to something more secure
+            'DefaultSecurePassword123!'
           );
 
-          // Immediately sign out to prevent auto sign-in
           await signOut(tempAuth);
-
-          newCustomerUid = userCredential.user.uid; // Store the new customer's UID
-
-          // Clean up by deleting the temporary app instance
+          newCustomerUid = userCredential.user.uid;
           await deleteApp(tempApp);
         } catch (authError: any) {
           if (authError.code !== 'auth/email-already-in-use') {
             throw authError;
           } else {
-            // If the user already exists, retrieve their UID
             const existingUserRef = await getDoc(doc(db, 'users', customerEmail));
             if (existingUserRef.exists()) {
-              newCustomerUid = existingUserRef.id; // Retrieve existing UID
+              newCustomerUid = existingUserRef.id;
             }
           }
         }
@@ -203,7 +199,7 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
           name: newProjectName,
           description: newProjectDescription,
           link: newProjectName
-            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}` // Optional link
+            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}`
             : '',
         };
 
@@ -213,8 +209,11 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
         // Update project link with auto-generated ID
         if (newProject.link) {
           newProject.link = `/Dashboard/${userId}/${stripeCustomerId}/${projectRef.id}`;
+          projectLink = newProject.link; // Store the link locally
         }
-        setNewProjectLink(newProject.link);
+        
+        // Update state only after we have the final link
+        setNewProjectLink(`/Dashboard/${userId}/${stripeCustomerId}/${projectRef.id}`);
 
         // Update projects in Firestore
         const updatedProjects = [...(customer.projects || []), { id: projectRef.id, ...newProject }];
@@ -224,28 +223,34 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
           ),
         });
 
-        // If a new customer UID was created, update the customer with the matching stripeCustomerId
+        // If a new customer UID was created, update the customer
         if (newCustomerUid) {
           const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
             if (cust.stripeCustomerId === stripeCustomerId) {
-              return { ...cust, uid: newCustomerUid, projects: updatedProjects }; // Add updated projects
+              return { ...cust, uid: newCustomerUid, projects: updatedProjects };
             }
-            return cust; // Keep other customers unchanged
+            return cust;
           });
 
-          // Update Firestore with the modified customers array
           await updateDoc(userRef, {
             customers: updatedCustomers,
           });
         }
 
-        // Update local state
+        // Reset form state
         setNewProjectName('');
         setNewProjectDescription('');
         setShowForm(false);
 
         // Show success toast
         toast.success("Project created successfully!");
+
+        // Only redirect if we have a valid project link
+        if (projectLink) {
+          router.push(projectLink);
+        } else {
+          toast.error("Project created but navigation failed. Please refresh the page.");
+        }
       }
     }
   } catch (err) {
@@ -254,11 +259,10 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
     toast.error("Failed to create project.");
   } finally {
     setLoading(false);
-
-    // Redirect to the new project page
-    router.push(newProjectLink);
   }
 };
+
+
 
   const offset = currentPage * itemsPerPage;
   const currentCustomers = customers.slice(offset, offset + itemsPerPage);

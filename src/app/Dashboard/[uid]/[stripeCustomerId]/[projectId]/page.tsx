@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from "react";
-import { db } from "../../../../../../firebase";
+import { db, storage } from "../../../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { Plus } from "lucide-react";
+import { Plus, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface Milestone {
   id: string;
@@ -16,16 +17,7 @@ interface Milestone {
   priority: string;
 }
 
-interface ProjectPageProps {
-  params: {
-    uid: string;
-    stripeCustomerId: string;
-    projectId: string;
-  };
-}
-
 const ProjectPage = () => {
-  // Correctly using `useParams` without treating it as a Promise
   const { uid, stripeCustomerId, projectId } = useParams() as {
     uid: string;
     stripeCustomerId: string;
@@ -44,6 +36,11 @@ const ProjectPage = () => {
   const [project, setProject] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
+
+
+  const [showUploadForm, setShowUploadForm] = useState<boolean>(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -170,6 +167,64 @@ const ProjectPage = () => {
     }
   };
 
+  // Handle file upload
+    const handleUpload = async () => {
+      if (!file) return;
+      setIsLoading(true);
+  
+      try {
+        const storageRef = ref(
+          storage,
+          `uploads/${uid}/${stripeCustomerId}/${projectId}/${file.name}`
+        );
+        await uploadBytes(storageRef, file);
+  
+        const fileUrl = await getDownloadURL(storageRef);
+        const userDocRef = doc(db, "users", uid);
+        const userDocSnap = await getDoc(userDocRef);
+  
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          const customerIndex = userData.customers.findIndex(
+            (cust: any) => cust.stripeCustomerId === stripeCustomerId
+          );
+          const projectIndex = userData.customers[
+            customerIndex
+          ].projects.findIndex((proj: any) => proj.id === projectId);
+  
+          // Ensure customer and project exist
+          if (customerIndex === -1 || projectIndex === -1) {
+            throw new Error("Customer or project not found");
+          }
+  
+          // Update project uploads as an array of objects
+          const updatedUploads = [
+            ...(userData.customers[customerIndex].projects[projectIndex]
+              .uploads || []),
+            { url: fileUrl, name: file.name }, // Object format
+          ];
+  
+          // Update the Firestore document
+          const updatedData = { ...userData };
+          updatedData.customers[customerIndex].projects[projectIndex].uploads =
+            updatedUploads;
+  
+          await updateDoc(userDocRef, updatedData);
+  
+          // Update local state
+          setUploads(updatedUploads);
+        } else {
+          throw new Error("User document does not exist");
+        }
+  
+        setFile(null);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -260,17 +315,47 @@ const ProjectPage = () => {
         {/* Uploads section */}
          <div className="mt-4">
           <div className="flex justify-start items-center">
-            <h2 className="text-2xl font-semibold mb-2">
+            <h2 className="text-2xl font-semibold">
               Uploads
             </h2>
-            {/* <button
+            <button
               type="button"
-              onClick={() => setShowForm(!showForm)}
+              onClick={() => setShowUploadForm(!showUploadForm)}
               className=" hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
             >
               [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
-            </button> */}
+            </button>
           </div>
+          {showUploadForm && (
+                <div className="mb-4 gap-2 flex flex-col">
+            <input
+              aria-label="Upload file"
+              type="file"
+              onChange={(e) => {
+                const files = e.target.files;
+                if (files && files[0]) {
+                  setFile(files[0]);
+                }
+              }}
+              className="border rounded p-2 bg-white"
+            />
+              <button
+                    type="button"
+                    onClick={handleUpload}
+                    disabled={!file || isLoading}
+                    className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                  >
+                    {isLoading ? (
+                      "Uploading..."
+                    ) : (
+                      <p className="flex items-center gap-2">
+                        <Upload className="w-5 h-5 text-center" />
+                        Upload file
+                      </p>
+                    )}
+                  </button>
+                </div>
+              )}
           {uploads.length > 0 ? (
             <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
                     {uploads.map((upload, index) => (
