@@ -41,12 +41,6 @@ const Layout = ({ children }) => {
     }
   }, [user, authLoading, router]);
 
-  if (authLoading || loading) {
-    return <div>Loading...</div>; // Show loading while fetching auth state
-  }
-
-
-
   return (
     <div className="flex min-h-screen bg-white w-full">
       {/* Sidebar */}

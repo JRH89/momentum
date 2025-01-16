@@ -5,7 +5,7 @@ import { CustomerTable } from "../../../../components/customer-table";
 import { useParams } from "next/navigation";
 import { useStripeIntegration } from "../../../hooks/use-stripe-integration";
 import { useAuth } from "../../../../context/AuthProvider";
-import { db } from "../../../../../firebase";
+import { db, auth } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AddCustomerForm } from "../../../../components/add-customer-form";
 import { Plus, Users } from "lucide-react";
@@ -13,12 +13,27 @@ import { useRouter } from "next/navigation";
 
 const Page = () => {
   const { uid } = useParams(); // Get the user ID from the route params
-  const { user } = useAuth(); // Get the authenticated user
   const [userData, setUserData] = useState(null);
   const [userStripe, setUserStripe] = useState(null);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   const router = useRouter();
+
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/Dashboard/login"); // Redirect if not authenticated
+      }
+      setLoading(false); // Auth state is determined
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -54,11 +69,13 @@ const Page = () => {
     userStripe,
   });
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
-    }
-  }, [user, router]);
+  if (loading) {
+    return (
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        Loading...
+      </div>
+    ); // Show loading state while auth is initializing
+  }
 
   return (
     <>

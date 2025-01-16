@@ -1,63 +1,89 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { db } from "../../../../../firebase";
-import { useAuth } from "../../../../context/AuthProvider";
+import { db, auth } from "../../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { Settings } from "lucide-react";
 
 const Page = () => {
-  const { user } = useAuth();
   const [userData, setUserData] = useState(null);
   const [invoicesPerPage, setInvoicesPerPage] = useState("");
   const [customersPerPage, setCustomersPerPage] = useState("");
   const [projectsPerPage, setProjectsPerPage] = useState("");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const router = useRouter();
 
   useEffect(() => {
-    if (user) {
-      const docRef = doc(db, "users", user.uid);
-      getDoc(docRef)
-        .then((doc) => {
-          if (doc.exists()) {
-            setUserData(doc.data());
-            setInvoicesPerPage(doc.data().invoicesPerPage);
-            setCustomersPerPage(doc.data().customersPerPage);
-            setProjectsPerPage(doc.data().projectsPerPage);
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/Dashboard/login"); // Redirect if not authenticated
+      }
+      setLoading(false); // Auth state is determined
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
+
+  // Fetch user data when user is available
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        try {
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            setUserData(data);
+            setInvoicesPerPage(data.invoicesPerPage || "");
+            setCustomersPerPage(data.customersPerPage || "");
+            setProjectsPerPage(data.projectsPerPage || "");
           } else {
             console.warn("User document does not exist");
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error fetching user data:", error);
-        });
-    }
+        }
+      }
+    };
+
+    fetchUserData();
   }, [user]);
 
+  // Update user data when settings change
   useEffect(() => {
-    if (userData && user) {
-      const userRef = doc(db, "users", user.uid);
-      updateDoc(userRef, {
-        invoicesPerPage,
-        customersPerPage,
-        projectsPerPage,
-      })
-        .then(() => {
+    const updateUserData = async () => {
+      if (userData && user) {
+        try {
+          const userRef = doc(db, "users", user.uid);
+          await updateDoc(userRef, {
+            invoicesPerPage,
+            customersPerPage,
+            projectsPerPage,
+          });
           console.log("User data updated successfully");
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error("Error updating user data:", error);
-        });
-    }
+        }
+      }
+    };
+
+    updateUserData();
   }, [invoicesPerPage, customersPerPage, projectsPerPage, userData, user]);
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
-    }
-  }, [user, router]);
+  if (loading) {
+    return (
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        Loading...
+      </div>
+    ); // Show loading state while auth is initializing
+  }
 
   return (
     <>

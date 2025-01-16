@@ -6,10 +6,10 @@ export const metadata = {
   description: `Learn more about ${siteMetadata.title}`,
 };
 
-export default function AboutPage({ activeSection }) {
+export default function Page() {
   return (
     <div className="bg-white">
-      <ActiveAbout activeSection={activeSection} />
+      <ActiveAbout />
     </div>
   );
 }

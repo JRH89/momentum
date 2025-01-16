@@ -7,7 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../../../context/AuthProvider";
+import { auth } from "../../../../../firebase"; // Adjusted for direct use of Firebase auth
 import { Briefcase } from "lucide-react";
 
 const Page = () => {
@@ -15,8 +15,25 @@ const Page = () => {
   const [projects, setProjects] = useState([]);
   const [projectsPerPage, setProjectsPerPage] = useState(10); // Default projects per page
   const [currentPage, setCurrentPage] = useState(0); // Tracks the current page
+  const [loading, setLoading] = useState(true); // Loading state
+  const [user, setUser] = useState(null);
+
   const router = useRouter();
-  const { user } = useAuth();
+
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        router.push("/Dashboard/login"); // Redirect if not authenticated
+      }
+      setLoading(false); // Auth state is determined
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
+
   useEffect(() => {
     const fetchProjects = async () => {
       if (!uid) return;
@@ -45,7 +62,7 @@ const Page = () => {
       }
     };
 
-    fetchProjects();
+    if (uid) fetchProjects();
   }, [uid]);
 
   // Get the current projects for the page
@@ -57,11 +74,13 @@ const Page = () => {
     setCurrentPage(selected);
   };
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
-    }
-  }, [user, router]);
+  if (loading) {
+    return (
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        Loading...
+      </div>
+    ); // Show loading state while auth is initializing
+  }
 
   return (
     <>

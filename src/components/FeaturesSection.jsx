@@ -69,7 +69,7 @@ const FeaturesSection = () => {
           {featuresData.map((feature, index) => (
             <div
               key={index}
-              className="relative border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black"
+              className="relative max-w-md w-full border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black"
             >
               <div className="absolute -top-6 flex items-center justify-center">
                 <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16 flex items-center justify-center">
@@ -83,7 +83,7 @@ const FeaturesSection = () => {
                 <p className="text-lg md:text-xl w-full font-medium text-black mb-6 text-center leading-relaxed">
                   {feature.description}
                 </p>
-                <ul className="text-black items-center w-full text-left text-md md:text-lg font-medium space-y-2">
+                <ul className="text-black items-center w-full text-left text-md md:text-lg lg:text-xl font-medium space-y-2">
                   {feature.points.map((point, idx) => (
                     <li key={idx} className="flex gap-3 items-center">
                       <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />

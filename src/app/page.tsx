@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { ArrowRight, ArrowUpRightFromSquareIcon, Info, ArrowBigLeftIcon, ArrowBigRightIcon, } from "lucide-react";
+import {  Info, ArrowBigRightIcon, } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
@@ -61,31 +60,6 @@ export default function Home() {
               <div className="absolute inset-0 bg-white bg-opacity-95"></div>
               <FAQ />
             </section>
-            {/* <section id="about" className="min-h-screen h-full my-auto flex flex-col items-center border-t-2 border-black bg-white lg:py-24 py-24 ">
-                  <div className="max-w-7xl mx-auto px-6 text-center pb-6">
-                    <div className="section-heading w-full mx-auto flex flex-col">
-                      <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">About</div>
-                        <h2 className="section-title mt-5">
-                          Why Choose Us?
-                        </h2>
-                        <p className="section-description mt-5">We provide the tools you need to succeed. Want to know more about Momentum? <Link className="text-medoum text-green-500 hover:underline" href="/About">Read the docs</Link>.</p>
-                      </div>
-                      <div className="flex flex-col md:flex-row justify-center mt-6 items-stretch gap-5 sm:gap-10 shadow-black shadow-md bg-black py-6 rounded-xl p-6">  
-                  <p className="section-description font-medium h-full text-black text-justify my-auto text-lg w-full  sm:max-w-2xl  bg-destructive p-8 py-10 sm:py-20 lg:py-28 flex md:ml-10 rounded-lg">
-                        We understand the unique needs of freelancers and small businesses. Our platform is designed to streamline your project management, making it easier to stay organized and meet deadlines, so you can focus on what matters most — growing your business.
-                      </p>
-                      <div className="md:mr-10 bg-confirm rounded-lg flex">
-                        <Image
-                          src="/image-4.png"
-                          alt="Project Management"
-                          width={600}
-                          height={400}
-                          className="rounded-lg mx-auto w-full max-w-xs sm:max-w-xl lg:max-w-xs h-auto object-center flex object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </section> */}
                 <section className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
                 style={{
                   backgroundImage: 'url("/lightspeed.png")',

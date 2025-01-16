@@ -33,22 +33,22 @@ const ImageGallery = () => {
     alt: 'Customer Details Page',
     desc: 'The project settings interface allows complete customization of project details, permissions, and configurations. Tailor workflows to meet unique requirements, ensuring projects run smoothly from start to finish.',
   },
-  {
-    src: '/invoice.png',
-    alt: 'Invoicing Form',
-    desc: 'The invoicing form simplifies billing with an intuitive design and secure Stripe integration. Effortlessly create detailed invoices, send them to customers, and keep accurate financial records for seamless payment processing and better organization.',
-  },
-  {
-    src: '/support.png',
-    alt: 'Support Tickets',
-    desc: 'The support ticket system is designed to provide quick and efficient assistance whenever you need it. Submit tickets directly to the dedicated support team for help with troubleshooting, questions, or guidance, ensuring you’re always supported.',
-  },
+  // {
+  //   src: '/invoice.png',
+  //   alt: 'Invoicing Form',
+  //   desc: 'The invoicing form simplifies billing with an intuitive design and secure Stripe integration. Effortlessly create detailed invoices, send them to customers, and keep accurate financial records for seamless payment processing and better organization.',
+  // },
+  // {
+  //   src: '/support.png',
+  //   alt: 'Support Tickets',
+  //   desc: 'The support ticket system is designed to provide quick and efficient assistance whenever you need it. Submit tickets directly to the dedicated support team for help with troubleshooting, questions, or guidance, ensuring you’re always supported.',
+  // },
 ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 4;
   const maxIndex = Math.ceil(images.length / itemsPerPage) - 1;
 
   const handleNext = () => {
@@ -86,7 +86,7 @@ const ImageGallery = () => {
           Browse through our gallery to explore various features and tools. Click an image for a detailed view.
         </p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-5 mt-6 max-w-6xl mx-auto">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-5 lg:gap-10 mt-6 max-w-4xl mx-auto">
         {currentImages.map((image, index) => (
           <div
             key={index}
@@ -101,30 +101,13 @@ const ImageGallery = () => {
               height={400}
               className="w-full shadow-lg h-auto rounded-t-lg border-t-2 border-l-2 border-r-2 border-black object-cover"
             />
-            <p className="text-black h-full flex p-2 text-center border-r-2 border-l-2 border-b-2 border-black rounded-b-lg text-xs sm:text-base mx-auto w-full justify-center font-medium">
+            <p className="text-black bg-backgroundPrimary h-full flex p-2 text-center border-r-2 border-l-2 border-b-2 border-black rounded-b-lg text-xs sm:text-base mx-auto w-full justify-center font-medium">
               {image.alt}
             </p>
           </div>
         ))}
       </div>
-      <div className="flex justify-center mt-12 space-x-4  max-w-2xl mx-auto w-full">
-        <button
-          aria-label="previous"
-          type="button"
-          onClick={handlePrevious}
-          className="px-4 py-2 border-2 border-black shadow-md shadow-black hover:shadow-lg hover:shadow-black flex w-full text-center justify-center bg-green-500 text-black font-medium rounded  duration-300"
-        >
-          <ArrowBigLeftIcon className="w-6 h-6" />
-        </button>
-        <button
-          aria-label="next"
-          type="button"
-          onClick={handleNext}
-          className="px-4 py-2 flex w-full shadow-md shadow-black hover:shadow-lg hover:shadow-black text-center justify-center bg-green-500 text-black border-2 border-black font-medium duration-300 rounded "
-        >
-          <ArrowBigRightIcon className="w-6 h-6" />
-        </button>
-        </div>
+      
         {selectedImage && (
         <div className="fixed inset-0 w-full h-full min-h-screen bg-black bg-opacity-50 flex justify-center items-center z-50">
         <div className="bg-white h-full flex flex-col py-12 shadow-lg  w-full p-4 mx-auto items-center relative">
@@ -152,7 +135,7 @@ const ImageGallery = () => {
                 <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium lg:text-lg">{selectedImage.desc}</p>
               </div>
             </div>
-                <div className="flex absolute bottom-2 justify-between space-x-4 max-w-6xl mx-auto w-full px-5 lg:px-0">
+                <div className="flex absolute bottom-2 justify-between gap-10 max-w-6xl mx-auto w-full px-5 lg:px-0">
                 <button
                     aria-label="previous page"
                     type="button"
@@ -161,9 +144,9 @@ const ImageGallery = () => {
                     const prevIndex = (currentIndex - 1 + images.length) % images.length;
                     setSelectedImage(images[prevIndex]);
                     }}
-                    className="px-4 py-2 flex w-full text-center justify-center bg-green-500 text-black rounded hover:bg-opacity-60"
+                    className="px-4 py-2 flex w-full text-center justify-center border-2 border-black bg-green-500 text-black rounded hover:bg-opacity-60"
                 >
-                    Previous
+                     <ArrowBigLeftIcon className="w-6 h-6" />
                 </button>
                 <button
                     aria-label="next page"
@@ -173,9 +156,9 @@ const ImageGallery = () => {
                     const nextIndex = (currentIndex + 1) % images.length;
                     setSelectedImage(images[nextIndex]);
                     }}
-                    className="px-4 py-2 flex w-full text-center justify-center duration-300 bg-green-500 text-black rounded hover:bg-opacity-60"
+                    className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-green-500 text-black rounded hover:bg-opacity-60"
                 >
-                    Next
+                      <ArrowBigRightIcon className="w-6 h-6" />
                 </button>
             </div>
         </div>

@@ -15,8 +15,6 @@ import { toast } from "react-toastify";
 import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 
 const Account = () => {
-  const { user } = useAuth();
-  const router = useRouter();
   const app = initFirebase();
   const auth = getAuth(app);
   const firestore = getFirestore(app);
@@ -27,22 +25,43 @@ const Account = () => {
   const [alert, setAlert] = useState(null);
   const [userData, setUserData] = useState(null);
   const [userStripe, setUserStripe] = useState(null);
+  const [loading, setLoadingState] = useState(true); // Set initial loading state
+
+  const [user, setUser] = useState(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        setLoadingState(false); // Auth state is determined
+      } else {
+        router.push("/Dashboard/login"); // Redirect if not authenticated
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [router]);
 
   // Fetch premium status
   useEffect(() => {
     const fetchPremiumStatus = async () => {
       try {
-        const newPremiumStatus = user ? await getPremiumStatus(app) : false;
-        setIsPremium(newPremiumStatus);
-        setUserIsPremium(newPremiumStatus);
-        setIsAdmin(newPremiumStatus);
+        if (user) {
+          const newPremiumStatus = await getPremiumStatus(app);
+          setIsPremium(newPremiumStatus);
+          setUserIsPremium(newPremiumStatus);
+          setIsAdmin(newPremiumStatus);
+        }
       } catch (error) {
         console.error("Error fetching premium status:", error.message);
       }
     };
 
     fetchPremiumStatus();
-  });
+  }, [user, app]);
 
   useEffect(() => {
     if (user) {
@@ -58,7 +77,7 @@ const Account = () => {
           console.error("Error fetching user data:", error);
         });
     }
-  }, [user]);
+  }, [user, firestore]);
 
   const sendResetEmail = async (email) => {
     try {
@@ -94,8 +113,6 @@ const Account = () => {
       const customerData = customerDoc.data();
       const stripeCustomerId = customerData?.stripeId;
 
-      console.log("Stripe Customer ID:", stripeCustomerId);
-
       if (!stripeCustomerId) {
         throw new Error("Stripe customer ID not found");
       }
@@ -106,19 +123,17 @@ const Account = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: stripeCustomerId }), // Send the Stripe Customer ID to your API
+        body: JSON.stringify({ userId: stripeCustomerId }),
       }).then((res) => {
         if (!res.ok) {
           throw new Error(`Error: ${res.statusText}`);
         }
-        console.log("Response:", res);
         return res.json();
       });
 
       router.push(url); // Redirect the user to the Stripe billing portal
     } catch (error) {
       console.error("Error loading portal:", error);
-      // Handle error (e.g., set an error state)
     } finally {
       setLoading(false); // Optional: Reset loading state
     }
@@ -155,11 +170,13 @@ const Account = () => {
     userStripe,
   });
 
-  useEffect(() => {
-    if (!user) {
-      router.push("/Dashboard/login"); // Redirect to home if user is not logged in
-    }
-  }, [user, router]);
+  if (loading) {
+    return (
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        Loading...
+      </div>
+    ); // Show loading state while auth is initializing
+  }
 
   return (
     <>

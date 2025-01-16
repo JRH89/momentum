@@ -6,13 +6,7 @@ import MenuIcon from "../../assets/menu.svg";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import LogoImage from "../Logo";
-import {
-  ArrowDown,
-  ArrowDownSquare,
-  ArrowUpRightFromSquareIcon,
-  ChevronDown,
-  ExternalLinkIcon,
-} from "lucide-react";
+import { ChevronDown, ExternalLinkIcon } from "lucide-react";
 
 // Page Data
 const pageData = {
@@ -25,7 +19,7 @@ const pageData = {
     { text: "Pricing", href: "/#price" },
     { text: "Gallery", href: "/#gallery" },
     { text: "FAQ", href: "/#faq" },
-    { text: "Docs", href: "/About", icon: ExternalLinkIcon },
+    { text: "Docs", href: "/About/welcomeToMomentum", icon: ExternalLinkIcon },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],
 };
