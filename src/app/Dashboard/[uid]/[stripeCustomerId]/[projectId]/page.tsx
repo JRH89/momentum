@@ -327,7 +327,7 @@ const ProjectPage = () => {
             </button>
           </div>
           {showUploadForm && (
-                <div className="mb-4 gap-2 flex flex-col">
+                <div className="mb-4 border border-black p-4 rounded-lg gap-2 flex flex-col">
             <input
               aria-label="Upload file"
               type="file"
@@ -357,11 +357,11 @@ const ProjectPage = () => {
                 </div>
               )}
           {uploads.length > 0 ? (
-            <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
+            <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 border-2 shadow-black border-black bg-white rounded-lg shadow-md">
                     {uploads.map((upload, index) => (
                       <li
                         key={index}
-                        className="border-2 shadow-black border-black bg-white p-2 rounded shadow-md flex items-center gap-2"
+                        className="p-2 flex items-center gap-2"
                       >
                         {/* Image preview (if it's an image) */}
                         {upload.url &&
@@ -392,7 +392,6 @@ const ProjectPage = () => {
             <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet.</p>
           )}
           <div className="mt-4">
-            <h1 className="text-2xl -mb-2 font-semibold ">Project Theme</h1>
            <ColorPaletteGenerator
               userId={uid}
               customerId={stripeCustomerId}
