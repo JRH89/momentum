@@ -10,7 +10,6 @@ import { toast } from 'react-toastify';
 import { deleteApp, initializeApp } from 'firebase/app';
 import { createUserWithEmailAndPassword, getAuth, signOut } from '@firebase/auth';
 
-
 interface StripeCustomer {
   email: string;
   name: string;
@@ -31,13 +30,10 @@ interface ProjectsProps {
 }
 
 export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerTableProps) {
-   const [projects, setProjects] = useState([]);
-    const [newProjectName, setNewProjectName] = useState<string>('');
-    const [newProjectDescription, setNewProjectDescription] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
-  
-    const [showForm, setShowForm] = useState(false);
-  
+  const [newProjectName, setNewProjectName] = useState<string>('');
+  const [newProjectDescription, setNewProjectDescription] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showForm, setShowForm] = useState(false);
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(0);
   const [stripeAccountId, setStripeAccountId] = useState<string | null>(null);
@@ -261,8 +257,6 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
     setLoading(false);
   }
 };
-
-
 
   const offset = currentPage * itemsPerPage;
   const currentCustomers = customers.slice(offset, offset + itemsPerPage);
@@ -498,4 +492,3 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
     </>
   );
 }
-
