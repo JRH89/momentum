@@ -59,6 +59,11 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId, customerEmai
     fetchProjects();
   }, [uid, stripeCustomerId]);
 
+
+
+
+
+
   // Handle creating a new project
 const handleCreateProject = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -176,7 +181,12 @@ const handleCreateProject = async (e: React.FormEvent) => {
   } finally {
     setLoading(false);
   }
-};
+  };
+  
+
+
+
+  
 
   return (
     <div className="mt-6">

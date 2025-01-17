@@ -3,11 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { db } from "../../../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
 import { StripeCustomer } from "../../../../components/types/stripeCustomer";
 import Projects from "../../../../components/client/Projects";
 import { Plus } from "lucide-react";
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
+import { deleteApp, initializeApp } from "firebase/app";
+import { createUserWithEmailAndPassword, getAuth, signOut } from "@firebase/auth";
 
 const CustomerDetailsPage: React.FC = () => {
   const { uid, stripeCustomerId } = useParams() as { uid: string; stripeCustomerId: string };
@@ -22,6 +24,7 @@ const CustomerDetailsPage: React.FC = () => {
   const [showInvoiceForm, setShowInvoiceForm] = useState(false);
   const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
   const [userData, setUserData] = useState<any>(null);
+  const [customerEmail, setCustomerEmail] = useState<string>("");
 
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId: string) => {
@@ -54,7 +57,10 @@ const CustomerDetailsPage: React.FC = () => {
             const customer = customers.find(
               (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
             );
-            if (customer) setCustomerData(customer);
+            if (customer) {
+              setCustomerData(customer);
+              setCustomerEmail(customer.email || "");
+            }
             else setError("Customer not found in user document.");
           } else {
             setError("User document not found.");
@@ -97,67 +103,158 @@ const CustomerDetailsPage: React.FC = () => {
       }
     }, [stripeAccountId, error, invoices]);
 
-const handleCreateInvoice = async (e: React.FormEvent) => {
-  e.preventDefault();
+  
+  
+  
+  
+  
+  
+  
+  
+  const handleCreateInvoice = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!invoiceAmount || !invoiceCurrency || !invoiceDescription || !invoiceDueDate) {
-    setError("Please fill in all fields");
-    return;
-  }
-
-  // Log the values being sent
-  console.log('Sending invoice data:', {
-    amount: invoiceAmount,
-    currency: invoiceCurrency,
-    description: invoiceDescription,
-    dueDate: invoiceDueDate
-  });
-
-  try {
-    const response = await fetch(`/api/stripe/invoices/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        stripeAccountId,
-        stripeCustomerId,
-        items: [
-          {
-            amount: Math.round(parseFloat(invoiceAmount) * 100), // Convert to cents and ensure it's a number
-            currency: invoiceCurrency.toLowerCase(),
-            description: invoiceDescription,
-            quantity: 1,
-          },
-        ],
-        dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
-      }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || 'Failed to create invoice');
+    if (!invoiceAmount || !invoiceCurrency || !invoiceDescription || !invoiceDueDate) {
+      setError("Please fill in all fields");
+      return;
     }
 
-    // Log the response
-    console.log('Invoice created:', data);
+    // Log the values being sent
+    console.log('Sending invoice data:', {
+      amount: invoiceAmount,
+      currency: invoiceCurrency,
+      description: invoiceDescription,
+      dueDate: invoiceDueDate
+    });
 
-    setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
-    setShowInvoiceForm(false);
-    
-    // Reset form
-    setInvoiceAmount("");
-    setInvoiceCurrency("usd");
-    setInvoiceDescription("");
-    setInvoiceDueDate("");
-    
-  } catch (err) {
-    console.error("Error creating invoice:", err);
-    setError(err instanceof Error ? err.message : "Failed to create invoice");
-  }
-};
+    try {
+      const response = await fetch(`/api/stripe/invoices/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          stripeAccountId,
+          stripeCustomerId,
+          items: [
+            {
+              amount: Math.round(parseFloat(invoiceAmount) * 100), // Convert to cents and ensure it's a number
+              currency: invoiceCurrency.toLowerCase(),
+              description: invoiceDescription,
+              quantity: 1,
+            },
+          ],
+          dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
+        }),
+      });
 
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to create invoice');
+      }
+
+        let newCustomerUid: string | null = null; // To store the newly created customer's UID
+      
+       try {
+          // Fetch user document
+          const userRef = doc(db, 'users', uid);
+          const userSnap = await getDoc(userRef);
+      
+          if (userSnap.exists()) {
+            const userData = userSnap.data();
+            const customers = Array.isArray(userData.customers) ? userData.customers : [];
+            const customer = customers.find(
+              (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
+            );
+      
+            if (customer) {
+              try {
+                // Initialize a temporary Firebase app instance
+                const tempApp = initializeApp({
+                  apiKey: process.env.NEXT_PUBLIC_APIKEY,
+                  authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+                  projectId: process.env.NEXT_PUBLIC_PROJECTID,
+                  storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+                  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+                  appId: process.env.NEXT_PUBLIC_APPID,
+                }, "new-app");
+      
+                const tempAuth = getAuth(tempApp);
+      
+                // Create a Firebase Auth user for the customer
+                const userCredential = await createUserWithEmailAndPassword(
+                  tempAuth,
+                  customerEmail,
+                  'DefaultSecurePassword123!' // You can change this to something more secure
+                );
+      
+                // Immediately sign out to prevent auto sign-in
+                await signOut(tempAuth);
+      
+                newCustomerUid = userCredential.user.uid; // Store the new customer's UID
+      
+                // Clean up by deleting the temporary app instance
+                await deleteApp(tempApp);
+              } catch (authError: any) {
+                if (authError.code !== 'auth/email-already-in-use') {
+                  throw authError;
+                } else {
+                  // If the user already exists, retrieve their UID
+                  const existingUserRef = await getDoc(doc(db, 'users', customerEmail));
+                  if (existingUserRef.exists()) {
+                    newCustomerUid = existingUserRef.id; // Retrieve existing UID
+                  }
+                }
+              }
+      
+      
+              // If a new customer UID was created, update the customer with the matching stripeCustomerId
+              if (newCustomerUid) {
+                const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
+                  if (cust.stripeCustomerId === stripeCustomerId) {
+                    return { ...cust, uid: newCustomerUid}; // Add updated projects
+                  }
+                  return cust; // Keep other customers unchanged
+                });
+      
+                // Update Firestore with the modified customers array
+                await updateDoc(userRef, {
+                  customers: updatedCustomers,
+                });
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error updating user document:", err);
+        }
+      
+
+      // Log the response
+      console.log('Invoice created:', data);
+
+      setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
+      setShowInvoiceForm(false);
+      
+      // Reset form
+      setInvoiceAmount("");
+      setInvoiceCurrency("usd");
+      setInvoiceDescription("");
+      setInvoiceDueDate("");
+      
+    } catch (err) {
+      console.error("Error creating invoice:", err);
+      setError(err instanceof Error ? err.message : "Failed to create invoice");
+    }
+  };
+
+  
+  
+  
+  
+  
+  
+  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
