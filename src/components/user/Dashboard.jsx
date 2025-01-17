@@ -15,6 +15,7 @@ import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
 import InvoicesTable from "../customer/InvoiceTable";
+import UserCreatingInvoiceTable from "./UserCreatingInvoiceTable";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useAuth();
@@ -199,11 +200,7 @@ export default function Dashboard() {
                   />
                 )}
                 <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
-                  <h2 className="text-2xl font-bold mb-4">Invoices</h2>
-                  <InvoicesTable
-                    invoices={invoices}
-                    itemsPerPage={userData?.invoicesPerPage || 8}
-                  />
+                  <UserCreatingInvoiceTable />
                 </div>
               </div>
             </div>
