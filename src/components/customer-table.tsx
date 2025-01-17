@@ -87,7 +87,7 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
     setCurrentPage(selectedPage.selected);
   };
 
-  const handleCreateInvoice = async (customerId: string) => {
+  const handleCreateInvoice = async (e: React.FormEvent, { uid, stripeCustomerId, customerEmail }: ProjectsProps, customerId: string) => {
     if (!stripeAccountId) {
       setError("Stripe account not found");
       return;
@@ -114,6 +114,80 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
 
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to create invoice');
+
+      setLoading(true);
+  let newCustomerUid: string | null = null;
+  let projectLink: string | null = null; // Track the link locally
+
+  try {
+    // Fetch user document
+    const userRef = doc(db, 'users', userId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      const customers = Array.isArray(userData.customers) ? userData.customers : [];
+      const customer = customers.find(
+        (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
+      );
+
+      if (customer) {
+        try {
+          // Initialize a temporary Firebase app instance
+          const tempApp = initializeApp({
+            apiKey: process.env.NEXT_PUBLIC_APIKEY,
+            authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+            projectId: process.env.NEXT_PUBLIC_PROJECTID,
+            storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+            messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+            appId: process.env.NEXT_PUBLIC_APPID,
+          }, "new-app");
+
+          const tempAuth = getAuth(tempApp);
+
+          // Create a Firebase Auth user for the customer
+          const userCredential = await createUserWithEmailAndPassword(
+            tempAuth,
+            customerEmail,
+            'DefaultSecurePassword123!'
+          );
+
+          await signOut(tempAuth);
+          newCustomerUid = userCredential.user.uid;
+          await deleteApp(tempApp);
+        } catch (authError: any) {
+          if (authError.code !== 'auth/email-already-in-use') {
+            throw authError;
+          } else {
+            const existingUserRef = await getDoc(doc(db, 'users', customerEmail));
+            if (existingUserRef.exists()) {
+              newCustomerUid = existingUserRef.id;
+            }
+          }
+        }
+
+
+
+        // If a new customer UID was created, update the customer
+        if (newCustomerUid) {
+          const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
+            if (cust.stripeCustomerId === stripeCustomerId) {
+              return { ...cust, uid: newCustomerUid };
+            }
+            return cust;
+          });
+
+          await updateDoc(userRef, {
+            customers: updatedCustomers,
+          });
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Error updating projects:", err);
+    setError("Failed to update projects");
+  }
+
 
       setShowInvoiceForm(false);
       setInvoiceData({
@@ -429,7 +503,7 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
             <form onSubmit={(e) => {
               e.preventDefault();
               if (selectedCustomer) {
-                handleCreateInvoice(selectedCustomer.stripeCustomerId);
+                handleCreateInvoice(e, { uid: userId, stripeCustomerId: selectedCustomer.stripeCustomerId, customerEmail: selectedCustomer.email }, customerId);
               }
             }}>
               <div className="space-y-4">
