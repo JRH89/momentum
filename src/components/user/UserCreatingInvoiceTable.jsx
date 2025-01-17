@@ -13,7 +13,6 @@ import {
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { FileText } from "lucide-react";
-import { toast } from "react-toastify";
 
 // Utility function to generate a unique app name
 const generateAppName = () => `tempy-${Date.now()}`;
@@ -202,11 +201,11 @@ const UserCreatingInvoiceTable = () => {
   }
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-      <h1 className="text-3xl px-4 font-bold mb-2 flex flex-row gap-2 items-center">
-        <FileText className="w-8 h-8" /> Invoices
+    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
+      <h1 className="text-2xl font-semibold mb-2 flex flex-row gap-2 items-center">
+        <FileText className="w-7 h-7" /> Invoices
       </h1>
-      <div className="flex flex-col px-4">
+      <div className="flex flex-col">
         <InvoicesTable
           invoices={invoices}
           itemsPerPage={userData?.invoicesPerPage || 10}

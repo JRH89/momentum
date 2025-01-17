@@ -413,12 +413,12 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
               "pagination flex mt-2 flex-row w-full justify-between px-4"
             }
             activeClassName={"active text-confirm font-extrabold"}
-            pageClassName={"page hover:underline"}
+            pageClassName={"page font-medium hover:underline"}
             breakClassName={"break"}
             previousClassName={
-              "previous text-xl text-green-500 hover:underline"
+              "previous font-medium text-xl text-green-500 hover:underline"
             }
-            nextClassName={"next text-xl text-green-500 hover:underline"}
+            nextClassName={"next font-medium text-xl text-green-500 hover:underline"}
         />
       )}
       </div>

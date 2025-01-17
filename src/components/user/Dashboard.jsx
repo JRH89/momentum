@@ -14,7 +14,6 @@ import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
-import InvoicesTable from "../customer/InvoiceTable";
 import UserCreatingInvoiceTable from "./UserCreatingInvoiceTable";
 
 export default function Dashboard() {
@@ -138,20 +137,21 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-24">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col pb-0">
         <Announcements />
         <div className="flex flex-col">
           <div className="p-4 pt-4 px-0 pb-0">
             <div className="justify-between flex flex-row items-baseline">
-              <h1 className="text-3xl lg:text-3xl flex flex-row items-center gap-2 font-bold px-4 text-black ">
+              <h1 className="text-3xl lg:text-3xl flex flex-row items-center gap-2 font-bold px-0 text-black ">
                 <Home className="w-8 h-8" /> User Dashboard
               </h1>
             </div>
-            <div className="flex flex-col gap-5 mt-2">
+            <div className="flex flex-col gap-5 mt-6">
               <div className=" h-full flex flex-col shadow-black mx-auto w-full">
                 {user && userData?.stripeConnected && (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-0">
                     <h3 className="text-2xl font-semibold text-black flex flex-row gap-2 my-auto px-4 items-center">
+                      <Users className="w-7 h-7" />
                       Customers{" "}
                       <button
                         onClick={() => setIsAddingCustomer(true)}
@@ -199,7 +199,7 @@ export default function Dashboard() {
                     userStripe={userStripe}
                   />
                 )}
-                <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
+                <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-0 p-4 pt-2 text-black flex flex-col pb-24">
                   <UserCreatingInvoiceTable />
                 </div>
               </div>
