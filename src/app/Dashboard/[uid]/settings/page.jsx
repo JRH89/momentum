@@ -41,9 +41,9 @@ const Page = () => {
           if (docSnap.exists()) {
             const data = docSnap.data();
             setUserData(data);
-            setInvoicesPerPage(data.invoicesPerPage || "");
-            setCustomersPerPage(data.customersPerPage || "");
-            setProjectsPerPage(data.projectsPerPage || "");
+            setInvoicesPerPage(data.invoicesPerPage || 8);
+            setCustomersPerPage(data.customersPerPage || 10);
+            setProjectsPerPage(data.projectsPerPage || 10);
           } else {
             console.warn("User document does not exist");
           }
@@ -94,11 +94,13 @@ const Page = () => {
         <div className="p-4 mt-2 gap-5 flex  flex-col border-black border-2 rounded-lg shadow-md shadow-black">
           <div className="justify-start flex flex-col">
             <h2 className="text-2xl font-bold">Invoices</h2>
-            <p className="my-2">Invoices per page: {invoicesPerPage}</p>
-            <div className="flex items-center gap-2">
+            <p className="my-2 px-4 text-black">
+              Invoices per page: {invoicesPerPage}
+            </p>
+            <div className="flex items-center gap-2 px-4">
               <button
                 onClick={() => setInvoicesPerPage(invoicesPerPage - 1)}
-                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
               >
                 -
               </button>
@@ -106,11 +108,11 @@ const Page = () => {
                 type="text"
                 value={invoicesPerPage}
                 onChange={(e) => setInvoicesPerPage(parseInt(e.target.value))}
-                className="w-full p-2 border rounded-md text-center"
+                className="w-full p-2 border border-black rounded-md text-center"
               />
               <button
                 onClick={() => setInvoicesPerPage(invoicesPerPage + 1)}
-                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
               >
                 +
               </button>
@@ -118,11 +120,11 @@ const Page = () => {
           </div>
           <div className="mt-5">
             <h2 className="text-2xl font-bold">Customers</h2>
-            <p className="my-2">Customers per page: {customersPerPage}</p>
-            <div className="flex items-center gap-2">
+            <p className="my-2 px-4">Customers per page: {customersPerPage}</p>
+            <div className="flex items-center gap-2 px-4">
               <button
                 onClick={() => setCustomersPerPage(customersPerPage - 1)}
-                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
               >
                 -
               </button>
@@ -130,11 +132,11 @@ const Page = () => {
                 type="text"
                 value={customersPerPage}
                 onChange={(e) => setCustomersPerPage(parseInt(e.target.value))}
-                className="w-full p-2 border rounded-md text-center"
+                className="w-full p-2 border border-black rounded-md text-center"
               />
               <button
                 onClick={() => setCustomersPerPage(customersPerPage + 1)}
-                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
               >
                 +
               </button>
@@ -142,11 +144,11 @@ const Page = () => {
           </div>
           <div className="mt-5">
             <h2 className="text-2xl font-bold">Projects</h2>
-            <p className="my-2">Projects per page: {projectsPerPage}</p>
-            <div className="flex items-center gap-2">
+            <p className="my-2 px-4">Projects per page: {projectsPerPage}</p>
+            <div className="flex items-center gap-2 px-4">
               <button
                 onClick={() => setProjectsPerPage(projectsPerPage - 1)}
-                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
               >
                 -
               </button>
@@ -154,11 +156,11 @@ const Page = () => {
                 type="text"
                 value={projectsPerPage}
                 onChange={(e) => setProjectsPerPage(parseInt(e.target.value))}
-                className="w-full p-2 border rounded-md text-center"
+                className="w-full p-2 border border-black rounded-md text-center"
               />
               <button
                 onClick={() => setProjectsPerPage(projectsPerPage + 1)}
-                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border border-black rounded-md"
+                className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
               >
                 +
               </button>

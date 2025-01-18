@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { ExternalLink, Home, Lock, PlusIcon, User, Users } from "lucide-react";
+import { ExternalLink, Home, PlusIcon, Users } from "lucide-react";
 import { useAuth } from "../../context/AuthProvider";
 import { initFirebase } from "../../../firebase";
 import { db } from "../../../firebase";
@@ -176,9 +176,13 @@ export default function Dashboard() {
                 )}
                 {user && !userData?.stripeConnected && (
                   <div className="flex my-auto justify-center items-center flex-col -mt-24 h-full min-h-screen gap-2">
-                    <h2 className="text-2xl max-w-xl w-full mx-auto text-center font-bold mb-4">
+                    <h2 className="text-2xl max-w-xl w-full mx-auto text-center font-bold">
                       Step 2: Connect your Stripe Account
                     </h2>
+                    <p className="text-gray-600 max-w-lg w-full mx-auto text-center mb-4">
+                      If you do not have a stripe account, you will have the
+                      opportunity to create one during the connection process.
+                    </p>
                     <button
                       onClick={() => setIsPopupVisible(true)}
                       className="flex items-center justify-center gap-1.5 px-6 duration-300 bg-white border-2 border-black shadow-md shadow-black max-w-xs mx-auto text-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50"

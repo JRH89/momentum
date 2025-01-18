@@ -114,7 +114,7 @@ const Page = () => {
                 ))}
             </div>
           ) : (
-            <p className="mt-2 px-4 text-gray-500">No projects in progress.</p>
+            <p className=" px-4 text-gray-500">No projects in progress.</p>
           )}
 
           <h2 className="text-xl font-medium">Completed</h2>
@@ -142,9 +142,7 @@ const Page = () => {
                 ))}
             </div>
           ) : (
-            <p className="mt-2 px-4 text-gray-500">
-              No completed projects found.
-            </p>
+            <p className="px-4 text-gray-500">No completed projects found.</p>
           )}
         </div>
 

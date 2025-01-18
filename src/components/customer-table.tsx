@@ -342,7 +342,7 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
   });
 
   if (!customers.length) {
-    return <p className="text-black">No customers found</p>;
+    return <p className="text-gray-600 mt-1 px-6">No customers found. Click the '+' icon above to create your first customer.</p>;
   }
 
   return (

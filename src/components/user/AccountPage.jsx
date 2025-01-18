@@ -5,14 +5,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getPremiumStatus } from "../payments/account/GetPremiumStatus";
 import { getAuth, sendPasswordResetEmail, deleteUser } from "@firebase/auth";
-import { initFirebase } from "../../../firebase";
-import { getFirestore } from "firebase/firestore";
+import { db, initFirebase } from "../../../firebase";
+import { getFirestore, updateDoc } from "firebase/firestore";
 import { getDoc, doc, collection } from "firebase/firestore";
 import Link from "next/link";
 import LoginForm from "./SignIn";
-import { Loader2 } from "lucide-react";
+import { Blocks, Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
-import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
 
 const Account = () => {
   const app = initFirebase();
@@ -26,6 +25,7 @@ const Account = () => {
   const [userData, setUserData] = useState(null);
   const [userStripe, setUserStripe] = useState(null);
   const [loading, setLoadingState] = useState(true); // Set initial loading state
+  const [isConnected, setIsConnected] = useState(false);
 
   const [user, setUser] = useState(null);
 
@@ -71,6 +71,7 @@ const Account = () => {
           if (doc.exists()) {
             setUserData(doc.data());
             setUserStripe(doc.data().stripeAccountId || null);
+            setIsConnected(doc.data().stripeConnected || false);
           }
         })
         .catch((error) => {
@@ -164,11 +165,45 @@ const Account = () => {
     }
   };
 
-  const { handleDisconnectStripe } = useStripeIntegration({
-    user,
-    userData,
-    userStripe,
-  });
+  const handleDisconnectStripe = async () => {
+    if (!user) {
+      alert("No user found");
+      return;
+    }
+
+    if (
+      window.confirm("Are you sure you want to disconnect your Stripe account?")
+    ) {
+      try {
+        const response = await fetch("/api/stripe/disconnect-stripe", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ stripe_user_id: userStripe }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to deauthorize Stripe account");
+        }
+
+        const result = await response.json();
+        console.log("Deauthorization successful:", result);
+
+        // Update Firestore (if applicable)
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, {
+          stripeAccountId: null,
+          stripeConnected: false,
+        });
+
+        toast.success("Stripe account successfully unlinked");
+      } catch (error) {
+        console.error("Error disconnecting Stripe account:", error);
+        toast.error("Failed to disconnect Stripe account");
+      }
+    }
+  };
 
   if (loading) {
     return (
@@ -180,19 +215,30 @@ const Account = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen h-full my-auto w-full max-w-6xl mx-auto text-black items-center justify-start pt-24">
+      <div className="flex flex-col min-h-screen h-full my-auto w-full max-w-6xl mx-auto text-black items-center justify-start p-4">
+        <h1 className="px-4 sm:px-0 text-3xl text-left font-bold mb-4 flex flex-row items-center w-full gap-2">
+          <Blocks className="w-8 h-8" /> Account
+        </h1>
         {user ? (
-          <div className="mx-auto w-full flex flex-col justify-center item-center">
-            <div className="flex flex-col gap-1 w-auto justify-center mx-auto max-w-xs text-xl sm:text-2xl">
-              <p className="capitalize flex flex-row gap-1 w-full justify-between">
-                Subscribed:
-                <span className="font-bold">{userIsPremium.toString()}</span>
+          <div className="flex flex-col text-lg gap-0 w-full px-4">
+            <p className="capitalize flex flex-row gap-1 w-full justify-start">
+              Subscribed:
+              <span className="font-bold">{userIsPremium.toString()}</span>
+            </p>
+            <p className="capitalize flex flex-row gap-1 w-full justify-start">
+              Stripe Connected:
+              <span className="font-bold">{isConnected.toString()}</span>
+            </p>
+            <p className="capitalize flex flex-row gap-1 w-full justify-start">
+              Stripe ID:
+              <span className="font-bold">{userStripe}</span>
+            </p>
+            {alert && (
+              <p className="text-red-600 font-semibold text-center my-2 p-2 rounded-lg bg-white">
+                {alert}
               </p>
-              {alert && (
-                <p className="text-red-600 font-semibold text-center my-2 p-2 rounded-lg bg-white">
-                  {alert}
-                </p>
-              )}
+            )}
+            <div className="flex flex-col gap-1 w-full justify-center mx-auto max-w-xl pt-12 px-5 sm:px-0 text-lg sm:text-2xl">
               <div className="flex flex-col  gap-1 w-full justify-center mx-auto ">
                 <button
                   className="bg-confirm  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
@@ -233,7 +279,7 @@ const Account = () => {
                   </button>
                 )}
                 <button
-                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-black mx-auto flex w-full justify-center"
                   onClick={() => {
                     deleteAccount();
                   }}

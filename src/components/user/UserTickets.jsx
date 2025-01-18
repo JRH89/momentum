@@ -56,7 +56,7 @@ export default function UserTickets() {
 
   return (
     <div className="px-4">
-      <div className="flex flex-row items-center justify-start gap-4 mb-4">
+      <div className="flex flex-row items-center justify-start gap-4 mb-2">
         <h2 className="text-3xl font-bold flex flex-row gap-2 items-center">
           <Bug className="w-8 h-8" /> Support Tickets
         </h2>
@@ -72,9 +72,7 @@ export default function UserTickets() {
       <div>
         <ul className=" grid grid-cols-1 sm:grid-cols-2 gap-4">
           {tickets.length === 0 && (
-            <p className="p-4 border border-black bg-[#EAEEFE] rounded-lg shadow-sm">
-              No tickets found.
-            </p>
+            <p className="px-4 text-gray-600">No tickets found.</p>
           )}
           {tickets.map((ticket) => (
             <li

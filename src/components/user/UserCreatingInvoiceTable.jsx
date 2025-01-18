@@ -197,12 +197,16 @@ const UserCreatingInvoiceTable = () => {
   }, [stripeAccountId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
-      <h1 className="text-2xl font-semibold mb-2 flex flex-row gap-2 items-center">
+      <h1 className="text-2xl font-semibold mb-1 flex flex-row gap-2 items-center">
         <FileText className="w-7 h-7" /> Invoices
       </h1>
       <div className="flex flex-col">
