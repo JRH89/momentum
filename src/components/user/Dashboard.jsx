@@ -41,6 +41,7 @@ export default function Dashboard() {
     loadingCustomers,
     isDisconnecting,
     handleDisconnectStripe,
+    setCustomers,
   } = useStripeIntegration({ user, userData, userStripe });
 
   useEffect(() => {
@@ -131,8 +132,13 @@ export default function Dashboard() {
 
   const handleConnect = () => {
     if (termsAccepted) {
-      window.location.href = "/api/stripe/oauth"; // Your API endpoint that redirects to Stripe
+      window.location.href = "/api/stripe/oauth"; // API endpoint that redirects to Stripe
     }
+  };
+
+  const handleCustomerAdded = (customerData) => {
+    console.log("New customer added:", customerData);
+    setCustomers((prevCustomers) => [...prevCustomers, customerData]); // Update the customer list
   };
 
   return (
@@ -198,9 +204,12 @@ export default function Dashboard() {
                 )}
                 {isAddingCustomer && (
                   <AddCustomerForm
-                    onClose={() => setIsAddingCustomer(false)}
+                    onClose={() => {
+                      setIsAddingCustomer(false);
+                    }}
                     user={user}
                     userStripe={userStripe}
+                    onCustomerAdded={handleCustomerAdded}
                   />
                 )}
                 <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-0 p-4 pt-2 text-black flex flex-col pb-24">

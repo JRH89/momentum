@@ -9,9 +9,10 @@ interface AddCustomerFormProps {
   onClose: () => void
   user: any
   userStripe: string
+  onCustomerAdded?: (customerData: any) => void // Optional callback for notifying the parent
 }
 
-export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormProps) {
+export function AddCustomerForm({ onClose, user, userStripe, onCustomerAdded }: AddCustomerFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const nameRef = useRef<HTMLInputElement>(null)
   const emailRef = useRef<HTMLInputElement>(null)
@@ -55,18 +56,21 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
       }
 
       const userRef = doc(db, "users", user.uid)
+      const customerData = {
+        email,
+        name,
+        description,
+        stripeCustomerId: stripeCustomer.id,
+        connectedStripeAccountId: userStripe,
+        createdAt: new Date(),
+      }
+
       await updateDoc(userRef, {
-        customers: arrayUnion({
-          email,
-          name,
-          description,
-          stripeCustomerId: stripeCustomer.id,
-          connectedStripeAccountId: userStripe,
-          createdAt: new Date(),
-        }),
+        customers: arrayUnion(customerData),
       })
 
       toast.success("Customer added successfully!")
+      onCustomerAdded?.(customerData) // Call the callback function if provided
       onClose()
     } catch (error) {
       console.error("Error adding customer:", error)
@@ -132,7 +136,6 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
               >
                 {isLoading ? "Adding..." : "Add Customer"}
               </button>
-              
             </div>
           </div>
         </form>
@@ -140,4 +143,3 @@ export function AddCustomerForm({ onClose, user, userStripe }: AddCustomerFormPr
     </div>
   )
 }
-
