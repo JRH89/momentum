@@ -151,5 +151,6 @@ const syncCustomersWithFirestore = async (stripeCustomers: any) => {
     loadingCustomers,
     isDisconnecting,
     handleDisconnectStripe,
+    setCustomers
   }
 }

@@ -117,7 +117,6 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
 
       setLoading(true);
   let newCustomerUid: string | null = null;
-  let projectLink: string | null = null; // Track the link locally
 
   try {
     // Fetch user document
