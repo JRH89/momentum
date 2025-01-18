@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { db } from "../../../../../firebase";
-import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { StripeCustomer } from "../../../../components/types/stripeCustomer";
 import Projects from "../../../../components/client/Projects";
 import { Plus } from "lucide-react";
@@ -74,7 +74,6 @@ const CustomerDetailsPage: React.FC = () => {
       if (stripeAccountId) fetchCustomerData();
     }, [stripeAccountId, stripeCustomerId, uid]);
 
-
     useEffect(() => {
       const fetchInvoices = async () => {
         if (!stripeAccountId || !stripeCustomerId) return;
@@ -103,14 +102,6 @@ const CustomerDetailsPage: React.FC = () => {
       }
     }, [stripeAccountId, error, invoices]);
 
-  
-  
-  
-  
-  
-  
-  
-  
   const handleCreateInvoice = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -248,13 +239,6 @@ const CustomerDetailsPage: React.FC = () => {
     }
   };
 
-  
-  
-  
-  
-  
-  
-  
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
