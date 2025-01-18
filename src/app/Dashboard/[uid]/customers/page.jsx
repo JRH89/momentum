@@ -63,11 +63,16 @@ const Page = () => {
   }, [uid]);
 
   // Hook to fetch Stripe customers based on user data
-  const { customers, loadingCustomers } = useStripeIntegration({
+  const { customers, loadingCustomers, setCustomers } = useStripeIntegration({
     user,
     userData,
     userStripe,
   });
+
+  const handleCustomerAdded = (customerData) => {
+    console.log("New customer added:", customerData);
+    setCustomers((prevCustomers) => [...prevCustomers, customerData]); // Update the customer list
+  };
 
   if (loading) {
     return (
@@ -110,6 +115,7 @@ const Page = () => {
             onClose={() => setOpenModal(false)}
             user={user}
             userStripe={userStripe}
+            onCustomerAdded={handleCustomerAdded}
           />
         )}
       </div>
