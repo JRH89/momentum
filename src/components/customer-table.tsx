@@ -341,7 +341,7 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
   });
 
   if (!customers.length) {
-    return <p className="text-gray-600 mt-1 px-2 md:px-6">No customers found. Click the '+' icon above to create your first customer.</p>;
+    return <p className="text-gray-600 mt-1 px-6">No customers found. Click the '+' icon above to create your first customer.</p>;
   }
 
   return (
@@ -352,37 +352,37 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
             <thead>
               <tr className="bg-backgroundPrimary font-semibold border-b-2 border-black">
                 <th
-                  className="py-4 px-2 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
+                  className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black"
                   onClick={() => handleSort('email')}
                 >
                   Email
                 </th>
                 <th
-                  className="py-4 px-2 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
+                  className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black"
                   onClick={() => handleSort('name')}
                 >
                   Name
                 </th>
                 <th
-                  className="py-4 px-2 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
+                  className="py-4 px-6 cursor-pointer hover:underline text-left text-md text-black"
                   onClick={() => handleSort('description')}
                 >
                   Description
                 </th>
-                <th className="py-4 px-2 md:px-6 text-left text-md text-black">Actions</th>
+                <th className="py-4 px-6 text-left text-md text-black">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y-2 divide-black space-y-2">
               {sortedCustomers.map((customer) => (
                 <tr key={customer.stripeCustomerId} className="py-4 hover:bg-yellow-50">
-                  <td className="py-4 font-bold px-2 md:px-6 text-sm text-black">
+                  <td className="py-4 font-bold px-6 text-sm text-black">
                     <Link href={`mailto:${customer.email}`}>{customer.email}</Link>
                   </td>
-                  <td className="py-4 px-2 md:px-6 text-sm font-medium text-black">{customer.name}</td>
-                  <td className="py-4 px-2 md:px-6 text-sm font-medium text-black">
+                  <td className="py-4 px-6 text-sm font-medium text-black">{customer.name}</td>
+                  <td className="py-4 px-6 text-sm font-medium text-black">
                     {customer.description || 'N/A'}
                   </td>
-                  <td className="py-2 px-2 md:px-6 text-sm">
+                  <td className="py-2 px-6 text-sm">
                     <div className="flex items-center space-x-4">
                       <select
                         aria-label='Actions'
