@@ -13,7 +13,6 @@ import LoginForm from "./SignIn";
 import { Loader2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { useStripeIntegration } from "../../app/hooks/use-stripe-integration";
-import StripeDisconnectButton from "../stripe-disconnect-button";
 
 const Account = () => {
   const app = initFirebase();
@@ -27,9 +26,6 @@ const Account = () => {
   const [userData, setUserData] = useState(null);
   const [userStripe, setUserStripe] = useState(null);
   const [loading, setLoadingState] = useState(true); // Set initial loading state
-
-  const [loadingCustomers, setLoadingCustomers] = useState(false);
-  const [isDisconnecting, setIsDisconnecting] = useState(false);
 
   const [user, setUser] = useState(null);
 
@@ -168,49 +164,11 @@ const Account = () => {
     }
   };
 
-  // const handleDisconnectStripe = async () => {
-  //   if (!user) {
-  //     toast.error("No user found");
-  //     return;
-  //   }
-
-  //   if (
-  //     window.confirm("Are you sure you want to disconnect your Stripe account?")
-  //   ) {
-  //     setIsDisconnecting(true);
-  //     try {
-  //       const response = await fetch(
-  //         "https://connect.stripe.com/oauth/deauthorize",
-  //         {
-  //           method: "POST",
-  //           headers: {
-  //             "Content-Type": "application/x-www-form-urlencoded",
-  //           },
-  //           body: new URLSearchParams({
-  //             client_id: process.env.NEXT_PUBLIC_STRIPE_CLIENT_ID,
-  //             stripe_user_id: userStripe,
-  //           }),
-  //         }
-  //       );
-
-  //       if (response.ok) {
-  //         const userRef = doc(db, "users", user.uid);
-  //         await updateDoc(userRef, {
-  //           stripeAccountId: null,
-  //           stripeConnected: false,
-  //         });
-  //         toast.success("Stripe account successfully unlinked");
-  //       } else {
-  //         throw new Error("Failed to deauthorize Stripe account");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error disconnecting Stripe account:", error);
-  //       toast.error("There was an error disconnecting your Stripe account.");
-  //     } finally {
-  //       setIsDisconnecting(false);
-  //     }
-  //   }
-  // };
+  const { handleDisconnectStripe } = useStripeIntegration({
+    user,
+    userData,
+    userStripe,
+  });
 
   if (loading) {
     return (
@@ -265,25 +223,17 @@ const Account = () => {
                   </Link>
                 )}
                 {userData?.stripeConnected && (
-                  // <button
-                  //   className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
-                  //   onClick={() => {
-                  //     handleDisconnectStripe();
-                  //   }}
-                  // >
-                  //   {isDisconnecting ? (
-                  //     <Loader2 className="w-6 h-6 animate-spin duration-300" />
-                  //   ) : (
-                  //     "Disconnect Stripe"
-                  //   )}
-                  // </button>
-                  <StripeDisconnectButton
-                    stripeAccountId={userData.stripeAccountId}
-                    userId={user.uid}
-                  />
+                  <button
+                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    onClick={() => {
+                      handleDisconnectStripe();
+                    }}
+                  >
+                    Disconnect Stripe
+                  </button>
                 )}
                 <button
-                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-black mx-auto flex w-full justify-center"
+                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
                   onClick={() => {
                     deleteAccount();
                   }}
