@@ -104,14 +104,14 @@ export const Header = () => {
                   <div className="absolute left-1/2 -translate-x-1/2 top-8 border-2 border-black bg-white shadow-lg shadow-black rounded-md mt-2">
                     <Link
                       href="/Dashboard/login"
-                      className="block rounded-lg px-4 py-2 hover:bg-gray-100"
+                      className="block text-center rounded-md px-4 py-2 hover:bg-backgroundPrimary"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       User Portal
                     </Link>
                     <Link
                       href="/Customer/login"
-                      className="block rounded-lg px-4 py-2 hover:bg-gray-100"
+                      className="block text-center rounded-md px-4 py-2 hover:bg-backgroundPrimary"
                       onClick={() => setIsDropdownOpen(false)}
                     >
                       Customer Portal
