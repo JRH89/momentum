@@ -59,11 +59,6 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId, customerEmai
     fetchProjects();
   }, [uid, stripeCustomerId]);
 
-
-
-
-
-
   // Handle creating a new project
 const handleCreateProject = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -182,11 +177,6 @@ const handleCreateProject = async (e: React.FormEvent) => {
     setLoading(false);
   }
   };
-  
-
-
-
-  
 
   return (
     <div className="mt-6">
@@ -220,9 +210,8 @@ const handleCreateProject = async (e: React.FormEvent) => {
                         {project.name}
                 </h3>
                <p className="text-gray-600 text-sm flex flex-col my-auto h-full">Status:{" "} 
-  {project.isCompleted ? "Completed" : "In Progress"}
-</p>
-
+                  {project.isCompleted ? "Completed" : "In Progress"}
+                </p>
                       <p className="text-gray-600 text-sm flex flex-col my-auto h-full">ID: {project.id}</p>
                       <p className="text-gray-600 text-sm mb-2 flex flex-col my-auto h-full">
                         Descripion: {project.description}
@@ -244,11 +233,11 @@ const handleCreateProject = async (e: React.FormEvent) => {
       {/* New Project Form */}
       {showForm && (
         <div className="inset-0 fixed border-2 border-black bg-black bg-opacity-95 flex items-center justify-center mx-auto px-4">
-          <div className="bg-white p-6 w-full rounded-md shadow-lg max-w-xl">
-              <h3 className="text-xl text-center font-semibold">Create Project</h3>
+          <div className="p-6 w-full rounded-md shadow-lg max-w-xl">
+              <h3 className="text-2xl lg:text-3xl text-center font-semibold text-white">Create Project</h3>
             <form >
               <div className="mt-2">
-                <label htmlFor="name" className="block text-gray-700">Project Name</label>
+                <label htmlFor="name" className="block text-white">Project Name</label>
                 <input
                   id="name"
                   type="text"
@@ -259,7 +248,7 @@ const handleCreateProject = async (e: React.FormEvent) => {
                 />
               </div>
               <div className="mt-2">
-                <label htmlFor="description" className="block text-gray-700">Project Description</label>
+                <label htmlFor="description" className="block text-white">Project Description</label>
                 <input
                   id="description"
                   type="text"
@@ -274,14 +263,14 @@ const handleCreateProject = async (e: React.FormEvent) => {
               <button
               type="button"
               onClick={() => setShowForm(false)}
-              className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
+              className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-medium hover:opacity-60 duration-300"
             >
               Cancel
             </button>
               <button
                 onClick={handleCreateProject}
                 type="submit"
-                className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
+                className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-medium rounded-md"
                 disabled={loading} // Disable button when loading
               >
                 {loading ? 'Creating...' : 'Create'}
