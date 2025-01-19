@@ -5,12 +5,14 @@ import { auth, provider as googleProvider, db } from '../../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 const githubProvider = new GithubAuthProvider(); // Reuse the provider instance
 
 const SignIn = () => {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   // Monitor auth state
   useEffect(() => {
@@ -59,7 +61,8 @@ const SignIn = () => {
       await signInWithPopup(auth, provider);
       router.push('/Dashboard');
     } catch (error: any) {
-      console.error('Error signing in:', error.message);
+     toast.error(error.message);
+      setError(error.message);
     }
   };
 
