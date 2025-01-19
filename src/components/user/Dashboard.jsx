@@ -170,7 +170,7 @@ export default function Dashboard() {
                     </h3>
 
                     {loadingCustomers ? (
-                      <p className="text-gray-600 px-4">Loading customers...</p>
+                      <p className="text-gray-600 px-6">Loading customers...</p>
                     ) : (
                       <CustomerTable
                         customers={customers}

@@ -8,7 +8,7 @@ import { Plus, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
-import { set } from "date-fns";
+import ReactPaginate from "react-paginate";
 
 interface Milestone {
   id: string;
@@ -38,7 +38,7 @@ const ProjectPage = () => {
   const [project, setProject] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
-
+const [userData, setUserData] = useState<any>(null);
 
   const [showUploadForm, setShowUploadForm] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
@@ -63,6 +63,7 @@ const ProjectPage = () => {
             // Find the project by its ID
             const foundProject = customer.projects.find((p: { id: string }) => p.id === projectId) || null;
             if (foundProject) {
+              setUserData(userData);
               setProject(foundProject);
               setMilestones(foundProject.milestones || []);
               setUploads(foundProject.uploads || []);
@@ -229,6 +230,7 @@ const ProjectPage = () => {
         setIsLoading(false);
       }
   };
+
   
 const handleMarkProjectComplete = async () => {
   try {
@@ -318,7 +320,24 @@ const handleMarkProjectComplete = async () => {
     console.error("Error marking project as incomplete:", error);
     toast.error("Failed to mark project as incomplete. Please try again.");
   }
-};
+  };
+  
+
+  // PAGINATION
+ const [currentPage, setCurrentPage] = useState(0);
+  const milestonesPerPage = userData?.milestonesPerPage || 5;
+
+  // Calculate the milestones to display on the current page
+  const startIndex = currentPage * milestonesPerPage;
+  const selectedMilestones = milestones.slice(
+    startIndex,
+    startIndex + milestonesPerPage
+  );
+
+  // Handle page change
+  const handlePageClick = (data: any) => {
+    setCurrentPage(data.selected);
+  };
 
 
   if (error) {
@@ -369,23 +388,35 @@ const handleMarkProjectComplete = async () => {
     </div>
   )}
   </div>
-  {milestones.length > 0 ? (
-    <div className="border-2 border-black rounded-lg overflow-x-auto">
-      <table className="bg-white w-full table-auto">
+          {milestones.length > 0 ? (
+            <>
+    <div className="border-2 shadow-md shadow-black border-black rounded-lg overflow-x-auto">
+     <table className="bg-white w-full table-auto">
         <thead className="bg-backgroundPrimary rounded-t-lg">
           <tr className="border-b border-t border-black">
-            <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">Milestone</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">
+              Milestone
+            </th>
             <th className="p-1 px-4 text-left text-lg font-semibold">Description</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold">Priority</th>
             <th className="p-1 px-4 text-left text-lg font-semibold">Deadline</th>
             <th className="p-1 px-4 text-left text-lg font-semibold">Status</th>
-            <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">Actions</th>
+            <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
-          {milestones.map((milestone) => (
-            <tr key={milestone.id} className="border-b hover:bg-yellow-50 border-black">
-              <td className="p-1 px-4 border-l font-medium border-black">{milestone.title}</td>
+          {selectedMilestones.map((milestone) => (
+            <tr
+              key={milestone.id}
+              className="border-b hover:bg-yellow-50 border-black"
+            >
+              <td className="p-1 px-4 border-l font-medium border-black">
+                {milestone.title}
+              </td>
               <td className="p-1 px-4">{milestone.description}</td>
+              <td className={`p-1 px-4 text-sm capitalize font-semibold ${milestone.priority === "high" ? "text-red-500" : milestone.priority === "medium" ? "text-yellow-500" : "text-green-500"}`}>{milestone.priority}</td>
               <td className="p-1 px-4">{milestone.deadline}</td>
               <td className="p-1 px-4 text-sm text-gray-500">
                 <span
@@ -406,7 +437,9 @@ const handleMarkProjectComplete = async () => {
                     name="status"
                     id="status"
                     aria-label="status"
-                    onChange={(e) => handleChangeStatus(milestone.id, e.target.value)}
+                    onChange={(e) =>
+                      handleChangeStatus(milestone.id, e.target.value)
+                    }
                     value={milestone.status}
                     className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
                   >
@@ -414,7 +447,7 @@ const handleMarkProjectComplete = async () => {
                       Pending
                     </option>
                     <option value="in-progress" className="text-green-500">
-                      In Progress
+                      In-Progress
                     </option>
                     <option value="completed" className="text-confirm">
                       Completed
@@ -426,7 +459,30 @@ const handleMarkProjectComplete = async () => {
           ))}
         </tbody>
       </table>
-    </div>
+            </div>
+            
+      <div className="mt-2">
+          <ReactPaginate
+          previousLabel={'Previous'}
+          nextLabel={'Next'}
+          breakLabel={'...'}
+          pageCount={Math.ceil(milestones.length / milestonesPerPage)}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={
+              "pagination flex mt-2 flex-row w-full justify-between px-4"
+            }
+            activeClassName={"active text-confirm font-extrabold"}
+            pageClassName={"page font-medium hover:underline"}
+            breakClassName={"break"}
+            previousClassName={
+              "previous font-medium text-xl text-green-500 hover:underline"
+            }
+            nextClassName={"next font-medium text-xl text-green-500 hover:underline"}
+        />
+          </div>
+          </>
   ) : (
     <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">
       No milestones yet

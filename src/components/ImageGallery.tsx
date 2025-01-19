@@ -112,7 +112,7 @@ const ImageGallery = () => {
       backgroundPosition: 'center',
     }}
   >
-    <div className="bg-white/95 h-full flex flex-col py-12 shadow-lg w-full p-4 mx-auto items-center relative">
+    <div className="bg-white/95 h-full flex flex-col py-12 shadow-lg w-full p-4 mx-auto items-center  relative">
       <button
         aria-label="close modal"
         type="button"
@@ -123,9 +123,6 @@ const ImageGallery = () => {
       </button>
       <div className="flex flex-col items-center lg:flex-row h-full lg:justify-center lg:gap-10">
         <div className="flex flex-col items-center">
-          <p className="text-black text-center text-2xl px-2 font-semibold mb-2">
-            {selectedImage.alt}
-          </p>
           <Image
             aria-label={selectedImage.alt}
             src={selectedImage.src}
@@ -135,8 +132,11 @@ const ImageGallery = () => {
             className="w-full max-w-xl shadow-md shadow-black border-2 border-black h-auto rounded-lg"
           />
         </div>
-        <div>
-          <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium lg:text-lg">
+          <div className='flex flex-col justify-between'>
+            <p className="text-black text-left text-2xl lg:text-3xl px-2 font-semibold mb-2">
+            {selectedImage.alt}
+          </p>
+          <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium lg:text-xl">
             {selectedImage.desc}
           </p>
         </div>
@@ -150,7 +150,7 @@ const ImageGallery = () => {
             const prevIndex = (currentIndex - 1 + images.length) % images.length;
             setSelectedImage(images[prevIndex]);
           }}
-          className="px-4 py-2 flex w-full text-center justify-center border-2 border-black bg-confirm text-black rounded hover:bg-opacity-60"
+          className="px-4 py-2 flex w-full text-center justify-center border-2 border-black duration-300 bg-confirm text-black rounded-lg hover:bg-opacity-60"
         >
           <ArrowBigLeftIcon className="w-6 h-6" />
         </button>
@@ -162,7 +162,7 @@ const ImageGallery = () => {
             const nextIndex = (currentIndex + 1) % images.length;
             setSelectedImage(images[nextIndex]);
           }}
-          className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-confirm text-black rounded hover:bg-opacity-60"
+          className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-confirm text-black rounded-lg hover:bg-opacity-60"
         >
           <ArrowBigRightIcon className="w-6 h-6" />
         </button>

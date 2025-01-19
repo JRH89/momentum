@@ -11,6 +11,7 @@ const Page = () => {
   const [invoicesPerPage, setInvoicesPerPage] = useState("");
   const [customersPerPage, setCustomersPerPage] = useState("");
   const [projectsPerPage, setProjectsPerPage] = useState("");
+  const [milestonesPerPage, setMilestonesPerPage] = useState("");
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -44,6 +45,7 @@ const Page = () => {
             setInvoicesPerPage(data.invoicesPerPage || 8);
             setCustomersPerPage(data.customersPerPage || 10);
             setProjectsPerPage(data.projectsPerPage || 10);
+            setMilestonesPerPage(data.milestonesPerPage || 5);
           } else {
             console.warn("User document does not exist");
           }
@@ -66,6 +68,7 @@ const Page = () => {
             invoicesPerPage,
             customersPerPage,
             projectsPerPage,
+            milestonesPerPage,
           });
           console.log("User data updated successfully");
         } catch (error) {
@@ -75,7 +78,14 @@ const Page = () => {
     };
 
     updateUserData();
-  }, [invoicesPerPage, customersPerPage, projectsPerPage, userData, user]);
+  }, [
+    invoicesPerPage,
+    customersPerPage,
+    projectsPerPage,
+    milestonesPerPage,
+    userData,
+    user,
+  ]);
 
   if (loading) {
     return (
@@ -118,7 +128,7 @@ const Page = () => {
               </button>
             </div>
           </div>
-          <div className="mt-5">
+          <div className="">
             <h2 className="text-2xl font-bold">Customers</h2>
             <p className="my-2 px-4">Customers per page: {customersPerPage}</p>
             <div className="flex items-center gap-2 px-4">
@@ -142,7 +152,7 @@ const Page = () => {
               </button>
             </div>
           </div>
-          <div className="mt-5">
+          <div className="">
             <h2 className="text-2xl font-bold">Projects</h2>
             <p className="my-2 px-4">Projects per page: {projectsPerPage}</p>
             <div className="flex items-center gap-2 px-4">
@@ -164,6 +174,33 @@ const Page = () => {
               >
                 +
               </button>
+            </div>
+            <div className="">
+              <p className="my-2 px-4">
+                Milestones per page: {milestonesPerPage}
+              </p>
+              <div className="flex items-center gap-2 px-4">
+                <button
+                  onClick={() => setMilestonesPerPage(milestonesPerPage - 1)}
+                  className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
+                >
+                  -
+                </button>
+                <input
+                  type="text"
+                  value={milestonesPerPage}
+                  onChange={(e) =>
+                    setMilestonesPerPage(parseInt(e.target.value))
+                  }
+                  className="w-full p-2 border border-black rounded-md text-center"
+                />
+                <button
+                  onClick={() => setMilestonesPerPage(milestonesPerPage + 1)}
+                  className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
         </div>

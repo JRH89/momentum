@@ -36,6 +36,10 @@ const SignIn = () => {
             customers: [],
             stripeAccountId: '',
             stripeConnected: false,
+            invoicesPerPage: 8,
+            projectsPerPage: 8,
+            customersPerPage: 10,
+            milestonesPerPage: 5,
             createdAt: new Date().toISOString(),
           };
           await setDoc(userDocRef, userData);
