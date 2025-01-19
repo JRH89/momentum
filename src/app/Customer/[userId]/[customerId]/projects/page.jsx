@@ -75,12 +75,12 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-      <h2 className="text-3xl font-bold mb-4 flex flex-row items-center gap-2">
+    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 mt-2 text-black flex flex-col pb-24">
+      <h2 className="text-3xl px-0 sm:px-4 font-bold mb-2 flex flex-row items-center gap-2">
         <BriefcaseIcon className="w-8 h-8" />
         Projects
       </h2>
-      {customerData && customerData.projects.length > 0 && (
+      {customerData && customerData.projects?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {customerData.projects.map((project, index) => (
             <div
@@ -104,9 +104,12 @@ const Page = () => {
           ))}
         </div>
       )}
-      {customerData && customerData.projects.length === 0 && (
-        <p className="text-gray-600 text-sm mb-2">No projects found.</p>
-      )}
+      {customerData &&
+        (customerData.projects?.length === 0 || !customerData.projects) && (
+          <p className="text-gray-600 px-0 sm:px-8 text-sm mb-2">
+            No projects found.
+          </p>
+        )}
     </div>
   );
 };

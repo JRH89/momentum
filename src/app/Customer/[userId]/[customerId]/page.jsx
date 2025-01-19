@@ -120,9 +120,9 @@ const CustomerDashboard = () => {
         </div>
         {customerData ? (
           <>
-            <div className="mt-6">
+            <div className="mt-4 px-0 sm:px-4">
               <div className="mb-6">
-                <h3 className="text-2xl font-bold mb-4">Invoices</h3>
+                <h3 className="text-2xl font-bold mb-2">Invoices</h3>
                 <InvoicesTable invoices={invoices} />
               </div>
 

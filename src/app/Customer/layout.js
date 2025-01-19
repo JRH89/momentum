@@ -11,18 +11,18 @@ const ProtectedRoute = ({ children }) => {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const { userId } = useParams();
-    const { user } = useAuth();
+    const { user, isAuthLoaded } = useAuth();  // assuming `isAuthLoaded` is a boolean indicating if user state is fully loaded.
 
     useEffect(() => {
         const checkAuth = async () => {
-            if (!user) {
+            if (isAuthLoaded && !user) {  // Check if auth state is loaded and no user is authenticated
                 await router.push('/Customer/login');
             }
             setLoading(false);
         };
 
         checkAuth();
-    }, [router, user]);
+    }, [router, user, isAuthLoaded]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -38,8 +38,8 @@ const ProtectedRoute = ({ children }) => {
                         homeElement={"Home"}
                         separator={<span> / </span>}
                         activeClasses="bg-gradient-to-r from-confirm to-destructive text-transparent bg-clip-text"
-                        containerClasses="flex w-full flex-wrap justify-center items-center shadow-md shadow-black text-black mx-auto rounded-lg border-2 p-1 border-black px-10 py-2"
-                        listClasses="hover:underline items-center mx-2 font-bold flex flex-row text-xs sm:text-sm"
+                        containerClasses="flex w-full flex-wrap justify-center items-center shadow-md shadow-black text-black mx-auto rounded-lg border-2 p-1 border-black lg:px-10  py-2"
+                        listClasses="hover:underline items-center mx-2 font-bold flex flex-row text-xs lg:text-sm"
                         capitalizeLinks
                     />
                 </div>
