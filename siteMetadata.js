@@ -7,7 +7,7 @@ const siteMetadata = {
     description: 'Project management for freelancers, entrepreneurs, and small businesses. Send invoices through Stripe, track payments, manage projects, and more.',
     language: 'en-us',
     theme: 'system',
-    siteUrl: 'http://localhost:3000',
+    siteUrl: 'https://momentum.hookerhillstudios.com',
     socialBanner: '/logo.png',
     email: 'hookerhillstudios@gmail.com',
     github: 'https://github.com/jrh89',
