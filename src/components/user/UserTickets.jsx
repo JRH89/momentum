@@ -57,8 +57,8 @@ export default function UserTickets() {
   return (
     <div className="px-4">
       <div className="flex flex-row items-center justify-start gap-4 mb-2">
-        <h2 className="text-3xl font-bold flex flex-row gap-2 items-center">
-          <Bug className="w-8 h-8" /> Support Tickets
+        <h2 className="text-2xl sm:text-3xl font-bold flex flex-row gap-2 items-center">
+          <Bug className="w-7 h-7 sm:w-8 sm:h-8" /> Support Tickets
         </h2>
         <button
           onClick={() => setShowForm(true)}

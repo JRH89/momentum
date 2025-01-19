@@ -343,7 +343,7 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
 
   return (
     <>
-      <div className="overflow-x-auto py-2 pb-4 px-4 h-full flex flex-col">
+      <div className="overflow-x-auto py-2 pb-4 px-0 sm:px-4 h-full flex flex-col">
         <div className="border-2 border-black rounded-lg overflow-x-auto shadow-md shadow-black">
           <table className="min-w-full h-full">
             <thead>

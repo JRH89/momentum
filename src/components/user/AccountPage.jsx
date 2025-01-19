@@ -216,11 +216,11 @@ const Account = () => {
   return (
     <>
       <div className="flex flex-col min-h-screen h-full my-auto w-full max-w-6xl mx-auto text-black items-center justify-start p-4">
-        <h1 className="px-4 sm:px-0 text-3xl text-left font-bold mb-4 flex flex-row items-center w-full gap-2">
+        <h1 className=" text-3xl text-left font-bold mb-4 flex flex-row items-center w-full gap-2">
           <Blocks className="w-8 h-8" /> Account
         </h1>
         {user ? (
-          <div className="flex flex-col text-lg gap-0 w-full px-4">
+          <div className="flex flex-col text-lg gap-0 w-full px-0 sm:px-4">
             <p className="capitalize flex flex-row gap-1 w-full justify-start">
               Subscribed:
               <span className="font-bold">{userIsPremium.toString()}</span>
@@ -238,17 +238,17 @@ const Account = () => {
                 {alert}
               </p>
             )}
-            <div className="flex flex-col gap-1 w-full justify-center mx-auto max-w-xl pt-12 px-5 sm:px-0 text-lg sm:text-2xl">
+            <div className="flex flex-col gap-1 w-full justify-center mx-auto max-w-xl pt-16 sm:pt-12 px-5 sm:px-0 text-lg sm:text-2xl">
               <div className="flex flex-col  gap-1 w-full justify-center mx-auto ">
                 <button
-                  className="bg-confirm  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                  className="bg-confirm  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
                   onClick={() => sendResetEmail(user.email)}
                 >
                   Reset Password
                 </button>
                 {isPremium && (
                   <button
-                    className="bg-green-400 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-green-400/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-green-400 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-green-400/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
                     onClick={() => {
                       loadPortal();
                     }}
@@ -263,14 +263,14 @@ const Account = () => {
                 {!isPremium && (
                   <Link
                     href="/Dashboard/subscribe"
-                    className="bg-confirm duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-confirm duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
                   >
                     Upgrade to Premium
                   </Link>
                 )}
                 {userData?.stripeConnected && (
                   <button
-                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
                     onClick={() => {
                       handleDisconnectStripe();
                     }}
@@ -279,7 +279,7 @@ const Account = () => {
                   </button>
                 )}
                 <button
-                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded mt-4 text-black mx-auto flex w-full justify-center"
+                  className="bg-destructive duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-destructive/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                   onClick={() => {
                     deleteAccount();
                   }}

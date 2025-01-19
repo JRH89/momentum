@@ -36,7 +36,7 @@ const Page = () => {
   }
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24 px-0 sm:px-4">
       <UserTickets />
     </div>
   );

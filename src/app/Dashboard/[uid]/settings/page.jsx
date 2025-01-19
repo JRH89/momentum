@@ -101,13 +101,13 @@ const Page = () => {
         <h1 className="text-3xl font-bold flex flex-row items-center gap-2">
           <Settings className="w-8 h-8" /> User Settings
         </h1>
-        <div className="p-4 mt-2 gap-5 flex  flex-col border-black border-2 rounded-lg shadow-md shadow-black">
+        <div className="p-4 pt-0 px-0 sm:px-4 mt-2 gap-5 flex flex-col">
           <div className="justify-start flex flex-col">
             <h2 className="text-2xl font-bold">Invoices</h2>
-            <p className="my-2 px-4 text-black">
+            <p className="mb-2 sm:my-2 px-0 sm:px-4 text-black">
               Invoices per page: {invoicesPerPage}
             </p>
-            <div className="flex items-center gap-2 px-4">
+            <div className="flex items-center gap-2 px-0 sm:px-4">
               <button
                 onClick={() => setInvoicesPerPage(invoicesPerPage - 1)}
                 className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
@@ -130,8 +130,10 @@ const Page = () => {
           </div>
           <div className="">
             <h2 className="text-2xl font-bold">Customers</h2>
-            <p className="my-2 px-4">Customers per page: {customersPerPage}</p>
-            <div className="flex items-center gap-2 px-4">
+            <p className="mb-2 sm:my-2 px-0 sm:px-4">
+              Customers per page: {customersPerPage}
+            </p>
+            <div className="flex items-center gap-2 px-0 sm:px-4">
               <button
                 onClick={() => setCustomersPerPage(customersPerPage - 1)}
                 className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
@@ -154,8 +156,10 @@ const Page = () => {
           </div>
           <div className="">
             <h2 className="text-2xl font-bold">Projects</h2>
-            <p className="my-2 px-4">Projects per page: {projectsPerPage}</p>
-            <div className="flex items-center gap-2 px-4">
+            <p className="mb-2 sm:my-2 px-0 sm:px-4">
+              Projects per page: {projectsPerPage}
+            </p>
+            <div className="flex items-center gap-2 px-0 sm:px-4">
               <button
                 onClick={() => setProjectsPerPage(projectsPerPage - 1)}
                 className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
@@ -176,10 +180,10 @@ const Page = () => {
               </button>
             </div>
             <div className="">
-              <p className="my-2 px-4">
+              <p className="my-2 px-0 sm:px-4">
                 Milestones per page: {milestonesPerPage}
               </p>
-              <div className="flex items-center gap-2 px-4">
+              <div className="flex items-center gap-2 px-0 sm:px-4">
                 <button
                   onClick={() => setMilestonesPerPage(milestonesPerPage - 1)}
                   className="p-2 bg-green-500 font-extrabold hover:bg-opacity-60 duration-300 border-2 border-black rounded-md"
