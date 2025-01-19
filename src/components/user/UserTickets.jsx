@@ -72,7 +72,9 @@ export default function UserTickets() {
       <div>
         <ul className=" grid grid-cols-1 sm:grid-cols-2 gap-4">
           {tickets.length === 0 && (
-            <p className="px-4 text-gray-600">No tickets found.</p>
+            <p className="text-gray-600 px-0 sm:px-4 text-sm mb-2">
+              No tickets found.
+            </p>
           )}
           {tickets.map((ticket) => (
             <li

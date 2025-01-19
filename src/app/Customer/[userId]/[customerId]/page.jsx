@@ -13,6 +13,7 @@ import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import UserTickets from "../../../../components/user/UserTickets";
 import { Home } from "lucide-react";
 import Link from "next/link";
+import MilestoneProgress from "../../../../components/ProgressBar";
 
 const CustomerDashboard = () => {
   const { userId, customerId } = useParams();
@@ -128,8 +129,8 @@ const CustomerDashboard = () => {
 
               {customerData.projects && (
                 <>
-                  <h2 className="text-2xl font-bold mb-4">Projects</h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <h2 className="text-2xl font-bold mb-3">Projects</h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-0 sm:px-6">
                     {customerData.projects.map((project, index) => (
                       <div
                         key={index}
@@ -144,9 +145,10 @@ const CustomerDashboard = () => {
                         <p className="text-gray-600 text-sm mb-2">
                           Descripion: {project.description}
                         </p>
+                        <MilestoneProgress milestones={project.milestones} />
                         <Link
                           href={`/Customer/${userId}/${customerId}/${project?.id}`}
-                          className="text-confirm text-sm hover:underline duration-300 font-semibold "
+                          className="text-green-500 text-md hover:underline duration-300 font-bold flex pt-2 "
                         >
                           View Details
                         </Link>

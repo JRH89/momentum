@@ -6,6 +6,7 @@ import { db, auth } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { BriefcaseIcon } from "lucide-react";
+import MilestoneProgress from "../../../../../components/ProgressBar";
 
 const Page = () => {
   const { userId, customerId } = useParams();
@@ -81,7 +82,7 @@ const Page = () => {
         Projects
       </h2>
       {customerData && customerData.projects?.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-0 sm:px-8">
           {customerData.projects.map((project, index) => (
             <div
               key={index}
@@ -94,9 +95,10 @@ const Page = () => {
               <p className="text-gray-600 text-sm mb-2">
                 Descripion: {project.description}
               </p>
+              <MilestoneProgress milestones={project.milestones} />
               <Link
                 href={`/Customer/${userId}/${customerId}/${project.id}`}
-                className="text-confirm text-sm hover:underline duration-300 font-semibold "
+                className="text-green-500 text-md hover:underline duration-300 font-bold "
               >
                 View Details
               </Link>
