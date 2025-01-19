@@ -9,6 +9,7 @@ import ColorPaletteGenerator from "../../../../../components/customer/ColorPalle
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
+import MilestoneProgress from "../../../../../components/ProgressBar";
 
 interface Milestone {
   id: string;
@@ -350,20 +351,41 @@ const handleMarkProjectComplete = async () => {
 
   return (
     <>
-     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        <h1 className="text-3xl font-bold w-full justify-between items-center flex flex-row gap-1 ">{project.name}<span className="hidden sm:flex text-xl">ID: {project.id}</span></h1>
-        <p className="text-lg">{project.description}</p>
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+       <div className="flex flex-col">
+  <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
+    <h1 className="text-3xl font-bold justify-between w-full flex flex-row items-center capitalize gap-1">
+      {project.name}
+      <span className="hidden sm:flex text-xl text-gray-600">ID: {project.id}</span>
+    </h1>
+  </div>
+
+  <p className="text-lg capitalize text-gray-700">{project.description}</p>
+</div>
+
+       
       {/* Milestones Section */}
-<div className="mt-4">
-  <div className="flex justify-start items-center">
-    <h2 className="text-2xl font-semibold">Milestones</h2>
+<div className="">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center">
+              <h2 className="text-2xl font-semibold">Milestones</h2>
     <button
       type="button"
       onClick={() => setShowForm(!showForm)}
-      className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
+      className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
     >
-      [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
+      [<Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />]
             </button>
+            </div>
+    
+
+           {!isCompleted && milestones.length > 0 && !milestones.every((milestone) => milestone.status === "completed") && (
+  <div className="mb-2 flex w-full max-w-lg justify-end text-center">
+    <div className="w-full flex flex-col">
+      <MilestoneProgress milestones={milestones} />
+    </div>
+  </div>
+)}
             {/* Conditional Button for Marking Project Complete */}
   {!isCompleted && milestones.length > 0 && milestones.every((milestone) => milestone.status === "completed") && (
     <div className="mb-2 flex w-full justify-end text-center">
@@ -374,8 +396,10 @@ const handleMarkProjectComplete = async () => {
       >
         Mark Project as Complete
       </button>
-    </div>
+              </div>
+              
             )}
+         
             {isCompleted && milestones.length > 0 && milestones.every((milestone) => milestone.status === "completed") && (
     <div className="mb-2 flex w-full justify-end text-center">
       <button
@@ -490,6 +514,11 @@ const handleMarkProjectComplete = async () => {
   )}
   
 </div>
+        <div className="lg:flex lg:flex-row">
+          
+          <div className="grid grid-cols-2 w-full gap-4">
+            
+        
         {/* Uploads section */}
          <div className="mt-4">
           <div className="flex justify-start items-center">
@@ -499,9 +528,9 @@ const handleMarkProjectComplete = async () => {
             <button
               type="button"
               onClick={() => setShowUploadForm(!showUploadForm)}
-              className=" hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 flex flex-row text-black rounded-md"
-            >
-              [<Plus className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />]
+              className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
+    >
+      [<Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />]
             </button>
           </div>
           {showUploadForm && (
@@ -535,7 +564,7 @@ const handleMarkProjectComplete = async () => {
                 </div>
               )}
           {uploads.length > 0 ? (
-            <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 border-2 shadow-black border-black bg-white rounded-lg shadow-md">
+            <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 border-2 shadow-black border-black bg-white mt-1 rounded-lg shadow-md">
                     {uploads.map((upload, index) => (
                       <li
                         key={index}
@@ -549,7 +578,7 @@ const handleMarkProjectComplete = async () => {
                             <img
                               src={upload.url}
                               alt={upload.name || `Upload ${index + 1}`}
-                              className="w-10 h-10 object-cover rounded"
+                              className="w-16 h-16 border border-black object-cover rounded-md"
                               loading="lazy"
                             />
                           ) : null)}
@@ -568,14 +597,22 @@ const handleMarkProjectComplete = async () => {
                   </ul>
           ) : (
             <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet</p>
-          )}
+              )}
+            </div>
+            <div>
+
+           
           <div className="mt-4">
            <ColorPaletteGenerator
               userId={uid}
               customerId={stripeCustomerId}
               projectId={projectId}
             />
-            </div> 
+              </div>
+   
+          
+            </div>
+            </div>
         </div>
         {showForm && (
           <div className="fixed w-full px-4 mx-auto inset-0 bg-black/95  z-40 my-auto min-h-screen h-full items-center justify-center flex flex-col">

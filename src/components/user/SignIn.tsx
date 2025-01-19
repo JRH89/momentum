@@ -61,7 +61,7 @@ const SignIn = () => {
       await signInWithPopup(auth, provider);
       router.push('/Dashboard');
     } catch (error: any) {
-     toast.error(error.message);
+      toast.error(error.message);
       setError(error.message);
     }
   };

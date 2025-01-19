@@ -9,6 +9,7 @@ import ReactPaginate from "react-paginate";
 import { useRouter } from "next/navigation";
 import { auth } from "../../../../../firebase"; // Adjusted for direct use of Firebase auth
 import { Briefcase } from "lucide-react";
+import MilestoneProgress from "../../../../components/ProgressBar";
 
 const Page = () => {
   const { uid } = useParams();
@@ -107,9 +108,8 @@ const Page = () => {
                     <p className="text-black flex h-full text-sm capitalize sm:text-md">
                       {project.description}
                     </p>
-                    <p className="text-gray-600 flex h-full text-sm sm:text-md">
-                      {project.id}
-                    </p>
+
+                    <MilestoneProgress milestones={project.milestones} />
                   </Link>
                 ))}
             </div>
@@ -119,7 +119,7 @@ const Page = () => {
             </p>
           )}
 
-          <h2 className="text-xl font-medium">Completed</h2>
+          <h2 className="text-xl mt-2 font-medium">Completed</h2>
           {currentProjects.filter((project) => project.isCompleted).length >
           0 ? (
             <div className="grid grid-cols-2 gap-4 mt-0 px-0 sm:px-4">

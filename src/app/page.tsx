@@ -1,4 +1,4 @@
-import {  Info, ArrowBigRightIcon, } from "lucide-react";
+import {  Info, ArrowBigRightIcon, Text, Book, } from "lucide-react";
 import { PriceCard } from "../components/landing-page/PriceCard";
 import { Header } from "../components/landing-page/Header";
 import { Footer } from "../components/landing-page/Footer";
@@ -7,6 +7,7 @@ import Script from "next/script";
 import FAQ from "../components/page/FAQ";
 import FeaturesSection from "../components/FeaturesSection";
 import ImageGallery from "../components/ImageGallery";
+import Image from "next/image";
 
 
 export default function Home() {
@@ -24,28 +25,40 @@ export default function Home() {
         <Script src="https://review-vault-widget.vercel.app/widget.umd.js"></Script>
         <Header />
         <main className="bg-gray-900 text-white">
-          <section
-          className="relative min-h-screen flex flex-col items-center justify-center bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
-          style={{
-            backgroundImage: 'url("/lightspeed.png")',
-            backgroundPosition: 'center 25%', // Adjust the vertical position of the background image
-          }}>
-          <div className="absolute inset-0 bg-white bg-opacity-60"></div>
-            <div className="relative lg:ml-14 z-10 text-left max-w-5xl p-8 pt-28 sm:pt-32">
-              <h1
-              className="text-4xl sm:text-5xl text-black md:text-6xl font-extrabold mb-6"
-              >
-                Project Management for Freelancers & Small Businesses
-              </h1>
-              <p className="text-2xl max-w-3xl lg:text-3xl mb-8 text-gray-800 font-medium">
-                Manage projects, organize customers, and send invoices.
-              </p>
-              <div className="flex flex-row gap-5 items-center">
-                <Link href={"/Signup"} className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xs sm:text-xl font-extrabold flex flex-row gap-2 px-4 sm:px-6 py-3 rounded-lg shadow-md shadow-black items-center">Get Started <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" /></Link>
-                <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-bold flex flex-row gap-2 text-md sm:text-xl text-black">Learn more <Info className="w-5 h-5" /></Link>
-              </div>
-            </div>
-            </section>
+        <section
+  className="relative min-h-screen flex flex-col lg:flex-row items-center justify-center bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
+  style={{
+    backgroundImage: 'url("/lightspeed2.jpg")',
+    backgroundPosition: 'center 25%', // Adjust the vertical position of the background image
+  }}
+>
+  <div className="absolute inset-0 bg-white bg-opacity-75"></div>
+  
+  <div className="relative lg:ml-14 z-10 text-left max-w-5xl p-8 pt-28 sm:pt-32 lg:pt-32 lg:w-1/2">
+    <h1 className="text-3xl sm:text-4xl text-black md:text-5xl font-extrabold mb-6">
+      Project Management for Freelancers & Small Businesses
+    </h1>
+    <p className="text-xl max-w-3xl lg:text-2xl mb-8 text-gray-800 font-medium">
+      Manage projects, organize customers, and send invoices.
+    </p>
+    <div className="flex flex-row gap-5 items-center">
+      <Link href={"/Signup"} className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-xs sm:text-xl font-extrabold flex flex-row gap-2 px-4 sm:px-6 py-3 rounded-lg shadow-md shadow-black items-center">
+        Get Started <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" />
+      </Link>
+      <Link href="/#features" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-bold flex flex-row gap-2 text-md sm:text-xl text-black">
+        Learn more <Info className="w-5 h-5" />
+      </Link>
+    </div>
+  </div>
+
+  <div className="relative lg:w-1/2 hidden lg:flex items-center justify-center p-8 pt-28 sm:pt-32 lg:pt-32">
+            <Image
+              width={1920}
+              height={1080}
+              src="/dashboard.png" alt="Your Image Description" className="max-w-lg border-2 border-black shadow-md shadow-black h-auto rounded-lg my-auto justify-center items-center" />
+  </div>
+</section>
+
             <FeaturesSection />
             <section className="border-t-2 border-black bg-[#EAEEFE]">
             <PriceCard />
@@ -62,10 +75,10 @@ export default function Home() {
             </section>
                 <section className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
                 style={{
-                  backgroundImage: 'url("/lightspeed.png")',
+                  backgroundImage: 'url("/lightspeed2.jpg")',
                   backgroundPosition: 'center 25%', // Adjust the vertical position of the background image
                 }}>
-                <div className="absolute inset-0 bg-white bg-opacity-60"></div>
+                <div className="absolute inset-0 bg-white bg-opacity-75"></div>
                   <div className="relative z-10 text-left max-w-7xl p-8 ">
                     <h2 className="text-4xl lg:text-7xl font-bold mb-6 text-black">
                       Ready to Build Momentum?
@@ -78,7 +91,7 @@ export default function Home() {
                       Get Started <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" />
                     </Link>
                     <Link href="/About" className="hover:opacity-60 transition duration-300 ease-in-out items-center font-semibold flex flex-row gap-2 text-md sm:text-xl text-black">
-                      Learn more <Info className="w-5 h-5" />
+                      Read the docs <Book className="w-5 h-5" />
                     </Link>
               </div>
             </div>
