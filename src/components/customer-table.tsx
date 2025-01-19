@@ -165,8 +165,6 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
           }
         }
 
-
-
         // If a new customer UID was created, update the customer
         if (newCustomerUid) {
           const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
@@ -186,7 +184,6 @@ export function CustomerTable({ customers, userId, itemsPerPage = 7 }: CustomerT
     console.error("Error updating projects:", err);
     setError("Failed to update projects");
   }
-
 
       setShowInvoiceForm(false);
       setInvoiceData({
@@ -341,7 +338,7 @@ const handleCreateProject = async (e: React.FormEvent, { uid, stripeCustomerId, 
   });
 
   if (!customers.length) {
-    return <p className="text-gray-600 mt-1 px-4 md:px-6">No customers found. Click the '+' icon above to create your first customer.</p>;
+    return <p className="text-gray-600 mt-1 px-4 md:px-6">No customers found. Click the &apos;+&apos; icon above to create your first customer.</p>;
   }
 
   return (
