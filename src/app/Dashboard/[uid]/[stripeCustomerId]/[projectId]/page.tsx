@@ -354,7 +354,7 @@ const handleMarkProjectComplete = async () => {
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
        <div className="flex flex-col">
   <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
-    <h1 className="text-3xl font-bold justify-between w-full flex flex-row items-center capitalize gap-1">
+    <h1 className="text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
       {project.name}
       <span className="hidden sm:flex text-xl text-gray-600">ID: {project.id}</span>
     </h1>
@@ -484,8 +484,8 @@ const handleMarkProjectComplete = async () => {
         </tbody>
       </table>
             </div>
-            
-      <div className="mt-2">
+            {milestones.length > milestonesPerPage && (
+              <div className="mt-2">
           <ReactPaginate
           previousLabel={'Previous'}
           nextLabel={'Next'}
@@ -506,6 +506,8 @@ const handleMarkProjectComplete = async () => {
             nextClassName={"next font-medium text-xl text-green-500 hover:underline"}
         />
           </div>
+            )}
+      
           </>
   ) : (
     <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">
@@ -596,7 +598,7 @@ const handleMarkProjectComplete = async () => {
                     ))}
                   </ul>
           ) : (
-            <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet</p>
+            <p className="text-gray-600 p-2 mt-1 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet</p>
               )}
             </div>
             <div>

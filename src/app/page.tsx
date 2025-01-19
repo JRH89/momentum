@@ -55,7 +55,7 @@ export default function Home() {
             <Image
               width={1920}
               height={1080}
-              src="/dashboard.png" alt="Your Image Description" className="max-w-lg border-2 border-black shadow-md shadow-black h-auto rounded-lg my-auto justify-center items-center" />
+              src="/project.png" alt="Your Image Description" className="max-w-lg border-2 border-black shadow-md shadow-black h-auto rounded-lg my-auto justify-center items-center" />
   </div>
 </section>
 
