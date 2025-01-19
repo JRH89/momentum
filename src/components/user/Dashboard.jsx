@@ -212,9 +212,11 @@ export default function Dashboard() {
                     onCustomerAdded={handleCustomerAdded}
                   />
                 )}
-                <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-0 p-4 pt-2 text-black flex flex-col pb-24">
-                  <UserCreatingInvoiceTable />
-                </div>
+                {user && userData?.stripeConnected && (
+                  <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-0 p-4 pt-2 text-black flex flex-col pb-24">
+                    <UserCreatingInvoiceTable />
+                  </div>
+                )}
               </div>
             </div>
           </div>

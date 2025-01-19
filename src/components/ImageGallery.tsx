@@ -38,16 +38,6 @@ const ImageGallery = () => {
     desc: 'The project settings interface allows complete customization of project details, permissions, and configurations. Tailor workflows to meet unique requirements, ensuring projects run smoothly from start to finish.',
     bgImage: '/image-4.png',
   },
-  // {
-  //   src: '/invoice.png',
-  //   alt: 'Invoicing Form',
-  //   desc: 'The invoicing form simplifies billing with an intuitive design and secure Stripe integration. Effortlessly create detailed invoices, send them to customers, and keep accurate financial records for seamless payment processing and better organization.',
-  // },
-  // {
-  //   src: '/support.png',
-  //   alt: 'Support Tickets',
-  //   desc: 'The support ticket system is designed to provide quick and efficient assistance whenever you need it. Submit tickets directly to the dedicated support team for help with troubleshooting, questions, or guidance, ensuring you’re always supported.',
-  // },
 ];
 
   const [currentIndex, setCurrentIndex] = useState(0);

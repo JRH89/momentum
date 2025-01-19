@@ -179,9 +179,9 @@ export default function ColorPaletteGenerator({
 
   return (
     <div className="flex flex-col mx-auto ">
-      <div className=" w-full mx-auto text-black flex flex-col items-center justify-start2">
+      <div className=" w-full mx-auto text-black flex flex-col items-center justify-start mt-1">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <div className="flex flex-row items-center justify-start my-auto gap-2 mb-2">
+          <div className="flex flex-row items-center justify-start my-auto gap-2">
             <h3 className="text-2xl font-bold">Pallete</h3>
             <button
               className="flex flex-row items-center text-lg font-medium"
@@ -264,6 +264,9 @@ export default function ColorPaletteGenerator({
               </span>
             </div>
           ))}
+          {projectColors.length === 0 && (
+            <p className="text-gray-600">No colors yet</p>
+          )}
         </div>
         <canvas ref={canvasRef} className="hidden"></canvas>
       </div>

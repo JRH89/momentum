@@ -15,7 +15,11 @@ const pricingPlans = [
     description: "Unlimited projects. Analytics.",
     isPopular: false,
     url: null, // Will be generated dynamically
-    features: ["Unlimited projects", "Full analytics", "24/7 support"],
+    features: [
+      "Unlimited Projects",
+      "Unlimited Invoices",
+      "Unlimited Customers",
+    ],
     priceId: process.env.NEXT_PUBLIC_MONTHLY_PRICE_ID,
   },
   {
@@ -24,7 +28,11 @@ const pricingPlans = [
     description: "Save 15%!",
     isPopular: true,
     url: null, // Will be generated dynamically
-    features: ["Unlimited projects", "Full analytics", "24/7 support"],
+    features: [
+      "Unlimited Projects",
+      "Unlimited Invoices",
+      "Unlimited Customers",
+    ],
     priceId: process.env.NEXT_PUBLIC_YEARLY_PRICE_ID,
   },
 ];

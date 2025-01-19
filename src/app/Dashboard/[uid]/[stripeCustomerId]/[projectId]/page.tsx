@@ -428,14 +428,12 @@ const handleMarkProjectComplete = async () => {
       </table>
     </div>
   ) : (
-    <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">
-      No milestones yet.
+    <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">
+      No milestones yet
     </p>
   )}
-
   
 </div>
-
         {/* Uploads section */}
          <div className="mt-4">
           <div className="flex justify-start items-center">
@@ -513,7 +511,7 @@ const handleMarkProjectComplete = async () => {
                     ))}
                   </ul>
           ) : (
-            <p className="text-black p-2 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet.</p>
+            <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">No uploads yet</p>
           )}
           <div className="mt-4">
            <ColorPaletteGenerator

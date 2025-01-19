@@ -107,20 +107,20 @@ const Sidebar = ({ uid }) => {
                 <defs>
                   <style>
                     {`
-          .cls-1 {
-            fill: none;
-            stroke-linejoin: round;
-          }
-          .cls-1, .cls-2 {
-            stroke: #000;
-            stroke-linecap: round;
-            stroke-width: 40px;
-          }
-          .cls-2 {
-            fill: #fff;
-            stroke-miterlimit: 10;
-          }
-        `}
+                    .cls-1 {
+                      fill: none;
+                      stroke-linejoin: round;
+                    }
+                    .cls-1, .cls-2 {
+                      stroke: #000;
+                      stroke-linecap: round;
+                      stroke-width: 40px;
+                    }
+                    .cls-2 {
+                      fill: #fff;
+                      stroke-miterlimit: 10;
+                    }
+                  `}
                   </style>
                 </defs>
                 <g data-name="Layer_1">
