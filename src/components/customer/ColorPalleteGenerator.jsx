@@ -76,7 +76,7 @@ export default function ColorPaletteGenerator({
 
         // Find the index of the customer with the given customerId
         const customerIndex = customerArray.findIndex(
-          (customer) => customer.stripeCustomerId === customerId
+          (customer) => customer.uid === customerId
         );
 
         if (customerIndex === -1) {

@@ -123,22 +123,44 @@ const CustomerProjectPage = () => {
     }
   };
 
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+  // Define items per page
+  const itemsPerPages = 3;
+
+  // Calculate current page items
+  const itemOffset = currentPageIndex * itemsPerPages;
+  const currentMilestones = milestones.slice(
+    itemOffset,
+    itemOffset + itemsPerPages
+  );
+  const totalPages = Math.ceil(milestones.length / itemsPerPages);
+
+  // Handle page change
+  const handlePageChanges = ({ selected }) => {
+    setCurrentPageIndex(selected);
+  };
+
   return (
     <>
-      <div className="p-6 pt-4 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
+      <div className="p-6 pt-8 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
         <h2 className="text-3xl capitalize font-bold">{projectData?.name}</h2>
         <p className="">ID: {projectData?.id}</p>
-        <p className="">Summary: {projectData?.description}</p>
+        <p className="border-b-2 border-black">
+          Summary: {projectData?.description}
+        </p>
         {projectData && (
           <div>
-            <div className="mt-4 bg-white p-4 border-2 border-black rounded-lg shadow-md shadow-black">
+            <div className="mt-4 bg-white">
               <h3 className="text-2xl font-bold mb-2">Milestones</h3>
               {milestones.length > 0 ? (
-                <div className="max-h-[calc(3*4rem)] overflow-y-auto">
-                  <table className="min-w-full bg-white shadow-md text-xs sm:text-base">
-                    <thead className="border bg-gray-200 border-black">
+                <div className="border-l-2 border-r-2 border-t-2 border-black rounded-lg shadow-md shadow-black">
+                  <table className="min-w-full shadow-md text-xs sm:text-base">
+                    <thead className="border-b-2 border-black bg-backgroundPrimary">
                       <tr>
-                        <th className="px-4 py-2 text-left font-bold">Title</th>
+                        <th className="px-4 py-2 text-left font-bold rounded-tl-md">
+                          Title
+                        </th>
                         <th className="px-4 py-2 text-left font-bold">
                           Description
                         </th>
@@ -148,18 +170,18 @@ const CustomerProjectPage = () => {
                         <th className="px-4 py-2 text-left font-bold">
                           Priority
                         </th>
-                        <th className="px-4 py-2 text-left font-bold">
+                        <th className="px-4 py-2 text-left font-bold rounded-tr-md">
                           Deadline
                         </th>
                       </tr>
                     </thead>
                     <tbody>
-                      {milestones.map((milestone, index) => (
-                        <tr key={index} className="border border-black">
+                      {currentMilestones.map((milestone, index) => (
+                        <tr key={index} className="border-b-2 border-black">
                           <td className="font-medium px-4 py-2">
                             {milestone.title}
                           </td>
-                          <td className="px-4 py-2 text-gray-600">
+                          <td className="px-4 py-2 text-black">
                             {milestone.description}
                           </td>
                           <td
@@ -175,13 +197,12 @@ const CustomerProjectPage = () => {
                           </td>
                           <td
                             className={`px-4 py-2 font-medium capitalize ${
-                              milestone.priority === "high" &&
-                              "text-destructive"
+                              milestone.priority === "high" && "text-red-500"
                             } ${
                               milestone.priority === "medium" &&
-                              "text-yellow-400"
+                              "text-yellow-500"
                             } ${
-                              milestone.priority === "low" && "text-confirm"
+                              milestone.priority === "low" && "text-green-500"
                             }`}
                           >
                             {milestone.priority}
@@ -198,20 +219,37 @@ const CustomerProjectPage = () => {
                 <p>No milestones yet.</p>
               )}
             </div>
-            <div className="mt-4 bg-white p-4 border-2 border-black rounded-lg shadow-md shadow-black">
-              <div className="flex flex-row gap-2 mb-2">
+            {milestones.length > itemsPerPages && (
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                breakLabel={"..."}
+                pageCount={totalPages}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={3}
+                onPageChange={handlePageChanges}
+                containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
+                pageClassName=" px-3 py-1"
+                activeClassName=" text-confirm font-semibold"
+                previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                disabledClassName="cursor-not-allowed"
+              />
+            )}
+            <div className="mt-4 ">
+              <div className="flex flex-row gap-4 mb-2">
                 <h3 className="text-2xl font-bold">Uploads</h3>
                 <button
-                  className="flex flex-row items-center font-medium text-lg my-auto justify-center"
                   onClick={() => setShowUploadMenu(!showUploadMenu)}
+                  className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
                 >
                   [
-                  <PlusIcon className="w-5 h-5 text-green-500 hover:rotate-90 duration-300" />
+                  <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
                   ]
                 </button>
               </div>
               {showUploadMenu && (
-                <div className="mb-4 gap-2 flex flex-col">
+                <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
                   <input
                     type="file"
                     onChange={(e) => setFile(e.target.files[0])}
@@ -233,9 +271,8 @@ const CustomerProjectPage = () => {
                   </button>
                 </div>
               )}
-
               {uploads.length > 0 ? (
-                <div>
+                <div className="border-2 border-black rounded-lg shadow-md shadow-black p-4 mb-4">
                   <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
                     {currentUploads.map((upload, index) => (
                       <li
@@ -267,27 +304,25 @@ const CustomerProjectPage = () => {
                       </li>
                     ))}
                   </ul>
-
-                  <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    pageCount={pageCount}
-                    onPageChange={handlePageChange}
-                    containerClassName={
-                      "flex flex-row justify-between px-4 items-center  w-full mx-auto mt-4"
-                    }
-                    previousLinkClassName={"  rounded"}
-                    nextLinkClassName={"  rounded"}
-                    disabledClassName={"opacity-50 cursor-not-allowed"}
-                    activeClassName={"text-confirm font-extrabold text-white"}
-                    pageClassName={"  rounded cursor-pointer"}
-                    activeLinkClassName={"font-bold text-confirm"}
-                  />
                 </div>
               ) : (
-                <p>No uploads yet.</p>
+                <p className="px-4">No uploads yet.</p>
               )}
             </div>
+            {uploads.length > itemsPerPage && (
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                pageCount={pageCount}
+                onPageChange={handlePageChange}
+                containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
+                pageClassName=" px-3 py-1"
+                activeClassName=" text-confirm font-semibold"
+                previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                disabledClassName="cursor-not-allowed"
+              />
+            )}
             <ColorPaletteGenerator
               userId={userId}
               customerId={customerId}
