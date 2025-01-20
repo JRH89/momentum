@@ -24,20 +24,20 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
     : 0;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-20">
       <div className="relative pt-1">
-        <div className="flex mb-2 items-center justify-between">
+        <div className="flex mb-1 items-center justify-between">
         <div className="text-sm">
-        <span className="font-medium">{completedMilestones}</span> out of{" "}
-        <span className="font-medium">{totalMilestones}</span> milestones
+        <span className="font-semibold">{completedMilestones}</span> out of{" "}
+        <span className="font-semibold">{totalMilestones}</span> milestones
         completed
       </div>
-          <span className="text-sm font-medium">
+          <span className="text-sm font-semibold">
             {Math.round(percentageComplete)}%
           </span>
         </div>
-        <div className="flex mb-2 items-center justify-between">
-          <div className="w-full bg-destructive shadow-inner  shadow-black  rounded-full h-2.5">
+        <div className="flex  mb-2 items-center justify-between">
+          <div className="w-full bg-destructive shadow-inner  shadow-black  rounded-full  h-2.5">
             <div
               className="bg-confirm shadow-sm shadow-confirm h-2.5 rounded-full"
               style={{ width: `${percentageComplete}%` }}

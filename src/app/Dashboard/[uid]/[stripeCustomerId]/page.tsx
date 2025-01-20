@@ -251,7 +251,7 @@ const CustomerDetailsPage: React.FC = () => {
                 Customer Details
               </h2>
               <p className="font-medium">Name: {customerData.name}</p>
-              <p className="font-medium">Email: <a className="text-destructive bg-backgroundPrimary p-1 rounded-lg px-2" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
+              <p className="font-medium">Email: <a className="text-confirm hover:underline" href={`mailto:${customerData.email}`}>{customerData.email}</a></p>
             <p className="font-medium">Stripe Customer ID: {customerData.stripeCustomerId}</p>
             {customerData.uid &&
               <p className="font-medium">User ID: {customerData.uid}</p>
@@ -271,7 +271,7 @@ const CustomerDetailsPage: React.FC = () => {
             </div>
             { showInvoiceForm && (
             <form
-            className="fixed inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
+            className="fixed z-40 inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
             onSubmit={handleCreateInvoice}
           >
             <div className="p-6 rounded-lg shadow-md w-full max-w-xl">

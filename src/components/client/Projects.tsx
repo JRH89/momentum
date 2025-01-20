@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { signOut } from 'firebase/auth';
 import { initializeApp, getApp, deleteApp } from "firebase/app";
 import Link from 'next/link';
+import MilestoneProgress from '../ProgressBar';
 
 interface Project {
   id: string;
@@ -13,6 +14,7 @@ interface Project {
   description: string;
   link: string;
   isCompleted?: boolean;
+  milestones?: any;
 }
 
 interface ProjectsProps {
@@ -202,27 +204,26 @@ const handleCreateProject = async (e: React.FormEvent) => {
         {projects.length > 0 ? (
            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-             <div
-                key={index}
-                className={`bg-backgroundPrimary flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
+             <Link href={project.link} key={index}>
+              <div
+              
+                className={`bg-[#EAEEFE] hover:shadow-lg hover:shadow-black duration-300 flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
                     >
                       <h3 className="text-lg flex flex-col my-auto h-full font-bold text-black mb-2">
                         {project.name}
                 </h3>
-               <p className="text-gray-600 text-sm flex flex-col my-auto h-full">Status:{" "} 
-                  {project.isCompleted ? "Completed" : "In Progress"}
-                </p>
-                      <p className="text-gray-600 text-sm flex flex-col my-auto h-full">ID: {project.id}</p>
-                      <p className="text-gray-600 text-sm mb-2 flex flex-col my-auto h-full">
+              
+                      <p className="text-black text-sm flex flex-col my-auto h-full">ID: {project.id}</p>
+                      <p className="text-black text-sm mb-2 flex flex-col my-auto h-full">
                         Descripion: {project.description}
-                      </p>
-                      <Link
-                        href={project.link}
-                        className="text-destructive text-sm hover:opacity-60 duration-300 font-semibold "
-                      >
-                        View Details
-                      </Link>
-                    </div>
+                </p>
+                <div className=''>
+                            <MilestoneProgress milestones={project.milestones} /> 
+                  </div>
+     
+                    
+              </div>
+              </Link>
             ))}
           </div>
         ) : (
