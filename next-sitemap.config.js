@@ -1,7 +1,7 @@
 // next-sitemap.config.js
 
 module.exports = {
-	siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000',
+	siteUrl: "https://momentum.hookerhillstudios.com",
 	generateRobotsTxt: true, // (optional) Generates a robots.txt file
 	exclude: [
 		'/Dashboard',
