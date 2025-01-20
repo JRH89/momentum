@@ -79,10 +79,10 @@ const CustomerLogin = () => {
   return (
     <>
       <div className="flex flex-col pb-24 min-h-screen h-full justify-center my-auto mx-auto w-full gap-5 px-10 sm:px-5 text-center">
-        <h1 className="text-2xl font-semibold">Customer Login</h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold">Customer Login</h1>
         {error && <div className="text-red-500">{error}</div>}
         <form
-          className="flex flex-col gap-5 max-w-lg w-full mx-auto"
+          className="flex flex-col gap-5 max-w-sm w-full mx-auto"
           onSubmit={handleLogin}
         >
           <input

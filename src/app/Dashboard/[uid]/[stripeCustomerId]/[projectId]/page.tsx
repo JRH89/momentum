@@ -10,6 +10,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import MilestoneProgress from "../../../../../components/ProgressBar";
+import confetti from "canvas-confetti";
 
 interface Milestone {
   id: string;
@@ -301,6 +302,7 @@ const ProjectPage = () => {
 
       toast.success("Project marked as complete!");
       setIsCompleted(true);
+      confetti({ particleCount: 300, spread: 160, origin: { y: 0.6 } });
     } catch (error) {
       console.error("Error marking project as complete:", error);
       toast.error("Failed to mark project as complete. Please try again.");
@@ -398,12 +400,12 @@ const ProjectPage = () => {
         {/* Milestones Section */}
         <div className="">
           <div className="flex justify-between items-center">
-            <div className="flex items-center">
+            <div className="flex items-end my-auto">
               <h2 className="text-2xl font-semibold">Milestones</h2>
               <button
                 type="button"
                 onClick={() => setShowForm(!showForm)}
-                className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
+                className="hover:bg-opacity-60 duration-300 font-semibold items-end pb-1 py-2 px-4 text-xl flex flex-row text-black rounded-md"
               >
                 [
                 <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
@@ -416,12 +418,13 @@ const ProjectPage = () => {
               !milestones.every(
                 (milestone) => milestone.status === "completed"
               ) && (
-                <div className="mb-2 flex w-full max-w-lg justify-end text-center">
+                <div className="mb-2 hidden sm:flex w-full max-w-xs justify-end text-center">
                   <div className="w-full flex flex-col">
                     <MilestoneProgress milestones={milestones} />
                   </div>
                 </div>
               )}
+
             {/* Conditional Button for Marking Project Complete */}
             {!isCompleted &&
               milestones.length > 0 &&

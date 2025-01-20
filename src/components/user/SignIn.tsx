@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { signInWithPopup, GithubAuthProvider } from 'firebase/auth';
-import { auth, provider as googleProvider, db } from '../../../firebase';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+import { signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { auth, provider as googleProvider, db } from "../../../firebase";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 const githubProvider = new GithubAuthProvider(); // Reuse the provider instance
 
@@ -21,7 +21,7 @@ const SignIn = () => {
         setUser(user);
 
         // Check if user exists in Firestore
-        const userDocRef = doc(db, 'users', user.uid);
+        const userDocRef = doc(db, "users", user.uid);
         const userDocSnapshot = await getDoc(userDocRef);
 
         if (!userDocSnapshot.exists()) {
@@ -29,18 +29,18 @@ const SignIn = () => {
           const userData = {
             uid: user.uid,
             userId: user.uid,
-            name: user.displayName || 'Anonymous',
+            name: user.displayName || "Anonymous",
             email: user.email || null, // GitHub accounts may not always have email
             photoURL: user.photoURL || null, // GitHub accounts may not always have photoURL
             isPremium: false,
             isSubscribed: false,
             isAdmin: false,
             customers: [],
-            stripeAccountId: '',
+            stripeAccountId: "",
             stripeConnected: false,
             invoicesPerPage: 8,
-            projectsPerPage: 8,
-            customersPerPage: 10,
+            projectsPerPage: 10,
+            customersPerPage: 7,
             milestonesPerPage: 5,
             createdAt: new Date().toISOString(),
           };
@@ -59,7 +59,7 @@ const SignIn = () => {
   const handleSignIn = async (provider: any) => {
     try {
       await signInWithPopup(auth, provider);
-      router.push('/Dashboard');
+      router.push("/Dashboard");
     } catch (error: any) {
       toast.error(error.message);
       setError(error.message);
@@ -70,26 +70,26 @@ const SignIn = () => {
     <div className="space-y-4">
       <button
         type="button"
-        className="flex border-2 border-black items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg font-medium text-gray-700 shadow-md shadow-black bg-white rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex border-2 border-black items-center justify-center w-full max-w-sm px-4 py-2 text-lg md:text-xl font-medium text-gray-700 shadow-md shadow-black bg-white rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => handleSignIn(googleProvider)}
       >
         <img
           src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
           alt="Google Logo"
-          className="w-5 h-5 mr-2"
+          className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
         />
         Sign in with Google
       </button>
 
       <button
         type="button"
-        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-sm sm:text-lg shadow-md shadow-black font-medium text-gray-700 bg-white   border-2 border-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-lg md:text-xl shadow-md shadow-black font-medium text-gray-700 bg-white   border-2 border-black rounded-lg hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
         onClick={() => handleSignIn(githubProvider)}
       >
         <img
           src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
           alt="GitHub Logo"
-          className="w-5 h-5 mr-2"
+          className="w-5 h-5 sm:w-6 sm:h-6 mr-2"
         />
         Sign in with GitHub
       </button>

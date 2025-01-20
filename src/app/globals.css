@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Change the text color */
+.Toastify__toast--success {
+  color: #22d3ee !important;
+}
+
+/* Change the green checkmark icon */
+.Toastify__toast-icon svg {
+  fill: #22d3ee !important;
+  /* Apply the color to the SVG icon */
+}
+
+/* Change the progress bar color */
+.Toastify__progress-bar.Toastify__progress-bar--success {
+  background-color: #22d3ee !important;
+}
+
 .shimmer-container {
   position: relative;
   display: inline-block;

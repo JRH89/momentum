@@ -94,14 +94,13 @@ export default function RootLayout({ children }) {
           <ToastContainer
             position="bottom-center"
             autoClose={3000}
-            hideProgressBar
             newestOnTop
             closeOnClick
             rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            theme="light"
+            theme="dark"
           />
         </AuthProvider>
         <Analytics />

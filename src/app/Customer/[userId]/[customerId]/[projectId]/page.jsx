@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { db } from "../../../../../../firebase";
+import { auth, db } from "../../../../../../firebase";
 import { useAuth } from "../../../../../context/AuthProvider";
 import Link from "next/link";
 import { PlusIcon, Upload } from "lucide-react";
@@ -27,7 +27,7 @@ const CustomerProjectPage = () => {
 
   const storage = getStorage();
 
-  const { user } = useAuth();
+  const [user, setUser] = useState(null);
 
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(0);
@@ -143,14 +143,35 @@ const CustomerProjectPage = () => {
     setCurrentPageIndex(selected);
   };
 
+  useEffect(() => {
+    // Listener for auth state changes
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        router.push("/Customer/login"); // Redirect if not authenticated
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, [user, router]);
+
   return (
     <>
       <div className="p-6 pt-8 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
-        <h2 className="text-3xl capitalize font-bold">{projectData?.name}</h2>
-        <p className="">ID: {projectData?.id}</p>
-        <p className="border-b-2 border-black">
-          Summary: {projectData?.description}
-        </p>
+        <div className="flex flex-col">
+          <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
+            <h1 className="text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
+              {projectData?.name}
+              <span className="hidden sm:flex text-xl text-gray-600">
+                ID: {projectData?.id}
+              </span>
+            </h1>
+          </div>
+          <p className="text-lg capitalize text-gray-700">
+            {projectData?.description}
+          </p>
+        </div>
         {projectData && (
           <div>
             <div className="mt-4 bg-white">

@@ -20,7 +20,7 @@ const config: Config = {
       colors: {
         "accent": "#34d399",
         "destructive": "#ec4899",
-        "confirm": " #22d3ee",
+        "confirm": "#22d3ee",
         "backgroundPrimary": "#d1d5db",
         "backgroundAccent": "#9ca3af",
       },
