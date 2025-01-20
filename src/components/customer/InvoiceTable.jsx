@@ -118,7 +118,7 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
           </table>
         </div>
       ) : (
-        <p className="text-gray-600 px-0 sm:px-4 text-sm">No invoices found.</p>
+        <p className="text-gray-600 px-2 text-sm">No invoices found.</p>
       )}
 
       {/* Pagination Controls */}
