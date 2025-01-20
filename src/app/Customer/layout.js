@@ -35,7 +35,6 @@ const ProtectedRoute = ({ children }) => {
             <main className="relative flex flex-col w-full bg-white pt-16">
                 <div className="absolute hidden sm:flex top-2 md:top-3 justify-center w-full px-24 md:px-0">
                     <Breadcrumb
-                        homeElement={"Home"}
                         separator={<span> / </span>}
                         activeClasses="bg-gradient-to-r from-confirm to-destructive text-transparent bg-clip-text"
                         containerClasses="flex w-full flex-wrap justify-center items-center shadow-md shadow-black text-black mx-auto rounded-lg border-2 p-1 border-black lg:px-10 max-w-xl lg:max-w-4xl py-2"
@@ -43,7 +42,6 @@ const ProtectedRoute = ({ children }) => {
                         capitalizeLinks
                     />
                 </div>
-
                 {children}
             </main>
         </div>

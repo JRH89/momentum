@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { auth } from '../../../../firebase';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { auth } from "../../../../firebase";
 
 const StripeCallback = () => {
   const router = useRouter();
-  
+
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -25,18 +25,18 @@ const StripeCallback = () => {
       if (loading) return;
 
       const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
+      const code = params.get("code");
 
       if (!user || !code) {
-        console.error('Missing user or authorization code');
-        setErrorMessage('Missing user or authorization code');
+        console.error("Missing user or authorization code");
+        setErrorMessage("Missing user or authorization code");
         return;
       }
 
       try {
-        const response = await fetch('/api/stripe/callback', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const response = await fetch("/api/stripe/callback", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code, user: { uid: user.uid } }),
         });
 
@@ -44,12 +44,12 @@ const StripeCallback = () => {
           router.push(`/Dashboard/${user.uid}`);
         } else {
           const errorData = await response.json();
-          console.error('Failed to process Stripe OAuth:', errorData.error);
-          setErrorMessage(errorData.error || 'Failed to process Stripe OAuth');
+          console.error("Failed to process Stripe OAuth:", errorData.error);
+          setErrorMessage(errorData.error || "Failed to process Stripe OAuth");
         }
       } catch (err) {
-        console.error('Error:', err);
-        setErrorMessage('An error occurred while processing Stripe OAuth');
+        console.error("Error:", err);
+        setErrorMessage("An error occurred while processing Stripe OAuth");
       }
     };
 
