@@ -13,7 +13,7 @@ const featuresData = [
     description: "Add projects and manage everything in one place.",
     icon: FolderPlus,
     points: [
-      "Set milestones, deadlines, and more",
+      "Set milestones & deadlines",
       "Manage associated files",
       "Share progress with customers",
     ],
@@ -33,7 +33,11 @@ const featuresData = [
     description:
       "Manage all your customers, invoices, and projects in one place.",
     icon: LayoutDashboard,
-    points: ["Create projects", "Send invoices", "Manage customers"],
+    points: [
+      "Create & manage projects",
+      "Send invoices & track payments",
+      "Manage customers & invoices",
+    ],
   },
   {
     title: "Customer Dashboard",

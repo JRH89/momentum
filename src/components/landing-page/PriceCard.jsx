@@ -9,7 +9,7 @@ import { CircleCheckIcon } from "lucide-react";
 // Page Data
 const pageData = {
   tag: "Pricing",
-  title: "A plan for every budget",
+  title: "Affordable Plans",
   description:
     "We offer generous pricing plans to fit any budget. Choose the one that works best for you.",
 };

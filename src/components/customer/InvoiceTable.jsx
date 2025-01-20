@@ -45,7 +45,7 @@ const InvoicesTable = ({ invoices, itemsPerPage = 5 }) => {
   };
 
   return (
-    <div className="px-0 sm:px-6">
+    <div className="mt-1">
       {invoices.length > 0 ? (
         <div className="overflow-x-auto  shadow-md shadow-black rounded-lg border-2 border-black">
           <table className="min-w-full table-auto">

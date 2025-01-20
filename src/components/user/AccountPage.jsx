@@ -215,8 +215,8 @@ const Account = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen h-full my-auto w-full max-w-6xl mx-auto text-black items-center justify-start p-4">
-        <h1 className=" text-3xl text-left font-bold mb-4 flex flex-row items-center w-full gap-2">
+      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <h1 className=" text-3xl text-left font-bold mb-4 flex flex-row items-center w-full gap-2 sm:px-4">
           <Blocks className="w-8 h-8" /> Account
         </h1>
         {user ? (

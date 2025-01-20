@@ -70,7 +70,7 @@ const ImageGallery = () => {
   return (
     <section
       id="gallery"
-      className="border-t-2 border-black bg-white min-h-screen h-full flex flex-col py-24 px-5 lg:px-0"
+      className="border-t-2 border-black bg-white flex flex-col py-24 px-5 lg:px-0"
     >
       <div className="section-heading w-full mx-auto flex flex-col text-center">
         <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
@@ -112,7 +112,7 @@ const ImageGallery = () => {
       backgroundPosition: 'center',
     }}
   >
-    <div className="bg-white/95 h-full flex flex-col py-12 shadow-lg w-full p-4 mx-auto items-center  relative">
+    <div className="bg-white/95 h-full flex flex-col py-12 shadow-lg w-full p-4 mx-auto items-center relative">
       <button
         aria-label="close modal"
         type="button"
@@ -121,7 +121,7 @@ const ImageGallery = () => {
       >
         <XIcon className="w-6 h-6 hover:rotate-90 duration-300" />
       </button>
-      <div className="flex flex-col items-center lg:flex-row h-full lg:justify-center lg:gap-10">
+      <div className="flex flex-col items-center sm:px-5 md:flex-row h-full justify-center gap-5 lg:gap-10">
         <div className="flex flex-col items-center">
           <Image
             aria-label={selectedImage.alt}
@@ -133,15 +133,15 @@ const ImageGallery = () => {
           />
         </div>
           <div className='flex flex-col justify-between'>
-            <p className="text-black text-left text-2xl lg:text-3xl px-2 font-semibold mb-2">
+            <p className="text-black text-left text-lg sm:text-xl md:text-2xl lg:text-3xl px-2 font-semibold ">
             {selectedImage.alt}
           </p>
-          <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium lg:text-xl">
+          <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium sm:text-md text-sm lg:text-xl">
             {selectedImage.desc}
           </p>
         </div>
       </div>
-      <div className="flex absolute bottom-2 justify-between gap-10 max-w-6xl mx-auto w-full px-5 lg:px-0">
+      <div className="flex absolute bottom-2 justify-center gap-5 lg:gap-10 max-w-6xl mx-auto w-full">
         <button
           aria-label="previous page"
           type="button"
