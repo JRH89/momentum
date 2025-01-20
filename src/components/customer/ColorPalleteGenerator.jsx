@@ -181,7 +181,7 @@ export default function ColorPaletteGenerator({
     <div className="flex flex-col mx-auto ">
       <div className=" w-full mx-auto text-black flex flex-col items-center justify-start mt-1">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <div className="flex flex-row items-center justify-start my-auto">
+          <div className="flex mb-1 flex-row items-center justify-start my-auto">
             <h3 className="text-2xl font-bold">Pallete</h3>
             <button
               onClick={() => setOpenMenuOne(!openMenuOne)}
@@ -244,7 +244,7 @@ export default function ColorPaletteGenerator({
             </div>
           </div>
         )}
-        <div className="flex h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black flex-wrap gap-4 w-full justify-start">
+        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black  gap-4 w-full justify-start">
           {projectColors.map((color, index) => (
             <div
               key={index}
