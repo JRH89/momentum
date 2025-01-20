@@ -132,27 +132,23 @@ const CustomerDashboard = () => {
                   <h2 className="text-2xl font-bold mb-3">Projects</h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-0 sm:px-6">
                     {customerData.projects.map((project, index) => (
-                      <div
+                      <Link
                         key={index}
-                        className="bg-[#EAEEFE] border-2 shadow-black border-black rounded-lg shadow-md p-4"
+                        href={`/Customer/${userId}/${customerId}/${project?.id}`}
                       >
-                        <h3 className="text-lg font-bold text-black mb-2">
-                          {project.name}
-                        </h3>
-                        <p className="text-gray-600 text-sm">
-                          ID: {project.id}
-                        </p>
-                        <p className="text-gray-600 text-sm mb-2">
-                          Descripion: {project.description}
-                        </p>
-                        <MilestoneProgress milestones={project.milestones} />
-                        <Link
-                          href={`/Customer/${userId}/${customerId}/${project?.id}`}
-                          className="text-green-500 text-md hover:underline duration-300 font-bold flex pt-2 "
-                        >
-                          View Details
-                        </Link>
-                      </div>
+                        <div className="bg-[#EAEEFE] hover:shadow-lg hover:shadow-black duration-300 border-2 shadow-black border-black rounded-lg shadow-md p-4">
+                          <h3 className="text-lg font-bold text-black mb-2">
+                            {project.name}
+                          </h3>
+                          <p className="text-gray-600 text-sm">
+                            ID: {project.id}
+                          </p>
+                          <p className="text-gray-600 text-sm mb-2">
+                            Descripion: {project.description}
+                          </p>
+                          <MilestoneProgress milestones={project.milestones} />
+                        </div>
+                      </Link>
                     ))}
                   </div>
                 </>

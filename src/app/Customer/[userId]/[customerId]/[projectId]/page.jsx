@@ -10,6 +10,8 @@ import Link from "next/link";
 import { PlusIcon, Upload } from "lucide-react";
 import ReactPaginate from "react-paginate";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
+import CustomerPallete from "../../../../../components/customer/CustomerPallete";
+import MilestoneProgress from "../../../../../components/ProgressBar";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -152,7 +154,10 @@ const CustomerProjectPage = () => {
         {projectData && (
           <div>
             <div className="mt-4 bg-white">
-              <h3 className="text-2xl font-bold mb-2">Milestones</h3>
+              <div className="flex flex-row items-end w-full justify-between">
+                <h3 className="text-2xl font-bold">Milestones</h3>
+                <MilestoneProgress milestones={projectData.milestones} />
+              </div>
               {milestones.length > 0 ? (
                 <div className="border-l-2 border-r-2 border-t-2 border-black rounded-lg shadow-md shadow-black">
                   <table className="min-w-full shadow-md text-xs sm:text-base">
@@ -236,98 +241,100 @@ const CustomerProjectPage = () => {
                 disabledClassName="cursor-not-allowed"
               />
             )}
-            <div className="mt-4 ">
-              <div className="flex flex-row gap-4 mb-2">
-                <h3 className="text-2xl font-bold">Uploads</h3>
-                <button
-                  onClick={() => setShowUploadMenu(!showUploadMenu)}
-                  className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
-                >
-                  [
-                  <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
-                  ]
-                </button>
-              </div>
-              {showUploadMenu && (
-                <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
-                  <input
-                    type="file"
-                    onChange={(e) => setFile(e.target.files[0])}
-                    className="border rounded p-2 bg-white"
-                  />
+
+            <div className="flex flex-col lg:flex-row gap-4 my-auto">
+              <div className="mt-2 w-full">
+                <div className="flex flex-row gap-4 mb-2">
+                  <h3 className="text-2xl font-bold">Uploads</h3>
                   <button
-                    onClick={handleUpload}
-                    disabled={!file || isLoading}
-                    className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                    onClick={() => setShowUploadMenu(!showUploadMenu)}
+                    className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
                   >
-                    {isLoading ? (
-                      "Uploading..."
-                    ) : (
-                      <p className="flex items-center gap-2">
-                        <Upload className="w-5 h-5 text-center" />
-                        Upload file
-                      </p>
-                    )}
+                    [
+                    <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+                    ]
                   </button>
                 </div>
-              )}
-              {uploads.length > 0 ? (
-                <div className="border-2 border-black rounded-lg shadow-md shadow-black p-4 mb-4">
-                  <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4">
-                    {currentUploads.map((upload, index) => (
-                      <li
-                        key={index}
-                        className="border border-black bg-[#EAEEFE] p-2 rounded shadow-md flex items-center gap-2"
-                      >
-                        {/* Image preview (if it's an image) */}
-                        {upload.url &&
-                          (upload.name.match(
-                            /\.(jpeg|jpg|gif|png|webp|svg)$/i
-                          ) ? (
-                            <img
-                              src={upload.url}
-                              alt={upload.name || `Upload ${index + 1}`}
-                              className="w-10 h-10 object-cover rounded"
-                              loading="lazy"
-                            />
-                          ) : null)}
+                {showUploadMenu && (
+                  <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
+                    <input
+                      type="file"
+                      onChange={(e) => setFile(e.target.files[0])}
+                      className="border rounded p-2 bg-white"
+                    />
+                    <button
+                      onClick={handleUpload}
+                      disabled={!file || isLoading}
+                      className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                    >
+                      {isLoading ? (
+                        "Uploading..."
+                      ) : (
+                        <p className="flex items-center gap-2">
+                          <Upload className="w-5 h-5 text-center" />
+                          Upload file
+                        </p>
+                      )}
+                    </button>
+                  </div>
+                )}
+                {uploads.length > 0 ? (
+                  <div className="">
+                    <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 border-2 shadow-black border-black bg-white mt-1 rounded-lg shadow-md">
+                      {currentUploads.map((upload, index) => (
+                        <li key={index} className="p-2 flex items-center gap-2">
+                          {/* Image preview (if it's an image) */}
+                          {upload.url &&
+                            (upload.name.match(
+                              /\.(jpeg|jpg|gif|png|webp|svg)$/i
+                            ) ? (
+                              <img
+                                src={upload.url}
+                                alt={upload.name || `Upload ${index + 1}`}
+                                className="w-16 h-16 border border-black object-cover rounded-md"
+                                loading="lazy"
+                              />
+                            ) : null)}
 
-                        {/* File link */}
-                        <a
-                          href={upload.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-destructive hover:underline truncate"
-                        >
-                          {upload.name || `File ${index + 1}`}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <p className="px-4">No uploads yet.</p>
+                          {/* File link */}
+                          <a
+                            href={upload.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-destructive font-medium hover:underline truncate"
+                          >
+                            {upload.name || `File ${index + 1}`}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : (
+                  <p className="px-4">No uploads yet.</p>
+                )}
+              </div>
+              {uploads.length > itemsPerPage && (
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  pageCount={pageCount}
+                  onPageChange={handlePageChange}
+                  containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
+                  pageClassName=" px-3 py-1"
+                  activeClassName=" text-confirm font-semibold"
+                  previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                  nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                  disabledClassName="cursor-not-allowed"
+                />
               )}
+              <div className="w-full">
+                <CustomerPallete
+                  userId={userId}
+                  customerId={customerId}
+                  projectId={projectId}
+                />
+              </div>
             </div>
-            {uploads.length > itemsPerPage && (
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                pageCount={pageCount}
-                onPageChange={handlePageChange}
-                containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
-                pageClassName=" px-3 py-1"
-                activeClassName=" text-confirm font-semibold"
-                previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                disabledClassName="cursor-not-allowed"
-              />
-            )}
-            <ColorPaletteGenerator
-              userId={userId}
-              customerId={customerId}
-              projectId={projectId}
-            />
           </div>
         )}
       </div>
