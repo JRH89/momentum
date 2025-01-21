@@ -31,10 +31,10 @@ export default function Home() {
                 className="w-auto border-2 border-black shadow-md shadow-black h-auto rounded-lg my-auto justify-center items-center z-40"
               />
             </div>
-            <h1 className="text-2xl text-black md:text-5xl font-extrabold mb-2 md:mb-6">
+            <h1 className="text-2xl text-black sm:text-3xl lg:text-5xl font-extrabold mb-2 lg:mb-6">
               Project Management for Freelancers & Small Businesses
             </h1>
-            <p className="text-lg md:text-xl max-w-3xl lg:text-2xl mb-4 md:mb-8 text-gray-800 font-medium">
+            <p className="text-lg md:text-xl max-w-3xl lg:text-2xl mb-4 lg:mb-8 text-gray-800 font-medium">
               Manage projects, organize customers, and send invoices.
             </p>
             <div className="flex flex-row gap-5 items-center">
