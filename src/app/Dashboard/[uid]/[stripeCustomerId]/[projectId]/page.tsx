@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
-import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  doc,
+  getDoc,
+  runTransaction,
+  updateDoc,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { Plus, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
@@ -262,6 +268,56 @@ const ProjectPage = () => {
     }
   };
 
+  const deleteUpload = async (index: number) => {
+    try {
+      const userDocRef = doc(db, "users", uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const customerIndex = userData.customers.findIndex(
+          (cust: any) => cust.stripeCustomerId === stripeCustomerId
+        );
+        const projectIndex = userData.customers[
+          customerIndex
+        ].projects.findIndex((proj: any) => proj.id === projectId);
+
+        // Ensure customer and project exist
+        if (customerIndex === -1 || projectIndex === -1) {
+          throw new Error("Customer or project not found");
+        }
+
+        // Update project uploads as an array of objects
+        const updatedUploads = userData.customers[customerIndex].projects[
+          projectIndex
+        ].uploads.filter((_: any, i: number) => i !== index);
+
+        // Update the Firestore document
+        const updatedData = { ...userData };
+        updatedData.customers[customerIndex].projects[projectIndex].uploads =
+          updatedUploads;
+
+        await updateDoc(userDocRef, updatedData);
+
+        // Update local state
+        setUploads(updatedUploads);
+        toast.success("Upload deleted successfully!");
+      } else {
+        toast.error("User document does not exist");
+        throw new Error("User document does not exist");
+      }
+    } catch (error) {
+      console.error("Error deleting upload:", error);
+      toast.error("Error deleting upload");
+    }
+
+    // Reset the file input
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   const handleMarkProjectComplete = async () => {
     try {
       const userRef = doc(db, "users", uid);
@@ -306,6 +362,59 @@ const ProjectPage = () => {
     } catch (error) {
       console.error("Error marking project as complete:", error);
       toast.error("Failed to mark project as complete. Please try again.");
+    }
+  };
+
+  const deleteMilestone = async (milestoneId: string) => {
+    try {
+      const userDocRef = doc(db, "users", uid);
+
+      // Get the current user document
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        throw new Error("User document not found.");
+      }
+
+      // Extract data from Firestore
+      const userData = userDoc.data();
+      const customers = userData.customers || [];
+
+      // Find the target customer and project
+      const updatedCustomers = customers.map((customer: any) => {
+        if (customer.stripeCustomerId === stripeCustomerId) {
+          return {
+            ...customer,
+            projects: customer.projects.map((project: any) => {
+              if (project.id === projectId) {
+                return {
+                  ...project,
+                  milestones: project.milestones.filter(
+                    (milestone: Milestone) => milestone.id !== milestoneId
+                  ),
+                };
+              }
+              return project;
+            }),
+          };
+        }
+        return customer;
+      });
+
+      // Update Firestore with the modified data
+      await updateDoc(userDocRef, {
+        customers: updatedCustomers,
+      });
+
+      // Update local state
+      setMilestones(
+        milestones.filter((milestone) => milestone.id !== milestoneId)
+      );
+
+      toast.success("Milestone deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting milestone:", error);
+      toast.error("Failed to delete milestone. Please try again.");
     }
   };
 
@@ -525,9 +634,20 @@ const ProjectPage = () => {
                               name="status"
                               id="status"
                               aria-label="status"
-                              onChange={(e) =>
-                                handleChangeStatus(milestone.id, e.target.value)
-                              }
+                              onChange={(e) => {
+                                if (e.target.value === "delete") {
+                                  if (window.confirm("Are you sure?")) {
+                                    deleteMilestone(milestone.id); // Call delete function
+                                  } else {
+                                    handleChangeStatus(milestone.id, "pending");
+                                  }
+                                } else {
+                                  handleChangeStatus(
+                                    milestone.id,
+                                    e.target.value
+                                  ); // Call status change function
+                                }
+                              }}
                               value={milestone.status}
                               className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
                             >
@@ -545,6 +665,12 @@ const ProjectPage = () => {
                                 className="text-confirm"
                               >
                                 Completed
+                              </option>
+                              <option
+                                value="delete"
+                                className="text-destructive"
+                              >
+                                Delete
                               </option>
                             </select>
                           </div>
@@ -633,18 +759,29 @@ const ProjectPage = () => {
                 </div>
               )}
               {uploads.length > 0 ? (
-                <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 border-2 shadow-black border-black bg-white mt-1 rounded-lg shadow-md">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
                   {uploads.map((upload, index) => (
-                    <li key={index} className="p-2 flex items-center gap-2">
+                    <li
+                      key={index}
+                      className="p-2 relative border border-black rounded-lg flex shadow-md items-center gap-2"
+                    >
+                      {/* Delete Button */}
+                      <button
+                        type="button"
+                        onClick={() => deleteUpload(index)}
+                        className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                      >
+                        X
+                      </button>
                       {/* Image preview (if it's an image) */}
                       {upload.url &&
                         (upload.name.match(
-                          /\.(jpeg|jpg|gif|png|webp|svg)$/i
+                          /\.(jpeg|jpg|gif|png|webp|svg|ico)$/i
                         ) ? (
                           <img
                             src={upload.url}
                             alt={upload.name || `Upload ${index + 1}`}
-                            className="w-16 h-16 border border-black object-cover rounded-md"
+                            className="w-8 h-8 sm:w-16 sm:h-16 border border-black object-cover rounded-md"
                             loading="lazy"
                           />
                         ) : null)}

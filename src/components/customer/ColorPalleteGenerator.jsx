@@ -244,7 +244,7 @@ export default function ColorPaletteGenerator({
             </div>
           </div>
         )}
-        <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black  gap-4 w-full justify-start">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start">
           {projectColors.map((color, index) => (
             <div
               key={index}
@@ -253,6 +253,7 @@ export default function ColorPaletteGenerator({
             >
               {/* Delete Button */}
               <button
+                type="button"
                 onClick={() => deleteColor(color)}
                 className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
               >
