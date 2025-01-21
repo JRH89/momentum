@@ -239,7 +239,7 @@ export default function ColorPaletteGenerator({
                 className="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black border-2 border-black flex items-center duration-300 justify-center gap-2"
               >
                 <Save className="w-5 h-5" />
-                Save color to palette
+                Save
               </button>
             </div>
           </div>

@@ -752,7 +752,7 @@ const ProjectPage = () => {
                     ) : (
                       <p className="flex items-center gap-2">
                         <Upload className="w-5 h-5 text-center" />
-                        Upload file
+                        Upload
                       </p>
                     )}
                   </button>
