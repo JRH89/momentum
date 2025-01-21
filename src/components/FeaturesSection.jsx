@@ -69,29 +69,39 @@ const FeaturesSection = () => {
             projects organized, stay on schedule, and get paid.
           </p>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 mt-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-12 mt-12">
           {featuresData.map((feature, index) => (
             <div
               key={index}
-              className="relative max-w-md w-full border-2 border-black bg-confirm p-8 rounded-lg shadow-lg text-center flex flex-col items-center shadow-black"
+              className="relative h-full max-w-md w-full border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center"
             >
-              <div className="absolute -top-6 flex items-center justify-center">
+              {/* Icon Wrapper */}
+              <div className="absolute -top-8 flex items-center justify-center">
                 <div className="bg-white border-2 border-black shadow-md shadow-black rounded-full w-16 h-16 flex items-center justify-center">
                   <feature.icon className="text-destructive w-8 h-8" />
                 </div>
               </div>
-              <div className="max-w-md mx-auto text-center items-center justify-center flex flex-col">
-                <h3 className="text-2xl md:text-3xl font-bold mb-4 mt-8 text-black">
+
+              {/* Content Wrapper */}
+              <div className="flex flex-col items-center justify-center text-center h-full space-y-6 mt-10">
+                {/* Title */}
+                <h3 className="text-3xl md:text-4xl font-bold text-black">
                   {feature.title}
                 </h3>
-                <p className="text-lg md:text-xl w-full font-medium text-black mb-6 text-center leading-relaxed">
+
+                {/* Description */}
+                <p className="text-lg md:text-xl font-medium text-black leading-relaxed">
                   {feature.description}
                 </p>
-                <ul className="text-black items-center w-full text-left text-md md:text-lg lg:text-xl font-medium space-y-2">
+
+                {/* Points List */}
+                <ul className="w-full text-left space-y-3">
                   {feature.points.map((point, idx) => (
-                    <li key={idx} className="flex gap-3 items-center">
+                    <li key={idx} className="flex items-center gap-3">
                       <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />
-                      {point}
+                      <span className="text-lg md:text-xl font-medium text-black">
+                        {point}
+                      </span>
                     </li>
                   ))}
                 </ul>
