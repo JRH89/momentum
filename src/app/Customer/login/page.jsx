@@ -8,11 +8,13 @@ import Navbar from "../../../components/customer/Navbar";
 import { Footer } from "../../../components/landing-page/Footer";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
+import { Eye, EyeOff } from "lucide-react";
 
 const CustomerLogin = () => {
   const { user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false); // Track visibility
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [uid, setUid] = useState(""); // This will be the document ID where the customer is found
@@ -21,25 +23,19 @@ const CustomerLogin = () => {
     const fetchCustomerUid = async () => {
       if (user) {
         try {
-          // Query the 'users' collection to find documents with 'customers' array
           const usersRef = collection(db, "users");
           const querySnapshot = await getDocs(usersRef);
-
-          // Iterate through all user documents to check for the matching customer UID
           let found = false;
           querySnapshot.forEach((doc) => {
             const customers = doc.data().customers || [];
             const customer = customers.find(
               (customer) => customer.uid === user.uid
             );
-
             if (customer) {
-              // If a match is found, set the document ID (uid)
               setUid(doc.id);
               found = true;
             }
           });
-
           if (!found) {
             console.log("No matching customer found in any users collection.");
           }
@@ -49,16 +45,13 @@ const CustomerLogin = () => {
       }
     };
 
-    // Fetch customer UID only when the user is authenticated
     if (user) {
       fetchCustomerUid();
     }
   }, [user]);
 
-  // Redirect if the user is already logged in
   useEffect(() => {
     if (user && uid) {
-      // Redirect using the fetched customer UID and current user's UID
       redirect(`/Customer/${uid}/${user.uid}`);
     }
   }, [user, uid]);
@@ -93,14 +86,26 @@ const CustomerLogin = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            className="border-2 shadow-md border-black rounded-md px-4 py-2"
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <input
+              className="border-2 shadow-md border-black rounded-md px-4 py-2 w-full"
+              type={passwordVisible ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <div
+              className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              {passwordVisible ? (
+                <EyeOff className="text-gray-600" size={20} />
+              ) : (
+                <Eye className="text-gray-600" size={20} />
+              )}
+            </div>
+          </div>
           <button
             className="duration-300 border-2 border-black bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black  text-black font-bold py-2 px-4 rounded-lg"
             type="submit"

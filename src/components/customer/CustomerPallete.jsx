@@ -174,7 +174,7 @@ export default function CustomerPallete({ userId, customerId, projectId }) {
   };
 
   return (
-    <div className="flex flex-col mx-auto ">
+    <div className="flex flex-col mt-2 mx-auto ">
       <div className=" w-full mx-auto text-black flex flex-col items-center justify-start mt-1">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex flex-row items-center justify-start my-auto">
@@ -235,12 +235,12 @@ export default function CustomerPallete({ userId, customerId, projectId }) {
                 className="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black border-2 border-black flex items-center duration-300 justify-center gap-2"
               >
                 <Save className="w-5 h-5" />
-                Save color to palette
+                Save
               </button>
             </div>
           </div>
         )}
-        <div className="flex h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black flex-wrap gap-4 w-full justify-start">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start">
           {projectColors.map((color, index) => (
             <div
               key={index}

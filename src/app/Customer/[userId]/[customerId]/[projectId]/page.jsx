@@ -12,6 +12,7 @@ import ReactPaginate from "react-paginate";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import CustomerPallete from "../../../../../components/customer/CustomerPallete";
 import MilestoneProgress from "../../../../../components/ProgressBar";
+import { toast } from "react-toastify";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -113,7 +114,10 @@ const CustomerProjectPage = () => {
 
         // Update local state
         setUploads(updatedUploads);
+
+        toast.success("File uploaded successfully");
       } else {
+        toast.error("User document does not exist");
         throw new Error("User document does not exist");
       }
 
@@ -156,6 +160,56 @@ const CustomerProjectPage = () => {
     return () => unsubscribe(); // Cleanup listener on unmount
   }, [user, router]);
 
+  const deleteUpload = async (index) => {
+    try {
+      const userDocRef = doc(db, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+        const customerIndex = userData.customers.findIndex(
+          (cust) => cust.uid === customerId
+        );
+        const projectIndex = userData.customers[
+          customerIndex
+        ].projects.findIndex((proj) => proj.id === projectId);
+
+        // Ensure customer and project exist
+        if (customerIndex === -1 || projectIndex === -1) {
+          throw new Error("Customer or project not found");
+        }
+
+        // Update project uploads as an array of objects
+        const updatedUploads = userData.customers[customerIndex].projects[
+          projectIndex
+        ].uploads.filter((_, i) => i !== index);
+
+        // Update the Firestore document
+        const updatedData = { ...userData };
+        updatedData.customers[customerIndex].projects[projectIndex].uploads =
+          updatedUploads;
+
+        await updateDoc(userDocRef, updatedData);
+
+        // Update local state
+        setUploads(updatedUploads);
+        toast.success("Upload deleted successfully!");
+      } else {
+        toast.error("User document does not exist");
+        throw new Error("User document does not exist");
+      }
+    } catch (error) {
+      console.error("Error deleting upload:", error);
+      toast.error("Error deleting upload");
+    }
+
+    // Reset the file input
+    const fileInput = document.getElementById("fileInput");
+    if (fileInput) {
+      fileInput.value = "";
+    }
+  };
+
   return (
     <>
       <div className="p-6 pt-8 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
@@ -173,14 +227,16 @@ const CustomerProjectPage = () => {
           </p>
         </div>
         {projectData && (
-          <div>
-            <div className="mt-4 bg-white">
+          <div className="flex flex-col">
+            <div className="mt-4 bg-white flex flex-col">
               <div className="flex flex-row items-end w-full justify-between">
                 <h3 className="text-2xl font-bold">Milestones</h3>
-                <MilestoneProgress milestones={projectData.milestones} />
+                <div className="w-full max-w-xs flex-row justify-end hidden sm:flex">
+                  <MilestoneProgress milestones={projectData.milestones} />
+                </div>
               </div>
               {milestones.length > 0 ? (
-                <div className="border-l-2 border-r-2 border-t-2 border-black rounded-lg shadow-md shadow-black">
+                <div className="border-l-2 border-r-2 border-t-2 border-black overflow-x-auto rounded-lg shadow-md shadow-black">
                   <table className="min-w-full shadow-md text-xs sm:text-base">
                     <thead className="border-b-2 border-black bg-backgroundPrimary">
                       <tr>
@@ -263,97 +319,111 @@ const CustomerProjectPage = () => {
               />
             )}
 
-            <div className="flex flex-col lg:flex-row gap-4 my-auto">
-              <div className="mt-2 w-full">
-                <div className="flex flex-row gap-4 mb-2">
-                  <h3 className="text-2xl font-bold">Uploads</h3>
-                  <button
-                    onClick={() => setShowUploadMenu(!showUploadMenu)}
-                    className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
-                  >
-                    [
-                    <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
-                    ]
-                  </button>
-                </div>
-                {showUploadMenu && (
-                  <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
-                    <input
-                      type="file"
-                      onChange={(e) => setFile(e.target.files[0])}
-                      className="border rounded p-2 bg-white"
-                    />
+            <div className="lg:flex items-center lg:flex-row">
+              <div className="grid grid-cols-2 w-full gap-4">
+                {/* Uploads section */}
+                <div className="mt-4">
+                  <div className="flex flex-row gap-4 mb-2">
+                    <h3 className="text-2xl font-bold">Uploads</h3>
                     <button
-                      onClick={handleUpload}
-                      disabled={!file || isLoading}
-                      className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                      onClick={() => setShowUploadMenu(!showUploadMenu)}
+                      className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
                     >
-                      {isLoading ? (
-                        "Uploading..."
-                      ) : (
-                        <p className="flex items-center gap-2">
-                          <Upload className="w-5 h-5 text-center" />
-                          Upload file
-                        </p>
-                      )}
+                      [
+                      <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+                      ]
                     </button>
                   </div>
-                )}
-                {uploads.length > 0 ? (
-                  <div className="">
-                    <ul className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 border-2 shadow-black border-black bg-white mt-1 rounded-lg shadow-md">
-                      {currentUploads.map((upload, index) => (
-                        <li key={index} className="p-2 flex items-center gap-2">
-                          {/* Image preview (if it's an image) */}
-                          {upload.url &&
-                            (upload.name.match(
-                              /\.(jpeg|jpg|gif|png|webp|svg)$/i
-                            ) ? (
-                              <img
-                                src={upload.url}
-                                alt={upload.name || `Upload ${index + 1}`}
-                                className="w-16 h-16 border border-black object-cover rounded-md"
-                                loading="lazy"
-                              />
-                            ) : null)}
-
-                          {/* File link */}
-                          <a
-                            href={upload.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-destructive font-medium hover:underline truncate"
+                  {showUploadMenu && (
+                    <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
+                      <input
+                        type="file"
+                        onChange={(e) => setFile(e.target.files[0])}
+                        className="border rounded p-2 bg-white"
+                      />
+                      <button
+                        onClick={handleUpload}
+                        disabled={!file || isLoading}
+                        className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                      >
+                        {isLoading ? (
+                          "Uploading..."
+                        ) : (
+                          <p className="flex items-center gap-2">
+                            <Upload className="w-5 h-5 text-center" />
+                            Upload
+                          </p>
+                        )}
+                      </button>
+                    </div>
+                  )}
+                  {uploads.length > 0 ? (
+                    <div className="">
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
+                        {currentUploads.map((upload, index) => (
+                          <li
+                            key={index}
+                            className="p-2 relative border border-black rounded-lg flex shadow-md items-center gap-2"
                           >
-                            {upload.name || `File ${index + 1}`}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ) : (
-                  <p className="px-4">No uploads yet.</p>
+                            {/* Delete Button */}
+                            <button
+                              type="button"
+                              onClick={() => deleteUpload(index)}
+                              className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                            >
+                              X
+                            </button>
+                            {/* Image preview (if it's an image) */}
+                            {upload.url &&
+                              (upload.name.match(
+                                /\.(jpeg|jpg|gif|png|webp|svg)$/i
+                              ) ? (
+                                <img
+                                  src={upload.url}
+                                  alt={upload.name || `Upload ${index + 1}`}
+                                  className="w-16 h-16 border border-black object-cover rounded-md"
+                                  loading="lazy"
+                                />
+                              ) : null)}
+
+                            {/* File link */}
+                            <a
+                              href={upload.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-destructive font-medium hover:underline truncate"
+                            >
+                              {upload.name || `File ${index + 1}`}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <p className="px-4">No uploads yet.</p>
+                  )}
+                </div>
+                {uploads.length > itemsPerPage && (
+                  <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    pageCount={pageCount}
+                    onPageChange={handlePageChange}
+                    containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
+                    pageClassName=" px-3 py-1"
+                    activeClassName=" text-confirm font-semibold"
+                    previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                    nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                    disabledClassName="cursor-not-allowed"
+                  />
                 )}
-              </div>
-              {uploads.length > itemsPerPage && (
-                <ReactPaginate
-                  previousLabel={"Previous"}
-                  nextLabel={"Next"}
-                  pageCount={pageCount}
-                  onPageChange={handlePageChange}
-                  containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
-                  pageClassName=" px-3 py-1"
-                  activeClassName=" text-confirm font-semibold"
-                  previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                  nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                  disabledClassName="cursor-not-allowed"
-                />
-              )}
-              <div className="w-full">
-                <CustomerPallete
-                  userId={userId}
-                  customerId={customerId}
-                  projectId={projectId}
-                />
+                <div className="w-full">
+                  <CustomerPallete
+                    userId={userId}
+                    customerId={customerId}
+                    projectId={projectId}
+                  />
+                </div>
               </div>
             </div>
           </div>
