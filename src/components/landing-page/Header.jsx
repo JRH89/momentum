@@ -132,8 +132,8 @@ export const Header = () => {
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: isMenuOpen ? 1 : 0, y: isMenuOpen ? 0 : -100 }}
             transition={{
-              opacity: { duration: 0.7 },
-              y: { duration: 1, ease: [0.42, 0, 0.58, 1], type: "easeInOut" },
+              opacity: { duration: 0.5 },
+              y: { duration: 0.5, ease: [0.42, 0, 0.58, 1], type: "easeInOut" },
             }}
             className={`lg:hidden sticky h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
               isMenuOpen ? "sticky" : "hidden"
