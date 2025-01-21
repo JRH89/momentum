@@ -243,11 +243,11 @@ export default function ColorPaletteGenerator({
             </div>
           </div>
         )}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start">
+        <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
           {projectColors.map((color, index) => (
             <div
               key={index}
-              className="w-16 h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
+              className="w-16 mx-auto h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
               style={{ backgroundColor: color }}
             >
               {/* Delete Button */}

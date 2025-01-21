@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // Import usePathname
 import {
   HomeIcon,
   FileTextIcon,
@@ -22,6 +22,7 @@ import { doc, getDoc } from "firebase/firestore";
 const Sidebar = ({ uid }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname(); // Get the current path
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -85,14 +86,12 @@ const Sidebar = ({ uid }) => {
 
   return (
     <div className="flex lg:mr-4">
-      {/* Sidebar */}
       <div
-        className={`fixed  inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${
+        className={`fixed inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 lg:translate-x-0`}
       >
-        <div className="flex flex-col  h-full">
-          {/* Logo and Close Button */}
+        <div className="flex flex-col h-full">
           <div className="flex rounded-tr-lg gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm">
             <Link
               className="flex hover:scale-105 duration-300 mx-auto flex-row items-center"
@@ -149,23 +148,22 @@ const Sidebar = ({ uid }) => {
               <XIcon className="w-6 h-6 p-1 text-destructive hover:rotate-90 duration-300" />
             </button>
           </div>
-          {/* Navigation Links */}
-          <nav className="flex flex-col bg-backgroundPrimary px-2 h-full my-auto  justify-evenly py-6 space-y-0">
+          <nav className="flex flex-col bg-backgroundPrimary px-2 h-full my-auto justify-evenly py-6 space-y-0">
             {links.map((link) => (
               <div
                 key={link.href}
                 className="w-full mx-auto justify-center items-center"
               >
                 <Link
-                  onClick={() => {
-                    toggleSidebar();
-                  }}
+                  onClick={toggleSidebar}
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300 ${
+                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${
                     link.disabled
                       ? "opacity-50 pointer-events-none"
-                      : "cursor-pointer"
+                      : pathname === link.href // Highlight if current page
+                      ? "bg-white"
+                      : "cursor-pointer hover:ml-4"
                   }`}
                 >
                   <link.icon className="w-5 h-5 mr-3" />
@@ -174,7 +172,6 @@ const Sidebar = ({ uid }) => {
               </div>
             ))}
           </nav>
-          {/* Settings Link */}
           <div className="p-4 px-2 rounded-br-xl bg-white border-t-2 border-black">
             <button
               onClick={() => {
@@ -194,9 +191,7 @@ const Sidebar = ({ uid }) => {
               Logout
             </button>
             <Link
-              onClick={() => {
-                toggleSidebar();
-              }}
+              onClick={toggleSidebar}
               href={`/Dashboard/${uid}/settings`}
               className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300"
             >
@@ -206,7 +201,6 @@ const Sidebar = ({ uid }) => {
           </div>
         </div>
       </div>
-      {/* Mobile Menu Button */}
       <button
         className={`${
           isOpen ? "hidden" : "block"
@@ -249,7 +243,6 @@ const Sidebar = ({ uid }) => {
           </g>
         </svg>
       </button>
-      {/* Main Content */}
       <div className="flex-1 z-40 top-0 left-0 ml-0 transition-all duration-300 lg:ml-48 bg-white"></div>
     </div>
   );

@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { XIcon, User } from "lucide-react";
 
 const AboutSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+
+  const pathname = usePathname(); // Get the current path
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -118,10 +120,12 @@ const AboutSidebar = () => {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:underline duration-300 ${
+                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${
                     link.disabled
                       ? "opacity-50 pointer-events-none"
-                      : "cursor-pointer"
+                      : pathname === link.href // Highlight if current page
+                      ? "bg-white"
+                      : "cursor-pointer hover:bg-white duration-300"
                   }`}
                 >
                   {link.label}

@@ -2,13 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
-import {
-  arrayRemove,
-  doc,
-  getDoc,
-  runTransaction,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { Plus, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
@@ -47,11 +41,9 @@ const ProjectPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [uploads, setUploads] = useState<{ name: string; url: string }[]>([]);
   const [userData, setUserData] = useState<any>(null);
-
   const [showUploadForm, setShowUploadForm] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
 
   useEffect(() => {
@@ -585,9 +577,6 @@ const ProjectPage = () => {
                       <th className="p-1 px-4 text-left text-lg font-semibold">
                         Deadline
                       </th>
-                      <th className="p-1 px-4 text-left text-lg font-semibold">
-                        Status
-                      </th>
                       <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">
                         Actions
                       </th>
@@ -615,19 +604,6 @@ const ProjectPage = () => {
                           {milestone.priority}
                         </td>
                         <td className="p-1 px-4">{milestone.deadline}</td>
-                        <td className="p-1 px-4 text-sm text-gray-500">
-                          <span
-                            className={`text-sm capitalize font-semibold ${
-                              milestone.status === "completed"
-                                ? "text-confirm"
-                                : milestone.status === "pending"
-                                ? "text-destructive"
-                                : "text-green-500"
-                            }`}
-                          >
-                            {milestone.status}
-                          </span>
-                        </td>
                         <td className="p-1 px-4 border-r border-black">
                           <div className="p-1">
                             <select
@@ -649,7 +625,18 @@ const ProjectPage = () => {
                                 }
                               }}
                               value={milestone.status}
-                              className="bg-gray-50 border border-gray-300 text-gray-900 py-1 px-2 rounded-md"
+                              className={`${
+                                milestone.status === "pending" && "text-black"
+                              } ${
+                                milestone.status === "in-progress" &&
+                                "text-green-500"
+                              } ${
+                                milestone.status === "completed" &&
+                                "text-confirm"
+                              } ${
+                                milestone.status === "delete" &&
+                                "text-destructive"
+                              } px-2 py-1 text-sm font-semibold rounded-md text-black`}
                             >
                               <option value="pending" className="text-black">
                                 Pending
@@ -713,7 +700,7 @@ const ProjectPage = () => {
           )}
         </div>
         <div className="lg:flex items-center lg:flex-row">
-          <div className="grid grid-cols-2 w-full gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
             {/* Uploads section */}
             <div className="mt-4">
               <div className="flex flex-row items-center justify-start my-auto">
@@ -805,7 +792,7 @@ const ProjectPage = () => {
               )}
             </div>
             <div>
-              <div className="mt-3">
+              <div className="sm:mt-3 -mt-1">
                 <ColorPaletteGenerator
                   userId={uid}
                   customerId={stripeCustomerId}

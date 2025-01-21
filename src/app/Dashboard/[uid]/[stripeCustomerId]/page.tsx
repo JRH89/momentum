@@ -268,7 +268,7 @@ const CustomerDetailsPage: React.FC = () => {
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         {customerData && (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col">
             <h2 className="text-2xl font-semibold text-black">
               Customer Details
             </h2>

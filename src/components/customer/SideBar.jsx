@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   HomeIcon,
   FileTextIcon,
@@ -20,6 +20,8 @@ const Sidebar = ({ uid, customerId }) => {
   const router = useRouter();
 
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  const pathname = usePathname(); // Get the current path
 
   const [userData, setUserData] = useState(null);
   const [photo, setPhoto] = useState(null);
@@ -133,12 +135,16 @@ const Sidebar = ({ uid, customerId }) => {
                 className="w-full mx-auto justify-center items-center"
               >
                 <Link
-                  onClick={() => {
-                    toggleSidebar();
-                  }}
+                  onClick={toggleSidebar}
                   key={link.href}
                   href={link.href}
-                  className="flex items-center px-4 py-2 lg:text-xl text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300"
+                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${
+                    link.disabled
+                      ? "opacity-50 pointer-events-none"
+                      : pathname === link.href // Highlight if current page
+                      ? "bg-white"
+                      : "cursor-pointer hover:ml-4"
+                  }`}
                 >
                   <link.icon className="w-5 h-5 lg:w-6 lg:h-6 mr-3" />
                   {link.label}
