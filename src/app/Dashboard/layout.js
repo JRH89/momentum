@@ -32,8 +32,10 @@ const Layout = ({ children }) => {
         ['google.com', 'github.com'].includes(provider.providerId)
       );
 
+      console.log('isAuthorizedUser', isAuthorizedUser);
+
       if (!isAuthorizedUser) {
-        router.push('/Dashboard/login');
+        router.push('/Customer/login');
       } else {
         setLoading(false);
       }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   HomeIcon,
   FileTextIcon,
@@ -14,6 +14,7 @@ import {
   Blocks,
   DoorOpen,
   Bug,
+  LoaderPinwheel,
 } from "lucide-react";
 import { auth, db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
@@ -152,6 +153,9 @@ const Sidebar = ({ uid }) => {
           <nav className="flex flex-col bg-backgroundPrimary px-2 h-full my-auto  justify-evenly py-6 space-y-0">
             {links.map((link) => (
               <div
+                onClick={() => {
+                  toggleSidebar();
+                }}
                 key={link.href}
                 className="w-full mx-auto justify-center items-center"
               >
@@ -242,7 +246,7 @@ const Sidebar = ({ uid }) => {
         </svg>
       </button>
       {/* Main Content */}
-      <div className="flex-1 z-50 top-0 left-0 ml-0 transition-all duration-300 lg:ml-48 bg-white"></div>
+      <div className="flex-1 z-40 top-0 left-0 ml-0 transition-all duration-300 lg:ml-48 bg-white"></div>
     </div>
   );
 };
