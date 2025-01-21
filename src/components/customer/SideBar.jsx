@@ -133,6 +133,9 @@ const Sidebar = ({ uid, customerId }) => {
                 className="w-full mx-auto justify-center items-center"
               >
                 <Link
+                  onClick={() => {
+                    toggleSidebar();
+                  }}
                   key={link.href}
                   href={link.href}
                   className="flex items-center px-4 py-2 lg:text-xl text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300"
@@ -155,6 +158,7 @@ const Sidebar = ({ uid, customerId }) => {
                   .catch((error) => {
                     console.log(error);
                   });
+                toggleSidebar();
               }}
               className="flex items-center px-4 py-2 text-lg lg:text-xl font-medium rounded-md hover:ml-4 duration-300 w-full"
             >
@@ -162,6 +166,9 @@ const Sidebar = ({ uid, customerId }) => {
               Logout
             </button>
             <Link
+              onClick={() => {
+                toggleSidebar();
+              }}
               href={`/Customer/${uid}/${customerId}/settings`}
               className="flex items-center px-4 py-2 text-lg lg:text-xl font-medium rounded-md hover:ml-4 duration-300"
             >

@@ -153,13 +153,13 @@ const Sidebar = ({ uid }) => {
           <nav className="flex flex-col bg-backgroundPrimary px-2 h-full my-auto  justify-evenly py-6 space-y-0">
             {links.map((link) => (
               <div
-                onClick={() => {
-                  toggleSidebar();
-                }}
                 key={link.href}
                 className="w-full mx-auto justify-center items-center"
               >
                 <Link
+                  onClick={() => {
+                    toggleSidebar();
+                  }}
                   key={link.href}
                   href={link.href}
                   className={`flex items-center px-4 py-2  text-lg font-medium justify-start text-left rounded-md hover:ml-4 duration-300 ${
@@ -186,6 +186,7 @@ const Sidebar = ({ uid }) => {
                   .catch((error) => {
                     console.error("Logout error:", error.message);
                   });
+                toggleSidebar();
               }}
               className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300 w-full"
             >
@@ -193,6 +194,9 @@ const Sidebar = ({ uid }) => {
               Logout
             </button>
             <Link
+              onClick={() => {
+                toggleSidebar();
+              }}
               href={`/Dashboard/${uid}/settings`}
               className="flex items-center px-4 py-2 text-lg font-medium rounded-md hover:ml-4 duration-300"
             >
