@@ -213,7 +213,7 @@ export default function Dashboard() {
                   />
                 )}
                 {user && userData?.stripeConnected && (
-                  <div className="min-h-screen max-w-6xl mx-auto h-full w-full px-0 p-4 pt-2 text-black flex flex-col pb-24">
+                  <div className=" max-w-6xl mx-auto w-full px-0 p-4 pt-2 text-black flex flex-col ">
                     <UserCreatingInvoiceTable />
                   </div>
                 )}

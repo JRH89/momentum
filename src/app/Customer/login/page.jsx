@@ -6,9 +6,14 @@ import { useAuth } from "../../../context/AuthProvider";
 import { redirect } from "next/navigation";
 import Navbar from "../../../components/customer/Navbar";
 import { Footer } from "../../../components/landing-page/Footer";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from "firebase/auth";
 import { collection, getDocs } from "firebase/firestore";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
+import { set } from "date-fns";
 
 const CustomerLogin = () => {
   const { user } = useAuth();
@@ -18,6 +23,8 @@ const CustomerLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [uid, setUid] = useState(""); // This will be the document ID where the customer is found
+  const [isFirstTime, setIsFirstTime] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false); // Track reset email status
 
   useEffect(() => {
     const fetchCustomerUid = async () => {
@@ -69,11 +76,26 @@ const CustomerLogin = () => {
     }
   };
 
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetEmailSent(true);
+      setEmail("");
+      toast.success("Password reset email sent.");
+      setError("");
+    } catch (err) {
+      setError(err.message);
+      setResetEmailSent(false);
+      toast.error("Error sending password reset email.");
+    }
+  };
+
   return (
-    <>
-      <div className="flex flex-col pb-24 min-h-screen h-full justify-center my-auto mx-auto w-full gap-5 px-10 sm:px-5 text-center">
-        <h1 className="text-3xl sm:text-4xl font-semibold">Customer Login</h1>
-        {error && <div className="text-red-500">{error}</div>}
+    <div className="flex flex-col  min-h-screen h-full justify-center my-auto mx-auto w-full gap-5 px-10 sm:px-5 text-center">
+      <h1 className="text-3xl sm:text-4xl font-semibold">Customer Login</h1>
+      {error && <div className="text-red-500">{error}</div>}
+      {!isFirstTime ? (
         <form
           className="flex flex-col gap-5 max-w-sm w-full mx-auto"
           onSubmit={handleLogin}
@@ -107,15 +129,58 @@ const CustomerLogin = () => {
             </div>
           </div>
           <button
-            className="duration-300 border-2 border-black bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black  text-black font-bold py-2 px-4 rounded-lg"
+            className="duration-300 border-2 border-black bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black text-black font-bold py-2 px-4 rounded-lg"
             type="submit"
             disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+      ) : (
+        <form
+          className="flex flex-col gap-5 max-w-sm w-full mx-auto"
+          onSubmit={handlePasswordReset}
+        >
+          <input
+            className="border-2 shadow-md border-black rounded-md px-4 py-2"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <button
+            className="duration-300 border-2 border-black bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black text-black font-bold py-2 px-4 rounded-lg"
+            type="submit"
+          >
+            Send Email
+          </button>
+        </form>
+      )}
+      <div className="text-sm font-semibold mt-4">
+        {isFirstTime ? (
+          <p>
+            Already have an account?{" "}
+            <button
+              className="text-green-500 underline"
+              onClick={() => setIsFirstTime(false)}
+            >
+              Sign In
+            </button>
+          </p>
+        ) : (
+          <p className="text-sm font-semibold mt-4">
+            Signing in for the first time?{" "}
+            <button
+              className="text-green-500 underline"
+              onClick={() => setIsFirstTime(true)}
+            >
+              Set Your Password
+            </button>
+          </p>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

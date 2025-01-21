@@ -205,7 +205,7 @@ const UserCreatingInvoiceTable = () => {
   }
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 px-0 sm:px-4 text-black flex flex-col pb-24">
+    <div className=" max-w-6xl mx-auto w-full p-4 pt-2 px-0 sm:px-4 text-black flex flex-col">
       <h1 className="text-2xl font-semibold mb-1 flex flex-row gap-2 items-center">
         <FileText className="w-6 h-6 sm:w-7 sm:h-7" /> Invoices
       </h1>
