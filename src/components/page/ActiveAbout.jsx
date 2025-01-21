@@ -73,7 +73,7 @@ export default function ActiveAbout() {
           {sections[activeSection].title}
         </h1>
         <div className="p-2 sm:p-4 sm:pt-0 pt-0 ">
-          <p className="text-lg leading-7 mb-4">
+          <p className="text-lg text-justify sm:text-left leading-7 mb-4">
             {sections[activeSection].content}
           </p>
 
@@ -90,7 +90,7 @@ export default function ActiveAbout() {
             )}
           </div>
 
-          <p className="text-lg leading-7 mb-4">
+          <p className="text-lg text-justify sm:text-left leading-7 mb-4">
             {sections[activeSection].content2}
           </p>
 
@@ -105,7 +105,7 @@ export default function ActiveAbout() {
               />
             )}
 
-            <p className="text-lg leading-7 my-4">
+            <p className="text-lg text-justify sm:text-left leading-7 my-4">
               {sections[activeSection].content3}
             </p>
 
