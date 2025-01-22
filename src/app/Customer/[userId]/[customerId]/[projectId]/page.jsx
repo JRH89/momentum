@@ -13,6 +13,7 @@ import ColorPaletteGenerator from "../../../../../components/customer/ColorPalle
 import CustomerPallete from "../../../../../components/customer/CustomerPallete";
 import MilestoneProgress from "../../../../../components/ProgressBar";
 import { toast } from "react-toastify";
+import InvoicesTable from "../../../../../components/project/InvoiceTable";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -210,6 +211,59 @@ const CustomerProjectPage = () => {
     }
   };
 
+  const [loading, setLoading] = useState(false);
+  const [invoices, setInvoices] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      if (!userId || !customerId || !projectId) return;
+
+      setLoading(true);
+      try {
+        // Reference to the user's document
+        const userRef = doc(db, "users", userId);
+
+        // Fetch the user's document
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("User document not found.");
+        }
+
+        const userData = userSnap.data();
+        const customers = Array.isArray(userData.customers)
+          ? userData.customers
+          : [];
+        const customerIndex = customers.findIndex(
+          (cust) => cust.uid === customerId
+        );
+
+        if (customerIndex === -1) {
+          throw new Error("Customer not found.");
+        }
+
+        const projectIndex = customers[customerIndex].projects.findIndex(
+          (p) => p.id === projectId
+        );
+
+        if (projectIndex === -1) {
+          throw new Error("Project not found.");
+        }
+
+        const project = customers[customerIndex].projects[projectIndex];
+        setInvoices(project.invoices || []); // Set invoices or an empty array if undefined
+      } catch (err) {
+        console.error("Error fetching invoices:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvoices();
+  }, [userId, customerId, projectId]);
+
   return (
     <>
       <div className="p-6 pt-8 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
@@ -230,7 +284,7 @@ const CustomerProjectPage = () => {
           <div className="flex flex-col">
             <div className="mt-4 bg-white flex flex-col">
               <div className="flex flex-row items-end w-full justify-between">
-                <h3 className="text-2xl font-bold">Milestones</h3>
+                <h3 className="text-2xl font-bold mb-2">Milestones</h3>
                 <div className="w-full max-w-xs flex-row justify-end hidden sm:flex">
                   <MilestoneProgress milestones={projectData.milestones} />
                 </div>
@@ -318,7 +372,10 @@ const CustomerProjectPage = () => {
                 disabledClassName="cursor-not-allowed"
               />
             )}
-
+            <div className="mt-4">
+              <h2 className="text-2xl font-bold mb-2">Invoices</h2>
+              <InvoicesTable itemsPerPage={10} invoices={invoices} />
+            </div>
             <div className="lg:flex items-center lg:flex-row">
               <div className="grid grid-cols-2 w-full gap-4">
                 {/* Uploads section */}
@@ -359,7 +416,7 @@ const CustomerProjectPage = () => {
                   )}
                   {uploads.length > 0 ? (
                     <div className="">
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
                         {currentUploads.map((upload, index) => (
                           <li
                             key={index}
@@ -376,7 +433,7 @@ const CustomerProjectPage = () => {
                             {/* Image preview (if it's an image) */}
                             {upload.url &&
                               (upload.name.match(
-                                /\.(jpeg|jpg|gif|png|webp|svg)$/i
+                                /\.(jpeg|jpg|gif|png|webp|svg|ico)$/i
                               ) ? (
                                 <img
                                   src={upload.url}
