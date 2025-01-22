@@ -2,7 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
-import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  runTransaction,
+  updateDoc,
+} from "firebase/firestore";
 import { useParams } from "next/navigation";
 import { Plus, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
@@ -11,6 +17,8 @@ import { toast } from "react-toastify";
 import ReactPaginate from "react-paginate";
 import MilestoneProgress from "../../../../../components/ProgressBar";
 import confetti from "canvas-confetti";
+import InvoicesTable from "../../../../../components/project/InvoiceTable";
+import { StripeCustomer } from "../../../../../components/types/stripeCustomer";
 
 interface Milestone {
   id: string;
@@ -350,7 +358,7 @@ const ProjectPage = () => {
 
       toast.success("Project marked as complete!");
       setIsCompleted(true);
-      confetti({ particleCount: 300, spread: 160, origin: { y: 0.6 } });
+      confetti({ particleCount: 1000, spread: 360, origin: { y: 0.6 } });
     } catch (error) {
       console.error("Error marking project as complete:", error);
       toast.error("Failed to mark project as complete. Please try again.");
@@ -472,6 +480,220 @@ const ProjectPage = () => {
     setCurrentPage(data.selected);
   };
 
+  const [loading, setLoading] = useState(true);
+  const [customerData, setCustomerData] = useState(null);
+  const [stripeAccountId, setStripeAccountId] = useState(null);
+  const [invoices, setInvoices] = useState<any[]>([]);
+  const [invoiceAmount, setInvoiceAmount] = useState<string>("");
+  const [invoiceCurrency, setInvoiceCurrency] = useState<string>("usd");
+  const [invoiceDescription, setInvoiceDescription] = useState<string>("");
+  const [showInvoiceForm, setShowInvoiceForm] = useState(false);
+  const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
+  const [customerEmail, setCustomerEmail] = useState<string>("");
+
+  useEffect(() => {
+    const fetchUserStripeAccountId = async (userId: string) => {
+      try {
+        const userRef = doc(db, "users", userId);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          setUserData(userSnap.data());
+          setStripeAccountId(userSnap.data().stripeAccountId || null);
+        } else {
+          setError("User document not found");
+        }
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        setError("Failed to fetch user data.");
+      }
+    };
+
+    if (uid) fetchUserStripeAccountId(uid);
+  }, [uid]);
+
+  useEffect(() => {
+    const fetchCustomerData = async () => {
+      try {
+        const userRef = doc(db, "users", uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          const customers = Array.isArray(userData.customers)
+            ? userData.customers
+            : [];
+          const customer = customers.find(
+            (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
+          );
+          if (customer) {
+            setCustomerData(customer);
+            setCustomerEmail(customer.email || "");
+          } else setError("Customer not found in user document.");
+        } else {
+          setError("User document not found.");
+        }
+      } catch (err) {
+        console.error("Error fetching customer data:", err);
+        setError("Failed to load customer data.");
+      }
+    };
+
+    if (stripeAccountId) fetchCustomerData();
+  }, [stripeAccountId, stripeCustomerId, uid]);
+
+  useEffect(() => {
+    const fetchInvoices = async () => {
+      if (!uid || !stripeCustomerId || !projectId) return;
+
+      setLoading(true);
+      try {
+        // Reference to the user's document
+        const userRef = doc(db, "users", uid);
+
+        // Fetch the user's document
+        const userSnap = await getDoc(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("User document not found.");
+        }
+
+        const userData = userSnap.data();
+        const customers = Array.isArray(userData.customers)
+          ? userData.customers
+          : [];
+        const customerIndex = customers.findIndex(
+          (cust) => cust.stripeCustomerId === stripeCustomerId
+        );
+
+        if (customerIndex === -1) {
+          throw new Error("Customer not found.");
+        }
+
+        const projectIndex = customers[customerIndex].projects.findIndex(
+          (p: { id: string }) => p.id === projectId
+        );
+
+        if (projectIndex === -1) {
+          throw new Error("Project not found.");
+        }
+
+        const project = customers[customerIndex].projects[projectIndex];
+        setInvoices(project.invoices || []); // Set invoices or an empty array if undefined
+      } catch (err: any) {
+        console.error("Error fetching invoices:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInvoices();
+  }, [uid, stripeCustomerId, projectId]);
+
+  useEffect(() => {
+    if (stripeAccountId || error || invoices.length > 0) {
+      setLoading(false);
+    }
+  }, [stripeAccountId, error, invoices]);
+
+  const handleCreateInvoice = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (
+      !invoiceAmount ||
+      !invoiceCurrency ||
+      !invoiceDescription ||
+      !invoiceDueDate
+    ) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/stripe/invoices/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          stripeAccountId,
+          stripeCustomerId,
+          items: [
+            {
+              amount: Math.round(parseFloat(invoiceAmount) * 100), // Convert to cents and ensure it's a number
+              currency: invoiceCurrency.toLowerCase(),
+              description: invoiceDescription,
+              quantity: 1,
+            },
+          ],
+          dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create invoice");
+      }
+
+      // Log the response
+      console.log("Invoice created:", data);
+
+      const invoice = data.invoice.id;
+
+      const userRef = doc(db, "users", uid);
+      await runTransaction(db, async (transaction) => {
+        const userSnap = await transaction.get(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("User document not found.");
+        }
+
+        const userData: any = userSnap.data();
+        const customers = Array.isArray(userData.customers)
+          ? userData.customers
+          : [];
+        const customerIndex = customers.findIndex(
+          (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
+        );
+
+        if (customerIndex === -1) {
+          throw new Error("Customer not found.");
+        }
+
+        const projectIndex = customers[customerIndex].projects.findIndex(
+          (p: { id: string }) => p.id === projectId
+        );
+
+        if (projectIndex === -1) {
+          throw new Error("Project not found.");
+        }
+
+        // Safely update isCompleted field
+        if (!customers[customerIndex].projects[projectIndex].invoices) {
+          customers[customerIndex].projects[projectIndex].invoices = []; // Initialize if it doesn't exist
+        }
+
+        customers[customerIndex].projects[projectIndex].invoices.push(invoice);
+
+        await transaction.update(userRef, {
+          customers: customers,
+        });
+      });
+
+      setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
+      setShowInvoiceForm(false);
+
+      // Reset form
+      setInvoiceAmount("");
+      setInvoiceCurrency("usd");
+      setInvoiceDescription("");
+      setInvoiceDueDate("");
+    } catch (err) {
+      console.error("Error creating invoice:", err);
+      setError(err instanceof Error ? err.message : "Failed to create invoice");
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -514,8 +736,7 @@ const ProjectPage = () => {
               </button>
             </div>
 
-            {!isCompleted &&
-              milestones.length > 0 &&
+            {milestones.length > 0 &&
               !milestones.every(
                 (milestone) => milestone.status === "completed"
               ) && (
@@ -536,7 +757,7 @@ const ProjectPage = () => {
                   <button
                     type="button"
                     onClick={handleMarkProjectComplete}
-                    className="bg-green-500 duration-300 hover:bg-green-600 text-white py-2 px-4 rounded-md font-semibold shadow-md"
+                    className="bg-green-500 duration-300 hover:bg-green-600 text-black py-2 px-4 rounded-md font-semibold shadow-md"
                   >
                     Mark Project as Complete
                   </button>
@@ -552,7 +773,7 @@ const ProjectPage = () => {
                   <button
                     type="button"
                     onClick={handleMarkProjectIncomplete}
-                    className="bg-destructive duration-300 hover:bg-opacity-60 text-white py-2 px-4 rounded-md font-semibold shadow-md"
+                    className="bg-destructive duration-300 hover:bg-opacity-60 text-black py-2 px-4 rounded-md font-semibold shadow-md"
                   >
                     Mark Project as Incomplete
                   </button>
@@ -697,6 +918,101 @@ const ProjectPage = () => {
             <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">
               No milestones yet
             </p>
+          )}
+        </div>
+        {/* Invoices Section */}
+        <div className="mt-4">
+          <div className="flex items-end my-auto">
+            <h2 className="text-2xl font-semibold">Invoices</h2>
+            <button
+              type="button"
+              onClick={() => setShowInvoiceForm(!showInvoiceForm)}
+              className="hover:bg-opacity-60 duration-300 font-semibold items-end pb-1 py-2 px-4 text-xl flex flex-row text-black rounded-md"
+            >
+              [
+              <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+              ]
+            </button>
+          </div>
+          <InvoicesTable itemsPerPage={10} invoices={invoices} />
+          {showInvoiceForm && (
+            <form
+              className="fixed z-40 inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
+              onSubmit={handleCreateInvoice}
+            >
+              <div className="p-6 rounded-lg shadow-md w-full max-w-xl">
+                <h2 className="text-2xl text-white text-center font-semibold mb-4">
+                  Create Invoice
+                </h2>
+                <div className="mt-2">
+                  <label htmlFor="amount" className="block text-white">
+                    Amount
+                  </label>
+                  <input
+                    id="amount"
+                    type="number"
+                    value={invoiceAmount}
+                    onChange={(e) => setInvoiceAmount(e.target.value)}
+                    required
+                    className="w-full p-2 border border-black rounded-md"
+                  />
+                </div>
+                <div className="mt-2">
+                  <label htmlFor="currency" className="block text-white">
+                    Currency
+                  </label>
+                  <input
+                    id="currency"
+                    type="text"
+                    value={invoiceCurrency}
+                    onChange={(e) => setInvoiceCurrency(e.target.value)}
+                    required
+                    className="w-full p-2 border border-black rounded-md"
+                  />
+                </div>
+                <div className="mt-2">
+                  <label htmlFor="description" className="block text-white">
+                    Description
+                  </label>
+                  <input
+                    id="description"
+                    type="text"
+                    value={invoiceDescription}
+                    onChange={(e) => setInvoiceDescription(e.target.value)}
+                    required
+                    className="w-full p-2 border border-black rounded-md"
+                  />
+                </div>
+                <div className="mt-2">
+                  <label htmlFor="dueDate" className="block text-white">
+                    Due Date
+                  </label>
+                  <input
+                    id="dueDate"
+                    type="date"
+                    value={invoiceDueDate}
+                    onChange={(e) => setInvoiceDueDate(e.target.value)}
+                    required
+                    className="w-full p-2 border border-black rounded-md"
+                  />
+                </div>
+                <div className="flex flex-row justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowInvoiceForm(false)}
+                    className="mt-4 text-destructive hover:opacity-60 duration-300 ease-in-out py-2 px-4 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
+                  >
+                    Create Invoice
+                  </button>
+                </div>
+              </div>
+            </form>
           )}
         </div>
         <div className="lg:flex items-center lg:flex-row">
