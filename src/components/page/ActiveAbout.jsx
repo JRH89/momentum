@@ -11,7 +11,7 @@ const sections = {
     content2:
       "Our user-friendly interface makes it effortless to manage projects and invoices. Whether you're tracking deliverables, creating invoices, or monitoring progress, Momentum provides all the tools you need in one place.",
     content3:
-      "With clear, upfront pricing and no hidden fees, you can confidently stay on budget. Momentum offers flexible monthly or yearly membership plans, while Stripe processes payments securely with a 0.4% fee on each paid invoice.",
+      "With clear, upfront pricing and no hidden fees, you can confidently stay on budget.",
     image: ["/cover.png", "/dashboard.png", "/account-3.png"],
   },
   accountCreation: {
