@@ -768,17 +768,17 @@ const ProjectPage = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-2">
           <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
-            <h1 className="text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
+            <h1 className="text-xl sm:text-2xl md:text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
               <span className="flex items-center gap-2">
                 {project.name}
                 <Settings
                   onClick={handleSettingsForm}
-                  className="w-8 h-8 md:w-9 md:h-9 cursor-pointer text-confirm hover:rotate-90 duration-300"
+                  className="w-7 h-7 sm:w-7 sm:h-7 md:w-9 md:h-9 cursor-pointer text-confirm hover:rotate-90 duration-300"
                 />
               </span>
-              <span className="hidden sm:flex text-xl text-gray-600">
+              <span className="hidden sm:flex text-md sm:text-lg md:text-xl text-gray-600">
                 ID: {project.id}
               </span>
             </h1>
@@ -1090,11 +1090,13 @@ const ProjectPage = () => {
               )}
             </>
           ) : (
-            <p className="text-gray-600 p-1 px-2">No milestones yet</p>
+            <p className="text-gray-600 p-2 border border-black rounded-lg">
+              No milestones yet
+            </p>
           )}
         </div>
         {/* Invoices Section */}
-        <div className="mt-4">
+        <div className="mt-4 mb-3">
           <div className="flex items-end my-auto">
             <h2 className="text-2xl font-semibold">Invoices</h2>
             <button
@@ -1193,7 +1195,7 @@ const ProjectPage = () => {
             {project?.features?.fileUploads && (
               <div className="mt-4">
                 <div className="flex flex-row items-center justify-start my-auto">
-                  <h2 className="text-2xl font-bold">Uploads</h2>
+                  <h2 className="text-2xl font-semibold">Uploads</h2>
                   <button
                     type="button"
                     onClick={() => setShowUploadForm(!showUploadForm)}
@@ -1275,7 +1277,9 @@ const ProjectPage = () => {
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-600 p-1 pt-0 px-2">No uploads yet</p>
+                  <p className="text-gray-600 p-2 rounded-lg border border-black">
+                    No uploads yet
+                  </p>
                 )}
               </div>
             )}

@@ -181,7 +181,7 @@ export default function ColorPaletteGenerator({
       <div className=" w-full mx-auto text-black flex flex-col items-center justify-start mt-1">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex mb-1 flex-row items-center justify-start my-auto">
-            <h3 className="text-2xl font-bold">Pallete</h3>
+            <h3 className="text-2xl font-semibold">Pallete</h3>
             <button
               onClick={() => setOpenMenuOne(!openMenuOne)}
               className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
@@ -267,7 +267,7 @@ export default function ColorPaletteGenerator({
             ))}
           </div>
         ) : (
-          <p className="text-gray-600 -mt-1 w-full flex text-left p-1 px-2 pt-0">
+          <p className="text-gray-600 -mt-1 w-full flex text-left  border border-black rounded-lg p-2">
             No colors yet
           </p>
         )}
