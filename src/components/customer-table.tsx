@@ -608,7 +608,6 @@ export function CustomerTable({
                   </div>
                 </div>
               </form>
-
               <div className="flex flex-row items-center justify-end">
                 <button
                   type="button"

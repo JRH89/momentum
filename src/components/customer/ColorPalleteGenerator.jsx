@@ -178,7 +178,7 @@ export default function ColorPaletteGenerator({
 
   return (
     <div className="flex flex-col mx-auto ">
-      <div className=" w-full mx-auto text-black flex flex-col items-center justify-start mt-1">
+      <div className="h-full w-full mx-auto text-black flex flex-col items-center justify-start">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
           <div className="flex mb-1 flex-row items-center justify-start my-auto">
             <h3 className="text-2xl font-semibold">Pallete</h3>
@@ -244,7 +244,7 @@ export default function ColorPaletteGenerator({
           </div>
         )}
         {projectColors.length > 0 ? (
-          <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
+          <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-4 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
             {projectColors.map((color, index) => (
               <div
                 key={index}

@@ -841,7 +841,6 @@ const ProjectPage = () => {
                       <span className="text-black">Disabled</span>
                     </label>
                   </div>
-
                   {/* Color Palette */}
                   <label className="block text-lg font-medium text-white mt-4 mb-2">
                     Color Palette
@@ -1294,7 +1293,7 @@ const ProjectPage = () => {
             )}
             {project?.features?.colorPallette && (
               <div>
-                <div className="sm:mt-3 -mt-1">
+                <div className="sm:mt-4 h-full">
                   <ColorPaletteGenerator
                     userId={uid}
                     customerId={stripeCustomerId}
