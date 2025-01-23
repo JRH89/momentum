@@ -10,7 +10,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { Plus, Settings, Upload } from "lucide-react";
+import { Plus, Save, Settings, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
@@ -791,15 +791,17 @@ const ProjectPage = () => {
                   submitSettingsForm();
                   handleSettingsForm();
                 }}
-                className="mt-4 max-w-lg w-full flex flex-col p-4 rounded-lg bg-white"
+                className="mt-4 max-w-md mx-auto w-full flex flex-col p-4 rounded-lg bg-white"
               >
-                <div className="mb-4">
-                  <h3 className="text-black text-2xl text-center font-bold">
+                <div className="mb-4 ">
+                  <h3 className="text-black text-2xl text-center font-bold mb-4">
                     Project Settings
                   </h3>
 
                   {/* File Uploads */}
-                  <label className="block text-black mt-2">File Uploads</label>
+                  <label className="block text-lg font-medium text-black mt-2">
+                    File Uploads
+                  </label>
                   <div className="flex gap-4">
                     <label className="flex items-center gap-2">
                       <input
@@ -868,13 +870,22 @@ const ProjectPage = () => {
                     </label>
                   </div>
                 </div>
-
-                <button
-                  type="submit"
-                  className="bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black text-black font-medium duration-300 px-4 py-2 rounded-md mt-4"
-                >
-                  Save Changes
-                </button>
+                <div className="flex flex-row w-full justify-end">
+                  <button
+                    type="button"
+                    onClick={handleSettingsForm}
+                    className="text-destructive font-medium duration-300 hover:opacity-60 flex flex-row items-center gap-2 justify-center px-4 py-2 rounded-md mt-4"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black text-black font-medium flex flex-row items-center gap-2 justify-center duration-300 px-4 py-2 rounded-md mt-4"
+                  >
+                    <Save className="w-5 h-5" />
+                    Save Changes
+                  </button>
+                </div>
               </form>
             </div>
           )}
