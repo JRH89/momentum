@@ -1190,7 +1190,7 @@ const ProjectPage = () => {
         </div>
         <div className="lg:flex items-center lg:flex-row">
           <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
-            {project?.features.fileUploads && (
+            {project?.features?.fileUploads && (
               <div className="mt-4">
                 <div className="flex flex-row items-center justify-start my-auto">
                   <h2 className="text-2xl font-bold">Uploads</h2>
@@ -1279,7 +1279,7 @@ const ProjectPage = () => {
                 )}
               </div>
             )}
-            {project?.features.colorPallette && (
+            {project?.features?.colorPallette && (
               <div>
                 <div className="sm:mt-3 -mt-1">
                   <ColorPaletteGenerator
