@@ -227,6 +227,14 @@ export function CustomerTable({
     }
   };
 
+  const [features, setFeatures] = useState<{
+    fileUploads: boolean;
+    colorPallette: boolean;
+  }>({
+    fileUploads: false,
+    colorPallette: false,
+  });
+
   // Handle creating a new project
   const handleCreateProject = async (
     e: React.FormEvent,
@@ -301,6 +309,8 @@ export function CustomerTable({
           // Add new project
           const newProject = {
             name: newProjectName,
+            isCompleted: false,
+            features,
             description: newProjectDescription,
             link: newProjectName
               ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}`
@@ -361,6 +371,7 @@ export function CustomerTable({
           setNewProjectName("");
           setNewProjectDescription("");
           setShowForm(false);
+          setFeatures({ fileUploads: false, colorPallette: false });
 
           // Show success toast
           toast.success("Project created successfully!");
@@ -412,24 +423,24 @@ export function CustomerTable({
             <thead>
               <tr className="bg-backgroundPrimary font-semibold border-b-2 border-black">
                 <th
-                  className="py-4 px-4 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
-                  onClick={() => handleSort("email")}
-                >
-                  Email
-                </th>
-                <th
-                  className="py-4 px-4 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
+                  className="py-3 px-4 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
                   onClick={() => handleSort("name")}
                 >
                   Name
                 </th>
                 <th
-                  className="py-4 px-4 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
+                  className="py-3 px-4 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
+                  onClick={() => handleSort("email")}
+                >
+                  Email
+                </th>
+                <th
+                  className="py-3 px-4 md:px-6 cursor-pointer hover:underline text-left text-md text-black"
                   onClick={() => handleSort("description")}
                 >
-                  Description
+                  ID
                 </th>
-                <th className="py-4 px-4 md:px-6 text-left text-md text-black">
+                <th className="py-3 px-4 md:px-6 text-left text-md text-black">
                   Actions
                 </th>
               </tr>
@@ -438,20 +449,20 @@ export function CustomerTable({
               {sortedCustomers.map((customer) => (
                 <tr
                   key={customer.stripeCustomerId}
-                  className="py-4 hover:bg-yellow-50"
+                  className="py-3 hover:bg-yellow-50"
                 >
-                  <td className="py-4 font-bold px-4 md:px-6 text-sm text-black">
+                  <td className="py-3 px-4 md:px-6 text-sm font-bold text-black">
+                    {customer.name}
+                  </td>
+                  <td className="py-3 font-medium px-4 md:px-6 text-sm text-black">
                     <Link href={`mailto:${customer.email}`}>
                       {customer.email}
                     </Link>
                   </td>
-                  <td className="py-4 px-4 md:px-6 text-sm font-medium text-black">
-                    {customer.name}
+                  <td className="py-3 px-4 md:px-6 text-sm font-medium text-black">
+                    {customer.stripeCustomerId || "N/A"}
                   </td>
-                  <td className="py-4 px-4 md:px-6 text-sm font-medium text-black">
-                    {customer.description || "N/A"}
-                  </td>
-                  <td className="py-2 px-4 md:px-6 text-sm">
+                  <td className="py-2 px-2 text-sm">
                     <div className="flex items-center space-x-4">
                       <select
                         aria-label="Actions"
@@ -506,6 +517,7 @@ export function CustomerTable({
                     className="w-full p-2 border-2 border-black rounded-md"
                   />
                 </div>
+
                 <div className="mt-2">
                   <label htmlFor="description" className="block text-white">
                     Project Description
@@ -519,7 +531,84 @@ export function CustomerTable({
                     className="w-full p-2 border border-gray-300 rounded-md"
                   />
                 </div>
+
+                <div className="mt-4">
+                  <label className="block text-white mb-1">File Uploads</label>
+                  <div className="flex items-center space-x-4">
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="fileUploads"
+                        value="true"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            fileUploads: true,
+                          }))
+                        }
+                        checked={features.fileUploads === true}
+                        className="mr-2"
+                      />
+                      Enabled
+                    </label>
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="fileUploads"
+                        value="false"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            fileUploads: false,
+                          }))
+                        }
+                        checked={features.fileUploads === false}
+                        className="mr-2"
+                      />
+                      Disabled
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-white mb-1">Color Palette</label>
+                  <div className="flex items-center space-x-4">
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="colorPallette"
+                        value="true"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            colorPallette: true,
+                          }))
+                        }
+                        checked={features.colorPallette === true}
+                        className="mr-2"
+                      />
+                      Enabled
+                    </label>
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="colorPallette"
+                        value="false"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            colorPallette: false,
+                          }))
+                        }
+                        checked={features.colorPallette === false}
+                        className="mr-2"
+                      />
+                      Disabled
+                    </label>
+                  </div>
+                </div>
               </form>
+
               <div className="flex flex-row items-center justify-end">
                 <button
                   type="button"

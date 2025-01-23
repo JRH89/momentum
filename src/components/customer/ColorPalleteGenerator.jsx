@@ -200,7 +200,7 @@ export default function ColorPaletteGenerator({
         )}
 
         {openMenuOne && (
-          <div className="bg-white rounded-lg w-full border border-black p-4 mb-4">
+          <div className="bg-white rounded-lg w-full border border-black p-4 pt-3 -mt-1 mb-4">
             <label className="block text-black mb-2">Select Color:</label>
 
             <div className="flex items-center gap-4 mb-4">
@@ -243,31 +243,35 @@ export default function ColorPaletteGenerator({
             </div>
           </div>
         )}
-        <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
-          {projectColors.map((color, index) => (
-            <div
-              key={index}
-              className="w-16 mx-auto h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
-              style={{ backgroundColor: color }}
-            >
-              {/* Delete Button */}
-              <button
-                type="button"
-                onClick={() => deleteColor(color)}
-                className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+        {projectColors.length > 0 ? (
+          <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
+            {projectColors.map((color, index) => (
+              <div
+                key={index}
+                className="w-16 mx-auto h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
+                style={{ backgroundColor: color }}
               >
-                X
-              </button>
-              {/* Optionally, display the color code */}
-              <span className="text-white text-xs absolute bottom-1">
-                {color}
-              </span>
-            </div>
-          ))}
-          {projectColors.length === 0 && (
-            <p className="text-gray-600">No colors yet</p>
-          )}
-        </div>
+                {/* Delete Button */}
+                <button
+                  type="button"
+                  onClick={() => deleteColor(color)}
+                  className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                >
+                  X
+                </button>
+                {/* Optionally, display the color code */}
+                <span className="text-white text-xs absolute bottom-1">
+                  {color}
+                </span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-600 -mt-1 w-full flex text-left p-1 px-2 pt-0">
+            No colors yet
+          </p>
+        )}
+
         <canvas ref={canvasRef} className="hidden"></canvas>
       </div>
     </div>

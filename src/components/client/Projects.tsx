@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { db } from "../../../firebase";
-import { doc, getDoc, updateDoc, collection, addDoc } from 'firebase/firestore';
-import { Plus } from 'lucide-react';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { signOut } from 'firebase/auth';
+import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
+import { Plus } from "lucide-react";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { initializeApp, getApp, deleteApp } from "firebase/app";
-import Link from 'next/link';
-import MilestoneProgress from '../ProgressBar';
+import Link from "next/link";
+import MilestoneProgress from "../ProgressBar";
 
 interface Project {
   id: string;
@@ -23,28 +23,32 @@ interface ProjectsProps {
   customerEmail: string;
 }
 
-const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId, customerEmail }) => {
+const Projects: React.FC<ProjectsProps> = ({
+  uid,
+  stripeCustomerId,
+  customerEmail,
+}) => {
   const [projects, setProjects] = useState<Project[]>([]);
-  const [newProjectName, setNewProjectName] = useState<string>('');
-  const [newProjectDescription, setNewProjectDescription] = useState<string>('');
+  const [newProjectName, setNewProjectName] = useState<string>("");
+  const [newProjectDescription, setNewProjectDescription] =
+    useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [showForm, setShowForm] = useState(false);
-
-  // Todo: Add uid to users/uid/customers
 
   // Fetch the customer's projects
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
       try {
-        const userRef = doc(db, 'users', uid);
+        const userRef = doc(db, "users", uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const userData = userSnap.data();
           const customer = (userData.customers || []).find(
-            (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
+            (cust: { stripeCustomerId: string }) =>
+              cust.stripeCustomerId === stripeCustomerId
           );
           if (customer && Array.isArray(customer.projects)) {
             setProjects(customer.projects);
@@ -61,123 +65,159 @@ const Projects: React.FC<ProjectsProps> = ({ uid, stripeCustomerId, customerEmai
     fetchProjects();
   }, [uid, stripeCustomerId]);
 
+  const [features, setFeatures] = useState<{
+    fileUploads: boolean;
+    colorPallette: boolean;
+  }>({
+    fileUploads: false,
+    colorPallette: false,
+  });
+
   // Handle creating a new project
-const handleCreateProject = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleCreateProject = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  if (!newProjectName || !newProjectDescription) {
-    setError("Please fill in all fields");
-    return;
-  }
+    if (!newProjectName || !newProjectDescription) {
+      setError("Please fill in all fields");
+      return;
+    }
 
-  setLoading(true);
-  let newCustomerUid: string | null = null; // To store the newly created customer's UID
+    setLoading(true);
+    let newCustomerUid: string | null = null; // To store the newly created customer's UID
 
-  try {
-    // Fetch user document
-    const userRef = doc(db, 'users', uid);
-    const userSnap = await getDoc(userRef);
+    try {
+      // Fetch user document
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
 
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      const customers = Array.isArray(userData.customers) ? userData.customers : [];
-      const customer = customers.find(
-        (cust: { stripeCustomerId: string }) => cust.stripeCustomerId === stripeCustomerId
-      );
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const customers = Array.isArray(userData.customers)
+          ? userData.customers
+          : [];
+        const customer = customers.find(
+          (cust: { stripeCustomerId: string }) =>
+            cust.stripeCustomerId === stripeCustomerId
+        );
 
-      if (customer) {
-        try {
-          // Initialize a temporary Firebase app instance
-          const tempApp = initializeApp({
-            apiKey: process.env.NEXT_PUBLIC_APIKEY,
-            authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
-            projectId: process.env.NEXT_PUBLIC_PROJECTID,
-            storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-            messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
-            appId: process.env.NEXT_PUBLIC_APPID,
-          }, "new-app");
+        if (customer) {
+          try {
+            // Initialize a temporary Firebase app instance
+            const tempApp = initializeApp(
+              {
+                apiKey: process.env.NEXT_PUBLIC_APIKEY,
+                authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+                projectId: process.env.NEXT_PUBLIC_PROJECTID,
+                storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+                messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+                appId: process.env.NEXT_PUBLIC_APPID,
+              },
+              "new-app"
+            );
 
-          const tempAuth = getAuth(tempApp);
+            const tempAuth = getAuth(tempApp);
 
-          // Create a Firebase Auth user for the customer
-          const userCredential = await createUserWithEmailAndPassword(
-            tempAuth,
-            customerEmail,
-            'DefaultSecurePassword123!' // You can change this to something more secure
-          );
+            // Create a Firebase Auth user for the customer
+            const userCredential = await createUserWithEmailAndPassword(
+              tempAuth,
+              customerEmail,
+              "DefaultSecurePassword123!" // You can change this to something more secure
+            );
 
-          // Immediately sign out to prevent auto sign-in
-          await signOut(tempAuth);
+            // Immediately sign out to prevent auto sign-in
+            await signOut(tempAuth);
 
-          newCustomerUid = userCredential.user.uid; // Store the new customer's UID
+            newCustomerUid = userCredential.user.uid; // Store the new customer's UID
 
-          // Clean up by deleting the temporary app instance
-          await deleteApp(tempApp);
-        } catch (authError: any) {
-          if (authError.code !== 'auth/email-already-in-use') {
-            throw authError;
-          } else {
-            // If the user already exists, retrieve their UID
-            const existingUserRef = await getDoc(doc(db, 'users', customerEmail));
-            if (existingUserRef.exists()) {
-              newCustomerUid = existingUserRef.id; // Retrieve existing UID
+            // Clean up by deleting the temporary app instance
+            await deleteApp(tempApp);
+          } catch (authError: any) {
+            if (authError.code !== "auth/email-already-in-use") {
+              throw authError;
+            } else {
+              // If the user already exists, retrieve their UID
+              const existingUserRef = await getDoc(
+                doc(db, "users", customerEmail)
+              );
+              if (existingUserRef.exists()) {
+                newCustomerUid = existingUserRef.id; // Retrieve existing UID
+              }
             }
           }
-        }
 
-        // Add new project
-        const newProject = {
-          name: newProjectName,
-          description: newProjectDescription,
-          link: newProjectName
-            ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}` // Optional link
-            : '',
-        };
+          // Add new project
+          const newProject = {
+            name: newProjectName,
+            isCompleted: false,
+            features,
+            description: newProjectDescription,
+            link: newProjectName
+              ? `/Dashboard/${uid}/${stripeCustomerId}/${newProjectName}` // Optional link
+              : "",
+          };
 
-        // Add new project to Firestore
-        const projectRef = await addDoc(collection(db, 'users', uid, 'projects'), newProject);
+          // Add new project to Firestore
+          const projectRef = await addDoc(
+            collection(db, "users", uid, "projects"),
+            newProject
+          );
 
-        // Update project link with auto-generated ID
-        if (newProject.link) {
-          newProject.link = `/Dashboard/${uid}/${stripeCustomerId}/${projectRef.id}`;
-        }
+          // Update project link with auto-generated ID
+          if (newProject.link) {
+            newProject.link = `/Dashboard/${uid}/${stripeCustomerId}/${projectRef.id}`;
+          }
 
-        // Update projects in Firestore
-        const updatedProjects = [...(customer.projects || []), { id: projectRef.id, ...newProject }];
-        await updateDoc(userRef, {
-          customers: customers.map((cust: { stripeCustomerId: string }) =>
-            cust.stripeCustomerId === stripeCustomerId ? { ...cust, projects: updatedProjects } : cust
-          ),
-        });
-
-        // If a new customer UID was created, update the customer with the matching stripeCustomerId
-        if (newCustomerUid) {
-          const updatedCustomers = customers.map((cust: { stripeCustomerId: string; uid: string }) => {
-            if (cust.stripeCustomerId === stripeCustomerId) {
-              return { ...cust, uid: newCustomerUid, projects: updatedProjects }; // Add updated projects
-            }
-            return cust; // Keep other customers unchanged
-          });
-
-          // Update Firestore with the modified customers array
+          // Update projects in Firestore
+          const updatedProjects = [
+            ...(customer.projects || []),
+            { id: projectRef.id, ...newProject },
+          ];
           await updateDoc(userRef, {
-            customers: updatedCustomers,
+            customers: customers.map((cust: { stripeCustomerId: string }) =>
+              cust.stripeCustomerId === stripeCustomerId
+                ? { ...cust, projects: updatedProjects }
+                : cust
+            ),
           });
-        }
 
-        // Update local state
-        setProjects(updatedProjects);
-        setNewProjectName('');
-        setNewProjectDescription('');
-        setShowForm(false);
+          // If a new customer UID was created, update the customer with the matching stripeCustomerId
+          if (newCustomerUid) {
+            const updatedCustomers = customers.map(
+              (cust: { stripeCustomerId: string; uid: string }) => {
+                if (cust.stripeCustomerId === stripeCustomerId) {
+                  return {
+                    ...cust,
+                    uid: newCustomerUid,
+                    projects: updatedProjects,
+                  }; // Add updated projects
+                }
+                return cust; // Keep other customers unchanged
+              }
+            );
+
+            // Update Firestore with the modified customers array
+            await updateDoc(userRef, {
+              customers: updatedCustomers,
+            });
+          }
+
+          // Update local state
+          setProjects(updatedProjects);
+          setNewProjectName("");
+          setNewProjectDescription("");
+          setFeatures({
+            fileUploads: false,
+            colorPallette: false,
+          });
+          setShowForm(false);
+        }
       }
+    } catch (err) {
+      console.error("Error creating project:", err);
+      setError("Failed to create project.");
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("Error creating project:", err);
-    setError("Failed to create project.");
-  } finally {
-    setLoading(false);
-  }
   };
 
   return (
@@ -189,7 +229,9 @@ const handleCreateProject = async (e: React.FormEvent) => {
           onClick={() => setShowForm(!showForm)}
           className="px-4 py-2 flex flex-row items-center justify-center text-lg duration-300 text-black font-semibold rounded-md hover:bg-opacity-60"
         >
-         [<Plus className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />]
+          [
+          <Plus className="w-6 h-6 text-green-500 hover:rotate-90 duration-300" />
+          ]
         </button>
       </div>
 
@@ -202,27 +244,26 @@ const handleCreateProject = async (e: React.FormEvent) => {
       {/* Existing Projects List */}
       <div className="mb-4">
         {projects.length > 0 ? (
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-             <Link href={project.link} key={index}>
-              <div
-              
-                className={`bg-[#EAEEFE] hover:shadow-lg hover:shadow-black duration-300 flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
-                    >
-                      <h3 className="text-lg flex flex-col my-auto h-full font-bold text-black mb-2">
-                        {project.name}
-                </h3>
-              
-                      <p className="text-black text-sm flex flex-col my-auto h-full">ID: {project.id}</p>
-                      <p className="text-black text-sm mb-2 flex flex-col my-auto h-full">
-                        Descripion: {project.description}
-                </p>
-                <div className=''>
-                            <MilestoneProgress milestones={project.milestones} /> 
+              <Link href={project.link} key={index}>
+                <div
+                  className={`bg-[#EAEEFE] hover:shadow-lg hover:shadow-black duration-300 flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
+                >
+                  <h3 className="text-lg flex flex-col my-auto h-full font-bold text-black mb-2">
+                    {project.name}
+                  </h3>
+
+                  <p className="text-black text-sm flex flex-col my-auto h-full">
+                    ID: {project.id}
+                  </p>
+                  <p className="text-black text-sm mb-2 flex flex-col my-auto h-full">
+                    Descripion: {project.description}
+                  </p>
+                  <div className="">
+                    <MilestoneProgress milestones={project.milestones} />
                   </div>
-     
-                    
-              </div>
+                </div>
               </Link>
             ))}
           </div>
@@ -235,10 +276,14 @@ const handleCreateProject = async (e: React.FormEvent) => {
       {showForm && (
         <div className="inset-0 fixed border-2 border-black bg-black bg-opacity-95 flex items-center justify-center mx-auto px-4">
           <div className="p-6 w-full rounded-md shadow-lg max-w-xl">
-              <h3 className="text-2xl lg:text-3xl text-center font-semibold text-white">Create Project</h3>
-            <form >
+            <h3 className="text-2xl lg:text-3xl text-center font-semibold text-white">
+              Create Project
+            </h3>
+            <form>
               <div className="mt-2">
-                <label htmlFor="name" className="block text-white">Project Name</label>
+                <label htmlFor="name" className="block text-white">
+                  Project Name
+                </label>
                 <input
                   id="name"
                   type="text"
@@ -249,7 +294,9 @@ const handleCreateProject = async (e: React.FormEvent) => {
                 />
               </div>
               <div className="mt-2">
-                <label htmlFor="description" className="block text-white">Project Description</label>
+                <label htmlFor="description" className="block text-white">
+                  Project Description
+                </label>
                 <input
                   id="description"
                   type="text"
@@ -260,21 +307,21 @@ const handleCreateProject = async (e: React.FormEvent) => {
                 />
               </div>
             </form>
-            <div className='flex flex-row items-center justify-end'>
+            <div className="flex flex-row items-center justify-end">
               <button
-              type="button"
-              onClick={() => setShowForm(false)}
-              className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-medium hover:opacity-60 duration-300"
-            >
-              Cancel
-            </button>
+                type="button"
+                onClick={() => setShowForm(false)}
+                className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-medium hover:opacity-60 duration-300"
+              >
+                Cancel
+              </button>
               <button
                 onClick={handleCreateProject}
                 type="submit"
                 className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-medium rounded-md"
                 disabled={loading} // Disable button when loading
               >
-                {loading ? 'Creating...' : 'Create'}
+                {loading ? "Creating..." : "Create"}
               </button>
             </div>
           </div>

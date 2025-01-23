@@ -10,7 +10,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { Plus, Upload } from "lucide-react";
+import { Plus, Settings, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
@@ -694,6 +694,69 @@ const ProjectPage = () => {
     }
   };
 
+  const [settingsForm, setSettingsForm] = useState(false);
+  const handleSettingsForm = () => setSettingsForm(!settingsForm);
+  const [features, setFeatures] = useState<{
+    fileUploads: boolean;
+    colorPallette: boolean;
+  }>({
+    fileUploads: false,
+    colorPallette: false,
+  });
+
+  const submitSettingsForm = async () => {
+    const userRef = doc(db, "users", uid);
+
+    try {
+      await runTransaction(db, async (transaction) => {
+        const userSnap = await transaction.get(userRef);
+
+        if (!userSnap.exists()) {
+          throw new Error("User document not found.");
+        }
+
+        const userData: any = userSnap.data();
+        const customers = Array.isArray(userData.customers)
+          ? userData.customers
+          : [];
+
+        const customerIndex = customers.findIndex(
+          (cust: StripeCustomer) => cust.stripeCustomerId === stripeCustomerId
+        );
+
+        if (customerIndex === -1) {
+          throw new Error("Customer not found.");
+        }
+
+        const projectIndex = customers[customerIndex].projects.findIndex(
+          (p: { id: string }) => p.id === project.id
+        );
+
+        if (projectIndex === -1) {
+          throw new Error("Project not found.");
+        }
+
+        // Update the features in the project
+        customers[customerIndex].projects[projectIndex].features = features;
+
+        setProject({
+          ...project,
+          features: features,
+        });
+
+        // Update the Firestore document
+        await transaction.update(userRef, {
+          customers: customers,
+        });
+      });
+
+      toast.success("Features updated successfully!");
+    } catch (error: any) {
+      console.error("Error updating features:", error.message);
+      toast.error("Failed to update features. Please try again.");
+    }
+  };
+
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -708,12 +771,113 @@ const ProjectPage = () => {
         <div className="flex flex-col">
           <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
             <h1 className="text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
-              {project.name}
+              <span className="flex items-center gap-2">
+                {project.name}
+                <Settings
+                  onClick={handleSettingsForm}
+                  className="w-8 h-8 md:w-9 md:h-9 cursor-pointer text-confirm hover:rotate-90 duration-300"
+                />
+              </span>
               <span className="hidden sm:flex text-xl text-gray-600">
                 ID: {project.id}
               </span>
             </h1>
           </div>
+          {settingsForm && (
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-95">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submitSettingsForm();
+                  handleSettingsForm();
+                }}
+                className="mt-4 max-w-lg w-full flex flex-col p-4 rounded-lg bg-white"
+              >
+                <div className="mb-4">
+                  <h3 className="text-black text-2xl text-center font-bold">
+                    Project Settings
+                  </h3>
+
+                  {/* File Uploads */}
+                  <label className="block text-black mt-2">File Uploads</label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="fileUploads"
+                        value="true"
+                        checked={features.fileUploads === true}
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            fileUploads: true,
+                          }))
+                        }
+                      />
+                      <span className="text-black">Enable</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="fileUploads"
+                        value="false"
+                        checked={features.fileUploads === false}
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            fileUploads: false,
+                          }))
+                        }
+                      />
+                      <span className="text-black">Disable</span>
+                    </label>
+                  </div>
+
+                  {/* Color Palette */}
+                  <label className="block text-black mt-4">Color Palette</label>
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="colorPallette"
+                        value="true"
+                        checked={features.colorPallette === true}
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            colorPallette: true,
+                          }))
+                        }
+                      />
+                      <span className="text-black">Enable</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="colorPallette"
+                        value="false"
+                        checked={features.colorPallette === false}
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            colorPallette: false,
+                          }))
+                        }
+                      />
+                      <span className="text-black">Disable</span>
+                    </label>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black text-black font-medium duration-300 px-4 py-2 rounded-md mt-4"
+                >
+                  Save Changes
+                </button>
+              </form>
+            </div>
+          )}
 
           <p className="text-lg capitalize text-gray-700">
             {project.description}
@@ -915,9 +1079,7 @@ const ProjectPage = () => {
               )}
             </>
           ) : (
-            <p className="text-gray-600 p-2 border-2 border-black rounded-lg shadow-md shadow-black">
-              No milestones yet
-            </p>
+            <p className="text-gray-600 p-1 px-2">No milestones yet</p>
           )}
         </div>
         {/* Invoices Section */}
@@ -1017,105 +1179,106 @@ const ProjectPage = () => {
         </div>
         <div className="lg:flex items-center lg:flex-row">
           <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
-            {/* Uploads section */}
-            <div className="mt-4">
-              <div className="flex flex-row items-center justify-start my-auto">
-                <h2 className="text-2xl font-bold">Uploads</h2>
-                <button
-                  type="button"
-                  onClick={() => setShowUploadForm(!showUploadForm)}
-                  className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
-                >
-                  [
-                  <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
-                  ]
-                </button>
-              </div>
-              {showUploadForm && (
-                <div className="mb-4 border border-black p-4 rounded-lg gap-2 flex flex-col">
-                  <input
-                    aria-label="Upload file"
-                    type="file"
-                    onChange={(e) => {
-                      const files = e.target.files;
-                      if (files && files[0]) {
-                        setFile(files[0]);
-                      }
-                    }}
-                    className="border rounded p-2 bg-white"
-                  />
+            {project?.features.fileUploads && (
+              <div className="mt-4">
+                <div className="flex flex-row items-center justify-start my-auto">
+                  <h2 className="text-2xl font-bold">Uploads</h2>
                   <button
                     type="button"
-                    onClick={handleUpload}
-                    disabled={!file || isLoading}
-                    className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                    onClick={() => setShowUploadForm(!showUploadForm)}
+                    className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
                   >
-                    {isLoading ? (
-                      "Uploading..."
-                    ) : (
-                      <p className="flex items-center gap-2">
-                        <Upload className="w-5 h-5 text-center" />
-                        Upload
-                      </p>
-                    )}
+                    [
+                    <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+                    ]
                   </button>
                 </div>
-              )}
-              {uploads.length > 0 ? (
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
-                  {uploads.map((upload, index) => (
-                    <li
-                      key={index}
-                      className="p-2 relative border border-black rounded-lg flex shadow-md items-center gap-2"
+                {showUploadForm && (
+                  <div className="mb-4 border border-black p-4 rounded-lg gap-2 flex flex-col">
+                    <input
+                      aria-label="Upload file"
+                      type="file"
+                      onChange={(e) => {
+                        const files = e.target.files;
+                        if (files && files[0]) {
+                          setFile(files[0]);
+                        }
+                      }}
+                      className="border rounded p-2 bg-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleUpload}
+                      disabled={!file || isLoading}
+                      className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
                     >
-                      {/* Delete Button */}
-                      <button
-                        type="button"
-                        onClick={() => deleteUpload(index)}
-                        className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                      {isLoading ? (
+                        "Uploading..."
+                      ) : (
+                        <p className="flex items-center gap-2">
+                          <Upload className="w-5 h-5 text-center" />
+                          Upload
+                        </p>
+                      )}
+                    </button>
+                  </div>
+                )}
+                {uploads.length > 0 ? (
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
+                    {uploads.map((upload, index) => (
+                      <li
+                        key={index}
+                        className="p-2 relative border border-black rounded-lg flex shadow-md items-center gap-2"
                       >
-                        X
-                      </button>
-                      {/* Image preview (if it's an image) */}
-                      {upload.url &&
-                        (upload.name.match(
-                          /\.(jpeg|jpg|gif|png|webp|svg|ico)$/i
-                        ) ? (
-                          <img
-                            src={upload.url}
-                            alt={upload.name || `Upload ${index + 1}`}
-                            className="w-8 h-8 sm:w-16 sm:h-16 border border-black object-cover rounded-md"
-                            loading="lazy"
-                          />
-                        ) : null)}
+                        {/* Delete Button */}
+                        <button
+                          type="button"
+                          onClick={() => deleteUpload(index)}
+                          className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                        >
+                          X
+                        </button>
+                        {/* Image preview (if it's an image) */}
+                        {upload.url &&
+                          (upload.name.match(
+                            /\.(jpeg|jpg|gif|png|webp|svg|ico)$/i
+                          ) ? (
+                            <img
+                              src={upload.url}
+                              alt={upload.name || `Upload ${index + 1}`}
+                              className="w-8 h-8 sm:w-16 sm:h-16 border border-black object-cover rounded-md"
+                              loading="lazy"
+                            />
+                          ) : null)}
 
-                      {/* File link */}
-                      <a
-                        href={upload.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-destructive font-medium hover:underline truncate"
-                      >
-                        {upload.name || `File ${index + 1}`}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-600 p-2 mt-1 border-2 border-black rounded-lg shadow-md shadow-black">
-                  No uploads yet
-                </p>
-              )}
-            </div>
-            <div>
-              <div className="sm:mt-3 -mt-1">
-                <ColorPaletteGenerator
-                  userId={uid}
-                  customerId={stripeCustomerId}
-                  projectId={projectId}
-                />
+                        {/* File link */}
+                        <a
+                          href={upload.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-destructive font-medium hover:underline truncate"
+                        >
+                          {upload.name || `File ${index + 1}`}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-gray-600 p-1 pt-0 px-2">No uploads yet</p>
+                )}
               </div>
-            </div>
+            )}
+            {project?.features.colorPallette && (
+              <div>
+                <div className="sm:mt-3 -mt-1">
+                  <ColorPaletteGenerator
+                    userId={uid}
+                    customerId={stripeCustomerId}
+                    projectId={projectId}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </div>
         {showForm && (
