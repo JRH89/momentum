@@ -305,6 +305,81 @@ const Projects: React.FC<ProjectsProps> = ({
                   required
                   className="w-full p-2 border border-gray-300 rounded-md"
                 />
+                <div className="mt-4">
+                  <label className="block text-white mb-1">File Uploads</label>
+                  <div className="flex items-center space-x-4">
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="fileUploads"
+                        value="true"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            fileUploads: true,
+                          }))
+                        }
+                        checked={features.fileUploads === true}
+                        className="mr-2"
+                      />
+                      Enabled
+                    </label>
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="fileUploads"
+                        value="false"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            fileUploads: false,
+                          }))
+                        }
+                        checked={features.fileUploads === false}
+                        className="mr-2"
+                      />
+                      Disabled
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-white mb-1">Color Palette</label>
+                  <div className="flex items-center space-x-4">
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="colorPallette"
+                        value="true"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            colorPallette: true,
+                          }))
+                        }
+                        checked={features.colorPallette === true}
+                        className="mr-2"
+                      />
+                      Enabled
+                    </label>
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="colorPallette"
+                        value="false"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            colorPallette: false,
+                          }))
+                        }
+                        checked={features.colorPallette === false}
+                        className="mr-2"
+                      />
+                      Disabled
+                    </label>
+                  </div>
+                </div>
               </div>
             </form>
             <div className="flex flex-row items-center justify-end">
