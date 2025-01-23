@@ -80,6 +80,7 @@ const ProjectPage = () => {
               setMilestones(foundProject.milestones || []);
               setUploads(foundProject.uploads || []);
               setIsCompleted(foundProject.isCompleted || false);
+              setFeatures(foundProject.features || []);
             }
           }
         }
@@ -704,6 +705,12 @@ const ProjectPage = () => {
     colorPallette: false,
   });
 
+  useEffect(() => {
+    if (project) {
+      setFeatures(project.features);
+    }
+  }, [project]);
+
   const submitSettingsForm = async () => {
     const userRef = doc(db, "users", uid);
 
@@ -770,15 +777,15 @@ const ProjectPage = () => {
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         <div className="flex flex-col mb-2">
           <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
-            <h1 className="text-xl sm:text-2xl md:text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
+            <h1 className="text-xl md:text-2xl lg:text-3xl border-b-2 border-black xl:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
               <span className="flex items-center gap-2">
                 {project.name}
                 <Settings
                   onClick={handleSettingsForm}
-                  className="w-7 h-7 sm:w-7 sm:h-7 md:w-9 md:h-9 cursor-pointer text-confirm hover:rotate-90 duration-300"
+                  className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6 lg:w-8 lg:h-8 cursor-pointer text-confirm hover:rotate-90 duration-300"
                 />
               </span>
-              <span className="hidden sm:flex text-md sm:text-lg md:text-xl text-gray-600">
+              <span className="hidden sm:flex text-sm sm:text-md md:text-lg lg:text-xl text-gray-600">
                 ID: {project.id}
               </span>
             </h1>
@@ -791,18 +798,18 @@ const ProjectPage = () => {
                   submitSettingsForm();
                   handleSettingsForm();
                 }}
-                className="mt-4 max-w-md mx-auto w-full flex flex-col p-4 rounded-lg bg-white"
+                className="mt-4 max-w-md mx-auto w-full flex flex-col p-4 "
               >
                 <div className="mb-4 ">
-                  <h3 className="text-black text-2xl text-center font-bold mb-4">
+                  <h3 className="text-white text-2xl sm:text-3xl text-center font-bold mb-4">
                     Project Settings
                   </h3>
 
                   {/* File Uploads */}
-                  <label className="block text-lg font-medium text-black mt-2">
+                  <label className="block text-lg font-medium text-white my-2">
                     File Uploads
                   </label>
-                  <div className="flex gap-4">
+                  <div className="flex bg-white p-2 rounded-lg text-white gap-4">
                     <label className="flex items-center gap-2">
                       <input
                         type="radio"
@@ -816,7 +823,7 @@ const ProjectPage = () => {
                           }))
                         }
                       />
-                      <span className="text-black">Enable</span>
+                      <span className="text-black">Enabled</span>
                     </label>
                     <label className="flex items-center gap-2">
                       <input
@@ -831,13 +838,13 @@ const ProjectPage = () => {
                           }))
                         }
                       />
-                      <span className="text-black">Disable</span>
+                      <span className="text-black">Disabled</span>
                     </label>
                   </div>
 
                   {/* Color Palette */}
-                  <label className="block text-black mt-4">Color Palette</label>
-                  <div className="flex gap-4">
+                  <label className="block text-white mt-4">Color Palette</label>
+                  <div className="flex bg-white p-2 rounded-lg text-white gap-4">
                     <label className="flex items-center gap-2">
                       <input
                         type="radio"
@@ -851,7 +858,7 @@ const ProjectPage = () => {
                           }))
                         }
                       />
-                      <span className="text-black">Enable</span>
+                      <span className="text-black">Enabled</span>
                     </label>
                     <label className="flex items-center gap-2">
                       <input
@@ -866,7 +873,7 @@ const ProjectPage = () => {
                           }))
                         }
                       />
-                      <span className="text-black">Disable</span>
+                      <span className="text-black">Disabled</span>
                     </label>
                   </div>
                 </div>
@@ -880,7 +887,7 @@ const ProjectPage = () => {
                   </button>
                   <button
                     type="submit"
-                    className="bg-confirm shadow-md shadow-black hover:shadow-lg hover:shadow-black text-black font-medium flex flex-row items-center gap-2 justify-center duration-300 px-4 py-2 rounded-md mt-4"
+                    className="bg-confirm shadow-md shadow-black hover:shadow-lg hover:bg-opacity-60 text-black font-medium flex flex-row items-center gap-2 justify-center duration-300 px-4 py-2 rounded-md mt-4"
                   >
                     <Save className="w-5 h-5" />
                     Save Changes
@@ -890,13 +897,13 @@ const ProjectPage = () => {
             </div>
           )}
 
-          <p className="text-lg capitalize text-gray-700">
+          <p className="text-md md:text-lg lg:text-xl capitalize text-gray-700">
             {project.description}
           </p>
         </div>
 
         {/* Milestones Section */}
-        <div className="">
+        <div className="mb-2">
           <div className="flex justify-between items-center">
             <div className="flex items-end my-auto">
               <h2 className="text-2xl font-semibold">Milestones</h2>
