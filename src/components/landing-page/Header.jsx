@@ -27,7 +27,7 @@ const pageData = {
     {
       text: "Docs",
       href: "/About/welcomeToMomentum",
-      icon: SquareArrowOutUpRight,
+      icon: ExternalLinkIcon,
     },
     { text: "Start Now", href: "/Signup", isPrimary: true },
   ],
@@ -107,7 +107,7 @@ export const Header = () => {
                   className="hover:opacity-60 flex flex-row items-center gap-1 duration-300"
                 >
                   Login{" "}
-                  <SquareArrowDown className="h-4 w-4 flex-row flex justify-center items-center" />
+                  <ChevronDown className="h-4 w-4 flex-row flex justify-center items-center" />
                 </button>
                 {isDropdownOpen && (
                   <div className="absolute left-1/2 -translate-x-1/2 top-8 border-2 border-black bg-white shadow-lg shadow-black rounded-md mt-2">
@@ -167,7 +167,7 @@ export const Header = () => {
                 className="hover:pr-2 flex flex-row gap-1 items-center duration-300"
               >
                 Login
-                <SquareArrowDown className="h-4 w-4 flex-row flex justify-center items-center" />
+                <ChevronDown className="h-4 w-4 flex-row flex justify-center items-center" />
               </button>
               {isDropdownOpen && (
                 <div className="absolute border-2 border-black bg-white  shadow-lg  left-1/2 text-center -translate-x-1/2 shadow-black rounded-md mt-2">
