@@ -843,7 +843,9 @@ const ProjectPage = () => {
                   </div>
 
                   {/* Color Palette */}
-                  <label className="block text-white mt-4">Color Palette</label>
+                  <label className="block text-lg font-medium text-white mt-4 mb-2">
+                    Color Palette
+                  </label>
                   <div className="flex bg-white p-2 rounded-lg text-white gap-4">
                     <label className="flex items-center gap-2">
                       <input
