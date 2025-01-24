@@ -12,7 +12,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { FileText } from "lucide-react";
+import { FileText, LoaderPinwheel } from "lucide-react";
 import { toast } from "react-toastify";
 
 // Utility function to generate a unique app name
@@ -53,7 +53,7 @@ const Page = () => {
           setError("User document not found");
         }
       } catch (err) {
-        console.error("Error fetching user data:", err);
+        toast.error("Error fetching user data:", err);
         setError("Failed to fetch user data.");
       }
     };
@@ -64,6 +64,7 @@ const Page = () => {
   }, [user]);
 
   useEffect(() => {
+    setLoading(true);
     const fetchInvoices = async () => {
       if (!stripeAccountId) return;
 
@@ -75,12 +76,13 @@ const Page = () => {
 
         if (response.ok && data.invoices) {
           setInvoices(data.invoices || []);
+          setLoading(false);
           await handleUserCreation(data.invoices || []);
         } else {
           setError(data.error || "Failed to fetch invoices");
         }
       } catch (err) {
-        console.error("Error fetching invoices:", err);
+        toast.error("Error fetching invoices:", err);
         setError("Failed to fetch invoices.");
       }
     };
@@ -174,7 +176,7 @@ const Page = () => {
                   `Skipping creation: User already exists for email: ${email}`
                 );
               } else {
-                console.error(`Error processing email ${email}:`, err);
+                toast.error(`Error processing email ${email}:`, err);
               }
             }
           });
@@ -182,13 +184,13 @@ const Page = () => {
           // Wait for all user creation promises to finish
           await Promise.all(userCreationPromises);
         } catch (error) {
-          console.error("Error in batch user creation:", error);
+          toast.error("Error in batch user creation:", error);
         } finally {
           // Always cleanup the secondary app
           try {
             await deleteApp(secondaryApp);
           } catch (error) {
-            console.error("Error deleting secondary app:", error);
+            toast.error("Error deleting secondary app:", error);
           }
         }
       }
@@ -197,9 +199,12 @@ const Page = () => {
     if (stripeAccountId) fetchInvoices();
   }, [stripeAccountId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">

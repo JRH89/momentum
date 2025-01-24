@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../firebase";
 import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
-import { Plus } from "lucide-react";
+import { LoaderPinwheel, Plus } from "lucide-react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { signOut } from "firebase/auth";
 import { initializeApp, getApp, deleteApp } from "firebase/app";
 import Link from "next/link";
 import MilestoneProgress from "../ProgressBar";
+import { toast } from "react-toastify";
 
 interface Project {
   id: string;
@@ -56,7 +57,7 @@ const Projects: React.FC<ProjectsProps> = ({
         }
       } catch (err) {
         console.error("Error fetching projects:", err);
-        setError("Failed to fetch projects.");
+        toast.error("Failed to fetch projects.");
       } finally {
         setLoading(false);
       }
@@ -78,7 +79,7 @@ const Projects: React.FC<ProjectsProps> = ({
     e.preventDefault();
 
     if (!newProjectName || !newProjectDescription) {
-      setError("Please fill in all fields");
+      toast.error("Please fill in all fields");
       return;
     }
 
@@ -214,11 +215,18 @@ const Projects: React.FC<ProjectsProps> = ({
       }
     } catch (err) {
       console.error("Error creating project:", err);
-      setError("Failed to create project.");
+      toast.error("Failed to create project.");
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <div className="mt-6">
@@ -234,12 +242,6 @@ const Projects: React.FC<ProjectsProps> = ({
           ]
         </button>
       </div>
-
-      {/* Error message */}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {/* Loading state */}
-      {loading && <p className="text-blue-500">Loading...</p>}
 
       {/* Existing Projects List */}
       <div className="mb-4">

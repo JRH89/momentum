@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { doc, getDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { ExternalLink, Home, PlusIcon, Users } from "lucide-react";
+import {
+  ExternalLink,
+  Home,
+  LoaderPinwheel,
+  PlusIcon,
+  Users,
+} from "lucide-react";
 import { useAuth } from "../../context/AuthProvider";
 import { initFirebase } from "../../../firebase";
 import { db } from "../../../firebase";
@@ -15,6 +21,7 @@ import { CustomerTable } from "../../components/customer-table";
 import { AddCustomerForm } from "../../components/add-customer-form";
 import Announcements from "./Announcements";
 import UserCreatingInvoiceTable from "./UserCreatingInvoiceTable";
+import { toast } from "react-toastify";
 
 export default function Dashboard() {
   const { user, loading: userLoading } = useAuth();
@@ -24,6 +31,7 @@ export default function Dashboard() {
   const [userStripe, setUserStripe] = useState();
   const [isAddingCustomer, setIsAddingCustomer] = useState(false);
   const [invoices, setInvoices] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const app = initFirebase();
@@ -57,7 +65,7 @@ export default function Dashboard() {
           }
         })
         .catch((error) => {
-          console.error("Error getting document:", error);
+          toast.error("Error getting document:", error);
         });
     }
   }, [user, auth.currentUser]);
@@ -74,7 +82,7 @@ export default function Dashboard() {
           setError("User document not found");
         }
       } catch (err) {
-        console.error("Error fetching user data:", err);
+        toast.error("Error fetching user data:", err);
         setError("Failed to fetch user data.");
       }
     };
@@ -85,6 +93,7 @@ export default function Dashboard() {
   }, [user]);
 
   useEffect(() => {
+    setLoading(true);
     const fetchInvoices = async () => {
       if (!stripeAccountId) return;
 
@@ -96,11 +105,12 @@ export default function Dashboard() {
 
         if (response.ok && data.invoices) {
           setInvoices(data.invoices || []);
+          setLoading(false);
         } else {
           setError(data.error || "Failed to fetch invoices");
         }
       } catch (err) {
-        console.error("Error fetching invoices:", err);
+        toast.error("Error fetching invoices:", err);
         setError("Failed to fetch invoices.");
       }
     };
@@ -147,6 +157,13 @@ export default function Dashboard() {
       )
     );
   };
+
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <>

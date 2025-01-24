@@ -6,7 +6,7 @@ import { db } from "../../../../../firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { StripeCustomer } from "../../../../components/types/stripeCustomer";
 import Projects from "../../../../components/client/Projects";
-import { Plus } from "lucide-react";
+import { LoaderPinwheel, Plus } from "lucide-react";
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import { deleteApp, initializeApp } from "firebase/app";
 import {
@@ -14,6 +14,7 @@ import {
   getAuth,
   signOut,
 } from "@firebase/auth";
+import { toast } from "react-toastify";
 
 const CustomerDetailsPage: React.FC = () => {
   const { uid, stripeCustomerId } = useParams() as {
@@ -42,11 +43,10 @@ const CustomerDetailsPage: React.FC = () => {
           setUserData(userSnap.data());
           setStripeAccountId(userSnap.data().stripeAccountId || null);
         } else {
-          setError("User document not found");
+          toast.error("User document not found");
         }
       } catch (err) {
-        console.error("Error fetching user data:", err);
-        setError("Failed to fetch user data.");
+        toast.error("Failed to fetch user data.");
       }
     };
 
@@ -69,13 +69,12 @@ const CustomerDetailsPage: React.FC = () => {
           if (customer) {
             setCustomerData(customer);
             setCustomerEmail(customer.email || "");
-          } else setError("Customer not found in user document.");
+          } else toast.error("Customer not found in user document.");
         } else {
-          setError("User document not found.");
+          toast.error("User document not found.");
         }
       } catch (err) {
-        console.error("Error fetching customer data:", err);
-        setError("Failed to load customer data.");
+        toast.error("Failed to load customer data.");
       }
     };
 
@@ -95,11 +94,10 @@ const CustomerDetailsPage: React.FC = () => {
         if (response.ok && data.invoices) {
           setInvoices(data.invoices || []);
         } else {
-          setError(data.error || "Failed to fetch invoices");
+          toast.error(data.error || "Failed to fetch invoices");
         }
       } catch (err) {
-        console.error("Error fetching invoices:", err);
-        setError("Failed to fetch invoices.");
+        toast.error("Failed to fetch invoices.");
       }
     };
 
@@ -121,17 +119,9 @@ const CustomerDetailsPage: React.FC = () => {
       !invoiceDescription ||
       !invoiceDueDate
     ) {
-      setError("Please fill in all fields");
+      toast.error("Please fill in all fields");
       return;
     }
-
-    // Log the values being sent
-    console.log("Sending invoice data:", {
-      amount: invoiceAmount,
-      currency: invoiceCurrency,
-      description: invoiceDescription,
-      dueDate: invoiceDueDate,
-    });
 
     try {
       const response = await fetch(`/api/stripe/invoices/create`, {
@@ -240,15 +230,13 @@ const CustomerDetailsPage: React.FC = () => {
             }
           }
         }
-      } catch (err) {
-        console.error("Error updating user document:", err);
+      } catch (err: any) {
+        toast.error("Error updating user document: " + err.message);
       }
-
-      // Log the response
-      console.log("Invoice created:", data);
 
       setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
       setShowInvoiceForm(false);
+      toast.success("Invoice created successfully!");
 
       // Reset form
       setInvoiceAmount("");
@@ -256,24 +244,29 @@ const CustomerDetailsPage: React.FC = () => {
       setInvoiceDescription("");
       setInvoiceDueDate("");
     } catch (err) {
-      console.error("Error creating invoice:", err);
-      setError(err instanceof Error ? err.message : "Failed to create invoice");
+      toast.error(
+        err instanceof Error ? err.message : "Failed to create invoice"
+      );
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         {customerData && (
           <div className="flex flex-col">
-            <h2 className="text-2xl font-semibold text-black">
+            <h2 className="text-2xl lg:text-3xl font-bold text-black">
               Customer Details
             </h2>
-            <p className="font-medium">Name: {customerData.name}</p>
-            <p className="font-medium">
+            <p className="font-semibold">Name: {customerData.name}</p>
+            <p className="font-semibold">
               Email:{" "}
               <a
                 className="text-confirm hover:underline"
@@ -282,17 +275,17 @@ const CustomerDetailsPage: React.FC = () => {
                 {customerData.email}
               </a>
             </p>
-            <p className="font-medium">
+            <p className="font-semibold">
               Stripe Customer ID: {customerData.stripeCustomerId}
             </p>
             {customerData.uid && (
-              <p className="font-medium">User ID: {customerData.uid}</p>
+              <p className="font-semibold">User ID: {customerData.uid}</p>
             )}
           </div>
         )}
         <div className="mt-6">
           <div className="flex justify-start items-center">
-            <h3 className="text-xl font-semibold">Invoices</h3>
+            <h3 className="text-2xl font-semibold">Invoices</h3>
             <button
               type="button"
               onClick={() => setShowInvoiceForm(!showInvoiceForm)}

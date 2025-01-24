@@ -2,15 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
-import {
-  arrayUnion,
-  doc,
-  getDoc,
-  runTransaction,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { Plus, Save, Settings, Upload } from "lucide-react";
+import { LoaderPinwheel, Plus, Save, Settings, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
@@ -84,9 +78,9 @@ const ProjectPage = () => {
             }
           }
         }
-      } catch (err) {
-        console.error("Error fetching project:", err);
-        setError("Failed to fetch project.");
+      } catch (err: any) {
+        toast.error("Error fetching project:", err);
+        toast.error("Failed to fetch project.");
       }
     };
 
@@ -160,8 +154,8 @@ const ProjectPage = () => {
           }
         }
       }
-    } catch (err) {
-      console.error("Error adding milestone:", err);
+    } catch (err: any) {
+      toast.error("Error adding milestone:", err);
       setMilestoneError("Failed to add milestone.");
     }
   };
@@ -206,8 +200,8 @@ const ProjectPage = () => {
           }
         }
       }
-    } catch (err) {
-      console.error("Error updating milestone status:", err);
+    } catch (err: any) {
+      toast.error("Error updating milestone status:", err);
     }
   };
 
@@ -257,13 +251,13 @@ const ProjectPage = () => {
 
         // Update local state
         setUploads(updatedUploads);
+        setFile(null);
+        toast.success("File uploaded successfully!");
       } else {
         throw new Error("User document does not exist");
       }
-
-      setFile(null);
-    } catch (error) {
-      console.error("Error uploading file:", error);
+    } catch (error: any) {
+      toast.error("Error uploading file:", error);
     } finally {
       setIsLoading(false);
     }
@@ -308,7 +302,6 @@ const ProjectPage = () => {
         throw new Error("User document does not exist");
       }
     } catch (error) {
-      console.error("Error deleting upload:", error);
       toast.error("Error deleting upload");
     }
 
@@ -359,9 +352,8 @@ const ProjectPage = () => {
 
       toast.success("Project marked as complete!");
       setIsCompleted(true);
-      confetti({ particleCount: 1000, spread: 360, origin: { y: 0.6 } });
+      confetti({ particleCount: 1000, spread: 180, origin: { y: 0.6 } });
     } catch (error) {
-      console.error("Error marking project as complete:", error);
       toast.error("Failed to mark project as complete. Please try again.");
     }
   };
@@ -414,8 +406,7 @@ const ProjectPage = () => {
 
       toast.success("Milestone deleted successfully!");
     } catch (error) {
-      console.error("Error deleting milestone:", error);
-      toast.error("Failed to delete milestone. Please try again.");
+      toast.error("Failed to delete milestone." + error);
     }
   };
 
@@ -460,7 +451,6 @@ const ProjectPage = () => {
       toast.success("Project marked as incomplete!");
       setIsCompleted(false);
     } catch (error) {
-      console.error("Error marking project as incomplete:", error);
       toast.error("Failed to mark project as incomplete. Please try again.");
     }
   };
@@ -501,11 +491,10 @@ const ProjectPage = () => {
           setUserData(userSnap.data());
           setStripeAccountId(userSnap.data().stripeAccountId || null);
         } else {
-          setError("User document not found");
+          toast.error("User document not found");
         }
       } catch (err) {
-        console.error("Error fetching user data:", err);
-        setError("Failed to fetch user data.");
+        toast.error("Failed to fetch user data.");
       }
     };
 
@@ -528,13 +517,12 @@ const ProjectPage = () => {
           if (customer) {
             setCustomerData(customer);
             setCustomerEmail(customer.email || "");
-          } else setError("Customer not found in user document.");
+          } else toast.error("Customer not found in user document.");
         } else {
-          setError("User document not found.");
+          toast.error("User document not found.");
         }
       } catch (err) {
-        console.error("Error fetching customer data:", err);
-        setError("Failed to load customer data.");
+        toast.error("Failed to load customer data.");
       }
     };
 
@@ -580,8 +568,7 @@ const ProjectPage = () => {
         const project = customers[customerIndex].projects[projectIndex];
         setInvoices(project.invoices || []); // Set invoices or an empty array if undefined
       } catch (err: any) {
-        console.error("Error fetching invoices:", err);
-        setError(err.message);
+        toast.error(err.message);
       } finally {
         setLoading(false);
       }
@@ -605,7 +592,7 @@ const ProjectPage = () => {
       !invoiceDescription ||
       !invoiceDueDate
     ) {
-      setError("Please fill in all fields");
+      toast.error("Please fill in all fields");
       return;
     }
 
@@ -635,9 +622,6 @@ const ProjectPage = () => {
       if (!response.ok) {
         throw new Error(data.error || "Failed to create invoice");
       }
-
-      // Log the response
-      console.log("Invoice created:", data);
 
       const invoice = data.invoice.id;
 
@@ -683,15 +667,17 @@ const ProjectPage = () => {
 
       setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
       setShowInvoiceForm(false);
-
+      toast.success("Invoice created successfully!");
       // Reset form
       setInvoiceAmount("");
       setInvoiceCurrency("usd");
       setInvoiceDescription("");
       setInvoiceDueDate("");
-    } catch (err) {
-      console.error("Error creating invoice:", err);
-      setError(err instanceof Error ? err.message : "Failed to create invoice");
+    } catch (err: any) {
+      toast.error("Error creating invoice:", err);
+      toast.error(
+        err instanceof Error ? err.message : "Failed to create invoice"
+      );
     }
   };
 
@@ -759,14 +745,16 @@ const ProjectPage = () => {
 
       toast.success("Features updated successfully!");
     } catch (error: any) {
-      console.error("Error updating features:", error.message);
-      toast.error("Failed to update features. Please try again.");
+      toast.error("Failed to update features" + error.message);
     }
   };
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   if (!project) {
     return <div>Project not found.</div>;

@@ -8,8 +8,10 @@ import Link from "next/link";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/navigation";
 import { auth } from "../../../../../firebase"; // Adjusted for direct use of Firebase auth
-import { Briefcase } from "lucide-react";
+import { Briefcase, LoaderPinwheel } from "lucide-react";
 import MilestoneProgress from "../../../../components/ProgressBar";
+import { toast } from "react-toastify";
+import { set } from "date-fns";
 
 const Page = () => {
   const { uid } = useParams();
@@ -36,6 +38,7 @@ const Page = () => {
   }, [router]);
 
   useEffect(() => {
+    setLoading(true);
     const fetchProjects = async () => {
       if (!uid) return;
 
@@ -55,11 +58,12 @@ const Page = () => {
 
           setProjects(allProjects);
           setProjectsPerPage(userData.projectsPerPage || 10);
+          setLoading(false);
         } else {
-          console.warn("User document does not exist!");
+          toast.error("User document does not exist!");
         }
       } catch (error) {
-        console.error("Error fetching projects:", error);
+        toast.error("Error fetching projects:", error);
       }
     };
 
@@ -75,13 +79,12 @@ const Page = () => {
     setCurrentPage(selected);
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        Loading...
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
       </div>
-    ); // Show loading state while auth is initializing
-  }
+    );
 
   return (
     <>

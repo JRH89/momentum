@@ -12,7 +12,8 @@ import {
   signOut,
 } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { FileText } from "lucide-react";
+import { FileText, LoaderPinwheel } from "lucide-react";
+import { toast } from "react-toastify";
 
 // Utility function to generate a unique app name
 const generateAppName = () => `tempy-${Date.now()}`;
@@ -52,7 +53,7 @@ const UserCreatingInvoiceTable = () => {
           setError("User document not found");
         }
       } catch (err) {
-        console.error("Error fetching user data:", err);
+        toast.error("Error fetching user data:", err);
         setError("Failed to fetch user data.");
       }
     };
@@ -79,7 +80,7 @@ const UserCreatingInvoiceTable = () => {
           setError(data.error || "Failed to fetch invoices");
         }
       } catch (err) {
-        console.error("Error fetching invoices:", err);
+        toast.error("Error fetching invoices:", err);
         setError("Failed to fetch invoices.");
       }
     };
@@ -173,7 +174,7 @@ const UserCreatingInvoiceTable = () => {
                   `Skipping creation: User already exists for email: ${email}`
                 );
               } else {
-                console.error(`Error processing email ${email}:`, err);
+                toast.error(`Error processing email ${email}:`, err);
               }
             }
           });
@@ -181,13 +182,13 @@ const UserCreatingInvoiceTable = () => {
           // Wait for all user creation promises to finish
           await Promise.all(userCreationPromises);
         } catch (error) {
-          console.error("Error in batch user creation:", error);
+          toast.error("Error in batch user creation:", error);
         } finally {
           // Always cleanup the secondary app
           try {
             await deleteApp(secondaryApp);
           } catch (error) {
-            console.error("Error deleting secondary app:", error);
+            toast.error("Error deleting secondary app:", error);
           }
         }
       }
@@ -196,13 +197,12 @@ const UserCreatingInvoiceTable = () => {
     if (stripeAccountId) fetchInvoices();
   }, [stripeAccountId]);
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-2 text-black flex flex-col pb-24">
-        Loading...
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
       </div>
     );
-  }
 
   return (
     <div className=" max-w-6xl mx-auto w-full p-4 pt-2 px-0 sm:px-4 text-black flex flex-col">

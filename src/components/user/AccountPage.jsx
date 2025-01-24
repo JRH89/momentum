@@ -10,7 +10,7 @@ import { getFirestore, updateDoc } from "firebase/firestore";
 import { getDoc, doc, collection } from "firebase/firestore";
 import Link from "next/link";
 import LoginForm from "./SignIn";
-import { Blocks, Loader2 } from "lucide-react";
+import { Blocks, Loader2, LoaderPinwheel } from "lucide-react";
 import { toast } from "react-toastify";
 
 const Account = () => {
@@ -65,6 +65,7 @@ const Account = () => {
 
   useEffect(() => {
     if (user) {
+      setLoadingState(true);
       const docRef = doc(firestore, "users", auth.currentUser.uid);
       getDoc(docRef)
         .then((doc) => {
@@ -72,6 +73,7 @@ const Account = () => {
             setUserData(doc.data());
             setUserStripe(doc.data().stripeAccountId || null);
             setIsConnected(doc.data().stripeConnected || false);
+            setLoadingState(false);
           }
         })
         .catch((error) => {
@@ -134,7 +136,7 @@ const Account = () => {
 
       router.push(url); // Redirect the user to the Stripe billing portal
     } catch (error) {
-      console.error("Error loading portal:", error);
+      toast.error("Error loading portal:", error);
     } finally {
       setLoading(false); // Optional: Reset loading state
     }
@@ -145,7 +147,7 @@ const Account = () => {
     const user = auth.currentUser;
 
     if (!user) {
-      console.log("No user is currently signed in.");
+      toast.error("No user found");
       return;
     }
 
@@ -156,18 +158,18 @@ const Account = () => {
     if (confirmDelete) {
       try {
         await deleteUser(user);
-        console.log("User account deleted successfully.");
+        toast.success("User account deleted successfully.");
       } catch (error) {
-        console.error("Error deleting user account:", error);
+        toast.error("Error deleting user account:", error);
       }
     } else {
-      console.log("Account deletion canceled.");
+      toast.error("Account deletion canceled.");
     }
   };
 
   const handleDisconnectStripe = async () => {
     if (!user) {
-      alert("No user found");
+      toast.error("No user found");
       return;
     }
 
@@ -188,7 +190,6 @@ const Account = () => {
         }
 
         const result = await response.json();
-        console.log("Deauthorization successful:", result);
 
         // Update Firestore (if applicable)
         const userRef = doc(db, "users", user.uid);
@@ -199,19 +200,17 @@ const Account = () => {
 
         toast.success("Stripe account successfully unlinked");
       } catch (error) {
-        console.error("Error disconnecting Stripe account:", error);
-        toast.error("Failed to disconnect Stripe account");
+        toast.error("Failed to disconnect Stripe account", error);
       }
     }
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        Loading...
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
       </div>
-    ); // Show loading state while auth is initializing
-  }
+    );
 
   return (
     <>

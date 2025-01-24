@@ -8,7 +8,7 @@ import { useAuth } from "../../../../context/AuthProvider";
 import { db, auth } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AddCustomerForm } from "../../../../components/add-customer-form";
-import { Plus, Users } from "lucide-react";
+import { LoaderPinwheel, Plus, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
@@ -82,13 +82,12 @@ const Page = () => {
     );
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        Loading...
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
       </div>
-    ); // Show loading state while auth is initializing
-  }
+    );
 
   return (
     <>

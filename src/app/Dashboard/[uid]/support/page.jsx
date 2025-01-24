@@ -6,6 +6,7 @@ import { useAuth } from "../../../../context/AuthProvider";
 import { useRouter } from "next/navigation";
 import { auth } from "../../../../../firebase";
 import { useState } from "react";
+import { LoaderPinwheel } from "lucide-react";
 
 const Page = () => {
   const [user, setUser] = useState(null);
@@ -27,13 +28,12 @@ const Page = () => {
     return () => unsubscribe(); // Cleanup listener on unmount
   }, [router]);
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        Loading...
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
       </div>
-    ); // Show loading state while auth is initializing
-  }
+    );
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24 px-0 sm:px-4">
