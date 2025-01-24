@@ -7,6 +7,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import LogoImage from "../Logo";
 import {
+  ArrowBigRight,
   ChevronDown,
   ExternalLinkIcon,
   SquareArrowDown,
@@ -66,7 +67,7 @@ export const Header = () => {
               {pageData.bannerText}
             </motion.span>
           </div>
-          <ArrowRight className="h-5 w-5 inline-flex justify-center items-center" />
+          <ArrowBigRight className="h-5 w-5 inline-flex justify-center items-center" />
         </Link>
       </div>
       <div className="py-3">
