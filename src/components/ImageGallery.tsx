@@ -80,12 +80,12 @@ const ImageGallery = () => {
     >
       <div className="section-heading w-full mx-auto flex flex-col text-center">
         <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
-          Screenshots
+          In-App Previews
         </div>
-        <h2 className="section-title mt-5">Image Gallery</h2>
+        <h2 className="section-title mt-5">See the App in Action</h2>
         <p className="section-description mt-5">
-          Browse through our gallery to explore various features and tools.
-          Click an image for a detailed view.
+          Get a closer look at the app's interface and tools. Click on any
+          preview to learn more about its features.
         </p>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-5 lg:gap-10 mt-6 max-w-4xl mx-auto">

@@ -10,44 +10,45 @@ import React from "react";
 const featuresData = [
   {
     title: "Manage Projects",
-    description: "Add projects and manage everything in one place.",
+    description:
+      "Organize and oversee all your projects in one centralized system.",
     icon: FolderPlus,
     points: [
-      "Set milestones & deadlines",
-      "Manage associated files",
-      "Share progress with customers",
+      "Set clear milestones and deadlines",
+      "Keep files organized and accessible",
+      "Provide progress updates to clients",
     ],
   },
   {
     title: "Send Invoices",
-    description: "Create and send invoices and track payments.",
+    description: "Create and track invoices to ensure timely payments.",
     icon: Receipt,
     points: [
-      "Create and send invoices",
-      "Manage and track payments",
-      "Track budgets and costs",
+      "Generate professional invoices",
+      "Track payments and balances",
+      "Get paid on time",
     ],
   },
   {
     title: "User Dashboard",
     description:
-      "Manage all your customers, invoices, and projects in one place.",
+      "Manage customers, projects, and invoices from a unified dashboard.",
     icon: LayoutDashboard,
     points: [
-      "Create & manage projects",
-      "Send invoices & track payments",
-      "Manage customers & invoices",
+      "Oversee project details",
+      "Send and track invoices",
+      "Access customer information quickly",
     ],
   },
   {
     title: "Customer Dashboard",
     description:
-      "Your customers can view projects, upload files, pay invoices, and more.",
+      "Allow customers to stay informed and manage their interactions.",
     icon: LayoutTemplate,
     points: [
-      "View project status",
-      "Upload files and track progress",
-      "Pay invoices",
+      "View project updates in real time",
+      "Upload important files",
+      "Make secure payments online",
     ],
   },
 ];
@@ -73,7 +74,7 @@ const FeaturesSection = () => {
           {featuresData.map((feature, index) => (
             <div
               key={index}
-              className="relative h-full max-w-md w-full border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center"
+              className="relative h-auto max-w-md w-full min-h-[22rem] border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center"
             >
               {/* Icon Wrapper */}
               <div className="absolute -top-8 flex items-center justify-center">
@@ -83,23 +84,23 @@ const FeaturesSection = () => {
               </div>
 
               {/* Content Wrapper */}
-              <div className="flex flex-col items-center justify-center text-center h-full space-y-6 mt-10">
+              <div className="flex flex-col items-center justify-between text-center h-full mt-10 space-y-6">
                 {/* Title */}
-                <h3 className="text-3xl md:text-4xl font-bold text-black">
+                <h3 className="text-2xl md:text-3xl font-bold text-black">
                   {feature.title}
                 </h3>
 
                 {/* Description */}
-                <p className="text-lg md:text-xl font-medium text-black leading-relaxed">
+                <p className="text-base md:text-lg font-medium text-black leading-relaxed">
                   {feature.description}
                 </p>
 
                 {/* Points List */}
-                <ul className="w-full text-left space-y-3">
+                <ul className="w-full text-left space-y-3 flex-grow">
                   {feature.points.map((point, idx) => (
                     <li key={idx} className="flex items-center gap-3">
                       <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />
-                      <span className="text-lg md:text-xl font-medium text-black">
+                      <span className="text-base md:text-lg font-medium text-black">
                         {point}
                       </span>
                     </li>

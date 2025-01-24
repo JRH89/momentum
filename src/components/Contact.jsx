@@ -100,7 +100,7 @@ export default function ContactPage() {
                 <LoaderPinwheel className="w-7 h-7 animate-spin duration-300" />
               </p>
             ) : (
-              <p className="flex flex-row items-center gap-2">
+              <p className="flex lg:text-xl flex-row items-center gap-2">
                 {" "}
                 <Mail className="w-7 h-7" />
                 Send Message
