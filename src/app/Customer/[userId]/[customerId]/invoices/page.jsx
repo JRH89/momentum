@@ -5,7 +5,8 @@ import InvoicesTable from "../../../../../components/customer/InvoiceTable";
 import { useParams, useRouter } from "next/navigation";
 import { db, auth } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
-import { FileTextIcon } from "lucide-react";
+import { FileTextIcon, LoaderPinwheel } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const { userId, customerId } = useParams();
@@ -59,7 +60,7 @@ const Page = () => {
             console.log("User document not found");
           }
         } catch (error) {
-          console.error("Error fetching customer data:", error);
+          toast.error("Error fetching customer data:", error);
         } finally {
           setLoading(false);
         }
@@ -88,7 +89,7 @@ const Page = () => {
           setError(data.error || "Failed to fetch invoices");
         }
       } catch (err) {
-        console.error("Error fetching invoices:", err);
+        toast.error("Error fetching invoices:", err);
         setError("Failed to fetch invoices.");
       }
     };
@@ -96,13 +97,12 @@ const Page = () => {
     if (stripeAccountId && stripeCustomerId) fetchInvoices();
   }, [stripeAccountId, stripeCustomerId]);
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        Loading...
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
       </div>
     );
-  }
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">

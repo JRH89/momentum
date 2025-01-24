@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { db, auth } from "../../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
-import { BriefcaseIcon } from "lucide-react";
+import { BriefcaseIcon, LoaderPinwheel } from "lucide-react";
 import MilestoneProgress from "../../../../../components/ProgressBar";
 
 const Page = () => {
@@ -71,9 +71,12 @@ const Page = () => {
     fetchCustomerData();
   }, [userId, customerId, user]);
 
-  if (loading) {
-    return <div>Loading...</div>; // Show loading state while auth is initializing
-  }
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 mt-2 text-black flex flex-col pb-24">
@@ -84,25 +87,21 @@ const Page = () => {
       {customerData && customerData.projects?.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-0 sm:px-8">
           {customerData.projects.map((project, index) => (
-            <div
+            <Link
               key={index}
-              className="bg-[#EAEEFE] border-2 border-black shadow-black rounded-lg shadow-md p-4"
+              href={`/Customer/${userId}/${customerId}/${project.id}`}
             >
-              <h3 className="text-lg font-bold text-black mb-2">
-                {project.name}
-              </h3>
-              <p className="text-gray-600 text-sm">ID: {project.id}</p>
-              <p className="text-gray-600 text-sm mb-2">
-                Descripion: {project.description}
-              </p>
-              <MilestoneProgress milestones={project.milestones} />
-              <Link
-                href={`/Customer/${userId}/${customerId}/${project.id}`}
-                className="text-green-500 text-md hover:underline duration-300 font-bold "
-              >
-                View Details
-              </Link>
-            </div>
+              <div className="bg-[#EAEEFE] duration-300 hover:shadow-lg hover:shadow-black border-2 border-black shadow-black rounded-lg shadow-md p-4">
+                <h3 className="text-lg font-bold text-black mb-2">
+                  {project.name}
+                </h3>
+                <p className="text-gray-600 text-sm">ID: {project.id}</p>
+                <p className="text-gray-600 text-sm mb-2">
+                  Descripion: {project.description}
+                </p>
+                <MilestoneProgress milestones={project.milestones} />
+              </div>
+            </Link>
           ))}
         </div>
       )}

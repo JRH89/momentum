@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db, auth } from "../../../../../../firebase";
-import { Settings } from "lucide-react";
+import { LoaderPinwheel, Settings } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Page = () => {
   const [loading, setLoading] = useState(true);
@@ -14,9 +15,7 @@ const Page = () => {
   const [invoicesPerPage, setInvoicesPerPage] = useState("");
   const [projectsPerPage, setProjectsPerPage] = useState("");
   const [customerData, setCustomerData] = useState(null);
-
   const [user, setUser] = useState(null);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -53,13 +52,13 @@ const Page = () => {
             setInvoicesPerPage(customer.invoicesPerPage || 0); // Fallback to 0
             setProjectsPerPage(customer.projectsPerPage || 0); // Fallback to 0
           } else {
-            console.log("Customer not found in the customers array.");
+            toast.error("Customer not found in the customers array.");
           }
         } else {
-          console.log("User document not found");
+          toast.error("User document not found");
         }
       } catch (error) {
-        console.error("Error fetching customer data:", error);
+        toast.error("Error fetching customer data:", error);
       } finally {
         setLoading(false);
       }
@@ -113,17 +112,16 @@ const Page = () => {
     updateCustomerData();
   }, [invoicesPerPage, projectsPerPage, customerData, userId, customerId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (loading) {
-    return <div>Loading...</div>; // Show loading state while auth is initializing
-  }
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
-    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-      <h1 className="text-3xl font-bold items-center text-left flex flex-row gap-2">
+    <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 text-black flex flex-col pb-24">
+      <h1 className="text-3xl font-bold mb-2 mt-4 lg:mt-2 items-center text-left flex flex-row gap-2">
         <Settings className="w-8 h-8" /> Settings
       </h1>
       <div className="p-4 mt-2 gap-5 flex flex-col border-black border-2 rounded-lg shadow-md shadow-black">

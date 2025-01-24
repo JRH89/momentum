@@ -5,11 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { doc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { auth, db } from "../../../../../../firebase";
-import { useAuth } from "../../../../../context/AuthProvider";
-import Link from "next/link";
-import { PlusIcon, Upload } from "lucide-react";
+import { LoaderPinwheel, PlusIcon, Upload } from "lucide-react";
 import ReactPaginate from "react-paginate";
-import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import CustomerPallete from "../../../../../components/customer/CustomerPallete";
 import MilestoneProgress from "../../../../../components/ProgressBar";
 import { toast } from "react-toastify";
@@ -18,19 +15,14 @@ import InvoicesTable from "../../../../../components/project/InvoiceTable";
 const CustomerProjectPage = () => {
   const router = useRouter();
   const { userId, customerId, projectId } = useParams();
-
   const [projectData, setProjectData] = useState(null);
   const [uploads, setUploads] = useState([]);
   const [file, setFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [milestones, setMilestones] = useState([]);
-
   const [showUploadMenu, setShowUploadMenu] = useState(false);
-
   const storage = getStorage();
-
   const [user, setUser] = useState(null);
-
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -263,6 +255,13 @@ const CustomerProjectPage = () => {
 
     fetchInvoices();
   }, [userId, customerId, projectId]);
+
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <>

@@ -11,7 +11,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"; // Import Firebase a
 import { auth } from "../../../../../firebase"; // Ensure your firebase config is properly set
 import InvoicesTable from "../../../../components/customer/InvoiceTable";
 import UserTickets from "../../../../components/user/UserTickets";
-import { Home } from "lucide-react";
+import { Home, LoaderPinwheel } from "lucide-react";
 import Link from "next/link";
 import MilestoneProgress from "../../../../components/ProgressBar";
 
@@ -107,9 +107,12 @@ const CustomerDashboard = () => {
     if (stripeAccountId && stripeCustomerId) fetchInvoices();
   }, [stripeAccountId, stripeCustomerId]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading)
+    return (
+      <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
+        <LoaderPinwheel className="animate-spin duration-300 w-8 h-8" />
+      </div>
+    );
 
   return (
     <>
@@ -126,7 +129,6 @@ const CustomerDashboard = () => {
                 <h3 className="text-2xl font-bold mb-2">Invoices</h3>
                 <InvoicesTable invoices={invoices} />
               </div>
-
               {customerData.projects && (
                 <>
                   <h2 className="text-2xl font-bold mb-3">Projects</h2>
