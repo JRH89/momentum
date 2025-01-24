@@ -1,17 +1,25 @@
 "use client";
 
-import { Plus } from "lucide-react";
+import { ExternalLink, Plus } from "lucide-react";
 import React, { useState } from "react";
 import siteMetadata from "../../../siteMetadata";
+
+export const metadata = {
+  title: `Policies | ${siteMetadata.title}`,
+  description: `Get familiar with the policies of ${siteMetadata.title}`,
+  url: `${siteMetadata.siteUrl}/Policies`,
+};
 
 const Policies = () => {
   const [isCookiePolicyOpen, setCookiePolicyOpen] = useState(false);
   const [isTOSOpen, setTOSOpen] = useState(false);
   const [isPrivacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
+  const [stripe, isStripeOpen] = useState(false);
 
   const toggleCookiePolicy = () => setCookiePolicyOpen(!isCookiePolicyOpen);
   const toggleTOS = () => setTOSOpen(!isTOSOpen);
   const togglePrivacyPolicy = () => setPrivacyPolicyOpen(!isPrivacyPolicyOpen);
+  const toggleStripe = () => isStripeOpen(!stripe);
 
   return (
     <>
@@ -353,6 +361,53 @@ const Policies = () => {
                 you of any significant changes by posting the updated policy on
                 our website. Your continued use of our website after any changes
                 constitutes your acceptance of the revised policy.
+              </p>
+            </div>
+          )}
+        </div>
+        <div className="mb-8 max-w-4xl mx-auto w-full">
+          <h2
+            className="text-xl sm:text-2xl font-semibold mb-3 cursor-pointer"
+            onClick={toggleStripe}
+          >
+            <Plus
+              className={`inline mr-2 text-confirm ${
+                stripe ? "rotate-45 text-destructive" : ""
+              }`}
+            />{" "}
+            Stripe Policies
+          </h2>
+          {stripe && (
+            <div className="mb-8 flex flex-col">
+              <p className="mb-2">
+                We use Stripe to process payments for our services. By using
+                Stripe, you consent to the processing of your payment
+                information in accordance with Stripe&apos;s{" "}
+                <a
+                  className="hover:underline inline-flex items-center gap-1 text-green-500 font-medium"
+                  href="https://stripe.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Privacy Policy
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                .
+              </p>
+              <p className="mb-2">
+                We use Stripe Connect in order to connect your Stripe account to
+                Momentum. By connecting your Stripe account, you agree to the
+                processing of your payment information in accordance with the{" "}
+                <a
+                  className="hover:underline inline-flex flex-row items-center gap-1 text-green-500 font-medium"
+                  href="https://stripe.com/legal/connect-account"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Stripe Connect Account Agreement{" "}
+                  <ExternalLink className="flex flex-row w-4 h-4" />
+                </a>
+                .
               </p>
             </div>
           )}

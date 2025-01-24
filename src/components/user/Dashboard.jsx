@@ -251,7 +251,7 @@ export default function Dashboard() {
       {/* Terms Pop-up */}
       {isPopupVisible && (
         <div className="fixed inset-0 bg-black/95 flex justify-center items-center z-50">
-          <div className="bg-white border-2 border-black p-6 rounded-lg  shadow-lg max-w-md w-full text-center">
+          <div className="bg-white border-2 border-black p-6 rounded-lg shadow-lg max-w-md w-full text-center">
             <h2 className="text-xl font-semibold mb-4">Terms and Conditions</h2>
             <div
               className="text-gray-700 mb-4 p-4 border-2 border-black rounded max-h-60 overflow-y-auto text-left"
@@ -269,11 +269,31 @@ export default function Dashboard() {
               <p>
                 <strong>Stripe Connection:</strong> By connecting your Stripe
                 account, you grant us permission to access your account data to
-                facilitate transactions.
+                facilitate transactions. Your use of Stripe is subject to{" "}
+                <a
+                  href="https://stripe.com/legal/connect-account"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Stripe Connect Account Agreement
+                </a>
+                .
               </p>
               <p>
                 <strong>Privacy:</strong> We are committed to protecting your
                 personal information in accordance with our privacy policy.
+                Payment information is processed securely through Stripe, and
+                you agree to{" "}
+                <a
+                  href="https://stripe.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Stripe's Privacy Policy
+                </a>
+                .
               </p>
               <p>
                 <strong>Termination:</strong> We reserve the right to terminate
@@ -283,15 +303,17 @@ export default function Dashboard() {
                 <strong>Limitation of Liability:</strong> We are not liable for
                 any damages resulting from the use of our services.
               </p>
-              <p>
+              <p className="">
                 For the full terms, please refer to our{" "}
                 <Link
                   target="_blank"
-                  className="text-blue-600 flex flex-row gap-1 hover:underline items-center "
+                  className="text-blue-600 inline-flex flex-row gap-1 hover:underline items-center"
                   href="/Policies"
                 >
-                  Terms of Service <ExternalLink className="w-4 h-4" />
+                  Terms of Service{" "}
+                  <ExternalLink className="w-4 h-4 inline-flex" />
                 </Link>
+                .
               </p>
             </div>
             <div className="flex items-center justify-center mb-4">
@@ -316,7 +338,7 @@ export default function Dashboard() {
               <button
                 className={`px-4 py-2 rounded-lg ${
                   termsAccepted
-                    ? "bg-confirm text-black font-semibold border-2 border-black  shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
+                    ? "bg-confirm text-black font-semibold border-2 border-black shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
                     : "bg-gray-300 text-gray-600 cursor-not-allowed"
                 }`}
                 onClick={handleConnect}
