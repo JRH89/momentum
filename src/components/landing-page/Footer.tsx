@@ -97,7 +97,7 @@ export const Footer = () => {
         {/* Footer Text */}
         <p className="mt-8 text-center">
           © {new Date().getFullYear()} {siteMetadata.title}. All rights
-          reserved. Momentum is a subsidary of{" "}
+          reserved. Momentum is a subsidiary of{" "}
           <a
             className="hover:text-white transition duration-300 ease-in-out"
             rel="noopener"
