@@ -174,17 +174,17 @@ export const Header = () => {
                 <div className="absolute border-2 border-black bg-white  shadow-lg  left-1/2 text-center -translate-x-1/2 shadow-black rounded-md mt-2">
                   <Link
                     href="/Dashboard/login"
-                    className="flex px-4 py-2 hover:bg-gray-100"
+                    className="flex px-4 py-2 rounded-md hover:bg-backgroundPrimary"
                     onClick={toggleMenu}
                   >
-                    User Login
+                    User Portal
                   </Link>
                   <Link
                     href="/Customer/login"
-                    className="flex px-4 py-2 hover:bg-gray-100"
+                    className="flex px-4 py-2 rounded-md hover:bg-backgroundPrimary"
                     onClick={toggleMenu}
                   >
-                    Customer Login
+                    Customer Portal
                   </Link>
                 </div>
               )}
