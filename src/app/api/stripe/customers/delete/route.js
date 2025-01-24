@@ -1,10 +1,11 @@
-// /app/api/stripe/customers/delete/route.js
+// src/app/api/stripe/customers/delete/route.js
 
 import Stripe from "stripe";
 import { db } from "../../../../../../firebase"; // Adjust the path if needed
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { NextResponse } from "next/server"; // Import NextResponse
 
-export const stripe = new Stripe(process.env.STRIPE_TEST_SECRET, {
+const stripe = new Stripe(process.env.STRIPE_TEST_SECRET, {
   apiVersion: "2023-08-16",
 });
 
@@ -39,13 +40,12 @@ export async function DELETE(req) {
       customers: updatedCustomers,
     });
 
-    return new Response(JSON.stringify({ message: "Customer deleted successfully" }), {
-      status: 200,
-    });
+    // Return a proper NextResponse
+    return NextResponse.json({ message: "Customer deleted successfully" }, { status: 200 });
   } catch (error) {
     console.error("Error deleting customer:", error);
-    return new Response(
-      JSON.stringify({ error: "Failed to delete customer" }),
+    return NextResponse.json(
+      { error: "Failed to delete customer" },
       { status: 500 }
     );
   }
