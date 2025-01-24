@@ -53,7 +53,7 @@ export const Header = () => {
           href={pageData.bannerLinkHref}
           className="inline-flex gap-1 items-center"
         >
-          <div className="inline-flex text-sm">
+          <div className="inline-flex text-xs sm:text-sm">
             <motion.span
               animate={{ backgroundPositionX: "100%" }}
               transition={{
@@ -67,7 +67,7 @@ export const Header = () => {
               {pageData.bannerText}
             </motion.span>
           </div>
-          <ArrowBigRight className="h-5 w-5 inline-flex justify-center items-center" />
+          <ArrowBigRight className="w-4 h-4 sm:h-5 sm:w-5 inline-flex justify-center items-center" />
         </Link>
       </div>
       <div className="py-3">
