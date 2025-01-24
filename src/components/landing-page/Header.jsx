@@ -17,7 +17,7 @@ import {
 // Page Data
 const pageData = {
   bannerText: "Momentum: Where Every Project Gains Traction",
-  bannerLinkText: "Boost Your Momentum",
+  bannerLinkText: "Build Your Momentum",
   bannerLinkHref: "/Signup",
   logoHref: "/",
   menuItems: [
