@@ -25,6 +25,8 @@ interface CustomerTableProps {
   customers: StripeCustomer[];
   userId: string;
   itemsPerPage?: number;
+  stripeAccountId?: string;
+  onDeleteCustomer: (customerId: string) => void;
 }
 
 interface ProjectsProps {
@@ -34,6 +36,7 @@ interface ProjectsProps {
 }
 
 export function CustomerTable({
+  onDeleteCustomer,
   customers,
   userId,
   itemsPerPage = 7,
@@ -395,6 +398,30 @@ export function CustomerTable({
     }
   };
 
+  const deleteCustomer = async (
+    stripeCustomerId: string,
+    stripeAccountId: string,
+    userId: string
+  ) => {
+    if (!stripeAccountId) return alert("Stripe account not found");
+    if (window.confirm("Are you sure you want to delete this customer?")) {
+      const response = await fetch("/api/stripe/customers/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ stripeCustomerId, stripeAccountId, userId }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || "Failed to delete customer");
+      }
+      toast.success("Customer deleted successfully!");
+      onDeleteCustomer(stripeCustomerId);
+    }
+  };
+
   const offset = currentPage * itemsPerPage;
   const currentCustomers = customers.slice(offset, offset + itemsPerPage);
 
@@ -469,6 +496,7 @@ export function CustomerTable({
                         className="border border-black rounded-md px-2 py-1 text-sm text-black"
                         onChange={(e) => {
                           const action = e.target.value;
+
                           if (action === "createInvoice") {
                             setSelectedCustomer(customer);
                             setCustomerId(customer.stripeCustomerId);
@@ -480,7 +508,22 @@ export function CustomerTable({
                           } else if (action === "createProject") {
                             setShowForm(true);
                             setSelectedCustomer(customer);
+                          } else if (action === "delete") {
+                            // Ensure stripeAccountId is available
+                            if (!stripeAccountId) {
+                              alert(
+                                "Stripe account ID is missing. Unable to delete customer."
+                              );
+                              return;
+                            }
+
+                            deleteCustomer(
+                              customer.stripeCustomerId,
+                              stripeAccountId,
+                              userId
+                            );
                           }
+
                           e.target.value = "Actions";
                         }}
                       >
@@ -488,6 +531,7 @@ export function CustomerTable({
                         <option value="createInvoice">Create Invoice</option>
                         <option value="createProject">Create Project</option>
                         <option value="view">View Details</option>
+                        <option value="delete">Delete Customer</option>
                       </select>
                     </div>
                   </td>

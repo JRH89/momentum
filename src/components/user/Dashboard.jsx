@@ -137,8 +137,15 @@ export default function Dashboard() {
   };
 
   const handleCustomerAdded = (customerData) => {
-    console.log("New customer added:", customerData);
     setCustomers((prevCustomers) => [...prevCustomers, customerData]); // Update the customer list
+  };
+
+  const handleDeleteCustomer = (customerId) => {
+    setCustomers((prevCustomers) =>
+      prevCustomers.filter(
+        (customer) => customer.stripeCustomerId !== customerId
+      )
+    );
   };
 
   return (
@@ -173,6 +180,7 @@ export default function Dashboard() {
                       <p className="text-gray-600 px-6">Loading customers...</p>
                     ) : (
                       <CustomerTable
+                        onDeleteCustomer={handleDeleteCustomer}
                         customers={customers}
                         userId={user.uid}
                         itemsPerPage={userData?.customersPerPage || 7}

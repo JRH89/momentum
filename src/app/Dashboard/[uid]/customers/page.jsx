@@ -74,6 +74,14 @@ const Page = () => {
     setCustomers((prevCustomers) => [...prevCustomers, customerData]); // Update the customer list
   };
 
+  const handleDeleteCustomer = (customerId) => {
+    setCustomers((prevCustomers) =>
+      prevCustomers.filter(
+        (customer) => customer.stripeCustomerId !== customerId
+      )
+    );
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
@@ -105,6 +113,7 @@ const Page = () => {
           <p className="px-4 text-gray-600">Loading customers...</p>
         ) : (
           <CustomerTable
+            onDeleteCustomer={handleDeleteCustomer}
             customers={customers}
             userId={uid}
             itemsPerPage={userData?.customersPerPage || 8}
