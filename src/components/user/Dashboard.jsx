@@ -62,6 +62,7 @@ export default function Dashboard() {
             setEmail(data.email);
             setUserId(auth.currentUser.uid);
             setUserStripe(data.stripeAccountId);
+            setLoading(false);
           }
         })
         .catch((error) => {
@@ -78,6 +79,7 @@ export default function Dashboard() {
         if (userSnap.exists()) {
           setUserData(userSnap.data());
           setStripeAccountId(userSnap.data().stripeAccountId || null);
+          setLoading(false);
         } else {
           setError("User document not found");
         }
