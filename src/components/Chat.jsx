@@ -13,7 +13,7 @@ const formatTimestamp = (timestamp) => {
   });
 };
 
-const LiveChat = ({ userId, projectId }) => {
+const LiveChat = ({ userId, projectId, customerId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatId = projectId; // Unique chat ID

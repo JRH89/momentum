@@ -828,10 +828,10 @@ const ProjectPage = () => {
                 className="mt-4 max-w-md mx-auto w-full flex flex-col p-4 "
               >
                 <div className="mb-4 ">
-                  <h3 className="text-white text-2xl sm:text-3xl text-center font-bold mb-4">
+                  <h3 className="text-white text-2xl lg:text-3xl text-center font-bold mb-4">
                     Project Settings
                   </h3>
-                  <label className="text-lg flex flex-col font-medium text-white my-2 gap-2">
+                  <label className="flex flex-col gap-2 text-sm font-medium text-white mb-2">
                     Project Name
                     <input
                       type="text"
@@ -845,7 +845,7 @@ const ProjectPage = () => {
                       className="bg-white p-2 rounded-lg text-black"
                     />
                   </label>
-                  <label className="flex flex-col text-lg font-medium text-white my-2 gap-2">
+                  <label className="flex flex-col gap-2 text-sm font-medium text-white mb-2 mt-4">
                     Project Description
                     <textarea
                       value={project.description}
@@ -860,7 +860,7 @@ const ProjectPage = () => {
                   </label>
 
                   {/* File Uploads */}
-                  <label className="block text-lg font-medium text-white my-2">
+                  <label className="flex flex-col text-sm font-medium text-white mb-2 mt-4">
                     File Uploads
                   </label>
                   <div className="flex bg-white p-2 rounded-lg text-white gap-4">
@@ -896,7 +896,7 @@ const ProjectPage = () => {
                     </label>
                   </div>
                   {/* Color Palette */}
-                  <label className="block text-lg font-medium text-white mt-4 mb-2">
+                  <label className="flex flex-col text-sm font-medium text-white mb-2 mt-4">
                     Color Palette
                   </label>
                   <div className="flex bg-white p-2 rounded-lg text-white gap-4">
@@ -933,7 +933,7 @@ const ProjectPage = () => {
                   </div>
 
                   {/* Live Chat */}
-                  <label className="block text-lg font-medium text-white mt-4 mb-2">
+                  <label className="flex flex-col text-sm font-medium text-white mb-2 mt-4">
                     Live Chat
                   </label>
                   <div className="flex bg-white p-2 rounded-lg text-white gap-4">
@@ -974,15 +974,14 @@ const ProjectPage = () => {
                   <button
                     type="button"
                     onClick={handleSettingsForm}
-                    className="text-destructive font-medium duration-300 hover:opacity-60 flex flex-row items-center gap-2 justify-center px-4 py-2 rounded-md mt-4"
+                    className="px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="bg-confirm shadow-md shadow-black hover:shadow-lg hover:bg-opacity-60 text-black font-medium flex flex-row items-center gap-2 justify-center duration-300 px-4 py-2 rounded-md mt-4"
+                    className="hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
-                    <Save className="w-5 h-5" />
                     Save Changes
                   </button>
                 </div>
@@ -1216,11 +1215,14 @@ const ProjectPage = () => {
               onSubmit={handleCreateInvoice}
             >
               <div className="p-6 rounded-lg shadow-md w-full max-w-xl">
-                <h2 className="text-2xl text-white text-center font-semibold mb-4">
+                <h2 className="text-2xl lg:text-3xl text-white text-center font-bold mb-4">
                   Create Invoice
                 </h2>
-                <div className="mt-2">
-                  <label htmlFor="amount" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="amount"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Amount
                   </label>
                   <input
@@ -1232,8 +1234,11 @@ const ProjectPage = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="mt-2">
-                  <label htmlFor="currency" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="currency"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Currency
                   </label>
                   <input
@@ -1245,8 +1250,11 @@ const ProjectPage = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="mt-2">
-                  <label htmlFor="description" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Description
                   </label>
                   <input
@@ -1258,8 +1266,11 @@ const ProjectPage = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="mt-2">
-                  <label htmlFor="dueDate" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="dueDate"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Due Date
                   </label>
                   <input
@@ -1271,17 +1282,17 @@ const ProjectPage = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="flex flex-row justify-end">
+                <div className="flex mt-6 flex-row justify-end">
                   <button
                     type="button"
                     onClick={() => setShowInvoiceForm(false)}
-                    className="mt-4 text-destructive hover:opacity-60 duration-300 ease-in-out py-2 px-4 rounded-md"
+                    className=" px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
+                    className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
                     Create Invoice
                   </button>
@@ -1407,12 +1418,12 @@ const ProjectPage = () => {
         {showForm && (
           <div className="fixed w-full px-4 mx-auto inset-0 bg-black/95  z-40 my-auto min-h-screen h-full items-center justify-center flex flex-col">
             <div className=" p-4 w-full max-w-xl">
-              <h1 className="text-2xl sm:text-3xl text-white font-semibold mb-4 text-center">
+              <h1 className="text-2xl lg:text-3xl text-white font-semibold mb-4 text-center">
                 Create New Milestone
               </h1>
               <label
                 htmlFor="title"
-                className="block text-white font-semibold mb-2"
+                className="block text-sm text-white font-medium mb-2"
               >
                 Title
               </label>
@@ -1428,7 +1439,7 @@ const ProjectPage = () => {
               />
               <label
                 htmlFor="description"
-                className="block text-white font-semibold mb-2"
+                className="block text-sm mt-4 text-white font-medium mb-2"
               >
                 Description
               </label>
@@ -1446,7 +1457,7 @@ const ProjectPage = () => {
               />
               <label
                 htmlFor="deadline"
-                className="block text-white font-semibold mb-2"
+                className="block text-sm mt-4 text-white font-medium mb-2"
               >
                 Deadline
               </label>
@@ -1462,7 +1473,7 @@ const ProjectPage = () => {
               />
               <label
                 htmlFor="priority"
-                className="block text-white font-semibold mb-2"
+                className="block text-sm mt-4 text-white font-medium mb-2"
               >
                 Priority
               </label>
@@ -1482,7 +1493,7 @@ const ProjectPage = () => {
               {milestoneError && (
                 <p className="text-red-500">{milestoneError}</p>
               )}
-              <div className="flex justify-end mt-4">
+              <div className="flex justify-end mt-6">
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
