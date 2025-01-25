@@ -291,7 +291,7 @@ export default function Dashboard() {
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
                 >
-                  Stripe's Privacy Policy
+                  Stripe Privacy Policy
                 </a>
                 .
               </p>
