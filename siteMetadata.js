@@ -8,7 +8,7 @@ const siteMetadata = {
     language: 'en-us',
     theme: 'system',
     siteUrl: 'https://momentum.hookerhillstudios.com',
-    socialBanner: '/logo.png',
+    socialBanner: '/preview.png',
     email: 'hookerhillstudios@gmail.com',
     github: 'https://github.com/jrh89',
     blog: 'https://www.hookerhillstudios.com/Blog',
