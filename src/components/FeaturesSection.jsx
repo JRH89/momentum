@@ -10,45 +10,42 @@ import React from "react";
 const featuresData = [
   {
     title: "Manage Projects",
-    description:
-      "Organize and oversee all your projects in one centralized system.",
+    description: "Keep all your projects organized in one place.",
     icon: FolderPlus,
     points: [
-      "Set clear milestones and deadlines",
-      "Keep files organized and accessible",
-      "Provide progress updates to clients",
+      "Set milestones and track deadlines",
+      "Organize and access project files",
+      "Share regular updates with clients",
     ],
   },
   {
     title: "Send Invoices",
-    description: "Create and track invoices to ensure timely payments.",
+    description: "Easily create, send, and track invoices.",
     icon: Receipt,
     points: [
-      "Generate professional invoices",
-      "Track payments and balances",
-      "Get paid on time",
+      "Generate and send detailed invoices",
+      "Monitor payments and balances",
+      "Ensure timely payments from clients",
     ],
   },
   {
     title: "User Dashboard",
-    description:
-      "Manage customers, projects, and invoices from a unified dashboard.",
+    description: "Access and manage all key information in one view.",
     icon: LayoutDashboard,
     points: [
-      "Oversee project details",
-      "Send and track invoices",
-      "Access customer information quickly",
+      "Track projects and their progress",
+      "Send and manage invoices efficiently",
+      "Quickly access customer information",
     ],
   },
   {
-    title: "Customer Dashboard",
-    description:
-      "Allow customers to stay informed and manage their interactions.",
+    title: "Client Dashboard",
+    description: "Provide clients with tools to track their projects.",
     icon: LayoutTemplate,
     points: [
-      "View project updates in real time",
-      "Upload important files",
-      "Make secure payments online",
+      "Stay updated on project status",
+      "Upload and manage essential files",
+      "Make secure online payments",
     ],
   },
 ];

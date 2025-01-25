@@ -1,18 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import ArrowRight from "../../assets/arrow-right.svg";
 import MenuIcon from "../../assets/menu.svg";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import LogoImage from "../Logo";
-import {
-  ArrowBigRight,
-  ChevronDown,
-  ExternalLinkIcon,
-  SquareArrowDown,
-  SquareArrowOutUpRight,
-} from "lucide-react";
+import { ArrowBigRight, ChevronDown, ExternalLinkIcon } from "lucide-react";
 
 // Page Data
 const pageData = {
@@ -23,7 +16,7 @@ const pageData = {
   menuItems: [
     { text: "Features", href: "/#features" },
     { text: "Pricing", href: "/#price" },
-    { text: "Gallery", href: "/#gallery" },
+    { text: "Details", href: "/#details" },
     { text: "FAQ", href: "/#faq" },
     {
       text: "Docs",
@@ -165,7 +158,7 @@ export const Header = () => {
             <div className="relative">
               <button
                 onClick={toggleDropdown}
-                className="hover:pr-2 flex flex-row gap-1 items-center duration-300"
+                className="hover:opacity-60 flex flex-row gap-1 items-center duration-300"
               >
                 Login
                 <ChevronDown className="h-4 w-4 flex-row flex justify-center items-center" />

@@ -85,7 +85,8 @@ export default function RootLayout({ children }) {
         <meta name="twitter:title" content={metadata.twitter.title} />
         <meta name="twitter:description" content={metadata.twitter.description} />
         <meta name="twitter:image" content={metadata.twitter.image} />
-        <meta name="google-site-verification" content="94IN99LAWmrXJfd0QuFFwdRCGEGyEep99Cx0-GGRiPQ" />        <title>{metadata.title}</title>
+        <meta name="google-site-verification" content="94IN99LAWmrXJfd0QuFFwdRCGEGyEep99Cx0-GGRiPQ" />
+        <title>{metadata.title}</title>
       </head>
       <body className={twMerge(notoSans.className, "antialiased flex flex-col bg-[#EAEEFE]")}>
         <AuthProvider>

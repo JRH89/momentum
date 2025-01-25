@@ -24,11 +24,11 @@ const pricingTiers = [
     inverse: true,
     features: [
       "Unlimited Projects",
-      "Stripe Integration",
-      "Customer Management",
+      "Unlimited Invoices",
+      "Unlimited Customers",
       "Project Creation",
-      "Progress Tracking",
-      "Task Management",
+      "Milestone Tracking",
+      "Stripe Integration",
     ],
     url: "/Signup",
     cycle: "/ month",
@@ -41,11 +41,11 @@ const pricingTiers = [
     inverse: true,
     features: [
       "Unlimited Projects",
-      "Stripe Integration",
-      "Customer Management",
+      "Unlimited Invoices",
+      "Unlimited Customers",
       "Project Creation",
-      "Progress Tracking",
-      "Task Management",
+      "Milestone Tracking",
+      "Stripe Integration",
     ],
     url: "/Signup",
     cycle: "/ year",
@@ -71,13 +71,13 @@ export const PriceCard = () => {
           <h2 className="section-title mt-5">{pageData.title}</h2>
           <p className="section-description mt-5">{pageData.description}</p>
         </div>
-        <div className="flex flex-col gap-6 items-center mt-5 lg:flex-row lg:items-end lg:justify-center ">
+        <div className="flex flex-col gap-6 items-center mt-5 sm:flex-row sm:items-end sm:justify-center ">
           {pricingTiers.map((tier, index) => (
             <div
               key={index}
               className={twMerge(
                 tier.inverse &&
-                  "p-6 pb-8 rounded-xl border-black bg-white text-black border-2 border-black shadow-md w-full shadow-black"
+                  "p-6 pb-8 rounded-xl bg-white text-black border-2 border-black shadow-md w-full shadow-black"
               )}
             >
               <div className="flex justify-between">
@@ -129,11 +129,11 @@ export const PriceCard = () => {
               >
                 {tier.buttonText}
               </Link>
-              <ul className="flex flex-col w-full gap-2 mt-8 sm:grid sm:grid-cols-2">
+              <ul className="flex flex-col w-full gap-2 mt-8 lg:grid lg:grid-cols-2">
                 {tier.features.map((feature, featureIndex) => (
                   <li
                     key={featureIndex}
-                    className="capitalize text-md flex items-center gap-1 py-1"
+                    className="capitalize text-lg flex items-center gap-1 py-1"
                   >
                     <CircleCheckIcon className="text-white w-5 h-5 bg-destructive rounded-full shadow-md shadow-black" />
                     <span className="text-black font-medium flex-1">

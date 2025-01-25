@@ -50,15 +50,6 @@ const ImageGallery = () => {
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
 
   const itemsPerPage = 4;
-  const maxIndex = Math.ceil(images.length / itemsPerPage) - 1;
-
-  const handleNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex < maxIndex ? prevIndex + 1 : 0));
-  };
-
-  const handlePrevious = () => {
-    setCurrentIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : maxIndex));
-  };
 
   const openModal = (image: ImageType) => {
     setSelectedImage(image);
@@ -75,7 +66,7 @@ const ImageGallery = () => {
 
   return (
     <section
-      id="gallery"
+      id="details"
       className="border-t-2 border-black bg-white flex flex-col py-24 px-5 lg:px-0"
     >
       <div className="section-heading w-full mx-auto flex flex-col text-center">
