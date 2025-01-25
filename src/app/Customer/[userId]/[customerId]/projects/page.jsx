@@ -88,10 +88,11 @@ const Page = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-0 sm:px-8">
           {customerData.projects.map((project, index) => (
             <Link
+              className="flex flex-col h-full my-auto"
               key={index}
               href={`/Customer/${userId}/${customerId}/${project.id}`}
             >
-              <div className="bg-[#EAEEFE] duration-300 hover:shadow-lg hover:shadow-black border-2 border-black shadow-black rounded-lg shadow-md p-4">
+              <div className="bg-[#EAEEFE] h-full duration-300 hover:shadow-lg hover:shadow-black border-2 border-black shadow-black rounded-lg shadow-md p-4">
                 <h3 className="text-lg font-bold text-black mb-2">
                   {project.name}
                 </h3>

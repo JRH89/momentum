@@ -28,7 +28,7 @@ const ProtectedRoute = ({ children }) => {
         <div className="flex min-h-screen bg-white w-full">
             <Sidebar uid={userId} customerId={auth.currentUser?.uid} />
             {/* Main Content */}
-            <main className="relative flex flex-col w-full bg-white pt-12 lg:pt-0">
+            <main className="relative flex flex-col w-full bg-white pt-12 lg:pt-2">
                 {children}
             </main>
         </div>

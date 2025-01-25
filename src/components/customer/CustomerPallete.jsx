@@ -240,28 +240,37 @@ export default function CustomerPallete({ userId, customerId, projectId }) {
             </div>
           </div>
         )}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-2 rounded-lg shadow-md shadow-black gap-4 w-full justify-start">
-          {projectColors.map((color, index) => (
-            <div
-              key={index}
-              className="w-16 h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
-              style={{ backgroundColor: color }}
-            >
-              {/* Delete Button */}
-              <button
-                onClick={() => deleteColor(color)}
-                className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
-              >
-                X
-              </button>
-              {/* Optionally, display the color code */}
-              <span className="text-white text-xs absolute bottom-1">
-                {color}
-              </span>
+        <div className="w-full">
+          {projectColors.length > 0 && (
+            <div className="border-2 border-black p-4 rounded-lg shadow-md shadow-black grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 h-full  gap-4 w-full justify-start">
+              {projectColors.map((color, index) => (
+                <div
+                  key={index}
+                  className="w-16 h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
+                  style={{ backgroundColor: color }}
+                >
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => deleteColor(color)}
+                    className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                  >
+                    X
+                  </button>
+                  {/* Optionally, display the color code */}
+                  <span className="text-white text-xs absolute bottom-1">
+                    {color}
+                  </span>
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+
           {projectColors.length === 0 && (
-            <p className="text-gray-600">No colors yet</p>
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-gray-600 px-2 border border-black rounded-lg p-2 w-full flex  flex-row items-center">
+                No colors yet
+              </p>
+            </div>
           )}
         </div>
         <canvas ref={canvasRef} className="hidden"></canvas>

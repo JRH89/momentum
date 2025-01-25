@@ -25,6 +25,7 @@ const CustomerProjectPage = () => {
   const [user, setUser] = useState(null);
   const itemsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(0);
+  const [uploadLimit, setUploadLimit] = useState(10);
 
   // Calculate the current uploads to display
   const offset = currentPage * itemsPerPage;
@@ -64,6 +65,30 @@ const CustomerProjectPage = () => {
   // Handle file upload
   const handleUpload = async () => {
     if (!file) return;
+
+    // File size and type validation
+    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/x-icon",
+      "image/gif",
+      "application/pdf",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Only images (JPG, PNG, WebP, etc.) and PDFs are allowed."
+      );
+      return;
+    }
+
+    if (file.size > maxFileSize) {
+      toast.error("File size exceeds the 5MB limit.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -108,13 +133,15 @@ const CustomerProjectPage = () => {
         // Update local state
         setUploads(updatedUploads);
 
+        // Show success message
         toast.success("File uploaded successfully");
+
+        // Clear file input
+        setFile(null);
       } else {
         toast.error("User document does not exist");
         throw new Error("User document does not exist");
       }
-
-      setFile(null);
     } catch (error) {
       console.error("Error uploading file:", error);
     } finally {
@@ -351,7 +378,9 @@ const CustomerProjectPage = () => {
                   </table>
                 </div>
               ) : (
-                <p>No milestones yet.</p>
+                <p className="text-gray-600 px-2 border border-black rounded-lg p-2">
+                  No milestones yet
+                </p>
               )}
             </div>
             {milestones.length > itemsPerPages && (
@@ -399,10 +428,18 @@ const CustomerProjectPage = () => {
                       />
                       <button
                         onClick={handleUpload}
-                        disabled={!file || isLoading}
-                        className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                        disabled={
+                          !file || isLoading || uploads.length >= uploadLimit
+                        }
+                        className={`w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2 ${
+                          !file || isLoading || uploads.length >= uploadLimit
+                            ? "cursor-not-allowed opacity-50"
+                            : ""
+                        }`}
                       >
-                        {isLoading ? (
+                        {uploads.length >= uploadLimit ? (
+                          "Upload Limit Reached"
+                        ) : isLoading ? (
                           "Uploading..."
                         ) : (
                           <p className="flex items-center gap-2">
@@ -456,7 +493,9 @@ const CustomerProjectPage = () => {
                       </ul>
                     </div>
                   ) : (
-                    <p className="px-4">No uploads yet.</p>
+                    <p className="text-gray-600 px-2 border border-black rounded-lg p-2">
+                      No uploads yet
+                    </p>
                   )}
                 </div>
                 {uploads.length > itemsPerPage && (

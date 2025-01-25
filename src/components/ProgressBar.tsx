@@ -47,11 +47,7 @@ const MilestoneProgress: FC<MilestoneProgressProps> = ({ milestones }) => {
           </div>
         </div>
       ) : (
-        <div className="relative pt-1">
-          <div className="flex mb-1 text-sm items-center justify-between">
-            <p>No milestones found.</p>
-          </div>
-        </div>
+        <></>
       )}
     </div>
   );
