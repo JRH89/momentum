@@ -8,6 +8,9 @@ export function generateMetadata() {
     title: `Documentation | ${siteMetadata.title}`,
     description: `Learn more about ${siteMetadata.title}`,
     url: `${siteMetadata.siteUrl}/About`,
+    alternates: {
+      canonical: `${siteMetadata.siteUrl}/About`,
+    },
   };
 }
 

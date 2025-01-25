@@ -7,6 +7,9 @@ export const metadata = {
   title: `FAQ | ${siteMetadata.title}`,
   description: `Get answers to common questions about ${siteMetadata.title}`,
   url: `${siteMetadata.siteUrl}/FAQ`,
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/FAQ`,
+  },
 };
 
 export default function Page() {

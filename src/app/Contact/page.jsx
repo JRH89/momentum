@@ -5,6 +5,9 @@ export const metadata = {
   title: "Contact | Momentum Project Management",
   description: "Reach out with any questions or concerns.",
   url: "/Contact",
+  alternates: {
+    canonical: "/Contact",
+  },
 };
 
 const Page = () => {

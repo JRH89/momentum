@@ -24,6 +24,11 @@ export async function generateMetadata({ params }) {
     url: formattedTitle
       ? `${siteMetadata.siteUrl}/About/${formattedTitle}`
       : `${siteMetadata.siteUrl}/About`,
+    alternates: {
+      canonical: formattedTitle
+        ? `${siteMetadata.siteUrl}/About/${formattedTitle}`
+        : `${siteMetadata.siteUrl}/About`,
+    },
   };
 }
 

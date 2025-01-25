@@ -8,6 +8,9 @@ export const metadata = {
   title: `Sign In | ${siteMetadata.title}`,
   description: `Sign in to your ${siteMetadata.title} account.`,
   url: `${siteMetadata.siteUrl}/Signin`,
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}/Signin`,
+  },
 };
 
 export default function Page() {
