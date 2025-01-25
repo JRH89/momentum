@@ -816,7 +816,7 @@ const ProjectPage = () => {
             </h1>
           </div>
           {settingsForm && (
-            <div className="fixed z-40 inset-0 flex items-center justify-center bg-black bg-opacity-95">
+            <div className="fixed z-40 px-4 inset-0 flex items-center justify-center bg-black bg-opacity-95">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -1157,7 +1157,7 @@ const ProjectPage = () => {
           )}
         </div>
         {/* Invoices Section */}
-        <div className="sm:mt-4">
+        <div className="mt-4">
           <div className="flex items-end my-auto">
             <h2 className="text-2xl font-semibold">Invoices</h2>
             <button
@@ -1251,10 +1251,10 @@ const ProjectPage = () => {
             </form>
           )}
         </div>
-        <div className="lg:flex items-center lg:flex-row">
-          <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
+        <div className="lg:flex items-center lg:flex-row mt-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-3 sm:gap-4">
             {project?.features?.fileUploads && (
-              <div className="mt-3 sm:mt-4">
+              <div className="mt-4">
                 <div className="flex flex-row items-center justify-start my-auto">
                   <h2 className="text-2xl font-semibold">Uploads</h2>
                   <button
@@ -1354,7 +1354,7 @@ const ProjectPage = () => {
             )}
             {project?.features?.colorPallette && (
               <div>
-                <div className="sm:mt-4 h-full">
+                <div className="mt-4 h-full">
                   <ColorPaletteGenerator
                     userId={uid}
                     customerId={stripeCustomerId}
