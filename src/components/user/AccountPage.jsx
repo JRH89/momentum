@@ -10,7 +10,7 @@ import { getFirestore, updateDoc } from "firebase/firestore";
 import { getDoc, doc, collection } from "firebase/firestore";
 import Link from "next/link";
 import LoginForm from "./SignIn";
-import { Blocks, Loader2, LoaderPinwheel } from "lucide-react";
+import { Blocks, ExternalLink, Loader2, LoaderPinwheel } from "lucide-react";
 import { toast } from "react-toastify";
 
 const Account = () => {
@@ -26,6 +26,15 @@ const Account = () => {
   const [userStripe, setUserStripe] = useState(null);
   const [loading, setLoadingState] = useState(true); // Set initial loading state
   const [isConnected, setIsConnected] = useState(false);
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const handleConnect = () => {
+    if (termsAccepted) {
+      window.location.href = "/api/stripe/oauth";
+    }
+  };
 
   const [user, setUser] = useState(null);
 
@@ -199,6 +208,7 @@ const Account = () => {
         });
 
         toast.success("Stripe account successfully unlinked");
+        setIsConnected(false);
       } catch (error) {
         toast.error("Failed to disconnect Stripe account", error);
       }
@@ -240,14 +250,14 @@ const Account = () => {
             <div className="flex flex-col gap-1 w-full justify-center mx-auto max-w-xl pt-16 sm:pt-12 px-5 sm:px-0 text-lg sm:text-2xl">
               <div className="flex flex-col  gap-1 w-full justify-center mx-auto ">
                 <button
-                  className="bg-confirm  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                  className="bg-confirm  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                   onClick={() => sendResetEmail(user.email)}
                 >
                   Reset Password
                 </button>
                 {isPremium && (
                   <button
-                    className="bg-green-400 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-green-400/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-green-400 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-green-400/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                     onClick={() => {
                       loadPortal();
                     }}
@@ -262,19 +272,31 @@ const Account = () => {
                 {!isPremium && (
                   <Link
                     href="/Dashboard/subscribe"
-                    className="bg-confirm duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-confirm duration-300  border-2 border-black shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-confirm/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                   >
                     Upgrade to Premium
                   </Link>
                 )}
-                {userData?.stripeConnected && (
+                {isConnected ? (
                   <button
-                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-slate-900 mx-auto flex w-full justify-center"
+                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                     onClick={() => {
                       handleDisconnectStripe();
                     }}
                   >
                     Disconnect Stripe
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setIsPopupVisible(true)}
+                    className="bg-yellow-300 pt-1 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold  px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center items-center gap-2"
+                  >
+                    <span className="font-semibold pb-1.5">Connect to</span>
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg"
+                      alt="Stripe Logo"
+                      className="w-12 h-12 text-white"
+                    />
                   </button>
                 )}
                 <button
@@ -292,6 +314,108 @@ const Account = () => {
           <LoginForm route="/Dashboard/account" />
         )}
       </div>
+      {/* Terms Pop-up */}
+      {isPopupVisible && (
+        <div className="fixed inset-0 bg-black/95 flex justify-center items-center z-50">
+          <div className="bg-white border-2 border-black p-6 rounded-lg shadow-lg max-w-md w-full text-center">
+            <h2 className="text-xl font-semibold mb-4">Terms and Conditions</h2>
+            <div
+              className="text-gray-700 mb-4 p-4 border-2 border-black rounded max-h-60 overflow-y-auto text-left"
+              style={{ maxHeight: "15rem" }}
+            >
+              <p>
+                <strong>Introduction:</strong> By accessing or using our
+                services, you agree to comply with these terms and conditions.
+              </p>
+              <p>
+                <strong>Eligibility:</strong> You must be at least 18 years old
+                to use this platform. It is your responsibility to ensure
+                compliance with local laws.
+              </p>
+              <p>
+                <strong>Stripe Connection:</strong> By connecting your Stripe
+                account, you grant us permission to access your account data to
+                facilitate transactions. Your use of Stripe is subject to{" "}
+                <a
+                  href="https://stripe.com/legal/connect-account"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Stripe Connect Account Agreement
+                </a>
+                .
+              </p>
+              <p>
+                <strong>Privacy:</strong> We are committed to protecting your
+                personal information in accordance with our privacy policy.
+                Payment information is processed securely through Stripe, and
+                you agree to{" "}
+                <a
+                  href="https://stripe.com/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  Stripe Privacy Policy
+                </a>
+                .
+              </p>
+              <p>
+                <strong>Termination:</strong> We reserve the right to terminate
+                your access to our services if you violate these terms.
+              </p>
+              <p>
+                <strong>Limitation of Liability:</strong> We are not liable for
+                any damages resulting from the use of our services.
+              </p>
+              <p className="">
+                For the full terms, please refer to our{" "}
+                <Link
+                  target="_blank"
+                  className="text-blue-600 inline-flex flex-row gap-1 hover:underline items-center"
+                  href="/Policies"
+                >
+                  Terms of Service{" "}
+                  <ExternalLink className="w-4 h-4 inline-flex" />
+                </Link>
+                .
+              </p>
+            </div>
+            <div className="flex items-center justify-center mb-4">
+              <input
+                type="checkbox"
+                id="acceptTerms"
+                className="mr-2"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+              />
+              <label htmlFor="acceptTerms" className="text-gray-700">
+                I accept the terms and conditions
+              </label>
+            </div>
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 text-destructive hover:text-destructive/60 duration-300"
+                onClick={() => setIsPopupVisible(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className={`px-4 py-2 rounded-lg ${
+                  termsAccepted
+                    ? "bg-confirm text-black font-semibold border-2 border-black shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
+                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                }`}
+                onClick={handleConnect}
+                disabled={!termsAccepted}
+              >
+                Proceed
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
