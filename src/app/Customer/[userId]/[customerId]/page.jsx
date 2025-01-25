@@ -138,7 +138,7 @@ const CustomerDashboard = () => {
                         key={index}
                         href={`/Customer/${userId}/${customerId}/${project?.id}`}
                       >
-                        <div className="bg-[#EAEEFE] hover:shadow-lg hover:shadow-black duration-300 border-2 shadow-black border-black rounded-lg shadow-md p-4">
+                        <div className="bg-[#EAEEFE] hover:shadow-lg hover:shadow-black h-full duration-300 border-2 shadow-black border-black rounded-lg shadow-md p-4">
                           <h3 className="text-lg font-bold text-black mb-2">
                             {project.name}
                           </h3>
@@ -164,17 +164,6 @@ const CustomerDashboard = () => {
       </div>
     </>
   );
-
-  async function handleLogin(e) {
-    try {
-      setError(null);
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push(`/Customer/${userId}/${customerId}`);
-    } catch (err) {
-      setError("Invalid email or password.");
-      console.error("Login error:", err);
-    }
-  }
 };
 
 export default CustomerDashboard;
