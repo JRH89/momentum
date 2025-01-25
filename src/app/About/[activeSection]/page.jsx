@@ -1,3 +1,4 @@
+import { act } from "react";
 import siteMetadata from "../../../../siteMetadata";
 import ActiveAbout from "../../../components/page/ActiveAbout";
 
@@ -21,12 +22,12 @@ export async function generateMetadata({ params }) {
           .replace(/-/g, " ")
           .toLowerCase()} in ${siteMetadata.title}.`
       : `Learn more about ${siteMetadata.title}.`,
-    url: formattedTitle
-      ? `${siteMetadata.siteUrl}/About/${formattedTitle}`
+    url: activeSection
+      ? `${siteMetadata.siteUrl}/About/${activeSection}`
       : `${siteMetadata.siteUrl}/About`,
     alternates: {
-      canonical: formattedTitle
-        ? `${siteMetadata.siteUrl}/About/${formattedTitle}`
+      canonical: activeSection
+        ? `${siteMetadata.siteUrl}/About/${activeSection}`
         : `${siteMetadata.siteUrl}/About`,
     },
   };
