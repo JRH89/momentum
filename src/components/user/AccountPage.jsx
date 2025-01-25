@@ -7,7 +7,7 @@ import { getPremiumStatus } from "../payments/account/GetPremiumStatus";
 import { getAuth, sendPasswordResetEmail, deleteUser } from "@firebase/auth";
 import { db, initFirebase } from "../../../firebase";
 import { getFirestore, updateDoc } from "firebase/firestore";
-import { getDoc, doc, collection } from "firebase/firestore";
+import { getDoc, doc, collection, deleteDoc } from "firebase/firestore";
 import Link from "next/link";
 import LoginForm from "./SignIn";
 import { Blocks, ExternalLink, Loader2, LoaderPinwheel } from "lucide-react";
@@ -164,12 +164,16 @@ const Account = () => {
     if (confirmDelete) {
       try {
         await deleteUser(user);
+        const docRef = doc(db, "users", user.uid);
+        await deleteDoc(docRef);
+        const docRef2 = doc(db, "customers", user.uid);
+        await deleteDoc(docRef2);
         toast.success("User account deleted successfully.");
       } catch (error) {
         toast.error("Error deleting user account:", error);
       }
     } else {
-      toast.error("Account deletion canceled.");
+      return
     }
   };
 
@@ -275,7 +279,7 @@ const Account = () => {
                     Upgrade to Premium
                   </Link>
                 )}
-                {isConnected ? (
+                {isPremium && isConnected ? (
                   <button
                     className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                     onClick={() => {
@@ -287,14 +291,9 @@ const Account = () => {
                 ) : (
                   <button
                     onClick={() => setIsPopupVisible(true)}
-                    className="bg-yellow-300 pt-1 border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold  px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center items-center gap-2"
+                    className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                   >
-                    <span className="font-semibold pb-1.5">Connect to</span>
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Stripe_Logo%2C_revised_2016.svg"
-                      alt="Stripe Logo"
-                      className="w-12 h-12 text-white"
-                    />
+                    Connect Stripe
                   </button>
                 )}
                 <button
