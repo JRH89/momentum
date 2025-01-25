@@ -4,7 +4,7 @@ import CheckIcon from "../../assets/check.svg";
 import { twMerge } from "tailwind-merge";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { CircleCheckIcon } from "lucide-react";
+import { CircleCheckIcon, ExternalLink } from "lucide-react";
 
 // Page Data
 const pageData = {
@@ -63,7 +63,7 @@ export const PriceCard = () => {
       }}
     >
       <div className="absolute inset-0 bg-white bg-opacity-95"></div>
-      <div className="relative flex flex-col py-24 z-10 text-left max-w-7xl p-8 ">
+      <div className="relative flex flex-col py-24 z-10 text-left max-w-7xl p-8">
         <div className="section-heading w-full mx-auto flex flex-col">
           <div className="tag mx-auto justify-center w-auto text-destructive text-sm sm:text-md md:text-lg lg:text-xl">
             {pageData.tag}
@@ -119,6 +119,21 @@ export const PriceCard = () => {
                   {tier.cycle}
                 </span>
               </div>
+              <span className="text-center mx-auto justify-center items-center flex flex-row text-gray-600 text-xs mt-1">
+                ( + {"  "}
+                <span className="flex ml-1 flex-row items-center">
+                  {" "}
+                  Stripe fees
+                  <a
+                    className="text-green-500 cursor-pointer underline flex items-center gap-1"
+                    href="https://stripe.com/pricing?utm_campaign=AMER_US_en_Google_Search_Brand_Pricing_EXA_PHR-21345170790&utm_medium=cpc&utm_source=google&ad_content=701359366946&utm_term=stripe%20fees&utm_matchtype=e&utm_adposition=&utm_device=c&gad_source=1&gclid=CjwKCAiAtNK8BhBBEiwA8wVt98_7_ktBp9hQGlAiZbnMUuMr82O2-7aWjfXFV5dH_j-_O3ihj8VKhRoC1MEQAvD_BwE"
+                    target="_blank"
+                  >
+                    <ExternalLink className="inline w-3 h-3 ml-1" />
+                  </a>
+                </span>
+                )
+              </span>
               <Link
                 href={tier.url}
                 className={twMerge(

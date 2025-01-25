@@ -1,39 +1,9 @@
 "use client";
 
-import { Minus, Plus } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
+import { Minus, Plus, ExternalLink } from "lucide-react";
 import { twMerge } from "tailwind-merge";
-
-const pageData = {
-  faqItems: [
-    {
-      question: "Is Stripe required to use Momentum?",
-      answer:
-        "Yes, Stripe is required for invoicing and payment processing. However, if you don't already have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process. Stripe accounts are free to create and you only pay for the services you use (i.e. processing paid invoices @ 0.4%).",
-    },
-    {
-      question: "What is the pricing for Momentum?",
-      answer:
-        "Momentum is priced at $8.99 per month or $75 per year. This includes unlimited projects, invoices, and more. You can send invoices, track payments, and create as many projects as needed, all while keeping everything organized in one place.",
-    },
-    {
-      question: "What features are included with my Momentum subscription?",
-      answer:
-        "With your Momentum subscription, you'll have access to unlimited project creation, customizable project dashboards, invoice management, and real-time progress tracking. You can also send invoices, track payments, and easily collaborate with clients by sharing project details and updates.",
-    },
-    {
-      question: "Can I manage client projects and invoices?",
-      answer:
-        "Absolutely! Momentum allows you to manage all your client projects in one place, including creating, tracking, and organizing milestones. You can send invoices directly to your clients, track payments, and ensure that everything stays up to date.",
-    },
-    {
-      question: "How can my clients interact with the project?",
-      answer:
-        "Your clients can view a personalized dashboard where they can track project progress, see completed milestones, and stay up to date on what's next. They can also upload files related to the project, making collaboration simple and efficient.",
-    },
-  ],
-};
+import Link from "next/link";
 
 const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -56,14 +26,44 @@ const FAQItem = ({ question, answer }) => {
         </span>
       </button>
       {isOpen && (
-        <p className="mt-2 text-black text-base sm:text-lg">{answer}</p>
+        <div className="mt-2 text-black text-base sm:text-lg">
+          {/* Directly rendering HTML for the link */}
+          <p dangerouslySetInnerHTML={{ __html: answer }} />
+        </div>
       )}
     </div>
   );
 };
 
 export default function FAQ() {
-  const { faqItems } = pageData;
+  const pageData = {
+    faqItems: [
+      {
+        question: "Is Stripe required to use Momentum?",
+        answer:
+          "Yes, Stripe is required for invoicing and payment processing. However, if you don't already have a Stripe account, don't worry! You can still connect your account to Stripe and create a new one directly within the platform during the sign-up process. Stripe accounts are free to create and you only pay for the services you use (i.e. 2.9% + 30¢ per successful charge for domestic cards).",
+      },
+      {
+        question: "What is the pricing for Momentum?",
+        answer: `Momentum is priced at $8.99 per month or $75 per year. This includes unlimited projects, invoices, and customers. Stripe charges 2.9% + 30¢ per successful charge for domestic cards. <a href="https://stripe.com/pricing?utm_campaign=AMER_US_en_Google_Search_Brand_Pricing_EXA_PHR-21345170790&utm_medium=cpc&utm_source=google&ad_content=701359366946&utm_term=stripe%20fees&utm_matchtype=e&utm_adposition=&utm_device=c&gad_source=1&gclid=CjwKCAiAtNK8BhBBEiwA8wVt98_7_ktBp9hQGlAiZbnMUuMr82O2-7aWjfXFV5dH_j-_O3ihj8VKhRoC1MEQAvD_BwE" class="text-green-500 font-medium hover:underline inline-flex flex-row items-center gap-1" target="_blank" rel="noopener noreferrer">Learn more about Stripe's pricing here</a>.`,
+      },
+      {
+        question: "What features are included with my Momentum subscription?",
+        answer:
+          "With your Momentum subscription, you'll have access to unlimited project creation, customizable project dashboards, invoice management, and real-time progress tracking. You can also send invoices, track payments, and easily collaborate with clients by sharing project details and updates.",
+      },
+      {
+        question: "Can I manage client projects and invoices?",
+        answer:
+          "Absolutely! Momentum allows you to manage all your client projects in one place, including creating, tracking, and organizing milestones. You can send invoices directly to your clients, track payments, and ensure that everything stays up to date.",
+      },
+      {
+        question: "How can my clients interact with the project?",
+        answer:
+          "Your clients can view a personalized dashboard where they can track project progress, see completed milestones, and stay up to date on what's next. They can also upload files related to the project, making collaboration simple and efficient.",
+      },
+    ],
+  };
 
   return (
     <div className="relative z-30 mx-auto min-h-screen h-full w-full flex flex-col text-black py-24">
@@ -92,7 +92,7 @@ export default function FAQ() {
         </p>
       </div>
       <div className="mt-6 px-5">
-        {faqItems.map((item, index) => (
+        {pageData.faqItems.map((item, index) => (
           <FAQItem key={index} question={item.question} answer={item.answer} />
         ))}
       </div>
