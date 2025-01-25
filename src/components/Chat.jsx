@@ -55,8 +55,8 @@ const LiveChat = ({ userId, projectId, customerId }) => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-2">Live Chat</h1>
-      <div className="flex border-2 border-black flex-col h-[500px] w-1/2 rounded-lg shadow-lg">
+      <h1 className="text-2xl font-semibold mb-2 mt-4">Live Chat</h1>
+      <div className="flex border-2 border-black flex-col h-[500px] w-full md:w-1/2 rounded-lg shadow-lg">
         <div className="flex-1 rounded-t-lg overflow-y-auto p-4 space-y-2 bg-gray-100">
           {messages.map((message) => (
             <div
