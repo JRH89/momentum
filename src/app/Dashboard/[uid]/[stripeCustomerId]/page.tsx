@@ -302,11 +302,14 @@ const CustomerDetailsPage: React.FC = () => {
               onSubmit={handleCreateInvoice}
             >
               <div className="p-6 rounded-lg shadow-md w-full max-w-xl">
-                <h2 className="text-2xl text-white text-center font-semibold mb-4">
+                <h2 className="text-2xl lg:text-3xl text-white text-center font-bold mb-4">
                   Create Invoice
                 </h2>
-                <div className="mt-2">
-                  <label htmlFor="amount" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="amount"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Amount
                   </label>
                   <input
@@ -318,8 +321,11 @@ const CustomerDetailsPage: React.FC = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="mt-2">
-                  <label htmlFor="currency" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="currency"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Currency
                   </label>
                   <input
@@ -331,8 +337,11 @@ const CustomerDetailsPage: React.FC = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="mt-2">
-                  <label htmlFor="description" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Description
                   </label>
                   <input
@@ -344,8 +353,11 @@ const CustomerDetailsPage: React.FC = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="mt-2">
-                  <label htmlFor="dueDate" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="dueDate"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Due Date
                   </label>
                   <input
@@ -357,17 +369,17 @@ const CustomerDetailsPage: React.FC = () => {
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-                <div className="flex flex-row justify-end">
+                <div className="flex mt-6 flex-row justify-end">
                   <button
                     type="button"
                     onClick={() => setShowInvoiceForm(false)}
-                    className="mt-4 text-destructive hover:opacity-60 duration-300 ease-in-out py-2 px-4 rounded-md"
+                    className="px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="mt-4 bg-confirm hover:bg-opacity-60 duration-300 ease-in-out text-black py-2 px-4 rounded-md"
+                    className="hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
                     Create Invoice
                   </button>

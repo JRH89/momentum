@@ -13,12 +13,12 @@ const formatTimestamp = (timestamp) => {
   });
 };
 
-const LiveChat = ({ userId, projectId, customerId }) => {
+const LiveChat = ({ userId, projectId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const chatId = projectId; // Unique chat ID
 
-  const messagesEndRef = useRef(null); // Ref for the bottom of the message list
+  const messagesContainerRef = useRef(null); // Ref for the messages container
 
   useEffect(() => {
     const chatRef = collection(db, "chats", chatId, "messages");
@@ -29,6 +29,10 @@ const LiveChat = ({ userId, projectId, customerId }) => {
         id: doc.id,
         ...doc.data(),
       }));
+      // Sort messages by timestamp in ascending order
+      loadedMessages.sort(
+        (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
+      );
       setMessages(loadedMessages);
     });
 
@@ -36,8 +40,11 @@ const LiveChat = ({ userId, projectId, customerId }) => {
   }, [chatId]);
 
   useEffect(() => {
-    // Scroll to the bottom whenever the messages are updated
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Scroll to the bottom of the messages container whenever the messages are updated
+    messagesContainerRef.current?.scrollTo({
+      top: messagesContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages]);
 
   const sendMessage = async () => {
@@ -56,8 +63,12 @@ const LiveChat = ({ userId, projectId, customerId }) => {
   return (
     <>
       <h1 className="text-2xl font-semibold mb-2 mt-4">Live Chat</h1>
-      <div className="flex border-2 border-black flex-col h-[500px] w-full sm:w-1/2 rounded-lg shadow-lg">
-        <div className="flex-1 rounded-t-lg overflow-y-auto p-4 space-y-2 bg-gray-100">
+      <div className="flex border-2 border-black flex-col h-[400px] w-full sm:w-1/2 rounded-lg shadow-lg">
+        {/* Messages Container */}
+        <div
+          ref={messagesContainerRef}
+          className="flex-1 rounded-t-lg overflow-y-auto scrollbar-thin scrollbar-thumb-backgroundSecondary scrollbar-track-gray-200 p-4 space-y-2 bg-gray-100"
+        >
           {messages.map((message) => (
             <div
               key={message.id}
@@ -75,9 +86,9 @@ const LiveChat = ({ userId, projectId, customerId }) => {
               </div>
             </div>
           ))}
-          <div ref={messagesEndRef} /> {/* Empty div to mark the bottom */}
         </div>
 
+        {/* Input Section */}
         <div className="p-4 bg-white border-t-2 border-black rounded-b-lg flex items-center gap-2">
           <input
             type="text"

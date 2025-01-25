@@ -550,12 +550,15 @@ export function CustomerTable({
         {showForm && selectedCustomer && (
           <div className="inset-0 fixed border-2 border-black bg-black bg-opacity-95 flex items-center justify-center mx-auto px-4">
             <div className=" p-6 w-full max-w-xl">
-              <h3 className="text-xl text-white text-center font-semibold">
+              <h3 className="text-2xl lg:text-3xl text-white text-center font-semibold">
                 Create Project
               </h3>
               <form>
                 <div className="mt-2">
-                  <label htmlFor="name" className="block text-white">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Project Name
                   </label>
                   <input
@@ -564,12 +567,15 @@ export function CustomerTable({
                     value={newProjectName}
                     onChange={(e) => setNewProjectName(e.target.value)}
                     required
-                    className="w-full p-2 border-2 border-black rounded-md"
+                    className="flex bg-white text-black p-2 rounded-md items-center w-full"
                   />
                 </div>
 
-                <div className="mt-2">
-                  <label htmlFor="description" className="block text-white">
+                <div className="mt-4">
+                  <label
+                    htmlFor="description"
+                    className="block text-sm font-medium text-white mb-2"
+                  >
                     Project Description
                   </label>
                   <input
@@ -578,14 +584,16 @@ export function CustomerTable({
                     value={newProjectDescription}
                     onChange={(e) => setNewProjectDescription(e.target.value)}
                     required
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className="flex bg-white text-black p-2 rounded-md items-center w-full"
                   />
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-white mb-1">File Uploads</label>
-                  <div className="flex items-center space-x-4">
-                    <label className="text-white">
+                  <label className="block text-sm font-medium text-white mb-2">
+                    File Uploads
+                  </label>
+                  <div className="flex bg-white text-black p-2 rounded-md items-center space-x-4">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="fileUploads"
@@ -601,7 +609,7 @@ export function CustomerTable({
                       />
                       Enabled
                     </label>
-                    <label className="text-white">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="fileUploads"
@@ -621,9 +629,11 @@ export function CustomerTable({
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-white mb-1">Color Palette</label>
-                  <div className="flex items-center space-x-4">
-                    <label className="text-white">
+                  <label className="block text-sm font-medium text-white mb-2">
+                    Color Palette
+                  </label>
+                  <div className="flex bg-white text-black p-2 rounded-md items-center space-x-4">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="colorPallette"
@@ -639,7 +649,7 @@ export function CustomerTable({
                       />
                       Enabled
                     </label>
-                    <label className="text-white">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="colorPallette"
@@ -659,9 +669,11 @@ export function CustomerTable({
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-white mb-1">Live Chat</label>
-                  <div className="flex items-center space-x-4">
-                    <label className="text-white">
+                  <label className="block text-sm font-medium text-white mb-2">
+                    Live Chat
+                  </label>
+                  <div className="flex bg-white text-black p-2 rounded-md items-center space-x-4">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="liveChat"
@@ -677,7 +689,7 @@ export function CustomerTable({
                       />
                       Enabled
                     </label>
-                    <label className="text-white">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="liveChat"
@@ -700,7 +712,7 @@ export function CustomerTable({
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
-                  className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
+                  className="mt-4 px-4 py-2 text-destructive rounded-lg font-semibold hover:opacity-60 duration-300"
                 >
                   Cancel
                 </button>
@@ -716,7 +728,7 @@ export function CustomerTable({
                     }
                   }}
                   type="submit"
-                  className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
+                  className="mt-4 hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   disabled={loading} // Disable button when loading
                 >
                   {loading ? "Creating..." : "Create"}
@@ -752,7 +764,7 @@ export function CustomerTable({
       {showInvoiceForm && (
         <div className="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center">
           <div className="p-6 max-w-md w-full">
-            <h2 className="text-xl text-white lg:text-2xl text-center font-bold mb-4">
+            <h2 className="text-2xl text-white lg:text-3xl text-center font-bold mb-4">
               Create Invoice
             </h2>
             <form
@@ -786,7 +798,7 @@ export function CustomerTable({
                         amount: e.target.value,
                       }))
                     }
-                    className="mt-1 p-1 block w-full rounded-md border-gray-300 shadow-sm"
+                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
                     required
                   />
                 </div>
@@ -804,7 +816,7 @@ export function CustomerTable({
                         currency: e.target.value,
                       }))
                     }
-                    className="mt-1 p-1 block w-full rounded-md border-gray-300 shadow-sm"
+                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
                     required
                   />
                 </div>
@@ -822,7 +834,7 @@ export function CustomerTable({
                         description: e.target.value,
                       }))
                     }
-                    className="mt-1 p-1 block w-full rounded-md border-gray-300 shadow-sm"
+                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
                     required
                   />
                 </div>
@@ -840,25 +852,25 @@ export function CustomerTable({
                         dueDate: e.target.value,
                       }))
                     }
-                    className="mt-1 p-1 block w-full rounded-md border-gray-300 shadow-sm"
+                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
                     required
                   />
                 </div>
               </div>
-              <div className="mt-4 flex justify-end space-x-2">
+              <div className="mt-6 flex flex-row justify-end gap-2 items-center">
                 <button
                   type="button"
                   onClick={() => {
                     setShowInvoiceForm(false);
                     setSelectedCustomer(null);
                   }}
-                  className="px-4 py-2 text-sm font-medium text-destructive hover:opacity-60 transition duration-300"
+                  className=" px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm font-medium text-black bg-confirm border border-transparent rounded-md hover:bg-opacity-60 transition duration-300"
+                  className="px-4 py-2 font-semibold text-black bg-confirm border border-transparent rounded-md hover:bg-opacity-60 transition duration-300"
                 >
                   Create Invoice
                 </button>

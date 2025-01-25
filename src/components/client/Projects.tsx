@@ -285,8 +285,11 @@ const Projects: React.FC<ProjectsProps> = ({
               Create Project
             </h3>
             <form>
-              <div className="mt-2">
-                <label htmlFor="name" className="block text-white">
+              <div className="mt-4">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Project Name
                 </label>
                 <input
@@ -298,8 +301,11 @@ const Projects: React.FC<ProjectsProps> = ({
                   className="w-full p-2 border-2 border-black rounded-md"
                 />
               </div>
-              <div className="mt-2">
-                <label htmlFor="description" className="block text-white">
+              <div className="mt-4">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-white mb-2"
+                >
                   Project Description
                 </label>
                 <input
@@ -311,9 +317,11 @@ const Projects: React.FC<ProjectsProps> = ({
                   className="w-full p-2 border border-gray-300 rounded-md"
                 />
                 <div className="mt-4">
-                  <label className="block text-white mb-1">File Uploads</label>
-                  <div className="flex items-center space-x-4">
-                    <label className="text-white">
+                  <label className="block text-sm font-medium text-white mb-2">
+                    File Uploads
+                  </label>
+                  <div className="flex items-center bg-white rounded-lg p-2 space-x-4">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="fileUploads"
@@ -329,7 +337,7 @@ const Projects: React.FC<ProjectsProps> = ({
                       />
                       Enabled
                     </label>
-                    <label className="text-white">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="fileUploads"
@@ -349,9 +357,11 @@ const Projects: React.FC<ProjectsProps> = ({
                 </div>
 
                 <div className="mt-4">
-                  <label className="block text-white mb-1">Color Palette</label>
-                  <div className="flex items-center space-x-4">
-                    <label className="text-white">
+                  <label className="block text-sm font-medium text-white mb-2">
+                    Color Palette
+                  </label>
+                  <div className="flex items-center bg-white rounded-lg p-2 space-x-4">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="colorPallette"
@@ -367,7 +377,7 @@ const Projects: React.FC<ProjectsProps> = ({
                       />
                       Enabled
                     </label>
-                    <label className="text-white">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="colorPallette"
@@ -386,9 +396,11 @@ const Projects: React.FC<ProjectsProps> = ({
                   </div>
                 </div>
                 <div className="mt-4">
-                  <label className="block text-white mb-1">Live Chat</label>
-                  <div className="flex items-center space-x-4">
-                    <label className="text-white">
+                  <label className="block text-sm font-medium text-white mb-2">
+                    Live Chat
+                  </label>
+                  <div className="flex items-center bg-white rounded-lg p-2 space-x-4">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="liveChat"
@@ -404,7 +416,7 @@ const Projects: React.FC<ProjectsProps> = ({
                       />
                       Enabled
                     </label>
-                    <label className="text-white">
+                    <label className="text-black">
                       <input
                         type="radio"
                         name="liveChat"
@@ -424,18 +436,18 @@ const Projects: React.FC<ProjectsProps> = ({
                 </div>
               </div>
             </form>
-            <div className="flex flex-row items-center justify-end">
+            <div className="flex mt-6 flex-row items-center justify-end">
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="mt-4 px-4 py-2 text-destructive  rounded-lg  font-medium hover:opacity-60 duration-300"
+                className=" px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
               >
                 Cancel
               </button>
               <button
                 onClick={handleCreateProject}
                 type="submit"
-                className="mt-4  hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-medium rounded-md"
+                className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                 disabled={loading} // Disable button when loading
               >
                 {loading ? "Creating..." : "Create"}

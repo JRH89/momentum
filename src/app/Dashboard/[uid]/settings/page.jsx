@@ -100,11 +100,11 @@ const Page = () => {
         <h1 className="text-3xl font-bold flex flex-row items-center gap-2">
           <Settings className="w-8 h-8" /> User Settings
         </h1>
-        <div className="p-4 pt-0 px-1 sm:px-4 mt-2 gap-5 flex flex-col">
+        <div className="p-4 pt-2 px-1 sm:px-4 mt-2 gap-5 flex flex-col">
           <div className="justify-start flex flex-col">
             <h2 className="text-2xl font-bold mb-2">Invoices</h2>
             <div className="flex flex-col p-4 rounded-lg border-2 border-black">
-              <p className="mb-2 sm:my-2 text-black">Invoices per page:</p>
+              <p className="mb-1 text-black">Invoices per page:</p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setInvoicesPerPage(invoicesPerPage - 1)}
@@ -116,7 +116,7 @@ const Page = () => {
                   type="text"
                   value={invoicesPerPage}
                   onChange={(e) => setInvoicesPerPage(parseInt(e.target.value))}
-                  className="w-full p-2 border border-black rounded-md text-center"
+                  className="w-full p-2 font-bold border border-black rounded-md text-center"
                 />
                 <button
                   onClick={() => setInvoicesPerPage(invoicesPerPage + 1)}
@@ -130,7 +130,7 @@ const Page = () => {
           <div className="">
             <h2 className="text-2xl font-bold mb-2">Customers</h2>
             <div className="flex flex-col p-4 rounded-lg border-2 border-black">
-              <p className="mb-2 sm:my-2">Customers per page:</p>
+              <p className="mb-1">Customers per page:</p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setCustomersPerPage(customersPerPage - 1)}
@@ -144,7 +144,7 @@ const Page = () => {
                   onChange={(e) =>
                     setCustomersPerPage(parseInt(e.target.value))
                   }
-                  className="w-full p-2 border border-black rounded-md text-center"
+                  className="w-full p-2 border font-bold border-black rounded-md text-center"
                 />
                 <button
                   onClick={() => setCustomersPerPage(customersPerPage + 1)}
@@ -158,7 +158,7 @@ const Page = () => {
           <div className="">
             <h2 className="text-2xl font-bold mb-2">Projects</h2>
             <div className="flex flex-col p-4 rounded-lg border-2 border-black">
-              <p className="mb-2 sm:my-2">Projects per page:</p>
+              <p className="mb-1">Projects per page:</p>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setProjectsPerPage(projectsPerPage - 1)}
@@ -170,7 +170,7 @@ const Page = () => {
                   type="text"
                   value={projectsPerPage}
                   onChange={(e) => setProjectsPerPage(parseInt(e.target.value))}
-                  className="w-full p-2 border border-black rounded-md text-center"
+                  className="w-full font-bold p-2 border border-black rounded-md text-center"
                 />
                 <button
                   onClick={() => setProjectsPerPage(projectsPerPage + 1)}
@@ -180,7 +180,7 @@ const Page = () => {
                 </button>
               </div>
               <div className="">
-                <p className="my-2">Milestones per page:</p>
+                <p className="mt-2 mb-1">Milestones per page:</p>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setMilestonesPerPage(milestonesPerPage - 1)}
@@ -194,7 +194,7 @@ const Page = () => {
                     onChange={(e) =>
                       setMilestonesPerPage(parseInt(e.target.value))
                     }
-                    className="w-full p-2 border border-black rounded-md text-center"
+                    className="w-full font-bold p-2 border border-black rounded-md text-center"
                   />
                   <button
                     onClick={() => setMilestonesPerPage(milestonesPerPage + 1)}

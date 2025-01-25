@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthProvider";
 
 export default function SupportForm({ onClose }) {
   const { user } = useAuth();
-  const [ticketType, setTicketType] = useState("Bug");
+  const [ticketType, setTicketType] = useState("Select");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Handle form submission
@@ -50,37 +50,50 @@ export default function SupportForm({ onClose }) {
         onSubmit={submitSupportForm}
         className="w-full h-full flex flex-col absolute items-center justify-center max-w-xl mx-auto px-10"
       >
-        <h2 className="text-2xl text-center font-bold text-white mb-4">
-          Submit Support Ticket
+        <h2 className="text-2xl lg:text-3xl text-center font-bold text-white mb-6">
+          Support Ticket Form
         </h2>
+        <label
+          htmlFor="type"
+          className="w-full text-left text-sm font-medium text-white mb-2"
+        >
+          Ticket Type
+        </label>
         <select
           name="type"
           value={ticketType}
           onChange={(e) => setTicketType(e.target.value)}
           className="w-full p-2 rounded-md mb-4"
         >
-          <option value="">Select Type</option>
+          <option value="Select">Select</option>
           <option value="Bug">Bug</option>
           <option value="Feature Request">Feature Request</option>
           <option value="Help">Help</option>
+          <option value="Other">Other</option>
         </select>
+        <label
+          htmlFor="message"
+          className="w-full text-left text-sm font-medium text-white mb-2"
+        >
+          Message
+        </label>
         <textarea
           rows={4}
           name="message"
           placeholder="Your Message"
           className="w-full p-2 rounded-md mb-4"
         />
-        <div className="flex justify-end gap-6  w-full">
+        <div className="flex justify-end gap-2 mt-4 w-full">
           <button
             type="button"
             onClick={onClose}
-            className="text-destructive hover:opacity-60 duration-300 rounded-md"
+            className="px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-6 py-2 bg-confirm font-semibold text-black rounded-md hover:bg-opacity-60 duration-300 disabled:opacity-50"
+            className="hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
           >
             Submit
           </button>
