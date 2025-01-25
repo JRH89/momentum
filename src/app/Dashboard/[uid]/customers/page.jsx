@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { CustomerTable } from "../../../../components/customer-table";
 import { useParams } from "next/navigation";
 import { useStripeIntegration } from "../../../hooks/use-stripe-integration";
-import { useAuth } from "../../../../context/AuthProvider";
 import { db, auth } from "../../../../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { AddCustomerForm } from "../../../../components/add-customer-form";

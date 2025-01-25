@@ -13,7 +13,7 @@ import MilestoneProgress from "../../../../../components/ProgressBar";
 import confetti from "canvas-confetti";
 import InvoicesTable from "../../../../../components/project/InvoiceTable";
 import { StripeCustomer } from "../../../../../components/types/stripeCustomer";
-import { set } from "date-fns";
+import LiveChat from "../../../../../components/Chat";
 
 interface Milestone {
   id: string;
@@ -716,9 +716,11 @@ const ProjectPage = () => {
   const [features, setFeatures] = useState<{
     fileUploads: boolean;
     colorPallette: boolean;
+    liveChat: boolean;
   }>({
     fileUploads: false,
     colorPallette: false,
+    liveChat: false,
   });
 
   useEffect(() => {
@@ -923,6 +925,43 @@ const ProjectPage = () => {
                           setFeatures((prev) => ({
                             ...prev,
                             colorPallette: false,
+                          }))
+                        }
+                      />
+                      <span className="text-black">Disabled</span>
+                    </label>
+                  </div>
+
+                  {/* Live Chat */}
+                  <label className="block text-lg font-medium text-white mt-4 mb-2">
+                    Live Chat
+                  </label>
+                  <div className="flex bg-white p-2 rounded-lg text-white gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="liveChat"
+                        value="true"
+                        checked={features.liveChat === true}
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            liveChat: true,
+                          }))
+                        }
+                      />
+                      <span className="text-black">Enabled</span>
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        name="liveChat"
+                        value="false"
+                        checked={features.liveChat === false}
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            liveChat: false,
                           }))
                         }
                       />
@@ -1460,6 +1499,15 @@ const ProjectPage = () => {
                 </button>
               </div>
             </div>
+          </div>
+        )}
+        {features?.liveChat && (
+          <div className="mt-4 h-full">
+            <LiveChat
+              userId={uid}
+              projectId={projectId}
+              customerId={stripeCustomerId}
+            />
           </div>
         )}
       </div>

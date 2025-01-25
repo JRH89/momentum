@@ -69,9 +69,11 @@ const Projects: React.FC<ProjectsProps> = ({
   const [features, setFeatures] = useState<{
     fileUploads: boolean;
     colorPallette: boolean;
+    liveChat: boolean;
   }>({
     fileUploads: false,
     colorPallette: false,
+    liveChat: false,
   });
 
   // Handle creating a new project
@@ -209,6 +211,7 @@ const Projects: React.FC<ProjectsProps> = ({
           setFeatures({
             fileUploads: false,
             colorPallette: false,
+            liveChat: false,
           });
           setShowForm(false);
         }
@@ -376,6 +379,43 @@ const Projects: React.FC<ProjectsProps> = ({
                           }))
                         }
                         checked={features.colorPallette === false}
+                        className="mr-2"
+                      />
+                      Disabled
+                    </label>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <label className="block text-white mb-1">Live Chat</label>
+                  <div className="flex items-center space-x-4">
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="liveChat"
+                        value="true"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            liveChat: true,
+                          }))
+                        }
+                        checked={features.liveChat === true}
+                        className="mr-2"
+                      />
+                      Enabled
+                    </label>
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="liveChat"
+                        value="false"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            liveChat: false,
+                          }))
+                        }
+                        checked={features.liveChat === false}
                         className="mr-2"
                       />
                       Disabled

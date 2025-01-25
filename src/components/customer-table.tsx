@@ -233,9 +233,11 @@ export function CustomerTable({
   const [features, setFeatures] = useState<{
     fileUploads: boolean;
     colorPallette: boolean;
+    liveChat: boolean;
   }>({
     fileUploads: false,
     colorPallette: false,
+    liveChat: false,
   });
 
   // Handle creating a new project
@@ -374,7 +376,11 @@ export function CustomerTable({
           setNewProjectName("");
           setNewProjectDescription("");
           setShowForm(false);
-          setFeatures({ fileUploads: false, colorPallette: false });
+          setFeatures({
+            fileUploads: false,
+            colorPallette: false,
+            liveChat: false,
+          });
 
           // Show success toast
           toast.success("Project created successfully!");
@@ -645,6 +651,44 @@ export function CustomerTable({
                           }))
                         }
                         checked={features.colorPallette === false}
+                        className="mr-2"
+                      />
+                      Disabled
+                    </label>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label className="block text-white mb-1">Live Chat</label>
+                  <div className="flex items-center space-x-4">
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="liveChat"
+                        value="true"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            liveChat: true,
+                          }))
+                        }
+                        checked={features.liveChat === true}
+                        className="mr-2"
+                      />
+                      Enabled
+                    </label>
+                    <label className="text-white">
+                      <input
+                        type="radio"
+                        name="liveChat"
+                        value="false"
+                        onChange={() =>
+                          setFeatures((prev) => ({
+                            ...prev,
+                            liveChat: false,
+                          }))
+                        }
+                        checked={features.liveChat === false}
                         className="mr-2"
                       />
                       Disabled

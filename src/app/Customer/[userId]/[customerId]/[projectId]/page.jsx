@@ -11,6 +11,7 @@ import CustomerPallete from "../../../../../components/customer/CustomerPallete"
 import MilestoneProgress from "../../../../../components/ProgressBar";
 import { toast } from "react-toastify";
 import InvoicesTable from "../../../../../components/project/InvoiceTable";
+import LiveChat from "../../../../../components/Chat";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -527,6 +528,15 @@ const CustomerProjectPage = () => {
                 )}
               </div>
             </div>
+          </div>
+        )}
+        {features?.liveChat && (
+          <div className="mt-4 h-full">
+            <LiveChat
+              userId={customerId}
+              projectId={projectId}
+              customerId={customerId}
+            />
           </div>
         )}
       </div>
