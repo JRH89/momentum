@@ -24,21 +24,18 @@ const Account = () => {
   const [alert, setAlert] = useState(null);
   const [userData, setUserData] = useState(null);
   const [userStripe, setUserStripe] = useState(null);
-  const [loading, setLoadingState] = useState(true); // Set initial loading state
+  const [loading, setLoadingState] = useState(true);
   const [isConnected, setIsConnected] = useState(false);
-
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
   const handleConnect = () => {
     if (termsAccepted) {
       window.location.href = "/api/stripe/oauth";
     }
   };
-
-  const [user, setUser] = useState(null);
-
-  const router = useRouter();
 
   useEffect(() => {
     // Listener for auth state changes
@@ -209,6 +206,7 @@ const Account = () => {
 
         toast.success("Stripe account successfully unlinked");
         setIsConnected(false);
+        setUserStripe(null);
       } catch (error) {
         toast.error("Failed to disconnect Stripe account", error);
       }
