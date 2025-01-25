@@ -49,6 +49,7 @@ const ProjectPage = () => {
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [uploadLimit, setUploadLimit] = useState<number>(10);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -212,6 +213,30 @@ const ProjectPage = () => {
   // Handle file upload
   const handleUpload = async () => {
     if (!file) return;
+
+    // File size and type validation
+    const maxFileSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/x-icon",
+      "image/gif",
+      "application/pdf",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Only images (JPG, PNG, WebP, etc.) and PDFs are allowed."
+      );
+      return;
+    }
+
+    if (file.size > maxFileSize) {
+      toast.error("File size exceeds the 5MB limit.");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -769,12 +794,12 @@ const ProjectPage = () => {
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         <div className="flex flex-col mb-2">
           <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
-            <h1 className="text-xl md:text-2xl lg:text-3xl border-b-2 border-black xl:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
-              <span className="flex items-center gap-2">
+            <h1 className="text-2xl md:text-2xl lg:text-3xl border-b-2 border-black xl:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
+              <span className="flex justify-between sm:justify-start w-full sm:w-auto items-center pb-1 gap-2">
                 {project.name}
                 <Settings
                   onClick={handleSettingsForm}
-                  className="w-5 h-5 sm:w-6 sm:h-6 md:w-6 md:h-6 lg:w-8 lg:h-8 cursor-pointer text-confirm hover:rotate-90 duration-300"
+                  className="w-6 h-6  lg:w-8 lg:h-8 cursor-pointer text-confirm hover:rotate-90 duration-300"
                 />
               </span>
               <span className="hidden sm:flex text-sm sm:text-md md:text-lg lg:text-xl text-gray-600">
@@ -918,16 +943,16 @@ const ProjectPage = () => {
             </div>
           )}
 
-          <p className="text-md md:text-lg lg:text-xl capitalize text-gray-700">
+          <p className="text-sm sm:text-md md:text-lg lg:text-xl capitalize text-gray-700">
             {project.description}
           </p>
         </div>
 
         {/* Milestones Section */}
-        <div className="mb-2">
+        <div className="my-2">
           <div className="flex justify-between items-center">
             <div className="flex items-end my-auto">
-              <h2 className="text-2xl font-semibold">Milestones</h2>
+              <h2 className="text-2xl font-semibold mb-1">Milestones</h2>
               <button
                 type="button"
                 onClick={() => setShowForm(!showForm)}
@@ -1124,7 +1149,7 @@ const ProjectPage = () => {
           )}
         </div>
         {/* Invoices Section */}
-        <div className="mt-4 mb-3">
+        <div className="sm:mt-4">
           <div className="flex items-end my-auto">
             <h2 className="text-2xl font-semibold">Invoices</h2>
             <button
@@ -1221,7 +1246,7 @@ const ProjectPage = () => {
         <div className="lg:flex items-center lg:flex-row">
           <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-4">
             {project?.features?.fileUploads && (
-              <div className="mt-4">
+              <div className="mt-3 sm:mt-4">
                 <div className="flex flex-row items-center justify-start my-auto">
                   <h2 className="text-2xl font-semibold">Uploads</h2>
                   <button
@@ -1250,10 +1275,18 @@ const ProjectPage = () => {
                     <button
                       type="button"
                       onClick={handleUpload}
-                      disabled={!file || isLoading}
-                      className="w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2"
+                      disabled={
+                        !file || isLoading || uploads.length >= uploadLimit
+                      }
+                      className={`w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2 ${
+                        !file || isLoading || uploads.length >= uploadLimit
+                          ? "cursor-not-allowed opacity-50"
+                          : ""
+                      }`}
                     >
-                      {isLoading ? (
+                      {uploads.length >= uploadLimit ? (
+                        "Upload Limit Reached"
+                      ) : isLoading ? (
                         "Uploading..."
                       ) : (
                         <p className="flex items-center gap-2">
