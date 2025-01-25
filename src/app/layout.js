@@ -14,6 +14,7 @@ const notoSans = Noto_Sans({ subsets: ["latin"] });
 export const metadata = {
   title: `${siteMetadata.title} | ${siteMetadata.headerTitle}`,
   description: `${siteMetadata.description}`,
+  image: `${siteMetadata.siteUrl}${siteMetadata.socialBanner}`,
   icons: {
     icon: "/favicon.svg",
   },
@@ -38,55 +39,28 @@ export const metadata = {
     description: `${siteMetadata.description}`,
     image: `${siteMetadata.siteUrl}${siteMetadata.socialBanner}`,
   },
-  additionalMetaTags: [
-    {
-      name: "robots",
-      content: "index, follow",
+  alternates: {
+    canonical: `${siteMetadata.siteUrl}`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
-    {
-      name: "author",
-      content: `${siteMetadata.author}`,
-    },
-    {
-      name: "keywords",
-      content: `${siteMetadata.keywords}`,
-    },
-    {
-      name: "theme-color",
-      content: "#1a202c",
-    },
-    {
-      name: "viewport",
-      content: "width=device-width, initial-scale=1.0",
-    },
-  ],
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta name="description" content={metadata.description} />
-        <meta name="robots" content="index, follow" />
-        <meta name="author" content={metadata.additionalMetaTags[1].content} />
-        <meta name="keywords" content={metadata.additionalMetaTags[2].content} />
-        <meta name="theme-color" content={metadata.additionalMetaTags[3].content} />
-        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-        <meta property="og:title" content={metadata.openGraph.title} />
-        <meta property="og:description" content={metadata.openGraph.description} />
-        <meta property="og:url" content={metadata.openGraph.url} />
-        <meta property="og:site_name" content={metadata.openGraph.site_name} />
-        <meta property="og:image" content={metadata.openGraph.images[0].url} />
-        <meta property="og:image:width" content={metadata.openGraph.images[0].width} />
-        <meta property="og:image:height" content={metadata.openGraph.images[0].height} />
-        <meta property="og:image:alt" content={metadata.openGraph.images[0].alt} />
-        <meta name="twitter:card" content={metadata.twitter.card} />
-        <meta name="twitter:site" content={metadata.twitter.site} />
-        <meta name="twitter:title" content={metadata.twitter.title} />
-        <meta name="twitter:description" content={metadata.twitter.description} />
-        <meta name="twitter:image" content={metadata.twitter.image} />
         <meta name="google-site-verification" content="94IN99LAWmrXJfd0QuFFwdRCGEGyEep99Cx0-GGRiPQ" />
-        <title>{metadata.title}</title>
       </head>
       <body className={twMerge(notoSans.className, "antialiased flex flex-col bg-[#EAEEFE]")}>
         <AuthProvider>
