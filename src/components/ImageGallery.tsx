@@ -84,7 +84,7 @@ const ImageGallery = () => {
         </div>
         <h2 className="section-title mt-5">See the App in Action</h2>
         <p className="section-description mt-5">
-          Get a closer look at the app's interface and tools. Click on any
+          Get a closer look at the app&apos;s interface and tools. Click on any
           preview to learn more about its features.
         </p>
       </div>
