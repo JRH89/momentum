@@ -20,12 +20,12 @@ export default function Page() {
         className="flex bg-white justify-center items-center bg-cover bg-center min-h-screen h-full  flex-col text-center gap-5 w-full mx-auto"
       >
         <div className="relative z-10 h-full mx-auto justify-center items-center flex flex-col gap-4">
-          <h1 className="text-3xl max-w-lg mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black">
+          <h1 className="text-4xl px-2 md:px-0 max-w-xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black mb-2">
             Keep up that {siteMetadata.title}!
           </h1>
           <SignIn />
           <div>
-            <p className="text-base font-semibold">
+            <p className="text-base font-semibold mt-4">
               Don&apos;t have an account?{" "}
               <Link className="hover:underline text-gray-600" href="/Signup">
                 Sign up

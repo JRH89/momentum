@@ -1,10 +1,24 @@
+"use client";
+
 import Image from "next/image";
 import logo from "../../../public/logo.png";
 import siteMetadata from "../../../siteMetadata";
 import Link from "next/link";
-import { Globe } from "lucide-react";
+import { ChevronDown, Globe } from "lucide-react";
+import { useState } from "react";
 
 export const Footer = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <footer className="bg-black text-[#bcbcbc] text-sm sm:text-lg md:text-xl lg:text-2xl py-12">
       <div className="container mx-auto px-6 lg:px-20">
@@ -74,18 +88,33 @@ export const Footer = () => {
           >
             Learn More
           </Link>
-          <Link
-            href="/Signin"
-            className="hover:text-white transition duration-300 ease-in-out"
-          >
-            User Portal
-          </Link>
-          <Link
-            href="/Customer/login"
-            className="hover:text-white transition duration-300 ease-in-out"
-          >
-            Customer Portal
-          </Link>
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="hover:opacity-60 flex flex-row gap-1 items-center duration-300"
+            >
+              Login
+              <ChevronDown className="h-4 w-4 flex-row flex justify-center items-center" />
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute mx-auto text-black flex flex-col  bg-white  shadow-lg  left-1/2 text-center -translate-x-1/2 w-auto text-xs shadow-black rounded-md mt-1">
+                <Link
+                  href="/Dashboard/login"
+                  className="flex p-2 mx-auto rounded-md w-auto hover:bg-backgroundPrimary"
+                  onClick={toggleMenu}
+                >
+                  User Portal
+                </Link>
+                <Link
+                  href="/Customer/login"
+                  className="flex p-2 mx-auto w-auto rounded-md hover:bg-backgroundPrimary"
+                  onClick={toggleMenu}
+                >
+                  Customer Portal
+                </Link>
+              </div>
+            )}
+          </div>
           <Link
             href="/Contact"
             className="hover:text-white transition duration-300 ease-in-out"

@@ -10,7 +10,7 @@ import React from "react";
 const featuresData = [
   {
     title: "Manage Projects",
-    description: "Keep all your projects organized in one place.",
+    description: "Keep all your projects organized.",
     icon: FolderPlus,
     points: [
       "Set milestones and track deadlines",
@@ -20,7 +20,7 @@ const featuresData = [
   },
   {
     title: "Send Invoices",
-    description: "Easily create, send, and track invoices.",
+    description: "Easily create and send invoices.",
     icon: Receipt,
     points: [
       "Generate and send detailed invoices",
@@ -30,7 +30,7 @@ const featuresData = [
   },
   {
     title: "User Dashboard",
-    description: "Access and manage all key information in one view.",
+    description: "All the info you need, at a glance.",
     icon: LayoutDashboard,
     points: [
       "Track projects and their progress",
@@ -40,7 +40,7 @@ const featuresData = [
   },
   {
     title: "Client Dashboard",
-    description: "Provide clients with tools to track their projects.",
+    description: "Keep clients up to date.",
     icon: LayoutTemplate,
     points: [
       "Stay updated on project status",
@@ -71,7 +71,7 @@ const FeaturesSection = () => {
           {featuresData.map((feature, index) => (
             <div
               key={index}
-              className="relative h-auto max-w-md w-full min-h-[22rem] border-2 border-black bg-confirm p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center"
+              className="relative h-auto max-w-md w-full min-h-[22rem] border-2 border-black bg-confirm p-4 lg:p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center"
             >
               {/* Icon Wrapper */}
               <div className="absolute -top-8 flex items-center justify-center">
@@ -88,7 +88,7 @@ const FeaturesSection = () => {
                 </h3>
 
                 {/* Description */}
-                <p className="text-base md:text-lg font-medium text-black leading-relaxed">
+                <p className="text-lg md:text-lg font-medium text-black leading-relaxed">
                   {feature.description}
                 </p>
 
