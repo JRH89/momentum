@@ -47,6 +47,8 @@ const ProjectPage = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isCompleted, setIsCompleted] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -75,6 +77,8 @@ const ProjectPage = () => {
               setUploads(foundProject.uploads || []);
               setIsCompleted(foundProject.isCompleted || false);
               setFeatures(foundProject.features || []);
+              setTitle(foundProject.title || "");
+              setDescription(foundProject.invoiceDescription || "");
             }
           }
         }
@@ -729,13 +733,13 @@ const ProjectPage = () => {
           throw new Error("Project not found.");
         }
 
-        // Update the features in the project
-        customers[customerIndex].projects[projectIndex].features = features;
-
-        setProject({
-          ...project,
-          features: features,
-        });
+        // Update the project details, including name and description
+        customers[customerIndex].projects[projectIndex] = {
+          ...customers[customerIndex].projects[projectIndex],
+          name: project.name, // Fetch from state
+          description: project.description, // Fetch from state
+          features: features, // Fetch features
+        };
 
         // Update the Firestore document
         await transaction.update(userRef, {
@@ -743,9 +747,9 @@ const ProjectPage = () => {
         });
       });
 
-      toast.success("Features updated successfully!");
+      toast.success("Project updated successfully!");
     } catch (error: any) {
-      toast.error("Failed to update features" + error.message);
+      toast.error("Failed to update project: " + error.message);
     }
   };
 
@@ -792,6 +796,33 @@ const ProjectPage = () => {
                   <h3 className="text-white text-2xl sm:text-3xl text-center font-bold mb-4">
                     Project Settings
                   </h3>
+                  <label className="text-lg flex flex-col font-medium text-white my-2 gap-2">
+                    Project Name
+                    <input
+                      type="text"
+                      value={project.name}
+                      onChange={(e) =>
+                        setProject((prev: any) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className="bg-white p-2 rounded-lg text-black"
+                    />
+                  </label>
+                  <label className="flex flex-col text-lg font-medium text-white my-2 gap-2">
+                    Project Description
+                    <textarea
+                      value={project.description}
+                      onChange={(e) =>
+                        setProject((prev: any) => ({
+                          ...prev,
+                          description: e.target.value,
+                        }))
+                      }
+                      className="bg-white p-2 rounded-lg text-black"
+                    />
+                  </label>
 
                   {/* File Uploads */}
                   <label className="block text-lg font-medium text-white my-2">
@@ -866,6 +897,7 @@ const ProjectPage = () => {
                     </label>
                   </div>
                 </div>
+
                 <div className="flex flex-row w-full justify-end">
                   <button
                     type="button"
