@@ -13,6 +13,7 @@ import MilestoneProgress from "../../../../../components/ProgressBar";
 import confetti from "canvas-confetti";
 import InvoicesTable from "../../../../../components/project/InvoiceTable";
 import { StripeCustomer } from "../../../../../components/types/stripeCustomer";
+import { set } from "date-fns";
 
 interface Milestone {
   id: string;
@@ -765,6 +766,13 @@ const ProjectPage = () => {
           description: project.description, // Fetch from state
           features: features, // Fetch features
         };
+
+        setProject((prev: any) => ({
+          ...prev,
+          name: project.name,
+          description: project.description,
+          features: features,
+        }));
 
         // Update the Firestore document
         await transaction.update(userRef, {
