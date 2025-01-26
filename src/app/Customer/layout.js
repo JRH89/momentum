@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { auth } from '../../../firebase';
 import Sidebar from '../../components/customer/SideBar';
 import { useAuth } from '../../context/AuthProvider';
-import { LoaderPinwheel } from 'lucide-react';
 
 const ProtectedRoute = ({ children }) => {
     const router = useRouter();

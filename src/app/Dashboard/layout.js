@@ -73,9 +73,9 @@ const Layout = ({ children }) => {
             </div>
           </div>
         ) : (
-          <>
+          <div className='mt-4 sm:mt-0'>
             {children}
-          </>
+          </div>
         )}
       </main>
     </div>
