@@ -2,7 +2,7 @@
 
 import { useAuth } from "../../context/AuthProvider";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { getPremiumStatus } from "../payments/account/GetPremiumStatus";
 import { getAuth, sendPasswordResetEmail, deleteUser } from "@firebase/auth";
 import { db, initFirebase } from "../../../firebase";
@@ -29,6 +29,7 @@ const Account = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [user, setUser] = useState(null);
+  const [email, setEmail] = useState("");
   const router = useRouter();
 
   const handleConnect = () => {
@@ -79,6 +80,7 @@ const Account = () => {
             setUserData(doc.data());
             setUserStripe(doc.data().stripeAccountId || null);
             setIsConnected(doc.data().stripeConnected || false);
+            setEmail(doc.data().email);
             setLoadingState(false);
           }
         })
@@ -163,15 +165,32 @@ const Account = () => {
 
     if (confirmDelete) {
       try {
-        handleDisconnectStripe();
+        // Handle Stripe disconnection if necessary
+        if (isConnected) {
+          handleDisconnectStripe();
+        }
+
+        // Delete user account
         await deleteUser(user);
-        const docRef = doc(db, "users", user.uid);
-        await deleteDoc(docRef);
-        const docRef2 = doc(db, "customers", user.uid);
-        await deleteDoc(docRef2);
+
+        // Check and delete 'users' document
+        const userDocRef = doc(db, "users", user.uid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          await deleteDoc(userDocRef);
+        }
+
+        // Check and delete 'customers' document
+        const customerDocRef = doc(db, "customers", user.uid);
+        const customerDocSnapshot = await getDoc(customerDocRef);
+        if (customerDocSnapshot.exists()) {
+          await deleteDoc(customerDocRef);
+        }
+
         toast.success("User account deleted successfully.");
       } catch (error) {
-        toast.error("Error deleting user account:", error);
+        console.error("Error deleting user account:", error);
+        toast.error(`Error deleting user account: ${error.message}`);
       }
     } else {
       return;
@@ -233,6 +252,10 @@ const Account = () => {
         </h1>
         {user ? (
           <div className="flex flex-col text-lg gap-0 w-full px-0 sm:px-4">
+            <p className="break-words flex flex-row gap-1 w-full justify-start">
+              Email:
+              <span className="font-bold">{user.email}</span>
+            </p>
             <p className="capitalize flex flex-row gap-1 w-full justify-start">
               Subscribed:
               <span className="font-bold">{userIsPremium.toString()}</span>
