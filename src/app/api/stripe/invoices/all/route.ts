@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
     // List invoices with stripeAccount in options
     const invoices = await stripe.invoices.list(
-      { limit: 100 }, // Adjust limit as needed
+      { limit: 50 }, // Adjust limit as needed
       { stripeAccount: stripeAccountId } // Specify the connected account
     );
 
