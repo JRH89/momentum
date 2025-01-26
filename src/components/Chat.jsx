@@ -18,34 +18,31 @@ const LiveChat = ({ userId, projectId, customerId }) => {
   const [newMessage, setNewMessage] = useState("");
   const chatId = projectId; // Unique chat ID
 
-  const messagesContainerRef = useRef(null); // Ref for the messages container
+  const messagesContainerRef = useRef(null);
 
   useEffect(() => {
     const chatRef = collection(db, "chats", chatId, "messages");
 
-    // Real-time listener for messages
     const unsubscribe = onSnapshot(chatRef, (snapshot) => {
       const loadedMessages = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      // Sort messages by timestamp in ascending order
       loadedMessages.sort(
         (a, b) => new Date(a.timestamp) - new Date(b.timestamp)
       );
       setMessages(loadedMessages);
     });
 
-    return () => unsubscribe(); // Clean up the listener
+    return () => unsubscribe();
   }, [chatId]);
 
   useEffect(() => {
-    // Scroll to the bottom of the messages container whenever the messages are updated
     messagesContainerRef.current?.scrollTo({
       top: messagesContainerRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages]);
+  }, []); // Removed unnecessary dependency: messages
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;
@@ -60,52 +57,74 @@ const LiveChat = ({ userId, projectId, customerId }) => {
     setNewMessage("");
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  };
+
   return (
-    <>
+    <div className=" sm:pr-5">
       <h1 className="text-2xl font-semibold mb-2 mt-4">Live Chat</h1>
-      <div className="flex border-2 border-black flex-col h-[400px] w-full sm:w-1/2 rounded-lg shadow-lg">
+      <div className="flex border-2 border-black flex-col h-[400px] w-full sm:w-1/2 rounded-lg shadow-md shadow-black">
         {/* Messages Container */}
         <div
           ref={messagesContainerRef}
-          className="flex-1 rounded-t-lg overflow-y-auto scrollbar-thin scrollbar-thumb-backgroundSecondary scrollbar-track-gray-200 p-4 space-y-2 bg-gray-100"
+          className="flex-1 overflow-y-auto p-2 space-y-2 rounded-t-lg bg-backgroundPrimary border-b-2 border-black"
+          style={{
+            scrollbarWidth: "thin",
+            scrollbarColor: "#d1d5db #000000",
+          }}
         >
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`p-2 mx-auto rounded-lg text-sm w-full flex ${
-                message.userId === userId
-                  ? "self-end bg-white text-black justify-end"
-                  : "self-start bg-gray-200 justify-start"
+              className={`w-3/4 ${
+                message.userId === userId ? "ml-auto" : "mr-auto"
               }`}
             >
-              <div>
-                {message.text}
-                <div className="text-xs text-gray-500 mt-1">
-                  {formatTimestamp(message.timestamp)} {/* Display Timestamp */}
-                </div>
+              <div
+                className={`p-3 rounded-lg border-2 border-black ${
+                  message.userId === userId
+                    ? "bg-green-100 ml-auto justify-end items-end w-full flex flex-col" // Confirm color for user's messages
+                    : "bg-white"
+                }`}
+              >
+                <p className="text-black font-medium">{message.text}</p>
+                <p className="text-xs mt-1 text-black">
+                  {formatTimestamp(message.timestamp)}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Input Section */}
-        <div className="p-4 bg-white border-t-2 border-black rounded-b-lg flex items-center gap-2">
+        <div className="p-4 bg-white w-full rounded-b-lg flex items-center gap-3 mx-auto justify-center">
           <input
             type="text"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1 border-black px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-300"
-            placeholder="Type a message..."
+            onKeyPress={handleKeyPress}
+            className="flex-1 p-2 border-2 border-black rounded-lg text-lg font-medium 
+                     focus:outline-none  focus:ring-offset-2"
+            placeholder="Message..."
           />
           <button
             onClick={sendMessage}
-            className="px-4 py-2 border-2 border-black bg-confirm shadow-md shadow-black text-black font-medium hover:shadow-lg hover:shadow-black rounded-lg duration-300"
+            className="px-4 py-2 border-2 border-black bg-confirm 
+                     text-black font-bold flex text-lg  
+                     duration-300
+                     
+                     shadow-md rounded-lg shadow-black
+                     hover:shadow-lg hover:shadow-black"
           >
             Send
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

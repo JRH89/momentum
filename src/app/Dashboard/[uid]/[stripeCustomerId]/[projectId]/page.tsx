@@ -804,15 +804,15 @@ const ProjectPage = () => {
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         <div className="flex flex-col mb-2">
           <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
-            <h1 className="text-2xl md:text-2xl lg:text-3xl border-b-2 border-black xl:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
-              <span className="flex justify-between sm:justify-start w-full sm:w-auto items-center pb-1 gap-2">
+            <h1 className="text-2xl sm:text-3xl border-b-2 border-black xl:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
+              <span className="flex justify-between sm:justify-start w-full sm:w-auto items-center pb-0 gap-2">
                 {project.name}
                 <Settings
                   onClick={handleSettingsForm}
                   className="w-6 h-6  lg:w-8 lg:h-8 cursor-pointer text-confirm hover:rotate-90 duration-300"
                 />
               </span>
-              <span className="hidden sm:flex text-sm sm:text-md md:text-lg lg:text-xl text-gray-600">
+              <span className="hidden sm:flex text-base sm:text-md md:text-lg lg:text-xl text-gray-600">
                 ID: {project.id}
               </span>
             </h1>
@@ -989,7 +989,7 @@ const ProjectPage = () => {
             </div>
           )}
 
-          <p className="text-sm sm:text-md md:text-lg lg:text-xl capitalize text-gray-700">
+          <p className="text-base sm:text-md md:text-lg lg:text-xl capitalize text-gray-600">
             {project.description}
           </p>
         </div>
