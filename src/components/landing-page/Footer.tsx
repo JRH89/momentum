@@ -86,7 +86,13 @@ export const Footer = () => {
             href="/About/welcomeToMomentum"
             className="hover:text-white transition duration-300 ease-in-out"
           >
-            Learn More
+            Documentation
+          </Link>
+          <Link
+            href="/Contact"
+            className="hover:text-white transition duration-300 ease-in-out"
+          >
+            Contact
           </Link>
           <div className="relative">
             <button
@@ -115,12 +121,6 @@ export const Footer = () => {
               </div>
             )}
           </div>
-          <Link
-            href="/Contact"
-            className="hover:text-white transition duration-300 ease-in-out"
-          >
-            Contact
-          </Link>
         </nav>
 
         {/* Footer Text */}

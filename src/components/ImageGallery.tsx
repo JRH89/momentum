@@ -119,8 +119,11 @@ const ImageGallery = () => {
             >
               <XIcon className="w-6 h-6 hover:rotate-90 duration-300" />
             </button>
-            <div className="flex flex-col items-center sm:px-5 md:flex-row h-full justify-center gap-5 lg:gap-10">
-              <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center sm:px-5  h-full justify-center gap-5 lg:gap-10">
+              <p className="text-black text-left text-2xl lg:text-3xl px-2 font-bold ">
+                {selectedImage.alt}
+              </p>
+              <div className="flex flex-col lg:flex-row gap-5 items-center">
                 <Image
                   aria-label={selectedImage.alt}
                   src={selectedImage.src}
@@ -129,46 +132,44 @@ const ImageGallery = () => {
                   height={1080}
                   className="w-full max-w-xl shadow-md shadow-black border-2 border-black h-auto rounded-lg"
                 />
+                <div className="flex flex-col justify-between">
+                  <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium sm:text-md text-sm lg:text-xl">
+                    {selectedImage.desc}
+                  </p>
+                </div>
               </div>
-              <div className="flex flex-col justify-between">
-                <p className="text-black text-left text-lg sm:text-xl md:text-2xl lg:text-3xl px-2 font-semibold ">
-                  {selectedImage.alt}
-                </p>
-                <p className="text-justify mt-4 px-2 max-w-xl text-black font-medium sm:text-md text-sm lg:text-xl">
-                  {selectedImage.desc}
-                </p>
+
+              <div className="flex items-center justify-center gap-5 lg:gap-10 mt-2 max-w-xl lg:max-w-6xl mx-auto w-full ">
+                <button
+                  aria-label="previous page"
+                  type="button"
+                  onClick={() => {
+                    const currentIndex = images.findIndex(
+                      (image) => image.src === selectedImage.src
+                    );
+                    const prevIndex =
+                      (currentIndex - 1 + images.length) % images.length;
+                    setSelectedImage(images[prevIndex]);
+                  }}
+                  className="px-4 py-2 flex w-full text-center justify-center border-2 border-black duration-300 bg-confirm text-black rounded-lg hover:bg-opacity-60"
+                >
+                  <ArrowBigLeftIcon className="w-6 h-6" />
+                </button>
+                <button
+                  aria-label="next page"
+                  type="button"
+                  onClick={() => {
+                    const currentIndex = images.findIndex(
+                      (image) => image.src === selectedImage.src
+                    );
+                    const nextIndex = (currentIndex + 1) % images.length;
+                    setSelectedImage(images[nextIndex]);
+                  }}
+                  className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-confirm text-black rounded-lg hover:bg-opacity-60"
+                >
+                  <ArrowBigRightIcon className="w-6 h-6" />
+                </button>
               </div>
-            </div>
-            <div className="flex absolute bottom-2 justify-center gap-5 lg:gap-10 max-w-6xl mx-auto w-full">
-              <button
-                aria-label="previous page"
-                type="button"
-                onClick={() => {
-                  const currentIndex = images.findIndex(
-                    (image) => image.src === selectedImage.src
-                  );
-                  const prevIndex =
-                    (currentIndex - 1 + images.length) % images.length;
-                  setSelectedImage(images[prevIndex]);
-                }}
-                className="px-4 py-2 flex w-full text-center justify-center border-2 border-black duration-300 bg-confirm text-black rounded-lg hover:bg-opacity-60"
-              >
-                <ArrowBigLeftIcon className="w-6 h-6" />
-              </button>
-              <button
-                aria-label="next page"
-                type="button"
-                onClick={() => {
-                  const currentIndex = images.findIndex(
-                    (image) => image.src === selectedImage.src
-                  );
-                  const nextIndex = (currentIndex + 1) % images.length;
-                  setSelectedImage(images[nextIndex]);
-                }}
-                className="px-4 border-2 border-black py-2 flex w-full text-center justify-center duration-300 bg-confirm text-black rounded-lg hover:bg-opacity-60"
-              >
-                <ArrowBigRightIcon className="w-6 h-6" />
-              </button>
             </div>
           </div>
         </div>
