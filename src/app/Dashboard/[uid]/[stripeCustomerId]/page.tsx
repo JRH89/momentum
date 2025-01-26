@@ -265,8 +265,8 @@ const CustomerDetailsPage: React.FC = () => {
             <h2 className="text-2xl lg:text-3xl font-bold text-black">
               Customer Details
             </h2>
-            <p className="font-semibold">Name: {customerData.name}</p>
-            <p className="font-semibold">
+            <p className="px-4 mt-2 font-semibold">Name: {customerData.name}</p>
+            <p className="px-4 font-semibold">
               Email:{" "}
               <a
                 className="text-confirm hover:underline"
@@ -275,11 +275,11 @@ const CustomerDetailsPage: React.FC = () => {
                 {customerData.email}
               </a>
             </p>
-            <p className="font-semibold">
+            <p className="font-semibold px-4">
               Stripe Customer ID: {customerData.stripeCustomerId}
             </p>
             {customerData.uid && (
-              <p className="font-semibold">User ID: {customerData.uid}</p>
+              <p className="font-semibold px-4">User ID: {customerData.uid}</p>
             )}
           </div>
         )}

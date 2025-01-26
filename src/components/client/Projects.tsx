@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../../firebase";
 import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
-import { LoaderPinwheel, Plus } from "lucide-react";
+import { LoaderPinwheel, Plus, X } from "lucide-react";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { signOut } from "firebase/auth";
 import { initializeApp, getApp, deleteApp } from "firebase/app";
@@ -224,6 +224,54 @@ const Projects: React.FC<ProjectsProps> = ({
     }
   };
 
+  const handleDeleteProject = async (projectId: string) => {
+    if (!window.confirm("Are you sure you want to delete this project?")) {
+      toast.warning("Project deletion cancelled");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", uid);
+      const userDoc = await getDoc(userRef);
+
+      if (!userDoc.exists()) {
+        toast.error("User not found");
+        return;
+      }
+
+      const userData = userDoc.data();
+      const customers = Array.isArray(userData.customers)
+        ? userData.customers
+        : [];
+
+      // Update customers array by removing the project
+      const updatedCustomers = customers.map((customer) => {
+        return {
+          ...customer,
+          projects: (customer.projects || []).filter(
+            (project: { id: string }) => project.id !== projectId // Use `id` to match correctly
+          ),
+        };
+      });
+
+      // Update Firestore with modified customers
+      await updateDoc(userRef, { customers: updatedCustomers });
+
+      // Update local state
+      setProjects(
+        updatedCustomers.flatMap((customer) => customer.projects || [])
+      );
+      toast.success("Project deleted successfully");
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast.error(
+        error instanceof Error
+          ? `Failed to delete project: ${error.message}`
+          : "Failed to delete project"
+      );
+    }
+  };
+
   if (loading)
     return (
       <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
@@ -251,9 +299,9 @@ const Projects: React.FC<ProjectsProps> = ({
         {projects.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, index) => (
-              <Link href={project.link} key={index}>
+              <div className="" key={index}>
                 <div
-                  className={`bg-[#EAEEFE] hover:shadow-lg hover:shadow-black duration-300 flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
+                  className={`bg-[#EAEEFE] relative flex flex-col my-auto h-full border-2 shadow-black border-black rounded-lg shadow-md p-4`}
                 >
                   <h3 className="text-lg flex flex-col my-auto h-full font-bold text-black mb-2">
                     {project.name}
@@ -268,12 +316,27 @@ const Projects: React.FC<ProjectsProps> = ({
                   <div className="">
                     <MilestoneProgress milestones={project.milestones} />
                   </div>
+                  <div className="absolute flex p-0.5 rounded-bl-lg bg-black h-auto top-0 w-auto mx-auto right-0">
+                    <button
+                      aria-label="Delete Project"
+                      type="button"
+                      onClick={() => handleDeleteProject(project.id)}
+                    >
+                      <X className="w-5 h-5 text-destructive hover:rotate-90 duration-300" />
+                    </button>
+                  </div>
+                  <Link
+                    href={`${project.link}`}
+                    className="mt-2 text-gray-600 hover:underline font-semibold"
+                  >
+                    View Project
+                  </Link>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         ) : (
-          <p>No projects found.</p>
+          <p className="text-gray-600 px-2 lg:px-4 pt-1">No projects found</p>
         )}
       </div>
 

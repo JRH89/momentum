@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { db } from "../../../../../firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, collection, addDoc } from "firebase/firestore";
 import Link from "next/link";
 import ReactPaginate from "react-paginate";
 import { useRouter } from "next/navigation";
 import { auth } from "../../../../../firebase"; // Adjusted for direct use of Firebase auth
-import { Briefcase, LoaderPinwheel } from "lucide-react";
+import { Briefcase, LoaderPinwheel, X } from "lucide-react";
 import MilestoneProgress from "../../../../components/ProgressBar";
 import { toast } from "react-toastify";
 import { set } from "date-fns";
@@ -79,6 +79,54 @@ const Page = () => {
     setCurrentPage(selected);
   };
 
+  const handleDeleteProject = async (projectId) => {
+    if (!window.confirm("Are you sure you want to delete this project?")) {
+      toast.warning("Project deletion cancelled");
+      return;
+    }
+
+    try {
+      const userRef = doc(db, "users", uid);
+      const userDoc = await getDoc(userRef);
+
+      if (!userDoc.exists()) {
+        toast.error("User not found");
+        return;
+      }
+
+      const userData = userDoc.data();
+      const customers = Array.isArray(userData.customers)
+        ? userData.customers
+        : [];
+
+      // Update customers array by removing the project
+      const updatedCustomers = customers.map((customer) => {
+        return {
+          ...customer,
+          projects: (customer.projects || []).filter(
+            (project) => project.id !== projectId // Use `id` to match correctly
+          ),
+        };
+      });
+
+      // Update Firestore with modified customers
+      await updateDoc(userRef, { customers: updatedCustomers });
+
+      // Update local state
+      setProjects(
+        updatedCustomers.flatMap((customer) => customer.projects || [])
+      );
+      toast.success("Project deleted successfully");
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast.error(
+        error instanceof Error
+          ? `Failed to delete project: ${error.message}`
+          : "Failed to delete project"
+      );
+    }
+  };
+
   if (loading)
     return (
       <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
@@ -100,10 +148,9 @@ const Page = () => {
               {currentProjects
                 .filter((project) => !project.isCompleted)
                 .map((project, index) => (
-                  <Link
-                    href={`${project.link}`}
+                  <div
                     key={index}
-                    className="bg-[#EAEEFE] flex flex-col rounded-lg border-2 hover:shadow-lg hover:shadow-black transition duration-300 border-black shadow-black shadow-md py-2 p-4"
+                    className="bg-[#EAEEFE] flex flex-col rounded-lg border-2  border-black shadow-black shadow-md py-2 p-4 relative"
                   >
                     <h2 className="text-md capitalize sm:text-lg font-semibold h-full flex2">
                       {project.name}
@@ -113,7 +160,18 @@ const Page = () => {
                     </p>
 
                     <MilestoneProgress milestones={project.milestones} />
-                  </Link>
+                    <div className="absolute flex p-0.5 rounded-bl-lg bg-black h-auto top-0 w-auto mx-auto right-0">
+                      <button onClick={() => handleDeleteProject(project.id)}>
+                        <X className="w-5 h-5 text-destructive hover:rotate-90 duration-300" />
+                      </button>
+                    </div>
+                    <Link
+                      href={`${project.link}`}
+                      className="mt-2 text-gray-600 hover:underline font-semibold"
+                    >
+                      View Project
+                    </Link>
+                  </div>
                 ))}
             </div>
           ) : (
@@ -121,7 +179,6 @@ const Page = () => {
               No projects in progress.
             </p>
           )}
-
           <h2 className="text-xl mt-2 font-medium">Completed</h2>
           {currentProjects.filter((project) => project.isCompleted).length >
           0 ? (
@@ -129,10 +186,9 @@ const Page = () => {
               {currentProjects
                 .filter((project) => project.isCompleted)
                 .map((project, index) => (
-                  <Link
-                    href={`${project.link}`}
+                  <div
                     key={index}
-                    className="bg-green-50 flex flex-col rounded-lg border-2 hover:shadow-lg hover:shadow-black transition duration-300 border-black shadow-black shadow-md py-2 p-4"
+                    className="bg-green-50 h-full flex flex-col rounded-lg border-2 relative border-black shadow-black shadow-md py-2 p-4"
                   >
                     <h2 className="text-md capitalize sm:text-lg font-semibold h-full flex2">
                       {project.name}
@@ -142,7 +198,18 @@ const Page = () => {
                     </p>
 
                     <MilestoneProgress milestones={project.milestones} />
-                  </Link>
+                    <div className="absolute flex p-0.5 rounded-bl-lg bg-black h-auto top-0 w-auto mx-auto right-0">
+                      <button onClick={() => handleDeleteProject(project.id)}>
+                        <X className="w-5 h-5 text-destructive hover:rotate-90 duration-300" />
+                      </button>
+                    </div>
+                    <Link
+                      href={`${project.link}`}
+                      className="mt-2 text-gray-600 hover:underline font-semibold"
+                    >
+                      View Project
+                    </Link>
+                  </div>
                 ))}
             </div>
           ) : (
