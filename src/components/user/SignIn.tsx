@@ -30,10 +30,10 @@ const SignIn = () => {
             uid: user.uid,
             userId: user.uid,
             name: user.displayName || "Anonymous",
-            email: user.email || null, // GitHub accounts may not always have email
-            photoURL: user.photoURL || null, // GitHub accounts may not always have photoURL
+            email: user.email || null,
+            photoURL: user.photoURL || null,
             isPremium: false,
-            isSubscribed: false,
+            isSubscribed: true,
             isAdmin: false,
             customers: [],
             stripeAccountId: "",
@@ -46,7 +46,6 @@ const SignIn = () => {
           };
           await setDoc(userDocRef, userData);
         }
-
         // Redirect to the user's dashboard
         router.push(`/Dashboard/${user.uid}`);
       }
