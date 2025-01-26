@@ -163,6 +163,7 @@ const Account = () => {
 
     if (confirmDelete) {
       try {
+        handleDisconnectStripe();
         await deleteUser(user);
         const docRef = doc(db, "users", user.uid);
         await deleteDoc(docRef);
@@ -173,7 +174,7 @@ const Account = () => {
         toast.error("Error deleting user account:", error);
       }
     } else {
-      return
+      return;
     }
   };
 
@@ -279,7 +280,7 @@ const Account = () => {
                     Upgrade to Premium
                   </Link>
                 )}
-                {isPremium && isConnected ? (
+                {isPremium && isConnected && (
                   <button
                     className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"
                     onClick={() => {
@@ -288,7 +289,8 @@ const Account = () => {
                   >
                     Disconnect Stripe
                   </button>
-                ) : (
+                )}
+                {isPremium && !isConnected && (
                   <button
                     onClick={() => setIsPopupVisible(true)}
                     className="bg-yellow-300  border-2 border-black duration-300 shadow-black shadow-md hover:shadow-black hover:shadow-lg hover:bg-yellow-300/80  font-bold py-2 px-4 rounded-lg mt-4 text-black mx-auto flex w-full justify-center"

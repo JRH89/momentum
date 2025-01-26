@@ -4,19 +4,17 @@ import NavBar from "../../../components/navbar";
 import Footer from "../../../components/footer";
 
 export function generateMetadata() {
-    return {
-        title: `Subscribe | ${siteMetadata.title}`,
-        description: `Subscribe to ${siteMetadata.title} .`,
-        url: `${siteMetadata.siteUrl}/Dashboard/subscribe`,
-    };
+  return {
+    title: `Subscribe | ${siteMetadata.title}`,
+    description: `Subscribe to ${siteMetadata.title} .`,
+    url: `${siteMetadata.siteUrl}/Dashboard/subscribe`,
+  };
 }
 
 export default function Page() {
-    return (
-        <div>
-            <NavBar />
-            <PricingSection />
-            <Footer />
-        </div>
-    )
+  return (
+    <>
+      <PricingSection />
+    </>
+  );
 }
