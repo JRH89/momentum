@@ -126,7 +126,7 @@ export const PriceCard = () => {
                   Stripe fees
                   <a
                     className="text-green-500 cursor-pointer underline flex items-center gap-1"
-                    href="https://stripe.com/pricing?utm_campaign=AMER_US_en_Google_Search_Brand_Pricing_EXA_PHR-21345170790&utm_medium=cpc&utm_source=google&ad_content=701359366946&utm_term=stripe%20fees&utm_matchtype=e&utm_adposition=&utm_device=c&gad_source=1&gclid=CjwKCAiAtNK8BhBBEiwA8wVt98_7_ktBp9hQGlAiZbnMUuMr82O2-7aWjfXFV5dH_j-_O3ihj8VKhRoC1MEQAvD_BwE"
+                    href="https://stripe.com/pricing"
                     target="_blank"
                   >
                     <ExternalLink className="inline w-3 h-3 ml-1" />

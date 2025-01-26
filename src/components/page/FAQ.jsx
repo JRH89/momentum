@@ -45,7 +45,7 @@ export default function FAQ() {
       },
       {
         question: "What is the pricing for Momentum?",
-        answer: `Momentum is priced at $8.99 per month or $75 per year. This includes unlimited projects, invoices, and customers. Stripe charges 2.9% + 30¢ per successful charge for domestic cards. <a href="https://stripe.com/pricing?utm_campaign=AMER_US_en_Google_Search_Brand_Pricing_EXA_PHR-21345170790&utm_medium=cpc&utm_source=google&ad_content=701359366946&utm_term=stripe%20fees&utm_matchtype=e&utm_adposition=&utm_device=c&gad_source=1&gclid=CjwKCAiAtNK8BhBBEiwA8wVt98_7_ktBp9hQGlAiZbnMUuMr82O2-7aWjfXFV5dH_j-_O3ihj8VKhRoC1MEQAvD_BwE" class="text-green-500 font-medium hover:underline inline-flex flex-row items-center gap-1" target="_blank" rel="noopener noreferrer">Learn more about Stripe's pricing here</a>.`,
+        answer: `Momentum is priced at $8.99 per month or $75 per year. This includes unlimited projects, invoices, and customers. Stripe charges 2.9% + 30¢ per successful charge for domestic cards. <a href="https://stripe.com/pricing" class="text-green-500 font-medium hover:underline inline-flex flex-row items-center gap-1" target="_blank" rel="noopener noreferrer">Learn more about Stripe's pricing here</a>.`,
       },
       {
         question: "What features are included with my Momentum subscription?",
