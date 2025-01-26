@@ -1356,7 +1356,7 @@ const ProjectPage = () => {
                   </div>
                 )}
                 {uploads.length > 0 ? (
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 border-2 shadow-black border-black p-2 bg-white  rounded-lg shadow-md">
                     {uploads.map((upload, index) => (
                       <li
                         key={index}

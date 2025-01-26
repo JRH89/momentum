@@ -244,7 +244,7 @@ export default function ColorPaletteGenerator({
           </div>
         )}
         {projectColors.length > 0 ? (
-          <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 border-black p-4 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
+          <div className="grid grid-cols-4 lg:grid-cols-5 h-full border-2 -mt-1 border-black p-4 rounded-lg shadow-md shadow-black gap-4 w-full justify-start items-center">
             {projectColors.map((color, index) => (
               <div
                 key={index}
