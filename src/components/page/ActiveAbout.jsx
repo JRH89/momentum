@@ -74,7 +74,7 @@ const sections = {
       "Color theme picker: Customize the visual appearance of your project by selecting a color palette that suits your needs. Ideal for design-focused work like branding, posters, or websites, this feature helps maintain a cohesive look and feel.",
     content4:
       "All optional features are free to enable and can be activated only when needed, ensuring your workspace stays clean and uncluttered. Momentum gives you complete flexibility to tailor projects to your workflow without additional charges.",
-    image: ["/features.png"],
+    image: ["/features.png", "/uploads.png", "/palette.png"],
   },
 };
 

@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import InvoicesTable from "../customer/InvoiceTable";
 import { db, auth } from "../../../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore"; // Added updateDoc
-import { initializeApp, deleteApp, getApp, getApps } from "firebase/app"; // Handle multiple apps
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { initializeApp, deleteApp, getApps } from "firebase/app";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -28,6 +28,7 @@ const UserCreatingInvoiceTable = () => {
 
   const router = useRouter();
 
+  // Handle user state and redirection logic
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
@@ -41,6 +42,7 @@ const UserCreatingInvoiceTable = () => {
     return () => unsubscribe();
   }, [router]);
 
+  // Fetch user data from Firestore and set Stripe account ID
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId) => {
       try {
@@ -63,6 +65,145 @@ const UserCreatingInvoiceTable = () => {
     }
   }, [user]);
 
+  // Function to create users and update Firestore
+  const handleUserCreation = async (invoices) => {
+    const openInvoices = invoices.filter(
+      (invoice) => invoice.status === "open"
+    );
+    const appName = generateAppName();
+
+    const appAlreadyExists = getApps().some((app) => app.name === appName);
+
+    if (!appAlreadyExists) {
+      const secondaryApp = initializeApp(
+        {
+          apiKey: process.env.NEXT_PUBLIC_APIKEY,
+          authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
+          projectId: process.env.NEXT_PUBLIC_PROJECTID,
+          storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
+          messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
+          appId: process.env.NEXT_PUBLIC_APPID,
+        },
+        appName
+      );
+
+      const secondaryAuth = getAuth(secondaryApp);
+      const processedEmails = new Set();
+
+      try {
+        const userCreationPromises = openInvoices.map(async (invoice) => {
+          const { email } = invoice;
+
+          if (!email) {
+            console.warn("Skipping invoice with no email");
+            return;
+          }
+
+          if (processedEmails.has(email)) {
+            console.log(`Skipping duplicate email in batch: ${email}`);
+            return;
+          }
+
+          processedEmails.add(email);
+
+          try {
+            // Check if the user already exists in Firebase Auth
+            const methods = await fetchSignInMethodsForEmail(
+              secondaryAuth,
+              email
+            );
+
+            if (methods.length > 0) {
+              // If the user exists, use their UID
+              console.log(`User already exists for email: ${email}`);
+              const user = await signInWithEmailAndPassword(
+                secondaryAuth,
+                email,
+                "DummyPassword123!"
+              );
+              const userUid = user.user.uid;
+
+              // Now, update Firestore to associate the UID with the customer's data
+              await updateCustomerDataInFirestore(userUid, email);
+            } else {
+              // If the user does not exist, create the user in Firebase Auth
+              const newUserCredential = await createUserWithEmailAndPassword(
+                secondaryAuth,
+                email,
+                "DefaultSecurePassword123!"
+              );
+
+              const newUserUid = newUserCredential.user.uid;
+
+              // After creating the user, update the customer's Firestore data with their UID
+              await updateCustomerDataInFirestore(newUserUid, email);
+            }
+          } catch (err) {
+            if (err.code === "auth/email-already-in-use") {
+              console.log(
+                `Skipping creation: User already exists for email: ${email}`
+              );
+            } else {
+              toast.error(`Error processing email ${email}:`, err);
+            }
+          }
+        });
+
+        await Promise.all(userCreationPromises);
+      } catch (error) {
+        toast.error("Error in batch user creation:", error);
+      } finally {
+        try {
+          await deleteApp(secondaryApp);
+        } catch (error) {
+          toast.error("Error deleting secondary app:", error);
+        }
+      }
+    }
+  };
+
+  const updateCustomerDataInFirestore = async (userUid, email) => {
+    try {
+      // Fetch the user document in Firestore
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        const updatedCustomers = userData?.customers || [];
+
+        // Check if the customer exists in the array
+        const existingCustomer = updatedCustomers.find(
+          (customer) => customer.email === email
+        );
+
+        if (existingCustomer) {
+          // If customer exists, update their UID
+          console.log(`Updating customer ${email} with UID ${userUid}`);
+          existingCustomer.uid = userUid; // Update with new UID
+        } else {
+          // If the customer does not exist, add them to the array
+          console.log(`Adding new customer ${email} with UID ${userUid}`);
+          updatedCustomers.push({
+            uid: userUid,
+            email: email,
+          });
+        }
+
+        // Update the customer data in Firestore
+        await updateDoc(userRef, {
+          customers: updatedCustomers,
+        });
+        console.log(`Customer data updated for ${email}`);
+      } else {
+        console.log("User document not found in Firestore");
+      }
+    } catch (err) {
+      toast.error("Error updating customer data in Firestore:", err);
+    }
+  };
+
+  // Fetch invoices when stripeAccountId is available
   useEffect(() => {
     const fetchInvoices = async () => {
       if (!stripeAccountId) return;
@@ -85,115 +226,6 @@ const UserCreatingInvoiceTable = () => {
       }
     };
 
-    const handleUserCreation = async (invoices) => {
-      const openInvoices = invoices.filter(
-        (invoice) => invoice.status === "open"
-      );
-      const appName = generateAppName();
-
-      // Check if the app already exists
-      const appAlreadyExists = getApps().some((app) => app.name === appName);
-
-      if (!appAlreadyExists) {
-        // Initialize the app only if it doesn't already exist
-        const secondaryApp = initializeApp(
-          {
-            apiKey: process.env.NEXT_PUBLIC_APIKEY,
-            authDomain: process.env.NEXT_PUBLIC_AUTHDOMAIN,
-            projectId: process.env.NEXT_PUBLIC_PROJECTID,
-            storageBucket: process.env.NEXT_PUBLIC_STORAGEBUCKET,
-            messagingSenderId: process.env.NEXT_PUBLIC_MESSAGINGSENDERID,
-            appId: process.env.NEXT_PUBLIC_APPID,
-          },
-          appName
-        );
-
-        const secondaryAuth = getAuth(secondaryApp);
-
-        // Create a Set to track processed emails within this batch
-        const processedEmails = new Set();
-
-        try {
-          // Create a list of promises to handle user creation
-          const userCreationPromises = openInvoices.map(async (invoice) => {
-            const { email } = invoice;
-
-            if (!email) {
-              console.warn("Skipping invoice with no email");
-              return;
-            }
-
-            // Skip if we've already processed this email in the current batch
-            if (processedEmails.has(email)) {
-              console.log(`Skipping duplicate email in batch: ${email}`);
-              return;
-            }
-
-            // Mark this email as processed
-            processedEmails.add(email);
-
-            try {
-              // Check if the email is already in use
-              const methods = await fetchSignInMethodsForEmail(
-                secondaryAuth,
-                email
-              );
-
-              if (methods.length > 0) {
-                // Email exists, skip user creation
-                console.log(
-                  `Skipping creation: User already exists for email: ${email}`
-                );
-
-                return;
-              }
-
-              // Email doesn't exist, proceed with user creation
-              const newUserCredential = await createUserWithEmailAndPassword(
-                secondaryAuth,
-                email,
-                "DefaultSecurePassword123!" // Replace with your desired default password
-              );
-
-              // Sign out immediately after creating the user
-              await signOut(secondaryAuth);
-
-              const newUserUid = newUserCredential.user.uid;
-
-              // Update Firestore to add the user to the `customers` array
-              const userRef = doc(db, "users", user.uid);
-              await updateDoc(userRef, {
-                customers: Array.isArray(userData?.customers)
-                  ? [...userData.customers, newUserUid]
-                  : [newUserUid],
-              });
-            } catch (err) {
-              // Handle specific Firebase errors
-              if (err.code === "auth/email-already-in-use") {
-                console.log(
-                  `Skipping creation: User already exists for email: ${email}`
-                );
-              } else {
-                toast.error(`Error processing email ${email}:`, err);
-              }
-            }
-          });
-
-          // Wait for all user creation promises to finish
-          await Promise.all(userCreationPromises);
-        } catch (error) {
-          toast.error("Error in batch user creation:", error);
-        } finally {
-          // Always cleanup the secondary app
-          try {
-            await deleteApp(secondaryApp);
-          } catch (error) {
-            toast.error("Error deleting secondary app:", error);
-          }
-        }
-      }
-    };
-
     if (stripeAccountId) fetchInvoices();
   }, [stripeAccountId]);
 
@@ -205,7 +237,7 @@ const UserCreatingInvoiceTable = () => {
     );
 
   return (
-    <div className=" max-w-6xl mx-auto w-full p-4 pt-2 px-0 sm:px-4 text-black flex flex-col">
+    <div className="max-w-6xl mx-auto w-full p-4 pt-2 px-0 sm:px-4 text-black flex flex-col">
       <h1 className="text-2xl font-semibold mb-1 flex flex-row gap-2 items-center">
         <FileText className="w-6 h-6 sm:w-7 sm:h-7" /> Invoices
       </h1>
