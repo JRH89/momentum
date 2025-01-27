@@ -155,7 +155,7 @@ const Page = () => {
                     <h2 className="text-md capitalize sm:text-lg font-semibold h-full flex2">
                       {project.name}
                     </h2>
-                    <p className="text-black flex h-full text-sm capitalize sm:text-md">
+                    <p className="text-black flex h-full text-sm sm:text-md mt-2">
                       {project.description}
                     </p>
 
@@ -167,7 +167,7 @@ const Page = () => {
                     </div>
                     <Link
                       href={`${project.link}`}
-                      className="mt-2 text-gray-600 hover:underline font-semibold"
+                      className="mt-2 text-green-500 hover:opacity-60 duration-300 font-semibold"
                     >
                       View Project
                     </Link>
@@ -176,7 +176,7 @@ const Page = () => {
             </div>
           ) : (
             <p className="px-0 sm:px-4 text-gray-500">
-              No projects in progress.
+              No projects in progress
             </p>
           )}
           <h2 className="text-xl mt-2 font-medium">Completed</h2>
@@ -193,7 +193,7 @@ const Page = () => {
                     <h2 className="text-md capitalize sm:text-lg font-semibold h-full flex2">
                       {project.name}
                     </h2>
-                    <p className="text-black flex h-full text-sm capitalize sm:text-md">
+                    <p className="text-black flex h-full text-sm  sm:text-md mt-2">
                       {project.description}
                     </p>
 
@@ -205,7 +205,7 @@ const Page = () => {
                     </div>
                     <Link
                       href={`${project.link}`}
-                      className="mt-2 text-gray-600 hover:underline font-semibold"
+                      className="mt-2 hover:opacity-60 duration-300 font-semibold"
                     >
                       View Project
                     </Link>
@@ -213,9 +213,7 @@ const Page = () => {
                 ))}
             </div>
           ) : (
-            <p className="px-0 sm:px-4 text-gray-500">
-              No completed projects found.
-            </p>
+            <p className="px-0 sm:px-4 text-gray-500">No completed projects</p>
           )}
         </div>
 

@@ -108,7 +108,7 @@ const Page = () => {
         </div>
 
         {loadingCustomers ? (
-          <p className="px-4 text-gray-600">Loading customers...</p>
+          <p className="px-8 text-gray-600">Loading customers...</p>
         ) : (
           <CustomerTable
             onDeleteCustomer={handleDeleteCustomer}

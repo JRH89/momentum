@@ -653,7 +653,7 @@ const ProjectPage = () => {
         throw new Error(data.error || "Failed to create invoice");
       }
 
-      const invoice = data.invoice.id;
+      const invoice = data.invoice;
 
       const userRef = doc(db, "users", uid);
       await runTransaction(db, async (transaction) => {
