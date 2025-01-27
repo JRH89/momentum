@@ -1,10 +1,10 @@
-import { act } from "react";
 import siteMetadata from "../../../../siteMetadata";
 import ActiveAbout from "../../../components/page/ActiveAbout";
 
+// Make sure generateMetadata is async and params are resolved properly
 export async function generateMetadata({ params }) {
-  // Ensure params is resolved before accessing `activeSection`
-  const { activeSection } = params || {}; // Use optional chaining if `params` is undefined
+  // Await the dynamic params from Next.js
+  const { activeSection } = params;
 
   const formattedTitle = activeSection
     ? activeSection.replace(/([a-z])([A-Z])/g, "$1 $2")
