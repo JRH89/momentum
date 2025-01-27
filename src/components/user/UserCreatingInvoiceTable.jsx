@@ -71,6 +71,8 @@ const UserCreatingInvoiceTable = () => {
       (invoice) => invoice.status === "open"
     );
     const appName = generateAppName();
+    const processedEmails = new Set();
+    const customerUpdates = []; // Array to collect all customer updates
 
     const appAlreadyExists = getApps().some((app) => app.name === appName);
 
@@ -88,113 +90,107 @@ const UserCreatingInvoiceTable = () => {
       );
 
       const secondaryAuth = getAuth(secondaryApp);
-      const processedEmails = new Set();
 
       try {
-        const userCreationPromises = openInvoices.map(async (invoice) => {
+        // Process all invoices first
+        for (const invoice of openInvoices) {
           const { email } = invoice;
 
-          if (!email) {
-            console.warn("Skipping invoice with no email");
-            return;
-          }
-
-          if (processedEmails.has(email)) {
-            console.log(`Skipping duplicate email in batch: ${email}`);
-            return;
+          if (!email || processedEmails.has(email)) {
+            continue;
           }
 
           processedEmails.add(email);
 
           try {
-            // Check if the user already exists in Firebase Auth
+            // First check if user exists
             const methods = await fetchSignInMethodsForEmail(
               secondaryAuth,
               email
             );
 
             if (methods.length > 0) {
-              // If the user exists, use their UID
-              console.log(`User already exists for email: ${email}`);
-              const user = await signInWithEmailAndPassword(
-                secondaryAuth,
-                email,
-                "DummyPassword123!"
-              );
-              const userUid = user.user.uid;
-
-              // Now, update Firestore to associate the UID with the customer's data
-              await updateCustomerDataInFirestore(userUid, email);
-            } else {
-              // If the user does not exist, create the user in Firebase Auth
-              const newUserCredential = await createUserWithEmailAndPassword(
-                secondaryAuth,
-                email,
-                "DefaultSecurePassword123!"
-              );
-
-              const newUserUid = newUserCredential.user.uid;
-
-              // After creating the user, update the customer's Firestore data with their UID
-              await updateCustomerDataInFirestore(newUserUid, email);
-            }
-          } catch (err) {
-            if (err.code === "auth/email-already-in-use") {
               console.log(
-                `Skipping creation: User already exists for email: ${email}`
+                `Skipping user creation for existing email: ${email}`
               );
-            } else {
-              toast.error(`Error processing email ${email}:`, err);
+              continue; // Skip to next invoice
             }
-          }
-        });
 
-        await Promise.all(userCreationPromises);
+            // Only attempt to create user if they don't exist
+            const newUserCredential = await createUserWithEmailAndPassword(
+              secondaryAuth,
+              email,
+              "DefaultSecurePassword123!"
+            );
+            const userUid = newUserCredential.user.uid;
+            console.log(
+              `Created new user with UID: ${userUid} for email: ${email}`
+            );
+            customerUpdates.push({ email, uid: userUid });
+          } catch (err) {
+            // If we somehow missed catching an existing user, log and continue
+            if (err.code === "auth/email-already-in-use") {
+              console.log(`Skipping existing user: ${email}`);
+              continue;
+            }
+            // Log other errors but don't throw
+            console.error(`Error processing email ${email}:`, err);
+          }
+        }
+
+        // After all users are created, update Firestore in a single operation
+        if (customerUpdates.length > 0) {
+          await updateCustomerDataInFirestore(customerUpdates);
+        }
       } catch (error) {
         toast.error("Error in batch user creation:", error);
       } finally {
         try {
           await deleteApp(secondaryApp);
         } catch (error) {
-          toast.error("Error deleting secondary app:", error);
+          console.error("Error deleting secondary app:", error);
         }
       }
     }
   };
 
-  const updateCustomerDataInFirestore = async (userUid, email) => {
+  const updateCustomerDataInFirestore = async (customerUpdates) => {
     try {
-      // Fetch the user document in Firestore
       const userRef = doc(db, "users", user.uid);
       const userSnap = await getDoc(userRef);
 
       if (userSnap.exists()) {
         const userData = userSnap.data();
-        const updatedCustomers = userData?.customers || [];
+        const updatedCustomers = [...(userData?.customers || [])];
 
-        // Check if the customer exists in the array
-        const existingCustomer = updatedCustomers.find(
-          (customer) => customer.email === email
-        );
+        // Process each customer update
+        customerUpdates.forEach((update) => {
+          const existingIndex = updatedCustomers.findIndex(
+            (customer) => customer.email === update.email
+          );
 
-        if (existingCustomer) {
-          // If customer exists, update their UID
-          console.log(`Updating customer ${email} with UID ${userUid}`);
-          existingCustomer.uid = userUid; // Update with new UID
-        } else {
-          // If the customer does not exist, add them to the array
-          console.log(`Adding new customer ${email} with UID ${userUid}`);
-          updatedCustomers.push({
-            uid: userUid,
-            email: email,
-          });
-        }
+          if (existingIndex !== -1) {
+            // Update existing customer
+            if (update.uid) {
+              updatedCustomers[existingIndex] = {
+                ...updatedCustomers[existingIndex],
+                uid: update.uid,
+              };
+            }
+          } else {
+            // Add new customer
+            updatedCustomers.push({
+              email: update.email,
+              uid: update.uid || null,
+            });
+          }
+        });
 
-        // Update the customer data in Firestore
+        // Update Firestore with the complete updated array
         await updateDoc(userRef, {
           customers: updatedCustomers,
         });
-        console.log(`Customer data updated for ${email}`);
+        console.log("Customer data updated successfully");
       } else {
         console.log("User document not found in Firestore");
       }
