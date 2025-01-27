@@ -7,9 +7,13 @@ import { db, auth } from "../../firebase";
 // Helper function to format the timestamp
 const formatTimestamp = (timestamp) => {
   const date = new Date(timestamp);
-  return date.toLocaleTimeString([], {
+  return date.toLocaleDateString([], {
     hour: "2-digit",
     minute: "2-digit",
+    hour12: true,
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
   });
 };
 

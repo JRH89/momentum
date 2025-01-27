@@ -23,6 +23,7 @@ const config: Config = {
         "confirm": "#22d3ee",
         "backgroundPrimary": "#d1d5db",
         "backgroundAccent": "#9ca3af",
+        "primary": "#EAEEFE",
       },
     },
   },
