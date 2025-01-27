@@ -342,6 +342,36 @@ const ProjectPage = () => {
     }
   };
 
+  function fireConfetti() {
+    // Create multiple bursts with slight delays
+    const duration = 5 * 1000; // 5 seconds
+    const animationEnd = Date.now() + duration;
+    const colors = [
+      "#ff0000",
+      "#00ff00",
+      "#0000ff",
+      "#ffff00",
+      "#ff00ff",
+      "#00ffff",
+    ];
+
+    (function frame() {
+      confetti({
+        particleCount: 10,
+        startVelocity: 30,
+        spread: 360,
+        angle: Math.random() * 90 - 45, // random spread angle
+        origin: { x: Math.random(), y: Math.random() - 0.2 }, // random origin
+        colors: colors,
+        scalar: Math.random() * 0.8 + 0.6, // random particle size
+      });
+
+      if (Date.now() < animationEnd) {
+        requestAnimationFrame(frame);
+      }
+    })();
+  }
+
   const handleMarkProjectComplete = async () => {
     try {
       const userRef = doc(db, "users", uid);
@@ -382,7 +412,7 @@ const ProjectPage = () => {
 
       toast.success("Project marked as complete!");
       setIsCompleted(true);
-      confetti({ particleCount: 1000, spread: 180, origin: { y: 0.6 } });
+      fireConfetti();
     } catch (error) {
       toast.error("Failed to mark project as complete. Please try again.");
     }
@@ -997,24 +1027,24 @@ const ProjectPage = () => {
         {/* Milestones Section */}
         <div className="my-2">
           <div className="flex justify-between items-center">
-            <div className="flex items-end my-auto">
-              <h2 className="text-2xl font-semibold mb-1">Milestones</h2>
+            <div className="flex mb-2 items-center gap-2 my-auto">
               <button
                 type="button"
                 onClick={() => setShowForm(!showForm)}
-                className="hover:bg-opacity-60 duration-300 font-semibold items-end pb-1 py-2 px-4 text-xl flex flex-row text-black rounded-md"
+                className="hover:bg-opacity-60 duration-300 font-semibold items-end  text-xl flex flex-row text-black rounded-md"
               >
                 [
                 <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
                 ]
               </button>
+              <h2 className="text-2xl font-semibold ">Milestones</h2>
             </div>
 
             {milestones.length > 0 &&
               !milestones.every(
                 (milestone) => milestone.status === "completed"
               ) && (
-                <div className="mb-2 hidden sm:flex w-full max-w-xs justify-end text-center">
+                <div className=" hidden sm:flex w-full max-w-xs mb-2 justify-end text-center">
                   <div className="w-full flex flex-col">
                     <MilestoneProgress milestones={milestones} />
                   </div>
@@ -1031,9 +1061,9 @@ const ProjectPage = () => {
                   <button
                     type="button"
                     onClick={handleMarkProjectComplete}
-                    className="bg-green-500 duration-300 hover:bg-green-600 text-black py-2 px-4 rounded-md font-semibold shadow-md"
+                    className="bg-green-500 duration-300 hover:bg-green-600 text-black py-2 px-4 rounded-md font-semibold shadow-md border-2 border-black"
                   >
-                    Mark Project as Complete
+                    Mark Project Complete
                   </button>
                 </div>
               )}
@@ -1047,16 +1077,16 @@ const ProjectPage = () => {
                   <button
                     type="button"
                     onClick={handleMarkProjectIncomplete}
-                    className="bg-destructive duration-300 hover:bg-opacity-60 text-black py-2 px-4 rounded-md font-semibold shadow-md"
+                    className="bg-destructive duration-300 hover:bg-opacity-60 border-2 border-black text-black py-2 px-4 rounded-md font-semibold shadow-md"
                   >
-                    Mark Project as Incomplete
+                    Mark Project Incomplete
                   </button>
                 </div>
               )}
           </div>
           {milestones.length > 0 ? (
             <>
-              <div className="border-2 shadow-md shadow-black border-black rounded-lg overflow-x-auto">
+              <div className="border-2 -mt-1 shadow-md shadow-black border-black rounded-lg overflow-x-auto">
                 <table className="bg-white w-full table-auto">
                   <thead className="bg-backgroundPrimary rounded-t-lg">
                     <tr className="border-b border-t border-black">
@@ -1196,17 +1226,17 @@ const ProjectPage = () => {
         </div>
         {/* Invoices Section */}
         <div className="mt-4">
-          <div className="flex items-end my-auto">
-            <h2 className="text-2xl font-semibold">Invoices</h2>
+          <div className="flex gap-2 items-center my-auto">
             <button
               type="button"
               onClick={() => setShowInvoiceForm(!showInvoiceForm)}
-              className="hover:bg-opacity-60 duration-300 font-semibold items-end pb-1 py-2 px-4 text-xl flex flex-row text-black rounded-md"
+              className="hover:bg-opacity-60 duration-300 font-semibold items-end  text-xl flex flex-row text-black rounded-md"
             >
               [
               <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
               ]
             </button>
+            <h2 className="text-2xl font-semibold">Invoices</h2>
           </div>
           <InvoicesTable itemsPerPage={10} invoices={invoices} />
           {showInvoiceForm && (
@@ -1305,17 +1335,17 @@ const ProjectPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 w-full gap-3 sm:gap-4">
             {project?.features?.fileUploads && (
               <div className="mt-4">
-                <div className="flex flex-row items-center justify-start my-auto">
-                  <h2 className="text-2xl font-semibold">Uploads</h2>
+                <div className="flex gap-2 pb-1 flex-row items-center justify-start my-auto">
                   <button
                     type="button"
                     onClick={() => setShowUploadForm(!showUploadForm)}
-                    className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
+                    className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
                   >
                     [
                     <Plus className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
                     ]
                   </button>
+                  <h2 className="text-2xl font-semibold">Uploads</h2>
                 </div>
                 {showUploadForm && (
                   <div className="mb-4 border border-black p-4 rounded-lg gap-2 flex flex-col">

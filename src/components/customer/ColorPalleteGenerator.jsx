@@ -180,16 +180,16 @@ export default function ColorPaletteGenerator({
     <div className="flex flex-col mx-auto ">
       <div className="h-full w-full mx-auto text-black flex flex-col items-center justify-start">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <div className="flex mb-1 flex-row items-center justify-start my-auto">
-            <h3 className="text-2xl font-semibold">Palette</h3>
+          <div className="flex mb-2 gap-2 flex-row items-center justify-start my-auto">
             <button
               onClick={() => setOpenMenuOne(!openMenuOne)}
-              className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
+              className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
             >
               [
               <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
               ]
             </button>
+            <h3 className="text-2xl font-semibold">Palette</h3>
           </div>
         </div>
 
