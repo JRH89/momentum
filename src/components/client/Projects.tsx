@@ -327,7 +327,7 @@ const Projects: React.FC<ProjectsProps> = ({
                   </div>
                   <Link
                     href={`${project.link}`}
-                    className="mt-2 text-gray-600 hover:underline font-semibold"
+                    className="mt-2 text-green-500 hover:opacity-60 duration-300 font-semibold"
                   >
                     View Project
                   </Link>
