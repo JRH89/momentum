@@ -32,7 +32,7 @@ const sections = {
       "Start by clicking the 'Connect to Stripe' button. This redirects you to Stripe’s secure platform, where you can log in and authorize Momentum to integrate with your Stripe account.",
     content3:
       "Once connected, you’ll have full access to Momentum’s dashboard, enabling smooth payment and invoice management for all your projects.",
-    image: ["/account-2.png", "/dashboard.png"], // Single image in array
+    image: ["/account-2.png", "/stripe.png", "/dashboard.png"], // Single image in array
   },
   userDashboard: {
     title: "User Dashboard",
@@ -62,7 +62,7 @@ const sections = {
       "Keep your projects organized and running smoothly with Momentum’s project pages. Create milestones, set deadlines, and upload essential files. Both you and your clients can access these pages to monitor progress and ensure alignment.",
     content2:
       "Optional features—such as live chat for real-time collaboration, file uploads for resource sharing, and a color palette for project theming (ideal for visual work like posters or websites)—can be activated on a per-project basis to avoid unnecessary dashboard clutter.",
-    image: ["/project.png"],
+    image: ["/project.png", "/features.png"],
   },
   projectFeatures: {
     title: "Project Dashboard Features",
@@ -74,7 +74,7 @@ const sections = {
       "Color theme picker: Customize the visual appearance of your project by selecting a color palette that suits your needs. Ideal for design-focused work like branding, posters, or websites, this feature helps maintain a cohesive look and feel.",
     content4:
       "All optional features are free to enable and can be activated only when needed, ensuring your workspace stays clean and uncluttered. Momentum gives you complete flexibility to tailor projects to your workflow without additional charges.",
-    image: ["/features.png", "/uploads.png", "/palette.png"],
+    image: ["/chat.png", "/uploads.png", "/palette.png"],
   },
 };
 
@@ -136,6 +136,11 @@ export default function ActiveAbout() {
                 />
               )}
             </div>
+            {sections[activeSection].content4 && (
+              <p className="text-lg text-justify sm:text-left leading-7 my-4">
+                {sections[activeSection].content4}
+              </p>
+            )}
           </div>
         </div>
       </main>
