@@ -265,7 +265,7 @@ const CustomerDetailsPage: React.FC = () => {
             <h2 className="text-2xl lg:text-3xl font-bold text-black">
               Customer Details
             </h2>
-            <p className="px-4 mt-2 font-semibold">Name: {customerData.name}</p>
+            <p className="px-4 mt-4 font-semibold">Name: {customerData.name}</p>
             <p className="px-4 font-semibold">
               Email:{" "}
               <a
@@ -283,7 +283,7 @@ const CustomerDetailsPage: React.FC = () => {
             )}
           </div>
         )}
-        <div className="mt-6">
+        <div className="mt-2">
           <div className="flex justify-start items-center">
             <h3 className="text-2xl font-semibold">Invoices</h3>
             <button
