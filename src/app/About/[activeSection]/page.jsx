@@ -3,7 +3,8 @@ import siteMetadata from "../../../../siteMetadata";
 import ActiveAbout from "../../../components/page/ActiveAbout";
 
 export async function generateMetadata({ params }) {
-  const { activeSection } = params;
+  // Ensure params is resolved before accessing `activeSection`
+  const { activeSection } = params || {}; // Use optional chaining if `params` is undefined
 
   const formattedTitle = activeSection
     ? activeSection.replace(/([a-z])([A-Z])/g, "$1 $2")
