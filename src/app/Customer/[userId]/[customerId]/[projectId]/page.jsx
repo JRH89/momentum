@@ -12,6 +12,7 @@ import MilestoneProgress from "../../../../../components/ProgressBar";
 import { toast } from "react-toastify";
 import InvoicesTable from "../../../../../components/project/InvoiceTable";
 import LiveChat from "../../../../../components/Chat";
+import CustomerLogin from "../../../../../components/customer/Login";
 
 const CustomerProjectPage = () => {
   const router = useRouter();
@@ -176,7 +177,7 @@ const CustomerProjectPage = () => {
       if (user) {
         setUser(user);
       } else {
-        router.push("/Customer/login"); // Redirect if not authenticated
+        setUser(null); // Redirect if not authenticated
       }
     });
 
@@ -295,251 +296,258 @@ const CustomerProjectPage = () => {
 
   return (
     <>
-      <div className="p-6 px-4 pt-8 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
-        <div className="flex flex-col">
-          <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
-            <h1 className="text-2xl sm:text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
-              {projectData?.name}
-              <span className="hidden sm:flex text-xl text-gray-600">
-                ID: {projectData?.id}
-              </span>
-            </h1>
-          </div>
-          <p className="text-sm sm:text-lg text-gray-700">
-            {projectData?.description}
-          </p>
-        </div>
-        {projectData && (
+      {!user && <CustomerLogin projectId={projectId} />}
+      {user && (
+        <div className="p-6 px-4 pt-8 max-w-6xl mx-auto w-full flex flex-col min-h-screen h-full pb-24">
           <div className="flex flex-col">
-            <div className="mt-4 bg-white flex flex-col">
-              <div className="flex flex-row items-end w-full justify-between">
-                <h3 className="text-2xl font-bold mb-2">Milestones</h3>
-                <div className="w-full max-w-xs flex-row justify-end hidden sm:flex">
-                  <MilestoneProgress milestones={projectData.milestones} />
+            <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
+              <h1 className="text-2xl sm:text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
+                {projectData?.name}
+                <span className="hidden sm:flex text-xl text-gray-600">
+                  ID: {projectData?.id}
+                </span>
+              </h1>
+            </div>
+            <p className="text-sm sm:text-lg text-gray-700">
+              {projectData?.description}
+            </p>
+          </div>
+          {projectData && (
+            <div className="flex flex-col">
+              <div className="mt-4 bg-white flex flex-col">
+                <div className="flex flex-row items-end w-full justify-between">
+                  <h3 className="text-2xl font-bold mb-2">Milestones</h3>
+                  <div className="w-full max-w-xs flex-row justify-end hidden sm:flex">
+                    <MilestoneProgress milestones={projectData.milestones} />
+                  </div>
                 </div>
-              </div>
-              {milestones.length > 0 ? (
-                <div className="border-l-2 border-r-2 border-t-2 border-black overflow-x-auto rounded-lg shadow-md shadow-black">
-                  <table className="min-w-full shadow-md text-xs sm:text-base">
-                    <thead className="border-b-2 border-black bg-backgroundPrimary">
-                      <tr>
-                        <th className="px-4 py-2 text-left font-bold rounded-tl-md">
-                          Title
-                        </th>
-                        <th className="px-4 py-2 text-left font-bold">
-                          Description
-                        </th>
-                        <th className="px-4 py-2 text-left font-bold">
-                          Status
-                        </th>
-                        <th className="px-4 py-2 text-left font-bold">
-                          Priority
-                        </th>
-                        <th className="px-4 py-2 text-left font-bold rounded-tr-md">
-                          Deadline
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {currentMilestones.map((milestone, index) => (
-                        <tr key={index} className="border-b-2 border-black">
-                          <td className="font-medium px-4 py-2">
-                            {milestone.title}
-                          </td>
-                          <td className="px-4 py-2 text-black">
-                            {milestone.description}
-                          </td>
-                          <td
-                            className={`px-4 py-2 capitalize font-medium ${
-                              milestone.status === "completed"
-                                ? "text-confirm"
-                                : milestone.status === "in-progress"
-                                ? "text-green-500"
-                                : "text-destructive"
-                            }`}
-                          >
-                            {milestone.status}
-                          </td>
-                          <td
-                            className={`px-4 py-2 font-medium capitalize ${
-                              milestone.priority === "high" && "text-red-500"
-                            } ${
-                              milestone.priority === "medium" &&
-                              "text-yellow-500"
-                            } ${
-                              milestone.priority === "low" && "text-green-500"
-                            }`}
-                          >
-                            {milestone.priority}
-                          </td>
-                          <td className="px-4 py-2 font-medium">
-                            {milestone.deadline}
-                          </td>
+                {milestones.length > 0 ? (
+                  <div className="border-l-2 border-r-2 border-t-2 border-black overflow-x-auto rounded-lg shadow-md shadow-black">
+                    <table className="min-w-full shadow-md text-xs sm:text-base">
+                      <thead className="border-b-2 border-black bg-backgroundPrimary">
+                        <tr>
+                          <th className="px-4 py-2 text-left font-bold rounded-tl-md">
+                            Title
+                          </th>
+                          <th className="px-4 py-2 text-left font-bold">
+                            Description
+                          </th>
+                          <th className="px-4 py-2 text-left font-bold">
+                            Status
+                          </th>
+                          <th className="px-4 py-2 text-left font-bold">
+                            Priority
+                          </th>
+                          <th className="px-4 py-2 text-left font-bold rounded-tr-md">
+                            Deadline
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <p className="text-gray-600 px-2 border border-black rounded-lg p-2">
-                  No milestones yet
-                </p>
+                      </thead>
+                      <tbody>
+                        {currentMilestones.map((milestone, index) => (
+                          <tr key={index} className="border-b-2 border-black">
+                            <td className="font-medium px-4 py-2">
+                              {milestone.title}
+                            </td>
+                            <td className="px-4 py-2 text-black">
+                              {milestone.description}
+                            </td>
+                            <td
+                              className={`px-4 py-2 capitalize font-medium ${
+                                milestone.status === "completed"
+                                  ? "text-confirm"
+                                  : milestone.status === "in-progress"
+                                  ? "text-green-500"
+                                  : "text-destructive"
+                              }`}
+                            >
+                              {milestone.status}
+                            </td>
+                            <td
+                              className={`px-4 py-2 font-medium capitalize ${
+                                milestone.priority === "high" && "text-red-500"
+                              } ${
+                                milestone.priority === "medium" &&
+                                "text-yellow-500"
+                              } ${
+                                milestone.priority === "low" && "text-green-500"
+                              }`}
+                            >
+                              {milestone.priority}
+                            </td>
+                            <td className="px-4 py-2 font-medium">
+                              {milestone.deadline}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p className="text-gray-600 px-2 border border-black rounded-lg p-2">
+                    No milestones yet
+                  </p>
+                )}
+              </div>
+              {milestones.length > itemsPerPages && (
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  breakLabel={"..."}
+                  pageCount={totalPages}
+                  marginPagesDisplayed={2}
+                  pageRangeDisplayed={3}
+                  onPageChange={handlePageChanges}
+                  containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
+                  pageClassName=" px-3 py-1"
+                  activeClassName=" text-confirm font-semibold"
+                  previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                  nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                  disabledClassName="cursor-not-allowed"
+                />
               )}
-            </div>
-            {milestones.length > itemsPerPages && (
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                breakLabel={"..."}
-                pageCount={totalPages}
-                marginPagesDisplayed={2}
-                pageRangeDisplayed={3}
-                onPageChange={handlePageChanges}
-                containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
-                pageClassName=" px-3 py-1"
-                activeClassName=" text-confirm font-semibold"
-                previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                disabledClassName="cursor-not-allowed"
-              />
-            )}
-            <div className="mt-4">
-              <h2 className="text-2xl font-bold mb-2">Invoices</h2>
-              <InvoicesTable itemsPerPage={10} invoices={invoices} />
-            </div>
-            <div className="lg:flex items-center lg:flex-row">
-              <div className="grid grid-cols-1 sm:grid-cols-2 w-full sm:gap-4">
-                {features?.fileUploads && (
-                  <div className="mt-4">
-                    <div className="flex flex-row gap-4 mb-2">
-                      <h3 className="text-2xl font-bold">Uploads</h3>
-                      <button
-                        onClick={() => setShowUploadMenu(!showUploadMenu)}
-                        className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
-                      >
-                        [
-                        <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
-                        ]
-                      </button>
-                    </div>
-                    {showUploadMenu && (
-                      <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
-                        <input
-                          type="file"
-                          onChange={(e) => setFile(e.target.files[0])}
-                          className="border rounded p-2 bg-white"
-                        />
+              <div className="mt-4">
+                <h2 className="text-2xl font-bold mb-2">Invoices</h2>
+                <InvoicesTable itemsPerPage={10} invoices={invoices} />
+              </div>
+              <div className="lg:flex items-center lg:flex-row">
+                <div className="grid grid-cols-1 sm:grid-cols-2 w-full sm:gap-4">
+                  {features?.fileUploads && (
+                    <div className="mt-4">
+                      <div className="flex flex-row gap-4 mb-2">
+                        <h3 className="text-2xl font-bold">Uploads</h3>
                         <button
-                          onClick={handleUpload}
-                          disabled={
-                            !file || isLoading || uploads.length >= uploadLimit
-                          }
-                          className={`w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2 ${
-                            !file || isLoading || uploads.length >= uploadLimit
-                              ? "cursor-not-allowed opacity-50"
-                              : ""
-                          }`}
+                          onClick={() => setShowUploadMenu(!showUploadMenu)}
+                          className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
                         >
-                          {uploads.length >= uploadLimit ? (
-                            "Upload Limit Reached"
-                          ) : isLoading ? (
-                            "Uploading..."
-                          ) : (
-                            <p className="flex items-center gap-2">
-                              <Upload className="w-5 h-5 text-center" />
-                              Upload
-                            </p>
-                          )}
+                          [
+                          <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+                          ]
                         </button>
                       </div>
-                    )}
-                    {uploads.length > 0 ? (
-                      <div className="">
-                        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
-                          {currentUploads.map((upload, index) => (
-                            <li
-                              key={index}
-                              className="p-2 relative border border-black rounded-lg flex shadow-md items-center gap-2"
-                            >
-                              {/* Delete Button */}
-                              <button
-                                type="button"
-                                onClick={() => deleteUpload(index)}
-                                className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                      {showUploadMenu && (
+                        <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
+                          <input
+                            type="file"
+                            onChange={(e) => setFile(e.target.files[0])}
+                            className="border rounded p-2 bg-white"
+                          />
+                          <button
+                            onClick={handleUpload}
+                            disabled={
+                              !file ||
+                              isLoading ||
+                              uploads.length >= uploadLimit
+                            }
+                            className={`w-full px-4 border-2 border-black py-2 bg-gradient-to-r from-green-600 to-green-500 text-black font-semibold rounded-lg shadow-md hover:shadow-md hover:shadow-black flex items-center duration-300 justify-center gap-2 ${
+                              !file ||
+                              isLoading ||
+                              uploads.length >= uploadLimit
+                                ? "cursor-not-allowed opacity-50"
+                                : ""
+                            }`}
+                          >
+                            {uploads.length >= uploadLimit ? (
+                              "Upload Limit Reached"
+                            ) : isLoading ? (
+                              "Uploading..."
+                            ) : (
+                              <p className="flex items-center gap-2">
+                                <Upload className="w-5 h-5 text-center" />
+                                Upload
+                              </p>
+                            )}
+                          </button>
+                        </div>
+                      )}
+                      {uploads.length > 0 ? (
+                        <div className="">
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 border-2 shadow-black border-black p-2 bg-white mt-1 rounded-lg shadow-md">
+                            {currentUploads.map((upload, index) => (
+                              <li
+                                key={index}
+                                className="p-2 relative border border-black rounded-lg flex shadow-md items-center gap-2"
                               >
-                                X
-                              </button>
-                              {/* Image preview (if it's an image) */}
-                              {upload.url &&
-                                (upload.name.match(
-                                  /\.(jpeg|jpg|gif|png|webp|svg|ico)$/i
-                                ) ? (
-                                  <img
-                                    src={upload.url}
-                                    alt={upload.name || `Upload ${index + 1}`}
-                                    className="w-16 h-16 border border-black object-cover rounded-md"
-                                    loading="lazy"
-                                  />
-                                ) : null)}
+                                {/* Delete Button */}
+                                <button
+                                  type="button"
+                                  onClick={() => deleteUpload(index)}
+                                  className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                                >
+                                  X
+                                </button>
+                                {/* Image preview (if it's an image) */}
+                                {upload.url &&
+                                  (upload.name.match(
+                                    /\.(jpeg|jpg|gif|png|webp|svg|ico)$/i
+                                  ) ? (
+                                    <img
+                                      src={upload.url}
+                                      alt={upload.name || `Upload ${index + 1}`}
+                                      className="w-16 h-16 border border-black object-cover rounded-md"
+                                      loading="lazy"
+                                    />
+                                  ) : null)}
 
-                              {/* File link */}
-                              <a
-                                href={upload.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-destructive font-medium hover:underline truncate"
-                              >
-                                {upload.name || `File ${index + 1}`}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : (
-                      <p className="text-gray-600 px-2 border border-black rounded-lg p-2">
-                        No uploads yet
-                      </p>
-                    )}
-                  </div>
-                )}
+                                {/* File link */}
+                                <a
+                                  href={upload.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-destructive font-medium hover:underline truncate"
+                                >
+                                  {upload.name || `File ${index + 1}`}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <p className="text-gray-600 px-2 border border-black rounded-lg p-2">
+                          No uploads yet
+                        </p>
+                      )}
+                    </div>
+                  )}
 
-                {features?.fileUploads && uploads.length > itemsPerPage && (
-                  <ReactPaginate
-                    previousLabel={"Previous"}
-                    nextLabel={"Next"}
-                    pageCount={pageCount}
-                    onPageChange={handlePageChange}
-                    containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
-                    pageClassName=" px-3 py-1"
-                    activeClassName=" text-confirm font-semibold"
-                    previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                    nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
-                    disabledClassName="cursor-not-allowed"
-                  />
-                )}
-                {features.colorPallette && (
-                  <div className="w-full">
-                    <CustomerPallete
-                      userId={userId}
-                      customerId={customerId}
-                      projectId={projectId}
+                  {features?.fileUploads && uploads.length > itemsPerPage && (
+                    <ReactPaginate
+                      previousLabel={"Previous"}
+                      nextLabel={"Next"}
+                      pageCount={pageCount}
+                      onPageChange={handlePageChange}
+                      containerClassName="flex justify-between items-center pt-0 space-x-2 w-full px-4"
+                      pageClassName=" px-3 py-1"
+                      activeClassName=" text-confirm font-semibold"
+                      previousClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                      nextClassName="text-green-500 text-lg font-semibold px-3 py-1"
+                      disabledClassName="cursor-not-allowed"
                     />
-                  </div>
-                )}
+                  )}
+                  {features.colorPallette && (
+                    <div className="w-full">
+                      <CustomerPallete
+                        userId={userId}
+                        customerId={customerId}
+                        projectId={projectId}
+                      />
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-        {features?.liveChat && (
-          <div className="mt-4 h-full">
-            <LiveChat
-              userId={customerId}
-              projectId={projectId}
-              customerId={customerId}
-            />
-          </div>
-        )}
-      </div>
+          )}
+          {features?.liveChat && (
+            <div className="mt-4 h-full">
+              <LiveChat
+                userId={customerId}
+                projectId={projectId}
+                customerId={customerId}
+              />
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

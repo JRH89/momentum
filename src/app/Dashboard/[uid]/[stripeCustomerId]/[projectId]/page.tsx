@@ -14,6 +14,7 @@ import confetti from "canvas-confetti";
 import InvoicesTable from "../../../../../components/project/InvoiceTable";
 import { StripeCustomer } from "../../../../../components/types/stripeCustomer";
 import LiveChat from "../../../../../components/Chat";
+import Link from "next/link";
 
 interface Milestone {
   id: string;
@@ -532,7 +533,7 @@ const ProjectPage = () => {
   };
 
   const [loading, setLoading] = useState(true);
-  const [customerData, setCustomerData] = useState(null);
+  const [customerData, setCustomerData] = useState<any>(null);
   const [stripeAccountId, setStripeAccountId] = useState(null);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [invoiceAmount, setInvoiceAmount] = useState<string>("");
@@ -833,7 +834,7 @@ const ProjectPage = () => {
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
         <div className="flex flex-col mb-2">
-          <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
+          <div className="flex flex-col sm:flex-row items-baseline w-full justify-between">
             <h1 className="text-2xl sm:text-3xl border-b-2 border-black xl:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
               <span className="flex justify-between sm:justify-start w-full sm:w-auto items-center pb-0 gap-2">
                 {project.name}
@@ -1018,10 +1019,26 @@ const ProjectPage = () => {
               </form>
             </div>
           )}
-
-          <p className="text-base sm:text-md md:text-lg lg:text-xl capitalize text-gray-600">
-            {project.description}
-          </p>
+          <div>
+            <p className="text-base sm:text-md md:text-lg lg:text-xl capitalize text-gray-600 mt-1">
+              {project.description}
+            </p>
+            <p>
+              <a
+                className="text-base sm:text-md md:text-lg lg:text-xl text-destructive hover:opacity-60 duration-300 font-semibold"
+                aria-label="customer-email"
+                href={`mailto:{customerData?.email}`}
+              >
+                {customerData?.email}
+              </a>
+            </p>
+            <Link
+              className="text-base sm:text-md md:text-lg lg:text-xl text-confirm hover:opacity-60 duration-300 font-semibold"
+              href={`/Customer/${uid}/${customerData?.uid}/${project.id}`}
+            >
+              Client Dashboard
+            </Link>
+          </div>
         </div>
 
         {/* Milestones Section */}
