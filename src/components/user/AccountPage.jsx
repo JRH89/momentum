@@ -222,7 +222,7 @@ const Account = () => {
         const result = await response.json();
 
         // Update Firestore (if applicable)
-        const userRef = doc(db, "users", user.uid);
+        const userRef = doc(db, "users", user?.uid);
         await updateDoc(userRef, {
           stripeAccountId: null,
           stripeConnected: false,

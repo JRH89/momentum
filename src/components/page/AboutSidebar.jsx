@@ -31,8 +31,8 @@ const AboutSidebar = () => {
       label: "User Dashboard",
     },
     {
-      href: `/About/customerDashboard`,
-      label: "Customer Dashboard",
+      href: `/About/clientDashboard`,
+      label: "Client Dashboard",
     },
     {
       href: `/About/invoicing`,
@@ -41,6 +41,10 @@ const AboutSidebar = () => {
     {
       href: `/About/projectPages`,
       label: "Project Pages",
+    },
+    {
+      href: `/About/projectFeatures`,
+      label: "Project Features",
     },
   ];
 

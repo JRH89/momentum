@@ -65,7 +65,7 @@ const Layout = ({ children }) => {
   return (
     <div className="flex min-h-screen bg-white w-full">
       <Sidebar uid={auth.currentUser?.uid} />
-      <main className="relative flex flex-col w-full bg-white pt-14 sm:pt-16 lg:pt-6">
+      <main className="relative flex flex-col w-full bg-white pt-14 sm:pt-16 lg:pt-1">
         {!isPremium && user ? (
           <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-0 text-black flex flex-col -mt-8">
             <div className="flex flex-col justify-center items-center max-w-4xl mx-auto h-full w-full p-6 pt-0">

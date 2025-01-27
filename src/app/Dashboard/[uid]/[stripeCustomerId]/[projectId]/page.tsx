@@ -1060,19 +1060,19 @@ const ProjectPage = () => {
                 <table className="bg-white w-full table-auto">
                   <thead className="bg-backgroundPrimary rounded-t-lg">
                     <tr className="border-b border-t border-black">
-                      <th className="p-1 px-4 text-left text-lg font-semibold border-l border-black">
+                      <th className="p-3 px-4 text-left text-md font-bold border-l border-black">
                         Milestone
                       </th>
-                      <th className="p-1 px-4 text-left text-lg font-semibold">
+                      <th className="p-3 px-4 text-left text-md font-bold">
                         Description
                       </th>
-                      <th className="p-1 px-4 text-left text-lg font-semibold">
+                      <th className="p-3 px-4 text-left text-md font-bold">
                         Priority
                       </th>
-                      <th className="p-1 px-4 text-left text-lg font-semibold">
+                      <th className="p-3 px-4 text-left text-md font-bold">
                         Deadline
                       </th>
-                      <th className="p-1 px-4 text-left text-lg font-semibold border-r border-black">
+                      <th className="p-3 px-4 text-left text-md font-bold border-r border-black">
                         Actions
                       </th>
                     </tr>

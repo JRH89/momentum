@@ -7,58 +7,74 @@ const sections = {
   welcomeToMomentum: {
     title: "Welcome to Momentum",
     content:
-      "Momentum is your go-to project management and invoicing platform. Designed with freelancers, small businesses, and independent contractors in mind, it streamlines your workflow for increased productivity.",
+      "Momentum is your go-to platform for project management and invoicing. Designed with freelancers, small businesses, and independent contractors in mind, it keeps everything you need in one place—project management, invoicing, and customer collaboration.",
     content2:
-      "Our user-friendly interface makes it effortless to manage projects and invoices. Whether you're tracking deliverables, creating invoices, or monitoring progress, Momentum provides all the tools you need in one place.",
+      " Our user-friendly interface streamlines your workflow by simplifying how you track deliverables, manage clients, and monitor progress. No plugins or add-ons are required—all features are included in your subscription price.",
     content3:
-      "With clear, upfront pricing and no hidden fees, you can confidently stay on budget.",
+      "Enjoy unlimited customers, unlimited invoices, and complete peace of mind with Stripe’s secure payment processing. The only additional cost you’ll incur is Stripe’s standard invoicing fees. Momentum is built to empower your business with clear, upfront pricing—no hidden fees, no surprises.",
     image: ["/cover.png", "/dashboard.png", "/account-3.png"],
   },
   accountCreation: {
     title: "Creating an Account",
     content:
-      "Easily sign up using Google or GitHub. Get started in minutes and take control of your project and invoice management.",
+      "Getting started with Momentum is simple and fast. Sign up in minutes using Google or GitHub, and choose a subscription plan that fits your business needs—monthly or yearly.",
     content2:
-      "Select a plan that fits your needs—monthly or yearly—with the flexibility to upgrade or downgrade anytime. Stripe ensures all transactions are secure and reliable.",
+      "Flexible plans ensure you can upgrade or downgrade anytime, and Stripe guarantees secure, reliable transactions.",
     content3:
-      "Link your Stripe account to enable seamless payment processing and invoicing within Momentum. Don’t have a Stripe account? You can create one quickly during the sign-up process.",
+      "Momentum allows you to link your Stripe account during sign-up to enable seamless payment processing and invoicing. If you don’t have a Stripe account, no problem—you can create one directly from the onboarding flow.",
     image: ["/account-1.png", "/account-3.png", "/account-2.png"],
   },
   connectingStripe: {
     title: "Connecting to Stripe",
     content:
-      "Start by clicking the 'Connect to Stripe' button. You will be redirected to Stripe’s secure website to log in and authorize the connection between your account and Momentum.",
+      "With Momentum, linking to Stripe unlocks powerful payment processing features that allow you to create and send invoices with ease.",
     content2:
-      "Once connected, you'll unlock the full potential of Momentum’s dashboard, making payment and invoice management straightforward and efficient.",
+      "Start by clicking the 'Connect to Stripe' button. This redirects you to Stripe’s secure platform, where you can log in and authorize Momentum to integrate with your Stripe account.",
+    content3:
+      "Once connected, you’ll have full access to Momentum’s dashboard, enabling smooth payment and invoice management for all your projects.",
     image: ["/account-2.png", "/dashboard.png"], // Single image in array
   },
   userDashboard: {
     title: "User Dashboard",
     content:
-      "The user dashboard serves as a central hub for managing all aspects of your business. From tracking project milestones and progress to creating customer profiles and generating invoices, it provides an all-in-one solution to keep you organized.",
+      "The Momentum user dashboard is your all-in-one hub for managing every aspect of your business. Track project milestones, monitor progress, generate invoices, and maintain customer profiles in one intuitive interface.",
     image: ["/dashboard.png"],
   },
-  customerDashboard: {
-    title: "Customer Dashboard",
+  clientDashboard: {
+    title: "Client Dashboard",
     content:
-      "The customer dashboard empowers your clients to stay informed. They can view project progress, track milestones, and conveniently pay invoices—all from one streamlined interface.",
+      "Empower your clients with Momentum’s client dashboard. Clients can track project progress, view milestones, upload files, and pay invoices securely—all in one streamlined portal.",
     image: ["/customer-dashboard.png"],
   },
   invoicing: {
     title: "Invoicing",
     content:
-      "Easily create invoices directly from the customer list. Click 'Create Invoice' in the dropdown menu located in the 'Actions' column on the far right.",
+      "Create and send invoices directly from the customer list in Momentum. Simply click “Create Invoice” in the dropdown menu under the “Actions” column.",
     content2:
-      "Complete the invoice form with the necessary details and click 'Create Invoice' to finalize.",
+      "Fill in the required details, such as project name, deliverables, and due dates, and click 'Create Invoice' to finalize.",
     content3:
-      "Your invoice will be sent directly to the customer’s email. Customers can pay securely via the provided email link or through their customer dashboard.",
+      "Invoices are sent directly to your client’s email, with a secure payment link included. Clients can pay instantly through the email link.",
     image: ["/invoice-2.png", "/invoice.png"],
   },
   projectPages: {
     title: "Project Pages",
     content:
-      "Organize and manage projects with ease using Momentum’s project pages. Create milestones, set deadlines, and upload essential files. Both you and your clients can access project pages to monitor progress and stay on the same page.",
+      "Keep your projects organized and running smoothly with Momentum’s project pages. Create milestones, set deadlines, and upload essential files. Both you and your clients can access these pages to monitor progress and ensure alignment.",
+    content2:
+      "Optional features—such as live chat for real-time collaboration, file uploads for resource sharing, and a color palette for project theming (ideal for visual work like posters or websites)—can be activated on a per-project basis to avoid unnecessary dashboard clutter.",
     image: ["/project.png"],
+  },
+  projectFeatures: {
+    title: "Project Dashboard Features",
+    content:
+      "Live chat: Enable real-time communication with your clients directly within each project. This optional feature keeps collaboration seamless and focused while eliminating the need for external messaging tools.",
+    content2:
+      "File uploads: Share important resources effortlessly by uploading up to 10 files per project, with a maximum file size of 5MB each. This feature ensures all relevant documents and materials are accessible in one place, making project management more efficient.",
+    content3:
+      "Color theme picker: Customize the visual appearance of your project by selecting a color palette that suits your needs. Ideal for design-focused work like branding, posters, or websites, this feature helps maintain a cohesive look and feel.",
+    content4:
+      "All optional features are free to enable and can be activated only when needed, ensuring your workspace stays clean and uncluttered. Momentum gives you complete flexibility to tailor projects to your workflow without additional charges.",
+    image: ["/features.png"],
   },
 };
 
