@@ -17,7 +17,7 @@ const sections = {
   accountCreation: {
     title: "Creating an Account",
     content:
-      "Getting started with Momentum is simple and fast. Sign up in minutes using Google or GitHub, and choose a subscription plan that fits your business needs—monthly or yearly.",
+      "Getting started with Momentum is simple and fast. Sign up in seconds using Google, GitHub, or Email then choose a subscription plan that fits your business needs—monthly or yearly.",
     content2:
       "Cancel at any time for any reason, no questions asked. Momentum charges a flat monthly or yearly membership fee, and Stripe charges 2.9% + 30¢ per successful charge for domestic cards. All payments are processed through Stripe, ensuring secure and reliable transactions.",
     content3:
