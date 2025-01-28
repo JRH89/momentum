@@ -28,7 +28,7 @@ export default function Page() {
           </h1>
           <SignIn />
           <div>
-            <p className="text-base font-semibold mt-4">
+            <p className="text-lg font-semibold mt-4">
               Don&apos;t have an account?{" "}
               <Link className="hover:underline text-gray-600" href="/Signup">
                 Sign up

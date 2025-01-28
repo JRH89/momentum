@@ -170,7 +170,7 @@ const SignIn = () => {
         className="w-full max-w-sm px-4 py-2 text-lg md:text-xl font-semibold text-black bg-confirm border-2 border-black rounded-lg shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"
         onClick={handleEmailSignIn}
       >
-        Sign In with Email
+        Sign In
       </button>
     </div>
   );
