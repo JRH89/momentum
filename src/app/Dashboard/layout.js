@@ -16,8 +16,6 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [isPremium, setIsPremium] = useState(false);
-  const [userIsPremium, setUserIsPremium] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   // Fetch premium status
   useEffect(() => {
@@ -26,8 +24,6 @@ const Layout = ({ children }) => {
         if (user) {
           const newPremiumStatus = await getPremiumStatus(app);
           setIsPremium(newPremiumStatus);
-          setUserIsPremium(newPremiumStatus);
-          setIsAdmin(newPremiumStatus);
         }
       } catch (error) {
         console.error("Error fetching premium status:", error.message);
@@ -45,20 +41,10 @@ const Layout = ({ children }) => {
     if (!user) {
       setLoading(false); // Ensure loading ends
       if (router.pathname !== '/Dashboard/login') {
-        router.push('/Dashboard/login'); // Redirect only if not already on the login page
+        router.push('/Dashboard/login'); // Redirect to login if not logged in
       }
     } else {
-      const isAuthorizedUser = user.providerData.some((provider) =>
-        ['google.com', 'github.com'].includes(provider.providerId)
-      );
-
-      console.log('isAuthorizedUser', isAuthorizedUser);
-
-      if (!isAuthorizedUser) {
-        router.push('/Customer/login');
-      } else {
-        setLoading(false);
-      }
+      setLoading(false); // Ensure loading ends once the user is logged in
     }
   }, [user, authLoading, router]);
 

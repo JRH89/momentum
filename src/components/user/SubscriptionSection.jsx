@@ -6,6 +6,7 @@ import { getCheckoutUrl } from "../payments/account/StripePayments";
 import { initFirebase } from "../../../firebase";
 import { useAuth } from "../../context/AuthProvider";
 import { useEffect } from "react";
+import { ExternalLink } from "lucide-react";
 
 // Pricing Plan Data
 const pricingPlans = [
@@ -78,7 +79,7 @@ const SubscriptionSection = () => {
       <div
         id="pricing"
         name="pricing"
-        className="min-h-screen h-full text-center text-black flex flex-col w-full mx-auto justify-center items-center my-auto align-middle py-8 sm:py-0 px-5 max-w-6xl"
+        className="min-h-screen h-full text-center text-black flex flex-col w-full mx-auto justify-center items-center my-auto align-middle py-8 sm:py-0 px-5 max-w-6xl mt-10 md:mt-12"
       >
         {user && (
           <>
@@ -103,7 +104,23 @@ const SubscriptionSection = () => {
                     <h2 className="font-extrabold text-xl md:text-3xl">
                       {plan.title}
                     </h2>
+                    <span className="text-center mx-auto justify-center items-center flex flex-row text-gray-600 text-xs mt-1">
+                      ( + {"  "}
+                      <span className="flex ml-1 flex-row items-center">
+                        {" "}
+                        Stripe fees
+                        <a
+                          className="text-green-500 cursor-pointer underline flex items-center gap-1"
+                          href="https://stripe.com/pricing"
+                          target="_blank"
+                        >
+                          <ExternalLink className="inline w-3 h-3 ml-1" />
+                        </a>
+                      </span>
+                      )
+                    </span>
                     <div className="flex-grow h-full border-t border-black opacity-25 my-3"></div>
+
                     <ul className="h-full font-semibold flex flex-col my-auto">
                       {plan.features.map((feature, featureIndex) => (
                         <li
