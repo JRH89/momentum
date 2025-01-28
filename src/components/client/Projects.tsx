@@ -204,6 +204,34 @@ const Projects: React.FC<ProjectsProps> = ({
             });
           }
 
+          // send email
+          try {
+            const response = await fetch("/api/send-new-project-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                customerName: userData?.name,
+                customerEmail: customerEmail,
+                projectName: newProjectName,
+                projectLink: `${process.env.NEXT_PUBLIC_BASE_URL}/Customer/${uid}/${newCustomerUid}/${projectRef.id}`,
+              }),
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              toast.success("Email sent successfully!");
+              console.log(data);
+            } else {
+              const error = await response.json();
+              toast.error("Failed to send email. Please try again.");
+              console.error(error);
+            }
+          } catch (err) {
+            console.error("Error:", err);
+          }
+
           // Update local state
           setProjects(updatedProjects);
           setNewProjectName("");
