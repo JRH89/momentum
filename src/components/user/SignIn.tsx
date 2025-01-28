@@ -32,7 +32,7 @@ const SignIn = () => {
           const userData = {
             uid: user.uid,
             userId: user.uid,
-            name: user.displayName || "Anonymous",
+            name: user.displayName || user.email,
             email: user.email,
             photoURL: user.photoURL,
             isPremium: false,
