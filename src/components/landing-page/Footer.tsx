@@ -4,7 +4,14 @@ import Image from "next/image";
 import logo from "../../../public/logo.png";
 import siteMetadata from "../../../siteMetadata";
 import Link from "next/link";
-import { ChevronDown, Globe } from "lucide-react";
+import {
+  ChevronDown,
+  Globe,
+  Linkedin,
+  Newspaper,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import { useState } from "react";
 
 export const Footer = () => {
@@ -39,14 +46,7 @@ export const Footer = () => {
             href="https://twitter.com/gamedevjared89"
             className="hover:text-white  transition-colors duration-300 ease-in-out"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-8 h-8"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M22.46 6c-.77.35-1.6.58-2.46.69a4.28 4.28 0 0 0 1.88-2.36 8.57 8.57 0 0 1-2.72 1.03 4.25 4.25 0 0 0-7.23 3.88 12.04 12.04 0 0 1-8.75-4.43 4.24 4.24 0 0 0 1.31 5.67 4.16 4.16 0 0 1-1.92-.53v.05a4.24 4.24 0 0 0 3.41 4.15 4.25 4.25 0 0 1-1.92.07 4.24 4.24 0 0 0 3.96 2.94A8.53 8.53 0 0 1 2 19.09 12 12 0 0 0 8.29 21c7.41 0 11.46-6.14 11.46-11.46 0-.18-.01-.35-.02-.53a8.18 8.18 0 0 0 2.03-2.09z" />
-            </svg>
+            <Twitter className="w-8 h-8" />
           </Link>
           <Link
             href="https://www.hookerhillstudios.com"
@@ -58,14 +58,19 @@ export const Footer = () => {
             href="https://linkedin.com/in/jaredhooker"
             className="hover:text-white  transition-colors duration-300 ease-in-out"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-8 h-8"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M4.98 3.5c0 1.38-1.12 2.5-2.5 2.5s-2.5-1.12-2.5-2.5 1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5zm.02 5.5h-5v16h5v-16zm7.02 0h-4.98v16h5v-9.7c0-5.44 6.58-5.89 6.58 0v9.7h5v-10.3c0-9.26-10.58-8.96-11.58-4.38v-1.92h-4.02v16z" />
-            </svg>
+            <Linkedin className="w-8 h-8" />
+          </Link>
+          <Link
+            href="https://www.youtube.com/@hookerhillstudios"
+            className="hover:text-white  transition-colors duration-300 ease-in-out"
+          >
+            <Youtube className="w-8 h-8" />
+          </Link>
+          <Link
+            href="https://www.hookerhillstudios.com/Blog"
+            className="hover:text-white  transition-colors duration-300 ease-in-out"
+          >
+            <Newspaper className="w-8 h-8" />
           </Link>
         </div>
         {/* Navigation Section */}
