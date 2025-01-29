@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import sendgrid from '@sendgrid/mail';
 import siteMetadata from '../../../../siteMetadata';
 
-const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-const FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL;
+const SENDGRID_API_KEY = process.env.NEXT_PUBLIC_SENDGRID_API_KEY;
+const FROM_EMAIL = process.env.NEXT_PUBLIC_SENDGRID_FROM_EMAIL;
 
 if (!SENDGRID_API_KEY || !FROM_EMAIL) {
     throw new Error("Missing SendGrid API Key or FROM email in environment variables.");
