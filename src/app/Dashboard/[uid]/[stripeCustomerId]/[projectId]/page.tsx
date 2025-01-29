@@ -348,17 +348,17 @@ const ProjectPage = () => {
     const duration = 5 * 1000; // 5 seconds
     const animationEnd = Date.now() + duration;
     const colors = [
-      "#ff0000",
-      "#00ff00",
-      "#0000ff",
-      "#ffff00",
-      "#ff00ff",
-      "#00ffff",
+      "#00ff00", // Green
+      "#ffff00", // Yellow
+      "#ff00ff", // Magenta
+      "#00ffff", // Cyan
+      "#ec4899",
+      "#22d3ee",
     ];
 
     (function frame() {
       confetti({
-        particleCount: 10,
+        particleCount: 20,
         startVelocity: 30,
         spread: 360,
         angle: Math.random() * 90 - 45, // random spread angle
