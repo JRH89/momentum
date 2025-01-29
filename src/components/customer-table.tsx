@@ -126,11 +126,14 @@ export function CustomerTable({
     setItems(updatedItems);
   };
 
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+
   const handleCreateInvoice = async (
     e: React.FormEvent,
     { stripeCustomerId, customerEmail }: ProjectsProps,
     customerId: string
   ) => {
+    setInvoiceLoading(true);
     if (!stripeAccountId) {
       setError("Stripe account not found");
       return;
@@ -242,8 +245,10 @@ export function CustomerTable({
         console.error("Error updating projects:", err);
         setError("Failed to update projects");
       }
-
+      toast.success("Invoice created successfully!");
+      setInvoiceLoading(false);
       setShowInvoiceForm(false);
+
       setInvoiceData({
         amount: "",
         currency: "usd",
@@ -252,7 +257,6 @@ export function CustomerTable({
       });
       setInvoiceDueDate("");
       setItems([{ description: "", amount: "", currency: "usd" }]);
-      toast.success("Invoice created successfully!");
     } catch (err) {
       console.error("Error creating invoice:", err);
       setError(err instanceof Error ? err.message : "Failed to create invoice");
@@ -944,7 +948,7 @@ export function CustomerTable({
                     type="submit"
                     className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
-                    Create Invoice
+                    {invoiceLoading ? "Creating Invoice..." : "Create Invoice"}
                   </button>
                 </div>
               </div>

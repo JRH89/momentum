@@ -739,9 +739,10 @@ const ProjectPage = () => {
       });
 
       setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
+      setInvoiceLoading(false);
       setShowInvoiceForm(false);
       toast.success("Invoice created successfully!");
-      setInvoiceLoading(false);
+
       // Reset form
       setInvoiceItems([{ amount: "", currency: "usd", description: "" }]); // Reset items to an empty state
       setInvoiceDueDate(""); // Reset due date

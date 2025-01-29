@@ -133,8 +133,12 @@ const CustomerDetailsPage: React.FC = () => {
     setItems(updatedItems);
   };
 
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+
   const handleCreateInvoice = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setInvoiceLoading(true);
 
     if (
       !invoiceDueDate ||
@@ -254,7 +258,7 @@ const CustomerDetailsPage: React.FC = () => {
       } catch (err: any) {
         toast.error("Error updating user document: " + err.message);
       }
-
+      setInvoiceLoading(false);
       setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
       setShowInvoiceForm(false);
       toast.success("Invoice created successfully!");
@@ -422,7 +426,7 @@ const CustomerDetailsPage: React.FC = () => {
                     type="submit"
                     className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
-                    Create Invoice
+                    {invoiceLoading ? "Creating Invoice..." : "Create Invoice"}
                   </button>
                 </div>
               </div>
