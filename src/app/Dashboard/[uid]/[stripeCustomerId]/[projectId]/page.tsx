@@ -15,6 +15,7 @@ import InvoicesTable from "../../../../../components/project/InvoiceTable";
 import { StripeCustomer } from "../../../../../components/types/stripeCustomer";
 import LiveChat from "../../../../../components/Chat";
 import Link from "next/link";
+import { set } from "date-fns";
 
 interface Milestone {
   id: string;
@@ -151,6 +152,7 @@ const ProjectPage = () => {
             });
 
             setMilestones(updatedMilestones);
+            toast.success("Milestone added successfully!");
             setNewMilestone({
               title: "",
               description: "",
@@ -644,9 +646,11 @@ const ProjectPage = () => {
     }
   }, [stripeAccountId, error, invoices]);
 
+  const [invoiceLoading, setInvoiceLoading] = useState(false);
+
   const handleCreateInvoice = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setInvoiceLoading(true);
     // Check if any of the fields for items are empty
     if (
       invoiceItems.some(
@@ -737,7 +741,7 @@ const ProjectPage = () => {
       setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
       setShowInvoiceForm(false);
       toast.success("Invoice created successfully!");
-
+      setInvoiceLoading(false);
       // Reset form
       setInvoiceItems([{ amount: "", currency: "usd", description: "" }]); // Reset items to an empty state
       setInvoiceDueDate(""); // Reset due date
@@ -1413,7 +1417,7 @@ const ProjectPage = () => {
                     type="submit"
                     className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
-                    Create Invoice
+                    {invoiceLoading ? "Creating Invoice..." : "Create Invoice"}
                   </button>
                 </div>
               </div>
@@ -1588,8 +1592,10 @@ const ProjectPage = () => {
                 onChange={(e) =>
                   setNewMilestone({ ...newMilestone, deadline: e.target.value })
                 }
+                min={new Date().toISOString().split("T")[0]} // Sets the min date to today
                 className="flex w-full p-2 mb-2 border rounded-md"
               />
+
               <label
                 htmlFor="priority"
                 className="block text-sm mt-4 text-white font-medium mb-2"

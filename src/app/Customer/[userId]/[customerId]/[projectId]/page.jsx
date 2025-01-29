@@ -303,7 +303,7 @@ const CustomerProjectPage = () => {
             <div className="flex flex-col sm:flex-row items-baseline w-full  justify-between">
               <h1 className="text-2xl sm:text-3xl border-b-2 border-black lg:text-4xl font-bold justify-between w-full flex flex-row items-baseline capitalize gap-1">
                 {projectData?.name}
-                <span className="hidden sm:flex text-xl text-gray-600">
+                <span className="hidden sm:flex text-base sm:text-md md:text-lg lg:text-xl text-gray-600">
                   ID: {projectData?.id}
                 </span>
               </h1>
