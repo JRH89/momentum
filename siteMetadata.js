@@ -9,7 +9,7 @@ const siteMetadata = {
     theme: 'system',
     siteUrl: 'https://momentum.hookerhillstudios.com',
     socialBanner: '/preview.png',
-    email: 'hookerhillstudios@gmail.com',
+    email: 'momentum.hookerhillstudios@gmail.com',
     github: 'https://github.com/jrh89',
     blog: 'https://www.hookerhillstudios.com/Blog',
     twitter: 'https://x.com/GameDevJared89',

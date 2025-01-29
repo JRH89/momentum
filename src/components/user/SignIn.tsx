@@ -47,6 +47,23 @@ const SignIn = () => {
             milestonesPerPage: 5,
             createdAt: new Date().toISOString(),
           };
+
+          // send email
+          try {
+            const user = auth.currentUser;
+            const response = await fetch("/api/sendWelcomeEmail", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email: user?.email, userID: user?.uid }),
+            });
+
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.error || "Something went wrong.");
+            }
+          } catch (error: any) {
+            setError(error.message);
+          }
           await setDoc(userDocRef, userData);
         }
 

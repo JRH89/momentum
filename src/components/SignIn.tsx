@@ -62,7 +62,25 @@ const SignIn = () => {
   const handleSignUp = async (provider: any) => {
     try {
       await signInWithPopup(auth, provider);
-      router.push(`/Dashboard/${user.uid}`);
+
+      // send email
+      try {
+        const user = auth.currentUser;
+        const response = await fetch("/api/sendWelcomeEmail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user?.email, userID: user?.uid }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Something went wrong.");
+        }
+      } catch (error: any) {
+        setError(error.message);
+      }
+
+      router.push(`/Dashboard/${user?.uid}`);
     } catch (error: any) {
       setError(error.message);
     }
@@ -98,6 +116,22 @@ const SignIn = () => {
         createdAt: new Date().toISOString(),
       };
       await setDoc(userDocRef, userData);
+
+      // send email
+      try {
+        const response = await fetch("/api/sendWelcomeEmail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: user?.email, userID: user?.uid }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Something went wrong.");
+        }
+      } catch (error: any) {
+        setError(error.message);
+      }
 
       router.push(`/Dashboard/${user.uid}`);
     } catch (error: any) {
