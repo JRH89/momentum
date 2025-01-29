@@ -100,9 +100,35 @@ export function CustomerTable({
     setCurrentPage(selectedPage.selected);
   };
 
+  const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
+  const [invoiceCurrency, setInvoiceCurrency] = useState<string>("usd");
+
+  const [items, setItems] = useState([
+    { amount: "", currency: "usd", description: "" },
+  ]);
+
+  const addItem = () => {
+    setItems([...items, { description: "", amount: "", currency: "usd" }]);
+  };
+
+  const removeItem = (index: number) => {
+    const updatedItems: any = items.filter((_, idx) => idx !== index);
+    setItems(updatedItems);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    field: string
+  ) => {
+    const updatedItems: any = [...items];
+    updatedItems[index][field] = e.target.value;
+    setItems(updatedItems);
+  };
+
   const handleCreateInvoice = async (
     e: React.FormEvent,
-    { uid, stripeCustomerId, customerEmail }: ProjectsProps,
+    { stripeCustomerId, customerEmail }: ProjectsProps,
     customerId: string
   ) => {
     if (!stripeAccountId) {
@@ -111,29 +137,31 @@ export function CustomerTable({
     }
 
     try {
-      const response = await fetch("/api/stripe/invoices/create", {
+      const itemsData = items.map((item: any) => ({
+        amount: Math.round(parseFloat(item.amount) * 100), // Convert to cents and ensure it's a number
+        currency: invoiceCurrency.toLowerCase(),
+        description: item.description,
+        quantity: parseInt(item.quantity, 10),
+      }));
+
+      const response = await fetch(`/api/stripe/invoices/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           stripeAccountId,
-          stripeCustomerId: customerId,
-          items: [
-            {
-              amount: Math.round(parseFloat(invoiceData.amount) * 100),
-              currency: invoiceData.currency.toLowerCase(),
-              description: invoiceData.description,
-              quantity: 1,
-            },
-          ],
-          dueDate: Math.floor(new Date(invoiceData.dueDate).getTime() / 1000),
+          stripeCustomerId,
+          items: itemsData,
+          dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
         }),
       });
 
       const data = await response.json();
-      if (!response.ok)
+
+      if (!response.ok) {
         throw new Error(data.error || "Failed to create invoice");
+      }
 
       setLoading(true);
       let newCustomerUid: string | null = null;
@@ -222,6 +250,8 @@ export function CustomerTable({
         description: "",
         dueDate: "",
       });
+      setInvoiceDueDate("");
+      setItems([{ description: "", amount: "", currency: "usd" }]);
       toast.success("Invoice created successfully!");
     } catch (err) {
       console.error("Error creating invoice:", err);
@@ -796,6 +826,7 @@ export function CustomerTable({
               Create Invoice
             </h2>
             <form
+              className="fixed z-40 inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (selectedCustomer) {
@@ -811,97 +842,111 @@ export function CustomerTable({
                 }
               }}
             >
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-white">
-                    Amount
-                  </label>
-                  <input
-                    aria-label="amount"
-                    type="number"
-                    value={invoiceData.amount}
-                    onChange={(e) =>
-                      setInvoiceData((prev) => ({
-                        ...prev,
-                        amount: e.target.value,
-                      }))
-                    }
-                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
-                    required
-                  />
+              <div className="p-6 rounded-lg scrollbar-thin overflow-y-auto shadow-md py-24 w-full max-w-xl">
+                <h2 className="text-2xl lg:text-3xl text-white text-center font-bold mb-4">
+                  Create Invoice
+                </h2>
+
+                {/* Multiple Items */}
+                {items.map((item, index) => (
+                  <div key={index} className="mt-4">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
+                      <div className="w-full">
+                        <input
+                          placeholder="Currency"
+                          id={`currency-${index}`}
+                          type="text"
+                          value={item.currency}
+                          onChange={(e) => handleChange(e, index, "currency")}
+                          required
+                          className="w-full flex mx-auto self-center p-2 border border-black rounded-md"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <input
+                          placeholder="Amount"
+                          id={`amount-${index}`}
+                          type="number"
+                          value={item.amount}
+                          onChange={(e) => handleChange(e, index, "amount")}
+                          required
+                          className="w-full p-2 border border-black rounded-md"
+                        />
+                      </div>
+
+                      <div className="w-full">
+                        <input
+                          placeholder="Item Name"
+                          id={`description-${index}`}
+                          type="text"
+                          value={item.description}
+                          onChange={(e) =>
+                            handleChange(e, index, "description")
+                          }
+                          required
+                          className="w-full flex p-2 border border-black rounded-md"
+                        />
+                      </div>
+                    </div>
+
+                    {items.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeItem(index)}
+                        className="mt-2 text-sm text-destructive hover:underline"
+                      >
+                        Remove this item
+                      </button>
+                    )}
+                  </div>
+                ))}
+
+                {/* Add new item button */}
+                <div className="mt-4">
+                  <button
+                    type="button"
+                    onClick={addItem}
+                    className="text-sm text-confirm hover:underline"
+                  >
+                    + Add Another Item
+                  </button>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-white">
-                    Currency
-                  </label>
-                  <input
-                    aria-label="currency"
-                    type="text"
-                    value={invoiceData.currency}
-                    onChange={(e) =>
-                      setInvoiceData((prev) => ({
-                        ...prev,
-                        currency: e.target.value,
-                      }))
-                    }
-                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-white">
-                    Description
-                  </label>
-                  <input
-                    aria-label="description"
-                    type="text"
-                    value={invoiceData.description}
-                    onChange={(e) =>
-                      setInvoiceData((prev) => ({
-                        ...prev,
-                        description: e.target.value,
-                      }))
-                    }
-                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-white">
+
+                {/* Due Date */}
+                <div className="mt-4">
+                  <label
+                    htmlFor="dueDate"
+                    className="flex justify-end w-full text-sm font-medium text-white mb-2"
+                  >
                     Due Date
                   </label>
                   <input
-                    aria-label="dueDate"
+                    id="dueDate"
                     type="date"
-                    value={invoiceData.dueDate}
-                    onChange={(e) =>
-                      setInvoiceData((prev) => ({
-                        ...prev,
-                        dueDate: e.target.value,
-                      }))
-                    }
-                    className="mt-2 p-2 block w-full rounded-md border-gray-300 shadow-sm"
+                    value={invoiceDueDate}
+                    onChange={(e) => setInvoiceDueDate(e.target.value)}
                     required
+                    min={new Date().toISOString().split("T")[0]} // Set today's date as the minimum
+                    className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
-              </div>
-              <div className="mt-6 flex flex-row justify-end gap-2 items-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setShowInvoiceForm(false);
-                    setSelectedCustomer(null);
-                  }}
-                  className=" px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 font-semibold text-black bg-confirm border border-transparent rounded-md hover:bg-opacity-60 transition duration-300"
-                >
-                  Create Invoice
-                </button>
+
+                {/* Submit buttons */}
+                <div className="flex mt-6 flex-row justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setShowInvoiceForm(false)}
+                    className=" px-4 py-2 text-destructive rounded-lg font-semibold hover:opacity-60 duration-300"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
+                  >
+                    Create Invoice
+                  </button>
+                </div>
               </div>
             </form>
           </div>
