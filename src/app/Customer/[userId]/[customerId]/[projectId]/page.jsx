@@ -414,8 +414,7 @@ const CustomerProjectPage = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 w-full sm:gap-4">
                   {features?.fileUploads && (
                     <div className="mt-4">
-                      <div className="flex flex-row gap-4 mb-2">
-                        <h3 className="text-2xl font-bold">Uploads</h3>
+                      <div className="flex flex-row gap-2 mb-2">
                         <button
                           onClick={() => setShowUploadMenu(!showUploadMenu)}
                           className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
@@ -424,6 +423,7 @@ const CustomerProjectPage = () => {
                           <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
                           ]
                         </button>
+                        <h3 className="text-2xl font-bold">Uploads</h3>
                       </div>
                       {showUploadMenu && (
                         <div className="mb-4 p-4 border border-black rounded-lg gap-2 flex flex-col">
