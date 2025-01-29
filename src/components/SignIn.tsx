@@ -4,7 +4,6 @@ import {
   signInWithPopup,
   createUserWithEmailAndPassword,
   GithubAuthProvider,
-  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth, provider as googleProvider, db } from "../../firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
@@ -60,10 +59,10 @@ const SignIn = () => {
   }, [router]);
 
   // Handle sign-in or registration
-  const handleSignIn = async (provider: any) => {
+  const handleSignUp = async (provider: any) => {
     try {
       await signInWithPopup(auth, provider);
-      router.push("/Dashboard");
+      router.push(`/Dashboard/${user.uid}`);
     } catch (error: any) {
       setError(error.message);
     }
@@ -83,9 +82,9 @@ const SignIn = () => {
       const userData = {
         uid: user.uid,
         userId: user.uid,
-        name: user.displayName || "Anonymous",
+        name: user.displayName || user.email,
         email: user.email,
-        photoURL: null,
+        photoURL: user.photoURL || null,
         isPremium: false,
         isSubscribed: true,
         isAdmin: false,
@@ -106,15 +105,6 @@ const SignIn = () => {
     }
   };
 
-  const handleEmailSignIn = async () => {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/Dashboard");
-    } catch (error: any) {
-      setError(error.message);
-    }
-  };
-
   return (
     <div className="flex flex-col gap-4 w-full mx-auto max-w-xs">
       {error && (
@@ -125,9 +115,11 @@ const SignIn = () => {
       <div className="flex flex-row gap-4">
         {/* Google Sign-In Button */}
         <button
+          id="google-button"
+          aria-label="Sign up with Google"
           type="button"
           className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-lg md:text-xl font-medium text-gray-700 bg-white border-2 border-black rounded-lg shadow-md shadow-black hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          onClick={() => handleSignIn(googleProvider)}
+          onClick={() => handleSignUp(googleProvider)}
         >
           <img
             src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
@@ -136,13 +128,13 @@ const SignIn = () => {
           />
         </button>
 
-        {/* GitHub Sign-In Button */}
+        {/* GitHub Sign-Up Button */}
         <button
           id="github-button"
-          aria-label="Sign in with GitHub"
+          aria-label="Sign up with GitHub"
           type="button"
           className="flex items-center justify-center w-full max-w-sm px-4 py-2 text-lg md:text-xl font-medium text-gray-700 bg-white border-2 border-black rounded-lg shadow-md shadow-black hover:shadow-lg hover:shadow-black focus:outline-none duration-300 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          onClick={() => handleSignIn(new GithubAuthProvider())}
+          onClick={() => handleSignUp(new GithubAuthProvider())}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
