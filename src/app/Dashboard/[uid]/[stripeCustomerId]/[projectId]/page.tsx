@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
 import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { LoaderPinwheel, Plus, Save, Settings, Upload } from "lucide-react";
+import { LoaderPinwheel, Plus, Settings, Upload } from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";

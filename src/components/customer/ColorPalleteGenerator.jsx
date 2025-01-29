@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Copy, PlusIcon, Save } from "lucide-react";
+import { Copy, Download, PlusIcon, Printer, Save } from "lucide-react";
 import { toast } from "react-toastify";
 import { db } from "../../../firebase";
 import {
@@ -176,20 +176,97 @@ export default function ColorPaletteGenerator({
     }
   };
 
+  // Copy Color to Clipboard
+  const copyToClipboard = (color) => {
+    navigator.clipboard.writeText(color);
+    toast.success("Color copied to clipboard!");
+  };
+
+  const savePalette = async () => {
+    if (projectColors.length === 0) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    const boxWidth = 250; // Set to 50x50
+    const boxHeight = 250;
+    const padding = 5; // Smaller padding for better spacing
+    const totalWidth =
+      boxWidth * projectColors.length + padding * (projectColors.length - 1);
+    const imageHeight = boxHeight + padding * 2;
+
+    // Set canvas dimensions
+    canvas.width = totalWidth + padding * 2;
+    canvas.height = imageHeight;
+
+    // Clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the color boxes using projectColors
+    drawPaletteBoxes(context, boxWidth, boxHeight, padding, projectColors);
+
+    // Save the canvas as an image
+    setTimeout(() => {
+      const link = document.createElement("a");
+      link.download = "color-palette.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }, 100);
+  };
+
+  // Helper function to draw the color palette boxes
+  const drawPaletteBoxes = (context, boxWidth, boxHeight, padding, colors) => {
+    colors.forEach((color, index) => {
+      const xOffset = padding + index * (boxWidth + padding); // Correct positioning
+      const yOffset = padding; // Keep boxes aligned vertically
+
+      // Draw the color box
+      context.fillStyle = color;
+      context.fillRect(xOffset, yOffset, boxWidth, boxHeight);
+
+      // Add the color text (adjusted for small boxes)
+      context.fillStyle = "#fff";
+      context.font = "30px Arial";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.fillText(
+        color.toUpperCase(),
+        xOffset + boxWidth / 2,
+        yOffset + boxHeight / 2
+      );
+    });
+  };
+
   return (
-    <div className="flex flex-col mx-auto ">
+    <div className="flex flex-col mx-auto w-full">
       <div className="h-full w-full mx-auto text-black flex flex-col items-center justify-start">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <div className="flex mb-2 gap-2 flex-row items-center justify-start my-auto">
-            <button
-              onClick={() => setOpenMenuOne(!openMenuOne)}
-              className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
-            >
-              [
-              <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
-              ]
-            </button>
-            <h3 className="text-2xl font-semibold">Palette</h3>
+          <div className="flex mb-2 gap-2 items-center justify-between mx-auto w-full my-auto">
+            <div className="flex flex-row items-center gap-2">
+              <button
+                onClick={() => setOpenMenuOne(!openMenuOne)}
+                className="hover:bg-opacity-60 duration-300 font-semibold items-center text-xl flex flex-row text-black rounded-md"
+              >
+                [
+                <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+                ]
+              </button>
+              <h3 className="text-2xl font-semibold">Palette</h3>
+            </div>
+
+            {projectColors && projectColors.length > 0 && (
+              <div className="flex flex-row items-center gap-2 ml-auto">
+                <button
+                  title="Download Palette"
+                  onClick={savePalette}
+                  className="w-auto mx-auto px-2 py-1 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:opacity-60 flex items-center duration-300"
+                >
+                  <Download className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -251,11 +328,19 @@ export default function ColorPaletteGenerator({
                 className="w-16 mx-auto h-16 flex justify-center items-center rounded-md border shadow-lg border-black relative"
                 style={{ backgroundColor: color }}
               >
+                {/*Copy Button */}
+                <button
+                  type="button"
+                  onClick={() => copyToClipboard(color)}
+                  className="absolute top-0 left-0 bg-confirm text-black font-bold border-b border-r border-black rounded-br-lg rounded-tl p-1 py-1 text-xs hover:bg-opacity-60"
+                >
+                  <Copy className="w-3 h-3" />
+                </button>
                 {/* Delete Button */}
                 <button
                   type="button"
                   onClick={() => deleteColor(color)}
-                  className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                  className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr p-1 py-0.5 text-xs hover:bg-opacity-60"
                 >
                   X
                 </button>
