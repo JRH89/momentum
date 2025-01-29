@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Copy, PlusIcon, Save } from "lucide-react";
+import { Copy, Download, PlusIcon, Save } from "lucide-react";
 import { toast } from "react-toastify";
 import { db } from "../../../firebase";
 import {
@@ -173,20 +173,90 @@ export default function CustomerPallete({ userId, customerId, projectId }) {
     }
   };
 
+  const savePalette = async () => {
+    if (projectColors.length === 0) return;
+
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const context = canvas.getContext("2d");
+    if (!context) return;
+
+    const boxWidth = 250; // Set to 50x50
+    const boxHeight = 250;
+    const padding = 5; // Smaller padding for better spacing
+    const totalWidth =
+      boxWidth * projectColors.length + padding * (projectColors.length - 1);
+    const imageHeight = boxHeight + padding * 2;
+
+    // Set canvas dimensions
+    canvas.width = totalWidth + padding * 2;
+    canvas.height = imageHeight;
+
+    // Clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the color boxes using projectColors
+    drawPaletteBoxes(context, boxWidth, boxHeight, padding, projectColors);
+
+    // Save the canvas as an image
+    setTimeout(() => {
+      const link = document.createElement("a");
+      link.download = "color-palette.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    }, 100);
+  };
+
+  // Helper function to draw the color palette boxes
+  const drawPaletteBoxes = (context, boxWidth, boxHeight, padding, colors) => {
+    colors.forEach((color, index) => {
+      const xOffset = padding + index * (boxWidth + padding); // Correct positioning
+      const yOffset = padding; // Keep boxes aligned vertically
+
+      // Draw the color box
+      context.fillStyle = color;
+      context.fillRect(xOffset, yOffset, boxWidth, boxHeight);
+
+      // Add the color text (adjusted for small boxes)
+      context.fillStyle = "#fff";
+      context.font = "30px Arial";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.fillText(
+        color.toUpperCase(),
+        xOffset + boxWidth / 2,
+        yOffset + boxHeight / 2
+      );
+    });
+  };
+
   return (
     <div className="flex flex-col mt-2 mx-auto ">
       <div className=" w-full mx-auto text-black flex flex-col items-center justify-start mt-1">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <div className="flex flex-row items-center justify-start my-auto">
-            <h3 className="text-2xl font-bold">Palette</h3>
-            <button
-              onClick={() => setOpenMenuOne(!openMenuOne)}
-              className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 px-4 text-xl flex flex-row text-black rounded-md"
-            >
-              [
-              <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
-              ]
-            </button>
+          <div className="flex gap-2 items-center justify-between mx-auto w-full my-auto">
+            <div className="flex flex-row items-center gap-2">
+              <button
+                onClick={() => setOpenMenuOne(!openMenuOne)}
+                className="hover:bg-opacity-60 duration-300 font-semibold items-center py-2 text-xl flex flex-row text-black rounded-md"
+              >
+                [
+                <PlusIcon className="w-7 h-7 text-green-500 hover:rotate-90 duration-300" />
+                ]
+              </button>
+              <h3 className="text-2xl font-bold">Palette</h3>
+            </div>
+            {projectColors && projectColors.length > 0 && (
+              <div className="flex flex-row items-center gap-2 ml-auto">
+                <button
+                  title="Download Palette"
+                  onClick={savePalette}
+                  className="w-auto mx-auto px-2 py-1 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:opacity-60 flex items-center duration-300"
+                >
+                  <Download className="w-5 h-5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
