@@ -3,9 +3,9 @@
 import React, { useState } from "react";
 import MenuIcon from "../../assets/menu.svg";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import LogoImage from "../Logo";
-import { ArrowBigRight, ChevronDown, ExternalLinkIcon } from "lucide-react";
+import { ArrowBigRight, ChevronDown, ExternalLinkIcon, X } from "lucide-react";
 
 // Page Data
 const pageData = {
@@ -76,10 +76,34 @@ export const Header = () => {
               </Link>
             </div>
             <div
-              className="lg:hidden cursor-pointer hover:text-destructive duration-300"
+              className="relative pr-4 flex items-center justify-center bg-transparent border-none lg:hidden cursor-pointer "
               onClick={toggleMenu}
             >
-              <MenuIcon className="h-10 w-10 " />
+              <AnimatePresence mode="wait">
+                {!isMenuOpen ? (
+                  <motion.div
+                    key="menu"
+                    initial={{ opacity: 0, scale: 0.8, rotate: -45 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, rotate: 45 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="absolute"
+                  >
+                    <MenuIcon className="w-10 h-10 text-black hover:text-destructive duration-300" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="x"
+                    initial={{ opacity: 0, scale: 0.8, rotate: 45 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, rotate: -45 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="absolute"
+                  >
+                    <X className="w-10 h-10 text-destructive hover:text-confirm duration-300" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             {/* Desktop Menu */}
             <nav className="hidden font-bold lg:flex gap-6 text-black items-center">
@@ -138,7 +162,7 @@ export const Header = () => {
               opacity: { duration: 0.5 },
               y: { duration: 0.5, ease: [0.42, 0, 0.58, 1], type: "easeInOut" },
             }}
-            className={`lg:hidden sticky h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
+            className={`lg:hidden mt-6 sticky h-full text-black flex flex-col items-center justify-center font-bold space-y-4 ${
               isMenuOpen ? "sticky" : "hidden"
             }`}
             style={{ zIndex: 10 }}
