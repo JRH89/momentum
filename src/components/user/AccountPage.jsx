@@ -226,6 +226,7 @@ const Account = () => {
         await updateDoc(userRef, {
           stripeAccountId: null,
           stripeConnected: false,
+          customers: [],
         });
 
         toast.success("Stripe account successfully unlinked");
