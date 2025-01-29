@@ -88,8 +88,8 @@ export default function ActiveAbout() {
         <h1 className="text-3xl lg:text-4xl text-center font-bold mb-4">
           {sections[activeSection].title}
         </h1>
-        <div className="p-2 sm:p-4 sm:pt-0 pt-0 ">
-          <p className="text-lg text-justify sm:text-left leading-7 mb-4">
+        <div className="p-2 sm:p-4 sm:pt-0 pt-0 font-medium">
+          <p className="text-lg text-justify sm:text-left leading-7 mb-4 py-2">
             {sections[activeSection].content}
           </p>
 
@@ -106,7 +106,7 @@ export default function ActiveAbout() {
             )}
           </div>
 
-          <p className="text-lg text-justify sm:text-left leading-7 mb-4">
+          <p className="text-lg text-justify sm:text-left leading-7 mb-4 py-2">
             {sections[activeSection].content2}
           </p>
 
@@ -121,7 +121,7 @@ export default function ActiveAbout() {
               />
             )}
 
-            <p className="text-lg text-justify sm:text-left leading-7 my-4">
+            <p className="text-lg text-justify sm:text-left leading-7 my-4 py-2">
               {sections[activeSection].content3}
             </p>
 
@@ -137,7 +137,7 @@ export default function ActiveAbout() {
               )}
             </div>
             {sections[activeSection].content4 && (
-              <p className="text-lg text-justify sm:text-left leading-7 my-4">
+              <p className="text-lg text-justify sm:text-left leading-7 my-4 py-2">
                 {sections[activeSection].content4}
               </p>
             )}

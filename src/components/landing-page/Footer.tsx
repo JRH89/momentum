@@ -6,6 +6,7 @@ import siteMetadata from "../../../siteMetadata";
 import Link from "next/link";
 import {
   ChevronDown,
+  Github,
   Globe,
   Linkedin,
   Newspaper,
@@ -31,23 +32,19 @@ export const Footer = () => {
       <div className="container mx-auto px-6 lg:px-20">
         {/* Logo Section */}
         <div className="flex justify-center items-center relative">
-          <div className="relative inline-flex items-center before:content-[''] before:w-full before:h-full before:absolute before:top-0 before:left-0 before:right-0 before:bottom-0 before:blur before:bg-[linear-gradient(to_right,#f87bff,#fb92cf,#ffdd9b,#c2f0b1,#2fd8fe)] rounded-full">
-            <Image
-              src={logo}
-              alt="logo"
-              height={50}
-              className="relative z-10 rounded-lg border-2 border-black"
-            />
+          <div className="relative inline-flex items-center before:content-[''] before:w-full before:h-full before:absolute before:animate-pulse before:top-0 before:left-0 before:right-0 before:bottom-0 before:blur before:bg-[linear-gradient(to_right,#f87bff,#fb92cf,#ffdd9b,#c2f0b1,#2fd8fe)] rounded-xl">
+            <Link href="/#hero">
+              <Image
+                src={logo}
+                alt="logo"
+                height={50}
+                className="relative z-10 rounded-lg border-2 border-black"
+              />
+            </Link>
           </div>
         </div>
         {/* Social Media Icons */}
         <div className="flex justify-center gap-6 mt-8 items-center my-auto">
-          <Link
-            href="https://twitter.com/gamedevjared89"
-            className="hover:text-white  transition-colors duration-300 ease-in-out"
-          >
-            <Twitter className="w-8 h-8" />
-          </Link>
           <Link
             href="https://www.hookerhillstudios.com"
             className="hover:text-white  transition-colors duration-300 ease-in-out"
@@ -71,6 +68,12 @@ export const Footer = () => {
             className="hover:text-white  transition-colors duration-300 ease-in-out"
           >
             <Newspaper className="w-8 h-8" />
+          </Link>
+          <Link
+            href="https://github.com/jrh89"
+            className="hover:text-white  transition-colors duration-300 ease-in-out"
+          >
+            <Github className="w-8 h-8" />
           </Link>
         </div>
         {/* Navigation Section */}
