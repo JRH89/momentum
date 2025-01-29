@@ -22,7 +22,7 @@ export async function POST(req: Request) {
       const unitAmountInCents = parseInt(item.amount, 10);
       console.log(`Creating invoice item: ${unitAmountInCents} ${item.currency}`);
 
-      // Create invoice item directly without creating a price first
+      // Create the invoice item using the provided price and description
       const invoiceItem = await stripe.invoiceItems.create(
         {
           customer: stripeCustomerId,
@@ -91,4 +91,3 @@ export async function POST(req: Request) {
     }, { status: 500 });
   }
 }
-

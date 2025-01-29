@@ -647,17 +647,31 @@ const ProjectPage = () => {
   const handleCreateInvoice = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Check if any of the fields for items are empty
     if (
-      !invoiceAmount ||
-      !invoiceCurrency ||
-      !invoiceDescription ||
-      !invoiceDueDate
+      invoiceItems.some(
+        (item) => !item.amount || !item.currency || !item.description
+      )
     ) {
-      toast.error("Please fill in all fields");
+      toast.error("Please fill in all fields for each item");
+      return;
+    }
+
+    // Validate due date
+    if (!invoiceDueDate) {
+      toast.error("Please select a due date");
       return;
     }
 
     try {
+      // Prepare the request payload with multiple items
+      const items = invoiceItems.map((item) => ({
+        amount: Math.round(parseFloat(item.amount) * 100), // Convert to cents
+        currency: item.currency.toLowerCase(),
+        description: item.description,
+        quantity: 1,
+      }));
+
       const response = await fetch(`/api/stripe/invoices/create`, {
         method: "POST",
         headers: {
@@ -666,14 +680,7 @@ const ProjectPage = () => {
         body: JSON.stringify({
           stripeAccountId,
           stripeCustomerId,
-          items: [
-            {
-              amount: Math.round(parseFloat(invoiceAmount) * 100), // Convert to cents and ensure it's a number
-              currency: invoiceCurrency.toLowerCase(),
-              description: invoiceDescription,
-              quantity: 1,
-            },
-          ],
+          items,
           dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
         }),
       });
@@ -686,6 +693,7 @@ const ProjectPage = () => {
 
       const invoice = data.invoice;
 
+      // Update Firestore with new invoice data
       const userRef = doc(db, "users", uid);
       await runTransaction(db, async (transaction) => {
         const userSnap = await transaction.get(userRef);
@@ -729,17 +737,51 @@ const ProjectPage = () => {
       setInvoices((prevInvoices) => [...prevInvoices, data.invoice]);
       setShowInvoiceForm(false);
       toast.success("Invoice created successfully!");
+
       // Reset form
-      setInvoiceAmount("");
-      setInvoiceCurrency("usd");
-      setInvoiceDescription("");
-      setInvoiceDueDate("");
+      setInvoiceItems([{ amount: "", currency: "usd", description: "" }]); // Reset items to an empty state
+      setInvoiceDueDate(""); // Reset due date
     } catch (err: any) {
       toast.error("Error creating invoice:", err);
       toast.error(
         err instanceof Error ? err.message : "Failed to create invoice"
       );
     }
+  };
+
+  type InvoiceItem = {
+    amount: string;
+    currency: string;
+    description: string;
+  };
+
+  const [invoiceItems, setInvoiceItems] = useState<InvoiceItem[]>([
+    { amount: "", currency: "usd", description: "" },
+  ]);
+
+  // Handle change for individual item fields
+  const handleItemChange = (
+    index: number,
+    field: keyof InvoiceItem,
+    value: string
+  ) => {
+    const newItems = [...invoiceItems];
+    newItems[index][field] = value;
+    setInvoiceItems(newItems);
+  };
+
+  // Handle adding a new item
+  const handleAddItem = () => {
+    setInvoiceItems([
+      ...invoiceItems,
+      { amount: "", currency: "usd", description: "" },
+    ]);
+  };
+
+  // Handle removing an item
+  const handleRemoveItem = (index: number) => {
+    const newItems = invoiceItems.filter((_, i) => i !== index);
+    setInvoiceItems(newItems);
   };
 
   const [settingsForm, setSettingsForm] = useState(false);
@@ -1258,65 +1300,92 @@ const ProjectPage = () => {
           <InvoicesTable itemsPerPage={10} invoices={invoices} />
           {showInvoiceForm && (
             <form
-              className="fixed z-40 inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
+              className="fixed  z-40 inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
               onSubmit={handleCreateInvoice}
             >
-              <div className="p-6 rounded-lg shadow-md w-full max-w-xl">
+              <div className="p-6 rounded-lg scrollbar-thin overflow-y-auto shadow-md py-24 w-full max-w-xl">
                 <h2 className="text-2xl lg:text-3xl text-white text-center font-bold mb-4">
                   Create Invoice
                 </h2>
+
+                {/* Multiple Items */}
+                {invoiceItems.map((item, index) => (
+                  <div key={index} className="mt-4">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
+                      <div className="w-full">
+                        <input
+                          placeholder="Currency"
+                          id={`currency-${index}`}
+                          type="text"
+                          value={item.currency}
+                          onChange={(e) =>
+                            handleItemChange(index, "currency", e.target.value)
+                          }
+                          required
+                          className="w-full flex mx-auto self-center p-2 border border-black rounded-md"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <input
+                          placeholder="Amount"
+                          id={`amount-${index}`}
+                          type="number"
+                          value={item.amount}
+                          onChange={(e) =>
+                            handleItemChange(index, "amount", e.target.value)
+                          }
+                          required
+                          className="w-full p-2 border border-black rounded-md"
+                        />
+                      </div>
+
+                      <div className="w-full">
+                        <input
+                          placeholder="Item Name"
+                          id={`description-${index}`}
+                          type="text"
+                          value={item.description}
+                          onChange={(e) =>
+                            handleItemChange(
+                              index,
+                              "description",
+                              e.target.value
+                            )
+                          }
+                          required
+                          className="w-full flex p-2 border border-black rounded-md"
+                        />
+                      </div>
+                    </div>
+
+                    {invoiceItems.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveItem(index)}
+                        className="mt-2 text-sm text-destructive hover:underline"
+                      >
+                        Remove this item
+                      </button>
+                    )}
+                  </div>
+                ))}
+
+                {/* Add new item button */}
                 <div className="mt-4">
-                  <label
-                    htmlFor="amount"
-                    className="block text-sm font-medium text-white mb-2"
+                  <button
+                    type="button"
+                    onClick={handleAddItem}
+                    className="text-sm text-confirm hover:underline"
                   >
-                    Amount
-                  </label>
-                  <input
-                    id="amount"
-                    type="number"
-                    value={invoiceAmount}
-                    onChange={(e) => setInvoiceAmount(e.target.value)}
-                    required
-                    className="w-full p-2 border border-black rounded-md"
-                  />
+                    + Add Another Item
+                  </button>
                 </div>
-                <div className="mt-4">
-                  <label
-                    htmlFor="currency"
-                    className="block text-sm font-medium text-white mb-2"
-                  >
-                    Currency
-                  </label>
-                  <input
-                    id="currency"
-                    type="text"
-                    value={invoiceCurrency}
-                    onChange={(e) => setInvoiceCurrency(e.target.value)}
-                    required
-                    className="w-full p-2 border border-black rounded-md"
-                  />
-                </div>
-                <div className="mt-4">
-                  <label
-                    htmlFor="description"
-                    className="block text-sm font-medium text-white mb-2"
-                  >
-                    Description
-                  </label>
-                  <input
-                    id="description"
-                    type="text"
-                    value={invoiceDescription}
-                    onChange={(e) => setInvoiceDescription(e.target.value)}
-                    required
-                    className="w-full p-2 border border-black rounded-md"
-                  />
-                </div>
+
+                {/* Due Date */}
                 <div className="mt-4">
                   <label
                     htmlFor="dueDate"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="flex justify-end w-full text-sm font-medium text-white mb-2"
                   >
                     Due Date
                   </label>
@@ -1326,9 +1395,12 @@ const ProjectPage = () => {
                     value={invoiceDueDate}
                     onChange={(e) => setInvoiceDueDate(e.target.value)}
                     required
+                    min={new Date().toISOString().split("T")[0]} // Set today's date as the minimum
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
+
+                {/* Submit buttons */}
                 <div className="flex mt-6 flex-row justify-end">
                   <button
                     type="button"
