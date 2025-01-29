@@ -288,7 +288,9 @@ const CustomerDetailsPage: React.FC = () => {
             <h2 className="text-2xl lg:text-3xl font-bold text-black">
               Customer Details
             </h2>
-            <p className="px-4 mt-4 font-semibold">Name: {customerData.name}</p>
+            <p className="px-4 mt-4 capitalize font-semibold">
+              Name: {customerData.name}
+            </p>
             <p className="px-4 font-semibold">
               Email:{" "}
               <a
