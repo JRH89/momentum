@@ -110,20 +110,48 @@ const CustomerDetailsPage: React.FC = () => {
     }
   }, [stripeAccountId, error, invoices]);
 
+  const [items, setItems] = useState([
+    { amount: "", currency: "usd", description: "" },
+  ]);
+
+  const addItem = () => {
+    setItems([...items, { description: "", amount: "", currency: "usd" }]);
+  };
+
+  const removeItem = (index: number) => {
+    const updatedItems: any = items.filter((_, idx) => idx !== index);
+    setItems(updatedItems);
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+    field: string
+  ) => {
+    const updatedItems: any = [...items];
+    updatedItems[index][field] = e.target.value;
+    setItems(updatedItems);
+  };
+
   const handleCreateInvoice = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (
-      !invoiceAmount ||
-      !invoiceCurrency ||
-      !invoiceDescription ||
-      !invoiceDueDate
+      !invoiceDueDate ||
+      items.some((item) => !item.description || !item.amount || !item.currency)
     ) {
       toast.error("Please fill in all fields");
       return;
     }
 
     try {
+      const itemsData = items.map((item: any) => ({
+        amount: Math.round(parseFloat(item.amount) * 100), // Convert to cents and ensure it's a number
+        currency: invoiceCurrency.toLowerCase(),
+        description: item.description,
+        quantity: parseInt(item.quantity, 10),
+      }));
+
       const response = await fetch(`/api/stripe/invoices/create`, {
         method: "POST",
         headers: {
@@ -132,14 +160,7 @@ const CustomerDetailsPage: React.FC = () => {
         body: JSON.stringify({
           stripeAccountId,
           stripeCustomerId,
-          items: [
-            {
-              amount: Math.round(parseFloat(invoiceAmount) * 100), // Convert to cents and ensure it's a number
-              currency: invoiceCurrency.toLowerCase(),
-              description: invoiceDescription,
-              quantity: 1,
-            },
-          ],
+          items: itemsData,
           dueDate: Math.floor(new Date(invoiceDueDate).getTime() / 1000),
         }),
       });
@@ -239,10 +260,8 @@ const CustomerDetailsPage: React.FC = () => {
       toast.success("Invoice created successfully!");
 
       // Reset form
-      setInvoiceAmount("");
-      setInvoiceCurrency("usd");
-      setInvoiceDescription("");
       setInvoiceDueDate("");
+      setItems([{ description: "", amount: "", currency: "usd" }]);
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "Failed to create invoice"
@@ -301,62 +320,81 @@ const CustomerDetailsPage: React.FC = () => {
               className="fixed z-40 inset-0 bg-black/95 flex items-center justify-center min-h-screen h-full w-full flex-col px-4"
               onSubmit={handleCreateInvoice}
             >
-              <div className="p-6 rounded-lg shadow-md w-full max-w-xl">
+              <div className="p-6 rounded-lg scrollbar-thin overflow-y-auto shadow-md py-24 w-full max-w-xl">
                 <h2 className="text-2xl lg:text-3xl text-white text-center font-bold mb-4">
                   Create Invoice
                 </h2>
+
+                {/* Multiple Items */}
+                {items.map((item, index) => (
+                  <div key={index} className="mt-4">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full items-center">
+                      <div className="w-full">
+                        <input
+                          placeholder="Currency"
+                          id={`currency-${index}`}
+                          type="text"
+                          value={item.currency}
+                          onChange={(e) => handleChange(e, index, "currency")}
+                          required
+                          className="w-full flex mx-auto self-center p-2 border border-black rounded-md"
+                        />
+                      </div>
+                      <div className="w-full">
+                        <input
+                          placeholder="Amount"
+                          id={`amount-${index}`}
+                          type="number"
+                          value={item.amount}
+                          onChange={(e) => handleChange(e, index, "amount")}
+                          required
+                          className="w-full p-2 border border-black rounded-md"
+                        />
+                      </div>
+
+                      <div className="w-full">
+                        <input
+                          placeholder="Item Name"
+                          id={`description-${index}`}
+                          type="text"
+                          value={item.description}
+                          onChange={(e) =>
+                            handleChange(e, index, "description")
+                          }
+                          required
+                          className="w-full flex p-2 border border-black rounded-md"
+                        />
+                      </div>
+                    </div>
+
+                    {items.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeItem(index)}
+                        className="mt-2 text-sm text-destructive hover:underline"
+                      >
+                        Remove this item
+                      </button>
+                    )}
+                  </div>
+                ))}
+
+                {/* Add new item button */}
                 <div className="mt-4">
-                  <label
-                    htmlFor="amount"
-                    className="block text-sm font-medium text-white mb-2"
+                  <button
+                    type="button"
+                    onClick={addItem}
+                    className="text-sm text-confirm hover:underline"
                   >
-                    Amount
-                  </label>
-                  <input
-                    id="amount"
-                    type="number"
-                    value={invoiceAmount}
-                    onChange={(e) => setInvoiceAmount(e.target.value)}
-                    required
-                    className="w-full p-2 border border-black rounded-md"
-                  />
+                    + Add Another Item
+                  </button>
                 </div>
-                <div className="mt-4">
-                  <label
-                    htmlFor="currency"
-                    className="block text-sm font-medium text-white mb-2"
-                  >
-                    Currency
-                  </label>
-                  <input
-                    id="currency"
-                    type="text"
-                    value={invoiceCurrency}
-                    onChange={(e) => setInvoiceCurrency(e.target.value)}
-                    required
-                    className="w-full p-2 border border-black rounded-md"
-                  />
-                </div>
-                <div className="mt-4">
-                  <label
-                    htmlFor="description"
-                    className="block text-sm font-medium text-white mb-2"
-                  >
-                    Description
-                  </label>
-                  <input
-                    id="description"
-                    type="text"
-                    value={invoiceDescription}
-                    onChange={(e) => setInvoiceDescription(e.target.value)}
-                    required
-                    className="w-full p-2 border border-black rounded-md"
-                  />
-                </div>
+
+                {/* Due Date */}
                 <div className="mt-4">
                   <label
                     htmlFor="dueDate"
-                    className="block text-sm font-medium text-white mb-2"
+                    className="flex justify-end w-full text-sm font-medium text-white mb-2"
                   >
                     Due Date
                   </label>
@@ -366,20 +404,23 @@ const CustomerDetailsPage: React.FC = () => {
                     value={invoiceDueDate}
                     onChange={(e) => setInvoiceDueDate(e.target.value)}
                     required
+                    min={new Date().toISOString().split("T")[0]} // Set today's date as the minimum
                     className="w-full p-2 border border-black rounded-md"
                   />
                 </div>
+
+                {/* Submit buttons */}
                 <div className="flex mt-6 flex-row justify-end">
                   <button
                     type="button"
                     onClick={() => setShowInvoiceForm(false)}
-                    className="px-4 py-2 text-destructive  rounded-lg  font-semibold hover:opacity-60 duration-300"
+                    className=" px-4 py-2 text-destructive rounded-lg font-semibold hover:opacity-60 duration-300"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
+                    className=" hover:bg-opacity-60 duration-300 bg-confirm py-2 px-4 font-semibold rounded-md"
                   >
                     Create Invoice
                   </button>
