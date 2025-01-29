@@ -172,7 +172,7 @@ const SignIn = () => {
       {/* Email/Password Sign-In */}
       <input
         type="email"
-        placeholder="Enter email"
+        placeholder="Email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         className="w-full max-w-sm px-4 py-2 border-2 border-black shadow-md shadow-black rounded-lg"
@@ -180,7 +180,7 @@ const SignIn = () => {
       <div className="relative w-full">
         <input
           type={showPassword ? "text" : "password"}
-          placeholder="Enter password"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full max-w-sm px-4 py-2 border-2 border-black shadow-md shadow-black rounded-lg"
