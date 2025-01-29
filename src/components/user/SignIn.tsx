@@ -9,6 +9,7 @@ import { auth, provider as googleProvider, db } from "../../../firebase";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 const SignIn = () => {
   const [user, setUser] = useState<any>(null);
@@ -16,6 +17,7 @@ const SignIn = () => {
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // Monitor auth state
   useEffect(() => {
@@ -103,9 +105,9 @@ const SignIn = () => {
         const userData = {
           uid: user.uid,
           userId: user.uid,
-          name: user.displayName || "Anonymous",
+          name: user.displayName || user.email,
           email: user.email,
-          photoURL: null,
+          photoURL: user.photoURL || null,
           isPremium: false,
           isSubscribed: true,
           isAdmin: false,
@@ -175,13 +177,23 @@ const SignIn = () => {
         onChange={(e) => setEmail(e.target.value)}
         className="w-full max-w-sm px-4 py-2 border-2 border-black shadow-md shadow-black rounded-lg"
       />
-      <input
-        type="password"
-        placeholder="Enter password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="w-full max-w-sm px-4 py-2 border-2 border-black shadow-md shadow-black rounded-lg"
-      />
+      <div className="relative w-full">
+        <input
+          type={showPassword ? "text" : "password"}
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full max-w-sm px-4 py-2 border-2 border-black shadow-md shadow-black rounded-lg"
+        />
+        <button
+          type="button"
+          onClick={() => setShowPassword(!showPassword)}
+          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800"
+        >
+          {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
+      </div>
+
       <button
         type="button"
         className="w-full max-w-sm px-4 py-2 text-lg md:text-xl font-semibold text-black bg-confirm border-2 border-black rounded-lg shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300"

@@ -23,7 +23,7 @@ export default function Page() {
         className="flex bg-white justify-center items-center bg-cover bg-center min-h-screen h-full  flex-col text-center gap-5 w-full mx-auto"
       >
         <div className="relative z-10 h-full mx-auto justify-center items-center flex flex-col gap-4 mt-10 lg:mt-16">
-          <h1 className="text-4xl px-2 md:px-0 max-w-xl mx-auto sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-black mb-2">
+          <h1 className="text-5xl px-2 md:px-0 max-w-sm mx-auto  font-semibold text-black mb-2">
             Ready to gain {siteMetadata.title}?
           </h1>
           <SignIn />
