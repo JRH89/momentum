@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Copy, Download, PlusIcon, Printer, Save } from "lucide-react";
+import { Copy, Download, PlusIcon, Printer, Save, X } from "lucide-react";
 import { toast } from "react-toastify";
 import { db } from "../../../firebase";
 import {
@@ -261,7 +261,7 @@ export default function ColorPaletteGenerator({
                 <button
                   title="Download Palette"
                   onClick={savePalette}
-                  className="w-auto mx-auto px-2 py-1 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:opacity-60 flex items-center duration-300"
+                  className="w-auto mx-auto px-2 py-1 bg-green-500 text-black font-semibold rounded-lg shadow-md hover:opacity-60 flex items-center duration-300"
                 >
                   <Download className="w-5 h-5" />
                 </button>
@@ -340,9 +340,9 @@ export default function ColorPaletteGenerator({
                 <button
                   type="button"
                   onClick={() => deleteColor(color)}
-                  className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr p-1 py-0.5 text-xs hover:bg-opacity-60"
+                  className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr p-1 py-1 text-xs hover:bg-opacity-60"
                 >
-                  X
+                  <X className="w-3 h-3" />
                 </button>
                 {/* Optionally, display the color code */}
                 <span className="text-white text-xs absolute bottom-1">

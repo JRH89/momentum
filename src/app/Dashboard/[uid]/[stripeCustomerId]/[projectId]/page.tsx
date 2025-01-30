@@ -4,7 +4,14 @@ import React, { useState, useEffect } from "react";
 import { db, storage } from "../../../../../../firebase";
 import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
-import { LoaderPinwheel, Plus, Settings, Upload } from "lucide-react";
+import {
+  Download,
+  LoaderPinwheel,
+  Plus,
+  Settings,
+  Upload,
+  X,
+} from "lucide-react";
 import ColorPaletteGenerator from "../../../../../components/customer/ColorPalleteGenerator";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "react-toastify";
@@ -1490,9 +1497,9 @@ const ProjectPage = () => {
                         <button
                           type="button"
                           onClick={() => deleteUpload(index)}
-                          className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-0.5 text-xs hover:bg-opacity-60"
+                          className="absolute top-0 right-0 bg-destructive text-black font-bold border-b border-l border-black rounded-bl-lg rounded-tr-md p-1 py-1 text-xs hover:bg-opacity-60"
                         >
-                          X
+                          <X className="w-3 h-3" />
                         </button>
                         {/* Image preview (if it's an image) */}
                         {upload.url &&
