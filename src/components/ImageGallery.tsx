@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  ArrowBigLeftIcon,
-  ArrowBigRightIcon,
-  ArrowLeft,
-  ArrowLeftIcon,
-  XIcon,
-} from "lucide-react";
+import { ArrowBigLeftIcon, ArrowBigRightIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -23,25 +17,25 @@ const ImageGallery = () => {
     {
       src: "/dashboard.png",
       alt: "User Dashboard",
-      desc: "The user dashboard serves as a comprehensive control center, allowing you to manage customers, track invoices, and oversee projects effortlessly. Easily add new customers, generate and send invoices, and streamline workflows to maximize productivity.",
+      desc: "The user dashboard serves as a comprehensive control center, allowing you to create customers, send invoices, and start projects.",
       bgImage: "/image-3.png",
     },
     {
       src: "/customer-dashboard.png",
       alt: "Customer Dashboard",
-      desc: "The customer dashboard provides an intuitive interface for your customers to stay informed about project progress, make secure invoice payments, and upload files. Delivering transparency and convenience, it enhances collaboration and customer satisfaction.",
+      desc: "The customer dashboard provides an intuitive interface for your customers to acess projects and view or pay invoices. Delivering transparency and convenience, it enhances collaboration and customer satisfaction.",
       bgImage: "/image-2.png",
     },
     {
       src: "/project.png",
       alt: "Project Dashboard",
-      desc: "The project dashboard centralizes milestones, timelines, and files, ensuring every aspect of project management is organized. Track progress, manage deadlines, and maintain clarity with an easy-to-use platform designed for efficiency.",
+      desc: "The project dashboard centralizes milestones, project level invoices, project files, and a live chat portal, ensuring every aspect of project management is organized. Both you and customers can access these pages to monitor progress and ensure you stay in sync.",
       bgImage: "/image-5.png",
     },
     {
-      src: "/customper-page.png",
-      alt: "Customer Details Page",
-      desc: "The project settings interface allows complete customization of project details, permissions, and configurations. Tailor workflows to meet unique requirements, ensuring projects run smoothly from start to finish.",
+      src: "/features.png",
+      alt: "Project Features",
+      desc: "In addition to milestones and project level invoices, each project dashboard has optional features, such as live chat, file uploads, and a color palette. These features are free to enable and can be activated only when needed, ensuring your workspace stays clean and uncluttered.",
       bgImage: "/image-4.png",
     },
   ];

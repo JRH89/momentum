@@ -26,8 +26,6 @@ const pricingTiers = [
       "Unlimited Projects",
       "Unlimited Invoices",
       "Unlimited Customers",
-      "Project Creation",
-      "Milestone Tracking",
       "Stripe Integration",
     ],
     url: "/Signup",
@@ -43,8 +41,6 @@ const pricingTiers = [
       "Unlimited Projects",
       "Unlimited Invoices",
       "Unlimited Customers",
-      "Project Creation",
-      "Milestone Tracking",
       "Stripe Integration",
     ],
     url: "/Signup",
@@ -137,14 +133,14 @@ export const PriceCard = () => {
               <Link
                 href={tier.url}
                 className={twMerge(
-                  "btn btn-primary lg:my-4 w-full lg:mt-8 mt-4 justify-center hover:shadow-lg hover:shadow-black duration-300 font-semibold",
+                  "btn btn-primary my-4 w-full mt-8 justify-center hover:shadow-lg hover:shadow-black duration-300 font-semibold",
                   tier.inverse &&
                     "bg-confirm shadow-md shadow-black border-2 border-black text-black"
                 )}
               >
                 {tier.buttonText}
               </Link>
-              <ul className="flex flex-col w-full gap-2 mt-4 lg:grid lg:grid-cols-2">
+              <ul className="flex flex-col w-full gap-1 lg:gap-2 mt-4 lg:grid lg:grid-cols-2">
                 {tier.features.map((feature, featureIndex) => (
                   <li
                     key={featureIndex}
