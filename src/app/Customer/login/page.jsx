@@ -71,7 +71,7 @@ const CustomerLogin = () => {
       await signInWithEmailAndPassword(auth, email, password);
       setLoading(false);
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
       setLoading(false);
     }
   };

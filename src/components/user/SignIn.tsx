@@ -10,6 +10,7 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 const SignIn = () => {
   const [user, setUser] = useState<any>(null);
@@ -64,7 +65,7 @@ const SignIn = () => {
               throw new Error(errorData.error || "Something went wrong.");
             }
           } catch (error: any) {
-            setError(error.message);
+            toast.error(error.message);
           }
           await setDoc(userDocRef, userData);
         }
@@ -125,7 +126,7 @@ const SignIn = () => {
 
       router.push(`/Dashboard/${user.uid}`);
     } catch (error: any) {
-      setError(error.message);
+      toast.error(error.message);
     }
   };
 

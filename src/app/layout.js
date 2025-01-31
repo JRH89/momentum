@@ -3,7 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "../context/AuthProvider";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, Zoom } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import siteMetadata from "../../siteMetadata";
 import { twMerge } from "tailwind-merge";
@@ -82,8 +82,9 @@ export default function RootLayout({ children }) {
           <CookieBanner />
           <ToastContainer
             position="bottom-center"
-            autoClose={3000}
+            autoClose={5000}
             newestOnTop
+            transition={Zoom}
             closeOnClick
             rtl={false}
             pauseOnFocusLoss
