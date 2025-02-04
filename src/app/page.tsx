@@ -13,6 +13,7 @@ import FAQ from "../components/page/FAQ";
 import FeaturesSection from "../components/FeaturesSection";
 import ImageGallery from "../components/ImageGallery";
 import Image from "next/image";
+import MomentumInfographic from "../components/how-it-works";
 
 export default function Home() {
   return (
@@ -48,11 +49,11 @@ export default function Home() {
                 href={"/Signup"}
                 className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-md sm:text-base md:text-xl font-extrabold flex flex-row gap-2 px-4 sm:px-6 py-3 rounded-lg shadow-md shadow-black items-center"
               >
-                Get Started{" "}
+                Start Now{" "}
                 <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" />
               </Link>
               <Link
-                href="/#features"
+                href="/#howitworks"
                 className="hover:opacity-60 transition duration-300 ease-in-out items-center font-bold flex flex-row gap-2 text-md sm:text-base md:text-xl text-black"
               >
                 Learn more <GraduationCap className="w-4 h-4 sm:w-6 sm:h-6" />
@@ -69,6 +70,7 @@ export default function Home() {
             />
           </div>
         </section>
+        <MomentumInfographic />
         <FeaturesSection />
         <section className="border-t-2 border-black bg-[#EAEEFE]">
           <PriceCard />
@@ -105,7 +107,7 @@ export default function Home() {
                 href={"/Signup"}
                 className="bg-confirm hover:shadow-lg hover:shadow-black transition duration-300 ease-in-out text-black font-bold flex flex-row gap-2 text-xs sm:text-xl px-4 sm:px-6 py-3 rounded-lg shadow-md border-2 border-black shadow-black items-center"
               >
-                Get Started{" "}
+                Start Now{" "}
                 <ArrowBigRightIcon className="w-4 h-4 sm:w-6 sm:h-6" />
               </Link>
               <Link

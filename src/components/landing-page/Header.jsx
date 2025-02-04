@@ -14,6 +14,7 @@ const pageData = {
   bannerLinkHref: "/Signup",
   logoHref: "/",
   menuItems: [
+    { text: "About", href: "/#howitworks" },
     { text: "Features", href: "/#features" },
     { text: "Pricing", href: "/#price" },
     { text: "Details", href: "/#details" },

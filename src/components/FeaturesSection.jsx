@@ -63,8 +63,8 @@ const FeaturesSection = () => {
           </div>
           <h2 className="section-title mt-5">Project Management Suite</h2>
           <p className="section-description mt-5">
-            We provide a comprehensive suite of features to help you keep
-            projects organized, stay on schedule, and get paid.
+            Momentum provides a comprehensive suite of features to help you
+            track project milestones, keep clients up to date, and get paid.
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-12 mt-12">

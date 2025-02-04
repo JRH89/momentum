@@ -11,7 +11,7 @@ const pageData = {
   tag: "Pricing",
   title: "Affordable Plans",
   description:
-    "We offer generous pricing plans to fit any budget. Choose the one that works best for you.",
+    "Generous pricing plans for freelancers, startups, and small businesses. No hidden fees, no surprises.",
 };
 
 // Pricing Data
@@ -54,7 +54,7 @@ export const PriceCard = () => {
       id="price"
       className="relative pb-6 min-h-screen flex flex-col items-center justify-center bg-center bg-fixed bg-cover bg-no-repeat"
       style={{
-        backgroundImage: 'url("/image-2.png")',
+        backgroundImage: 'url("/image-4.png")',
         backgroundPosition: "center 25%",
       }}
     >
