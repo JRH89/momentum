@@ -180,7 +180,7 @@ export default function Dashboard() {
             </div>
             <div className="flex flex-col gap-5 mt-4 sm:mt-6">
               <div className=" h-full flex flex-col shadow-black mx-auto w-full">
-                {user && !userData?.stripeConnected && (
+                {user && userData?.stripeConnected && (
                   <div className="flex flex-col gap-0">
                     <h3 className="text-2xl font-semibold text-black flex flex-row gap-2 my-auto px-0 sm:px-4 items-center">
                       <Users className="w-6 h-6 sm:w-7 sm:h-7" />
@@ -207,7 +207,7 @@ export default function Dashboard() {
                     )}
                   </div>
                 )}
-                {user && userData?.stripeConnected && (
+                {user && !userData?.stripeConnected && (
                   <div className="flex my-auto justify-center items-center flex-col -mt-24 h-full min-h-screen gap-2">
                     <h2 className="text-2xl max-w-xl w-full mx-auto text-center font-bold">
                       Step 2: Connect your Stripe Account
