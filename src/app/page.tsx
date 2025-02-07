@@ -15,6 +15,12 @@ import ImageGallery from "../components/ImageGallery";
 import Image from "next/image";
 import MomentumInfographic from "../components/how-it-works";
 
+const features = [
+  "Track project milestones and deadlines",
+  "Collaborate with clients",
+  "Send invoices and get paid",
+];
+
 export default function Home() {
   return (
     <>
@@ -28,8 +34,8 @@ export default function Home() {
           }}
         >
           <div className="absolute inset-0 bg-white bg-opacity-75"></div>
-          <div className="relative xl:ml-14 z-10 text-left sm:max-w-xl lg:max-w-5xl p-8 pt-28 sm:pt-32 lg:pt-32 lg:w-1/2">
-            <div className="flex lg:hidden mb-8">
+          <div className="relative xl:ml-14 z-10 text-left sm:max-w-xl lg:max-w-5xl p-8 pt-28 items-center my-auto sm:pt-28 lg:pt-32 lg:w-2/3">
+            <div className="flex lg:hidden mb-8 sm:mb-4">
               <Image
                 width={1920}
                 height={1080}
@@ -38,13 +44,31 @@ export default function Home() {
                 className="w-auto border-2 border-black shadow-md shadow-black h-auto rounded-lg my-auto justify-center items-center z-40"
               />
             </div>
-            <h1 className="text-3xl text-black sm:text-3xl lg:text-5xl font-extrabold xl:text-6xl mb-2 xl:mb-4">
-              Project Management for Freelancers & Small Businesses
+            <h1 className="text-2xl text-black sm:text-3xl lg:text-4xl font-extrabold xl:text-5xl 2xl:text-6xl mb-2 xl:mb-4 xl:leading-tight 2xl:leading-tight">
+              Project Management & Invoicing Made Simple
             </h1>
-            <p className="text-xl md:text-xl max-w-3xl xl:text-3xl lg:text-2xl mb-4 xl:mb-6 text-black font-medium">
-              Manage projects, organize customers, and send invoices.
-            </p>
-            <div className="flex flex-row gap-5 items-center">
+            <div className="py-2 sm:py-0">
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-center gap-2 py-1">
+                  <svg
+                    className="size-4 sm:size-5 flex-shrink-0 shadow-md shadow-black rounded-full bg-black text-white"
+                    viewBox="0 0 20 20"
+                    fill="#ec4899"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="font-bold text-sm sm:text-base xl:text-2xl text-black">
+                    {feature}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-row gap-5 items-center mt-4 xl:mt-8">
               <Link
                 href={"/Signup"}
                 className="bg-confirm hover:shadow-lg border-2 border-black hover:shadow-black transition duration-300 ease-in-out text-black text-md sm:text-base md:text-xl font-extrabold flex flex-row gap-2 px-4 sm:px-6 py-3 rounded-lg shadow-md shadow-black items-center"
@@ -60,13 +84,13 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="relative lg:w-1/2 hidden lg:flex items-center justify-center p-8 pt-28 sm:pt-32 lg:pt-32">
+          <div className="relative mx-auto hidden lg:flex items-center justify-center p-8  xl:mr-10 pt-28 sm:pt-32 lg:pt-32">
             <Image
               width={1920}
               height={1080}
               src="/project.png"
               alt="Project Dashboard"
-              className="max-w-lg border-2 border-black shadow-md shadow-black h-auto rounded-lg my-auto justify-center items-center"
+              className="max-w-2xl xl:max-w-3xl mx-auto w-full  border-2 border-black shadow-md shadow-black h-auto rounded-2xl my-auto justify-center items-center"
             />
           </div>
         </section>
@@ -87,7 +111,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-white bg-opacity-95"></div>
           <FAQ />
         </section>
-        <section
+        {/* <section
           className="relative min-h-screen flex flex-col items-center justify-center border-t-2 border-black bg-center bg-fixed aspect-auto bg-cover bg-no-repeat"
           style={{
             backgroundImage: 'url("/lightspeed2.jpg")',
@@ -118,7 +142,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-        </section>
+        </section> */}
       </main>
       <Footer />
     </>

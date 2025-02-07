@@ -73,11 +73,11 @@ const ImageGallery = () => {
           preview to learn more about its features.
         </p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 gap-5 lg:gap-10 mt-6 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-10 lg:gap-10 mt-6 max-w-4xl mx-auto">
         {currentImages.map((image, index) => (
           <div
             key={index}
-            className="relative flex flex-col rounded-lg shadow-md shadow-black cursor-pointer"
+            className="relative flex flex-col rounded-2xl shadow-md shadow-black cursor-pointer"
             onClick={() => openModal(image)}
           >
             <Image
@@ -86,9 +86,9 @@ const ImageGallery = () => {
               alt={image.alt}
               width={600}
               height={400}
-              className="w-full shadow-lg h-auto rounded-t-lg border-t-2 border-l-2 border-r-2 border-black object-cover"
+              className="w-full shadow-lg h-auto rounded-t-2xl border-t-2 border-l-2 border-r-2 border-black object-cover"
             />
-            <p className="text-black bg-backgroundPrimary h-full flex p-2 text-center border-r-2 border-l-2 border-b-2 border-black rounded-b-lg text-xs sm:text-base mx-auto w-full justify-center font-medium">
+            <p className="text-black bg-backgroundPrimary h-full flex p-2 text-center border-r-2 border-l-2 border-b-2 border-black rounded-b-2xl text-xs sm:text-base mx-auto w-full justify-center font-medium">
               {image.alt}
             </p>
           </div>

@@ -94,4 +94,8 @@ html {
   .card {
     @apply p-10 rounded-3xl shadow-[0_7px_14px_#eaeaea] max-w-xs w-full border border-[#f1f1f1];
   }
+
+  .feature-description {
+    @apply text-center text-xl sm:text-[22px] leading-[30px] tracking-tight text-gray-800;
+  }
 }

@@ -71,7 +71,7 @@ const FeaturesSection = () => {
           {featuresData.map((feature, index) => (
             <div
               key={index}
-              className="relative h-full max-w-md w-full border-2 border-black bg-confirm p-4 lg:p-8 rounded-lg shadow-lg shadow-black text-center flex flex-col items-center justify-center"
+              className="relative h-full max-w-md w-full border-2 border-black bg-confirm p-4 lg:p-8 rounded-2xl shadow-lg shadow-black text-center flex flex-col items-center justify-center"
             >
               {/* Icon Wrapper */}
               <div className="absolute -top-8 flex items-center justify-center">
@@ -91,7 +91,17 @@ const FeaturesSection = () => {
                 <ul className="w-full text-left space-y-3 flex-grow">
                   {feature.points.map((point, idx) => (
                     <li key={idx} className="flex items-center gap-3">
-                      <CircleCheckIcon className="text-destructive w-5 h-5 bg-white rounded-full shadow-md shadow-black" />
+                      <svg
+                        className="size-4 sm:size-5 flex-shrink-0 shadow-md shadow-black rounded-full bg-black text-white"
+                        viewBox="0 0 20 20"
+                        fill="#ec4899"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       <span className="text-base md:text-lg font-medium text-black">
                         {point}
                       </span>
