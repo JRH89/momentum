@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET as string, {
     apiVersion: '2024-06-20',
@@ -8,7 +8,7 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET as string, {
 
 export const POST = async (
     request: NextRequest,
-    context: { params: { id: string } }
+    { params }: { params: { id: string } }
 ) => {
     try {
         const { email, stripeAccountId } = await request.json();
@@ -22,7 +22,7 @@ export const POST = async (
 
         // Update the customer in Stripe
         const updatedCustomer = await stripe.customers.update(
-            context.params.id,
+            params.id,
             { email },
             { stripeAccount: stripeAccountId }
         );
@@ -35,4 +35,4 @@ export const POST = async (
             { status: 500 }
         );
     }
-} 
+};
