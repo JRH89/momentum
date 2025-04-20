@@ -87,9 +87,8 @@ const Sidebar = ({ uid }) => {
   return (
     <div className="flex lg:mr-4">
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 lg:translate-x-0`}
+        className={`fixed inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300 lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           <div className="flex rounded-tr-lg gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm">
@@ -158,13 +157,12 @@ const Sidebar = ({ uid }) => {
                   onClick={toggleSidebar}
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${
-                    link.disabled
-                      ? "opacity-50 pointer-events-none"
-                      : pathname === link.href // Highlight if current page
+                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${link.disabled
+                    ? "opacity-50 pointer-events-none"
+                    : pathname === link.href // Highlight if current page
                       ? "bg-white"
                       : "cursor-pointer hover:ml-4"
-                  }`}
+                    }`}
                 >
                   <link.icon className="w-5 h-5 mr-3" />
                   {link.label}
@@ -202,9 +200,8 @@ const Sidebar = ({ uid }) => {
         </div>
       </div>
       <button
-        className={`${
-          isOpen ? "hidden" : "block"
-        } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden border-2 border-black top-4 left-4 focus:outline-none`}
+        className={`${isOpen ? "hidden" : "block"
+          } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden border-2 border-black top-4 left-4 focus:outline-none`}
         onClick={toggleSidebar}
       >
         <svg
