@@ -6,9 +6,9 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET as string, {
     apiVersion: '2024-06-20',
 });
 
-export const PUT = async (
+export const POST = async (
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: { id: string } }
 ) => {
     try {
         const { email, stripeAccountId } = await request.json();
@@ -22,7 +22,7 @@ export const PUT = async (
 
         // Update the customer in Stripe
         const updatedCustomer = await stripe.customers.update(
-            params.id,
+            context.params.id,
             { email },
             { stripeAccount: stripeAccountId }
         );
