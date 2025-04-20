@@ -15,6 +15,7 @@ import {
   signOut,
 } from "@firebase/auth";
 import { toast } from "react-toastify";
+import { useCustomerEmailUpdate } from "../../../../hooks/useCustomerEmailUpdate";
 
 const CustomerDetailsPage: React.FC = () => {
   const { uid, stripeCustomerId } = useParams() as {
@@ -33,6 +34,22 @@ const CustomerDetailsPage: React.FC = () => {
   const [invoiceDueDate, setInvoiceDueDate] = useState<string>("");
   const [userData, setUserData] = useState<any>(null);
   const [customerEmail, setCustomerEmail] = useState<string>("");
+  const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
+
+  const { updateEmail, isUpdating, error: emailError } = useCustomerEmailUpdate({
+    customerId: stripeCustomerId,
+    stripeAccountId: stripeAccountId || "",
+    userId: uid,
+    onSuccess: () => {
+      toast.success("Email updated successfully");
+      setCustomerEmail(newEmail);
+      setIsEditingEmail(false);
+    },
+    onError: (error) => {
+      toast.error(`Failed to update email: ${error}`);
+    }
+  });
 
   useEffect(() => {
     const fetchUserStripeAccountId = async (userId: string) => {
@@ -273,6 +290,15 @@ const CustomerDetailsPage: React.FC = () => {
     }
   };
 
+  const handleEmailUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newEmail || newEmail === customerEmail) {
+      toast.error("Please enter a new email address");
+      return;
+    }
+    await updateEmail(newEmail);
+  };
+
   if (loading)
     return (
       <div className="min-h-screen my-auto items-center justify-center max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
@@ -283,31 +309,75 @@ const CustomerDetailsPage: React.FC = () => {
   return (
     <>
       <div className="min-h-screen max-w-6xl mx-auto h-full w-full p-4 pt-4 text-black flex flex-col pb-24">
-        {customerData && (
-          <div className="flex flex-col">
-            <h2 className="text-2xl lg:text-3xl font-bold text-black">
-              Customer Details
-            </h2>
-            <p className="px-4 mt-4 capitalize font-semibold">
-              Name: {customerData.name}
-            </p>
-            <p className="px-4 font-semibold">
-              Email:{" "}
-              <a
-                className="text-confirm hover:underline"
-                href={`mailto:${customerData.email}`}
-              >
-                {customerData.email}
-              </a>
-            </p>
-            <p className="font-semibold px-4">
-              Stripe Customer ID: {customerData.stripeCustomerId}
-            </p>
-            {customerData.uid && (
-              <p className="font-semibold px-4">User ID: {customerData.uid}</p>
-            )}
-          </div>
-        )}
+        <div className="mb-8">
+          <h2 className="text-2xl lg:text-3xl font-bold text-black">
+            Customer Details
+          </h2>
+          {customerData && (
+            <div className="flex flex-col">
+              <p className="px-4 mt-4 capitalize font-semibold">
+                Name: {customerData.name}
+              </p>
+              <div className="px-4">
+                {isEditingEmail ? (
+                  <form onSubmit={handleEmailUpdate} className="flex items-center gap-4">
+                    <input
+                      type="email"
+                      value={newEmail}
+                      onChange={(e) => setNewEmail(e.target.value)}
+                      className="border rounded px-3 py-2 flex-1"
+                      placeholder="Enter new email"
+                    />
+                    <button
+                      type="submit"
+                      disabled={isUpdating}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
+                    >
+                      {isUpdating ? "Updating..." : "Save"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsEditingEmail(false);
+                        setNewEmail("");
+                      }}
+                      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                    >
+                      Cancel
+                    </button>
+                  </form>
+                ) : (
+                  <div className="flex items-center gap-4">
+                    <p className="font-semibold">
+                      Email:{" "}
+                      <a
+                        className="text-confirm hover:underline"
+                        href={`mailto:${customerEmail}`}
+                      >
+                        {customerEmail}
+                      </a>
+                    </p>
+                    <button
+                      onClick={() => {
+                        setIsEditingEmail(true);
+                        setNewEmail(customerEmail);
+                      }}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                )}
+              </div>
+              <p className="font-semibold px-4">
+                Stripe Customer ID: {customerData.stripeCustomerId}
+              </p>
+              {customerData.uid && (
+                <p className="font-semibold px-4">User ID: {customerData.uid}</p>
+              )}
+            </div>
+          )}
+        </div>
         <div className="mt-2">
           <div className="flex justify-start items-center">
             <h3 className="text-2xl font-semibold">Invoices</h3>
