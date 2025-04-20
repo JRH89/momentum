@@ -1,12 +1,13 @@
 import Stripe from 'stripe';
 import { NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 
 const stripe = new Stripe(process.env.STRIPE_TEST_SECRET as string, {
     apiVersion: '2024-06-20',
 });
 
 export async function PATCH(
-    request: Request,
+    request: NextRequest,
     { params }: { params: { id: string } }
 ) {
     try {
