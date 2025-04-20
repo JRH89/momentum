@@ -6,10 +6,10 @@ const stripe = new Stripe(process.env.STRIPE_TEST_SECRET as string, {
     apiVersion: '2024-06-20',
 });
 
-export async function PATCH(
+export const PUT = async (
     request: NextRequest,
     { params }: { params: { id: string } }
-) {
+) => {
     try {
         const { email, stripeAccountId } = await request.json();
 
