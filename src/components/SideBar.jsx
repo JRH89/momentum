@@ -15,14 +15,28 @@ import {
   DoorOpen,
   Bug,
   LoaderPinwheel,
+  Mail,
 } from "lucide-react";
 import { auth, db } from "../../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 const Sidebar = ({ uid }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showHiddenLink, setShowHiddenLink] = useState(false);
   const router = useRouter();
   const pathname = usePathname(); // Get the current path
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Show hidden link when 'h' key is pressed
+      if (e.key === 'h') {
+        setShowHiddenLink(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, []);
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
@@ -68,6 +82,16 @@ const Sidebar = ({ uid }) => {
     },
   ];
 
+  // Add hidden contact link
+  const hiddenLinks = [
+    {
+      href: `/stripeVerification`,
+      label: "Stripe Verification",
+      icon: Mail,
+      hidden: !showHiddenLink,
+    },
+  ];
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (authUser) => {
       if (authUser) {
@@ -87,9 +111,8 @@ const Sidebar = ({ uid }) => {
   return (
     <div className="flex lg:mr-4">
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 lg:translate-x-0`}
+        className={`fixed inset-y-0 left-0 z-50 w-52 rounded-r-xl border-2 border-black text-black transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-300 lg:translate-x-0`}
       >
         <div className="flex flex-col h-full">
           <div className="flex rounded-tr-lg gap-2 px-4 items-center justify-between w-full mx-auto border-b-2 border-black p-4 bg-confirm">
@@ -158,13 +181,12 @@ const Sidebar = ({ uid }) => {
                   onClick={toggleSidebar}
                   key={link.href}
                   href={link.href}
-                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${
-                    link.disabled
-                      ? "opacity-50 pointer-events-none"
-                      : pathname === link.href // Highlight if current page
+                  className={`flex items-center px-4 py-2 text-lg font-medium justify-start text-left rounded-md  duration-300 ${link.disabled
+                    ? "opacity-50 pointer-events-none"
+                    : pathname === link.href // Highlight if current page
                       ? "bg-white"
                       : "cursor-pointer hover:ml-4"
-                  }`}
+                    }`}
                 >
                   <link.icon className="w-5 h-5 mr-3" />
                   {link.label}
@@ -202,9 +224,8 @@ const Sidebar = ({ uid }) => {
         </div>
       </div>
       <button
-        className={`${
-          isOpen ? "hidden" : "block"
-        } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden border-2 border-black top-4 left-4 focus:outline-none`}
+        className={`${isOpen ? "hidden" : "block"
+          } fixed shadow-md shadow-black hover:shadow-lg hover:shadow-black duration-300 z-50 p-2 text-white bg-confirm rounded-md lg:hidden border-2 border-black top-4 left-4 focus:outline-none`}
         onClick={toggleSidebar}
       >
         <svg
@@ -244,6 +265,25 @@ const Sidebar = ({ uid }) => {
         </svg>
       </button>
       <div className="flex-1 z-40 top-0 left-0 ml-0 transition-all duration-300 lg:ml-48 bg-white"></div>
+
+      {/* Add hidden links section */}
+      <div className="mt-auto">
+        {hiddenLinks.map((link) => (
+          link.hidden ? null : (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`flex items-center px-4 py-2 text-sm font-medium ${pathname === link.href
+                ? "bg-gray-100 text-gray-900"
+                : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                }`}
+            >
+              <link.icon className="mr-3 h-5 w-5" />
+              {link.label}
+            </Link>
+          )
+        ))}
+      </div>
     </div>
   );
 };
