@@ -1,50 +1,72 @@
-# Welcome to SaaSavant
+## Momentum
 
-## Overview
+Momentum is a project management and invoicing platform built for freelancers, independent contractors, and small businesses. It brings projects, clients, invoices, and collaboration into one streamlined experience, with transparent pricing and secure Stripe-powered payments.
 
-SaaSavant is a comprehensive boilerplate designed to accelerate the development of Software as a Service (SaaS) applications. It integrates essential services like Stripe for secure payment processing and subscriptions, Firebase for robust authentication and real-time database storage, and Sendgrid for efficient email handling. With everything pre-configured, you can quickly set up your SaaS platform and focus on customization.
+### Key Features
+- **Account creation**: Sign up with Google, GitHub, or Email; choose Monthly or Yearly plans.
+- **Stripe integration**: Securely connect your Stripe account to create, send, and manage invoices.
+- **User dashboard**: Track projects, milestones, and progress; manage customers and billing.
+- **Client dashboard**: Clients can view progress, milestones, and pay invoices securely.
+- **Invoicing**: Create invoices from your customer list; send via email with secure payment links.
+- **Project pages**: Organize milestones, deadlines, files, and status in one place.
+- **Optional collaboration tools**: Enable per-project live chat, file uploads, and a color theme picker when useful.
 
-## Getting Started
+### Screenshots
+Assets are available under `public/` (e.g., `dashboard.png`, `invoice.png`, `project.png`) and are used across the About pages for previews.
 
-Follow the steps outlined in the documentation found [here](https://saasavant-docs.vercel.app).
+---
 
-# LICENSE
+## Tech Stack
 
-SaaSavant Boilerplate License Agreement
+- **Framework**: Next.js 15, React 19
+- **Language**: TypeScript + JavaScript (hybrid repo)
+- **Styling**: Tailwind CSS, `tailwindcss-animate`, `tailwind-merge`
+- **Payments**: Stripe (`stripe`, `@stripe/stripe-js`)
+- **Auth/Backend**: Firebase (`firebase`, `@firebase/auth`)
+- **Email**: SendGrid (`@sendgrid/mail`)
+- **UX/Components**: `framer-motion`, `lucide-react`, `react-icons`, `class-variance-authority`, `clsx`
+- **Rich text**: Tiptap (`@tiptap/*`)
+- **Images/Palette**: `node-vibrant`, `chroma-js`, `react-palette`
+- **Utilities**: `date-fns`, `uuid`, `react-toastify`, `react-textarea-autosize`, `react-paginate`
+- **Analytics**: `@vercel/analytics`, `@vercel/speed-insights`
+- **Sitemap/SEO**: `next-sitemap`
 
-This License Agreement ("Agreement") is entered into between SaaSavant, represented by Hooker Hill Studios, whose contact information is hookerhillstudios@gmail.com, and you, the user ("Licensee"), regarding the use of the SaaSavant coding boilerplate (the "Product"). By downloading, accessing, or using the Product, Licensee agrees to be bound by the terms and conditions of this Agreement.
+---
 
-1. Grant of License
-1.1 Individual License
-Subject to the terms and conditions of this Agreement, SaaSavant grants Licensee a non-exclusive, non-transferable, and non-sublicensable Individual License to use the SaaSavant coding boilerplate for the following purposes:
+## Project Structure (high level)
 
-Create unlimited projects.
-Build and develop applications or websites for personal or commercial use.
+- `src/app` — Next.js App Router pages and API routes
+  - `About/[activeSection]` — Dynamic About pages that render feature walkthroughs
+  - `api/stripe/*` — Stripe integration endpoints (connect, customers, invoices, portal, OAuth, etc.)
+  - `api/send*` — Email-related endpoints (welcome, newsletter, project notifications)
+- `src/components` — UI components (dashboards, tables, payments, landing)
+- `src/context` — Providers (e.g., auth)
+- `public` — Static assets, favicons, screenshots
 
-2. Restrictions
-Licensee shall not:
+---
 
-Modify, adapt, reverse engineer, decompile, disassemble, or create derivative works based on the SaaSavant boilerplate.
-Remove, alter, or obscure any copyright, trademark, or other proprietary notices from the SaaSavant boilerplate.
-Use the SaaSavant boilerplate in any way that violates applicable laws, regulations, or third-party rights.
-Sub-license, rent, lease, or transfer the SaaSavant boilerplate or any rights granted under this Agreement.
+## Notable Flows
 
-3. Ownership and Intellectual Property
-SaaSavant retains all ownership and intellectual property rights in and to the SaaSavant boilerplate. This Agreement does not grant Licensee any ownership rights in the SaaSavant boilerplate.
+- **Onboarding**: Create an account → choose a plan → (optionally) connect Stripe.
+- **Invoicing**: From the customer list, click “Create Invoice” → fill details → send email → client pays via secure Stripe link.
+- **Client portal**: Clients can view project progress, milestones, and pay invoices.
+- **Optional project features**: Per-project live chat, file uploads, and color theme picker can be enabled when needed.
 
-4. Warranty and Disclaimer
-THE SAASAVANT BOILERPLATE IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NONINFRINGEMENT.
+---
 
-5. Limitation of Liability
-TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, SAASAVANT SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES ARISING OUT OF OR RELATING TO THE USE OR INABILITY TO USE THE SAASAVANT BOILERPLATE, EVEN IF SAASAVANT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+## SEO & Metadata
+Dynamic metadata for About subsections is generated in `src/app/About/[activeSection]/page.jsx`, including titles, descriptions, and canonical URLs based on `siteMetadata`.
 
-6. Governing Law and Jurisdiction
-This Agreement shall be governed by and construed in accordance with the laws of the United States of America, without regard to its conflict of law principles. Any dispute arising out of or in connection with this Agreement shall be subject to the exclusive jurisdiction of the courts located in the United States of America.
+---
 
-7. Entire Agreement
-This Agreement constitutes the entire agreement between Licensee and SaaSavant concerning the subject matter herein and supersedes all prior or contemporaneous agreements, representations, warranties, and understandings.
+## Author
 
-Last updated:09/1/2024
+Created by **Jared Hooker**.
 
-SaaSavant
-Contact Information: hookerhillstudios@gmail.com
+---
+
+## License
+
+This project is licensed under the terms of the license found in `LICENSE`.
+
+
