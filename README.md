@@ -68,5 +68,3 @@ Created by **Jared Hooker**.
 ## License
 
 This project is licensed under the terms of the license found in `LICENSE`.
-
-
