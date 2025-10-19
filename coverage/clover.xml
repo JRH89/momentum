@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1760841645485" clover="3.2.0">
-  <project timestamp="1760841645485" name="All files">
-    <metrics statements="4307" coveredstatements="30" conditionals="1307" coveredconditionals="11" methods="920" coveredmethods="7" elements="6534" coveredelements="48" complexity="0" loc="4307" ncloc="4307" packages="60" files="116" classes="116"/>
+<coverage generated="1760842650169" clover="3.2.0">
+  <project timestamp="1760842650169" name="All files">
+    <metrics statements="4373" coveredstatements="43" conditionals="1317" coveredconditionals="12" methods="939" coveredmethods="11" elements="6629" coveredelements="66" complexity="0" loc="4373" ncloc="4373" packages="63" files="121" classes="121"/>
     <package name="app">
       <metrics statements="30" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
       <file name="layout.js" path="C:\apps\typescript\momentum\src\app\layout.js">
@@ -1718,15 +1718,26 @@
       </file>
     </package>
     <package name="app.api.invoices">
-      <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+      <metrics statements="17" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="route.ts" path="C:\apps\typescript\momentum\src\app\api\invoices\route.ts">
-        <metrics statements="6" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <metrics statements="17" coveredstatements="0" conditionals="1" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="1" count="0" type="stmt"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+        <line num="5" count="0" type="stmt"/>
+        <line num="7" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
       </file>
     </package>
     <package name="app.api.send-email">
@@ -2910,6 +2921,24 @@
         <line num="262" count="0" type="stmt"/>
         <line num="263" count="0" type="stmt"/>
         <line num="287" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="components.FeaturesSection">
+      <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="index.tsx" path="C:\apps\typescript\momentum\src\components\FeaturesSection\index.tsx">
+        <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="components.ImageGallery">
+      <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+      <file name="index.tsx" path="C:\apps\typescript\momentum\src\components\ImageGallery\index.tsx">
+        <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
       </file>
     </package>
     <package name="components.admin">
@@ -4835,6 +4864,67 @@
         <line num="48" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
         <line num="54" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="lib">
+      <metrics statements="49" coveredstatements="13" conditionals="9" coveredconditionals="1" methods="17" coveredmethods="4"/>
+      <file name="db.ts" path="C:\apps\typescript\momentum\src\lib\db.ts">
+        <metrics statements="6" coveredstatements="0" conditionals="5" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="7" count="0" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="10" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="15" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="17" count="0" type="stmt"/>
+      </file>
+      <file name="invoices.ts" path="C:\apps\typescript\momentum\src\lib\invoices.ts">
+        <metrics statements="28" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="11" coveredmethods="0"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="cond" truecount="0" falsecount="1"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+      </file>
+      <file name="stripe.ts" path="C:\apps\typescript\momentum\src\lib\stripe.ts">
+        <metrics statements="15" coveredstatements="13" conditionals="2" coveredconditionals="1" methods="6" coveredmethods="4"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="3" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="49" count="2" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
       </file>
     </package>
   </project>

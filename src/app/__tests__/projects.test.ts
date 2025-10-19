@@ -1,5 +1,6 @@
 import { createProject, updateProject, deleteProject, getProject } from '@/lib/projects';
 import { createInvoice, sendInvoice, getInvoice } from '@/lib/invoices';
+import db from '@/lib/db';
 
 // Mock the database client
 jest.mock('@/lib/db', () => ({
@@ -8,11 +9,13 @@ jest.mock('@/lib/db', () => ({
     update: jest.fn(),
     delete: jest.fn(),
     findUnique: jest.fn(),
+    findMany: jest.fn(),
   },
   invoice: {
     create: jest.fn(),
     update: jest.fn(),
     findUnique: jest.fn(),
+    findMany: jest.fn(),
   },
 }));
 
@@ -30,8 +33,7 @@ describe('Project Management', () => {
   });
 
   it('should create a new project', async () => {
-    const { project } = require('@/lib/db');
-    project.create.mockResolvedValueOnce(testProject);
+    (db.project.create as jest.Mock).mockResolvedValueOnce(testProject);
 
     const result = await createProject({
       name: testProject.name,
@@ -39,7 +41,7 @@ describe('Project Management', () => {
       customerId: testProject.customerId,
     });
 
-    expect(project.create).toHaveBeenCalledWith({
+    expect(db.project.create).toHaveBeenCalledWith({
       data: {
         name: testProject.name,
         description: testProject.description,
@@ -50,20 +52,44 @@ describe('Project Management', () => {
     expect(result).toEqual(testProject);
   });
 
-  it('should update an existing project', async () => {
-    const { project } = require('@/lib/db');
-    const updatedProject = { ...testProject, status: 'completed' };
+  it('should update a project', async () => {
+    const updatedData = { name: 'Updated Project', status: 'completed' };
+    const updatedProject = { ...testProject, ...updatedData };
     
-    project.update.mockResolvedValueOnce(updatedProject);
+    (db.project.update as jest.Mock).mockResolvedValueOnce(updatedProject);
 
-    const result = await updateProject(testProject.id, { status: 'completed' });
+    const result = await updateProject(testProject.id, updatedData);
 
-    expect(project.update).toHaveBeenCalledWith({
+    expect(db.project.update).toHaveBeenCalledWith({
       where: { id: testProject.id },
-      data: { status: 'completed' },
+      data: updatedData,
     });
     
     expect(result).toEqual(updatedProject);
+  });
+
+  it('should delete a project', async () => {
+    (db.project.delete as jest.Mock).mockResolvedValueOnce(testProject);
+
+    const result = await deleteProject(testProject.id);
+
+    expect(db.project.delete).toHaveBeenCalledWith({
+      where: { id: testProject.id },
+    });
+    
+    expect(result).toEqual(testProject);
+  });
+
+  it('should get a project by id', async () => {
+    (db.project.findUnique as jest.Mock).mockResolvedValueOnce(testProject);
+
+    const result = await getProject(testProject.id);
+
+    expect(db.project.findUnique).toHaveBeenCalledWith({
+      where: { id: testProject.id },
+    });
+    
+    expect(result).toEqual(testProject);
   });
 });
 
@@ -72,8 +98,8 @@ describe('Invoice Management', () => {
     id: 'inv_test123',
     projectId: 'proj_test123',
     amount: 1000,
-    status: 'draft',
-    dueDate: new Date(),
+    status: 'draft' as const,
+    dueDate: new Date().toISOString(),
   };
 
   beforeEach(() => {
@@ -81,8 +107,7 @@ describe('Invoice Management', () => {
   });
 
   it('should create a new invoice', async () => {
-    const { invoice } = require('@/lib/db');
-    invoice.create.mockResolvedValueOnce(testInvoice);
+    (db.invoice.create as jest.Mock).mockResolvedValueOnce(testInvoice);
 
     const result = await createInvoice({
       projectId: testInvoice.projectId,
@@ -90,7 +115,7 @@ describe('Invoice Management', () => {
       dueDate: testInvoice.dueDate,
     });
 
-    expect(invoice.create).toHaveBeenCalledWith({
+    expect(db.invoice.create).toHaveBeenCalledWith({
       data: {
         projectId: testInvoice.projectId,
         amount: testInvoice.amount,
@@ -103,14 +128,17 @@ describe('Invoice Management', () => {
   });
 
   it('should send an invoice', async () => {
-    const { invoice } = require('@/lib/db');
-    const sentInvoice = { ...testInvoice, status: 'sent' };
+    const sentInvoice = { 
+      ...testInvoice, 
+      status: 'sent',
+      sentAt: new Date().toISOString() 
+    };
     
-    invoice.update.mockResolvedValueOnce(sentInvoice);
+    (db.invoice.update as jest.Mock).mockResolvedValueOnce(sentInvoice);
 
     const result = await sendInvoice(testInvoice.id);
 
-    expect(invoice.update).toHaveBeenCalledWith({
+    expect(db.invoice.update).toHaveBeenCalledWith({
       where: { id: testInvoice.id },
       data: { 
         status: 'sent',
@@ -119,5 +147,17 @@ describe('Invoice Management', () => {
     });
     
     expect(result).toEqual(sentInvoice);
+  });
+
+  it('should get an invoice by id', async () => {
+    (db.invoice.findUnique as jest.Mock).mockResolvedValueOnce(testInvoice);
+
+    const result = await getInvoice(testInvoice.id);
+
+    expect(db.invoice.findUnique).toHaveBeenCalledWith({
+      where: { id: testInvoice.id },
+    });
+    
+    expect(result).toEqual(testInvoice);
   });
 });

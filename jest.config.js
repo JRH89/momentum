@@ -1,34 +1,64 @@
 const nextJest = require('next/jest');
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: './', // Path to your Next.js app
 });
 
 // Add any custom config to be passed to Jest
 const customJestConfig = {
-  // Add more setup options before each test is run
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
-  moduleDirectories: ['node_modules', '<rootDir>/'],
   testEnvironment: 'jest-environment-jsdom',
+  moduleDirectories: ['node_modules', '<rootDir>/'],
+  
+  // Module name mapper for path aliases
   moduleNameMapper: {
-    // Handle module aliases (this will be automatically configured for you soon)
     '^@/(.*)$': '<rootDir>/src/$1',
-    // Handle CSS imports (with CSS modules)
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@/components/(.*)$': '<rootDir>/src/components/$1',
+    '^@/app/(.*)$': '<rootDir>/src/app/$1',
+    '^@/types/(.*)$': '<rootDir>/src/types/$1',
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
-    // Handle image imports
     '\\.(jpg|jpeg|png|gif|webp|svg)$': '<rootDir>/__mocks__/fileMock.js',
   },
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
-  transform: {
-    // Use babel-jest to transpile tests with the next/babel preset
-    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
-  },
-  transformIgnorePatterns: [
-    '/node_modules/(?!(react-markdown|vfile|unist-.+|@?react-leaflet))/',
-    '^.+\\.module\\.(css|sass|scss)$',
+  
+  // Test file patterns
+  testMatch: [
+    '**/__tests__/**/*.[jt]s?(x)',
+    '**/?(*.)+(spec|test).[jt]s?(x)',
   ],
+  
+  // Ignore patterns
+  testPathIgnorePatterns: [
+    '<rootDir>/node_modules/',
+    '<rootDir>/.next/',
+    '<rootDir>/cypress/',
+  ],
+  
+  // Transform settings
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { 
+      presets: ['next/babel'],
+      plugins: [
+        ['@babel/plugin-transform-modules-commonjs', { strictMode: false }],
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-syntax-dynamic-import',
+      ],
+    }],
+  },
+  
+  transformIgnorePatterns: [
+    '/node_modules/(?!(react-markdown|vfile|unist-.+|@?react-leaflet|@babel/runtime)/)',
+  ],
+  
+  // TypeScript support
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+      isolatedModules: true,
+    },
+  },
+  
+  // Coverage settings
   collectCoverage: true,
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
@@ -36,8 +66,24 @@ const customJestConfig = {
     '!src/**/*.stories.{js,jsx,ts,tsx}',
     '!src/**/_app.{js,jsx,ts,tsx}',
     '!src/**/_document.{js,jsx,ts,tsx}',
+    '!**/node_modules/**',
+    '!**/.next/**',
   ],
+  
+  // Setup files
+  setupFiles: ['<rootDir>/jest.polyfills.js'],
+  
+  // Test environment options
+  testEnvironmentOptions: {
+    customExportConditions: ['node', 'node-addons'],
+  },
 };
 
-// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-module.exports = createJestConfig(customJestConfig);
+// Create and export the final config
+module.exports = async () => ({
+  ...(await createJestConfig(customJestConfig)()),
+  // Add any final overrides here
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-markdown|vfile|unist-.+|@?react-leaflet|@babel/runtime)/)',
+  ],
+});
