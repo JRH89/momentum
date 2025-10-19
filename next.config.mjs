@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable SWC compiler
+  compiler: {
+    styledComponents: true,
+  },
+  // Disable Babel in favor of SWC
+  experimental: {
+    forceSwcTransforms: true,
+  },
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
