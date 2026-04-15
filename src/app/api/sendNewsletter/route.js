@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
-import sendgrid from '@sendgrid/mail';
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import siteMetadata from '../../../../siteMetadata'; // Adjust path as needed
 import { format } from 'date-fns'; // For date formatting
 
-// Set your SendGrid API key
-sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+const mailerSend = new MailerSend({
+  apiKey: process.env.MAILERSEND_API_KEY,
+});
 
 export async function POST(request) {
     try {
@@ -45,15 +46,17 @@ export async function POST(request) {
                 </div>
             `;
 
-            const msg = {
-                to: email,
-                from: process.env.NEXT_PUBLIC_SENDGRID_FROM_EMAIL, // Replace with your verified sender email
-                subject: dynamicSubject,
-                html: htmlContent,
-            };
+            const sentFrom = new Sender(process.env.MAILERSEND_API_USER, siteMetadata.title);
+            const recipients = [new Recipient(email, email)];
+
+            const emailParams = new EmailParams()
+                .setFrom(sentFrom)
+                .setTo(recipients)
+                .setSubject(dynamicSubject)
+                .setHtml(htmlContent);
 
             try {
-                await sendgrid.send(msg);
+                await mailerSend.email.send(emailParams);
                 responses.push({ email, success: true });
             } catch (error) {
                 console.error('Error sending newsletter:', error);
