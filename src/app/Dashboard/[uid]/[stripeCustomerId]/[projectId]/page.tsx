@@ -5,7 +5,6 @@ import { db, storage } from "../../../../../../firebase";
 import { doc, getDoc, runTransaction, updateDoc } from "firebase/firestore";
 import { useParams } from "next/navigation";
 import {
-  Download,
   LoaderPinwheel,
   Plus,
   Settings,
