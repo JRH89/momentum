@@ -21,7 +21,6 @@ import InvoicesTable from "../../../../../components/project/InvoiceTable";
 import { StripeCustomer } from "../../../../../components/types/stripeCustomer";
 import LiveChat from "../../../../../components/Chat";
 import Link from "next/link";
-import { set } from "date-fns";
 
 interface Milestone {
   id: string;
