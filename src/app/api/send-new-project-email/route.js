@@ -1,7 +1,8 @@
-import sendgrid from "@sendgrid/mail";
+import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 
-// Set your SendGrid API Key
-sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+const mailerSend = new MailerSend({
+  apiKey: process.env.MAILERSEND_API_KEY,
+});
 
 export async function POST(req) {
     try {
@@ -15,30 +16,33 @@ export async function POST(req) {
             );
         }
 
-        // Send the email using SendGrid
-        await sendgrid.send({
-            to: body.customerEmail, // Customer's email
-            from: process.env.NEXT_PUBLIC_SENDGRID_FROM_EMAIL, // Your verified sender email
-            subject: `A New Project Has Been Created for You: ${body.projectName}`,
-            text: `
-                Hi,
+        // Send the email using MailerSend
+        const sentFrom = new Sender(process.env.MAILERSEND_API_USER, "Momentum");
+        const recipients = [new Recipient(body.customerEmail, body.customerName)];
 
-                ${body.customerName} has created a new project, "${body.projectName}", for you.
+        const emailParams = new EmailParams()
+            .setFrom(sentFrom)
+            .setTo(recipients)
+            .setSubject(`A New Project Has Been Created for You: ${body.projectName}`)
+            .setText(`
+Hi,
 
-                You can visit the project dashboard at the link below to:
-                - Check progress
-                - Pay invoices
-                - Upload files
-                - Chat with the team
+${body.customerName} has created a new project, "${body.projectName}", for you.
 
-                Project Dashboard: ${body.projectLink}
+You can visit the project dashboard at the link below to:
+- Check progress
+- Pay invoices
+- Upload files
+- Chat with the team
 
-                If you have any questions, feel free to contact us.
+Project Dashboard: ${body.projectLink}
 
-                Best regards,
-                Your Team
-            `,
-            html: `
+If you have any questions, feel free to contact us.
+
+Best regards,
+Your Team
+            `)
+            .setHtml(`
                 <p>Hi,</p>
                 <p><strong>${body.customerName}</strong> has created a new project, <strong>${body.projectName}</strong>, for you.</p>
                 <p>You can visit the project dashboard at the link below to:</p>
@@ -51,8 +55,9 @@ export async function POST(req) {
                 <p><a href="${body.projectLink}" style="color: blue; text-decoration: underline;">Click here to view your project dashboard</a></p>
                 <p>If you have any questions, feel free to contact us.</p>
                 <p>Best regards,<br>Momentum</p>
-            `,
-        });
+            `);
+
+        await mailerSend.email.send(emailParams);
 
         return new Response(
             JSON.stringify({ success: "Email sent successfully!" }),

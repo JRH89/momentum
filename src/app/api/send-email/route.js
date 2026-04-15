@@ -1,7 +1,4 @@
-import sendgrid from "@sendgrid/mail";
-
-// Set your SendGrid API Key
-sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+import { sendEmail } from '@/lib/mailersend';
 
 export async function POST(req) {
     try {
@@ -15,28 +12,36 @@ export async function POST(req) {
             );
         }
 
-        // Send the email using SendGrid
-        await sendgrid.send({
-            to: "momentum.hookerhillstudios@gmail.com", // Replace with your email
-            from: process.env.NEXT_PUBLIC_SENDGRID_FROM_EMAIL, // Replace with your verified sender
+        // Send the email using MailerSend
+        const { success, error } = await sendEmail({
+            to: process.env.MAILERSEND_API_USER || 'credence@hookerhillstudios.com',
             subject: `New Contact Form Submission from ${body.name}`,
             text: body.message,
             html: `
-        <p><strong>Name:</strong> ${body.name}</p>
-        <p><strong>Email:</strong> ${body.email}</p>
-        <p><strong>Message:</strong></p>
-        <p>${body.message}</p>
-      `,
+                <p><strong>Name:</strong> ${body.name}</p>
+                <p><strong>Email:</strong> ${body.email}</p>
+                <p><strong>Message:</strong></p>
+                <p>${body.message}</p>
+            `,
+            replyTo: {
+                email: body.email,
+                name: body.name
+            }
         });
+
+        if (!success) {
+            console.error('Failed to send email:', error);
+            throw new Error('Failed to send email');
+        }
 
         return new Response(
             JSON.stringify({ success: "Email sent successfully!" }),
             { status: 200 }
         );
     } catch (error) {
-        console.error(error);
+        console.error('Error in send-email API route:', error);
         return new Response(
-            JSON.stringify({ error: "Failed to send email." }),
+            JSON.stringify({ error: "Failed to send email. Please try again later." }),
             { status: 500 }
         );
     }
