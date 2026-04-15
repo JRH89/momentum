@@ -41,6 +41,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-// Export named handlers for testing
-export { GET, POST };
